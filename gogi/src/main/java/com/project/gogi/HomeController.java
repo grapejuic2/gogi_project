@@ -37,10 +37,4 @@ public class HomeController {
 		
 		return "home";
 	}
-	
-	@RequestMapping(value="/main.do") //타일즈 테스트
-	public String mainpage() { 
-		return "main/main";
-	}
-	
 }

@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>		
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -21,7 +23,7 @@ ul.nav.navbar-nav li a:hover{color:#000000;}
 		<nav class="navbar navbar-inverse">
 		  <div class="container-fluid" >
 		    <div class="navbar-header">
-		      	<a href="#"><img src="resources/images/logo/logo.png" width="100px"></a>
+		      	<a href="#"><img src="${contextPath}/resources/images/logo/logo.png" width="100px"></a>
 		    </div>
 		    <ul class="nav navbar-nav" style="font-size: 18px;">
 		      <li><a href="#">쇼핑하기</a></li>
