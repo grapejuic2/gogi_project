@@ -1,6 +1,5 @@
 package com.project.gogi.member.controller;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
@@ -24,11 +23,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.project.gogi.common.base.BaseController;
-import com.project.gogi.mail.RegisterMail;
 import com.project.gogi.member.service.MemberService;
 import com.project.gogi.member.vo.MemberVO;
-
-import net.sf.json.JSONObject;
 
 @Controller("memberController")
 @RequestMapping(value="/member")
