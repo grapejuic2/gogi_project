@@ -10,11 +10,11 @@
 <body>
 	<!-- header -->
 	<tiles:insertAttribute name="header"/>
-	<hr color="red"/>
+	<hr style="color=gray; margin: 0;" />
 	
 	<!-- 계속 바뀌는 내용부 -->
 	<tiles:insertAttribute name="body"/>
-	<hr color="blue"/>
+	<hr style="color=gray; margin: 0;"/>
 	
 	<!-- foot -->
 	<tiles:insertAttribute name="footer"/>
