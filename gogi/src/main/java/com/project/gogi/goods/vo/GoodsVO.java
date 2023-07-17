@@ -2,100 +2,154 @@ package com.project.gogi.goods.vo;
 
 import java.util.Date;
 
+
 public class GoodsVO {
-	/*0713 ø¿µø∏≤ ª˝º∫*/
+	/*0713 Ïò§ÎèôÎ¶º 0714 Ïò§ÎèôÎ¶º ÏàòÏ†ï*/
 	
-    private int goods_id;//ªÛ«∞ID
-    private String goods_category; //ªÛ«∞¡æ∑˘
-    private String goods_name;//ªÛ«∞∏Ì
-    private String goods_seller; //∆«∏≈¿⁄
-    private String goods_origin; //ø¯ªÍ¡ˆ
-    private int goods_price;//ªÛ«∞∞°∞›
-    private int goods_point;//ªÛ«∞ ∆˜¿Œ∆Æ - ∆˜¿Œ∆Æ ¿˚∏≥πÊΩƒ ≥Ì¿« « ø‰
-    private Date good_delivery_date; //ªÛ«∞πËº€¿œ
-    private String goods_explanation; //ªÛ«∞º≥∏Ì
-    private String goods_status; //ªÛ«∞ ∫–∑˘ (∫£Ω∫∆Æ(B), ºº¿œ(S), ±‚∫ª(N))
+    private int goods_id;
+    private String goods_sort; 
+    private String goods_name;
+    private String goods_seller; 
+    private String goods_country; 
+    private int goods_price;
+    private int goods_point;
+    private Date good_delivery_date; 
+    private String goods_intro;
+    private String goods_status; // ÏÉÅÌíàÎ∂ÑÎ•ò(B: Î≤†Ïä§Ìä∏ÏÉÅÌíà / S: ÏÑ∏ÏùºÏÉÅÌíà / N: Í∏∞Î≥∏ÏÉÅÌíà)
+    private String file_name; //Ïù¥ÎØ∏ÏßÄÌååÏùº Ïù¥Î¶Ñ Ï†ÄÏû•ÌïòÍ∏∞ ÏúÑÌïú Í∞ùÏ≤¥
     
     
     public GoodsVO() {}
-    
-	public GoodsVO(int goods_id, String goods_category, String goods_name, String goods_seller, String goods_origin,
-			int goods_price, int goods_point, Date good_delivery_date, String goods_explanation, String goods_status) {
+
+
+	public GoodsVO(int goods_id, String goods_sort, String goods_name, String goods_seller, String goods_country,
+			int goods_price, int goods_point, Date good_delivery_date, String goods_intro, String goods_status, String file_name) {
 		super();
 		this.goods_id = goods_id;
-		this.goods_category = goods_category;
+		this.goods_sort = goods_sort;
 		this.goods_name = goods_name;
 		this.goods_seller = goods_seller;
-		this.goods_origin = goods_origin;
+		this.goods_country = goods_country;
 		this.goods_price = goods_price;
 		this.goods_point = goods_point;
 		this.good_delivery_date = good_delivery_date;
-		this.goods_explanation = goods_explanation;
+		this.goods_intro = goods_intro;
 		this.goods_status = goods_status;
+		this.file_name = file_name;
 	}
-	
-	
+
+
 	public int getGoods_id() {
 		return goods_id;
 	}
+
+
 	public void setGoods_id(int goods_id) {
 		this.goods_id = goods_id;
 	}
-	public String getGoods_category() {
-		return goods_category;
+
+
+	public String getGoods_sort() {
+		return goods_sort;
 	}
-	public void setGoods_category(String goods_category) {
-		this.goods_category = goods_category;
+
+
+	public void setGoods_sort(String goods_sort) {
+		this.goods_sort = goods_sort;
 	}
+
+
 	public String getGoods_name() {
 		return goods_name;
 	}
+
+
 	public void setGoods_name(String goods_name) {
 		this.goods_name = goods_name;
 	}
+
+
 	public String getGoods_seller() {
 		return goods_seller;
 	}
+
+
 	public void setGoods_seller(String goods_seller) {
 		this.goods_seller = goods_seller;
 	}
-	public String getGoods_origin() {
-		return goods_origin;
+
+
+	public String getGoods_country() {
+		return goods_country;
 	}
-	public void setGoods_origin(String goods_origin) {
-		this.goods_origin = goods_origin;
+
+
+	public void setGoods_country(String goods_country) {
+		this.goods_country = goods_country;
 	}
+
+
 	public int getGoods_price() {
 		return goods_price;
 	}
+
+
 	public void setGoods_price(int goods_price) {
 		this.goods_price = goods_price;
 	}
+
+
 	public int getGoods_point() {
 		return goods_point;
 	}
+
+
 	public void setGoods_point(int goods_point) {
 		this.goods_point = goods_point;
 	}
+
+
 	public Date getGood_delivery_date() {
 		return good_delivery_date;
 	}
+
+
 	public void setGood_delivery_date(Date good_delivery_date) {
 		this.good_delivery_date = good_delivery_date;
 	}
-	public String getGoods_explanation() {
-		return goods_explanation;
+
+
+	public String getGoods_intro() {
+		return goods_intro;
 	}
-	public void setGoods_explanation(String goods_explanation) {
-		this.goods_explanation = goods_explanation;
+
+
+	public void setGoods_intro(String goods_intro) {
+		this.goods_intro = goods_intro;
 	}
+
+
 	public String getGoods_status() {
 		return goods_status;
 	}
+
+
 	public void setGoods_status(String goods_status) {
 		this.goods_status = goods_status;
 	}
+
+
+	public String getFile_name() {
+		return file_name;
+	}
+
+
+	public void setFile_name(String file_name) {
+		this.file_name = file_name;
+	}
+	
+	
+	
     
-    
-    
+	
 }
