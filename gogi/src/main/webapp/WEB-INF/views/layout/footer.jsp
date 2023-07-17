@@ -1,63 +1,86 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
-<!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<!-- ì¶”ê°€í• ë¶€ë¶„ -->
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<c:set var="contextPath" value="${pageContext.request.contextPath}" />
+<%@ page session="false"%>
 <html>
 <head>
-<meta charset="EUC-KR">
-<title>Insert title here</title>
+<meta charset="UTF-8">
+<!-- ì¶”ê°€í• ë¶€ë¶„ -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- ì¶”ê°€í• ë¶€ë¶„ -->
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<!-- ì¶”ê°€í• ë¶€ë¶„ -->
+<title>Footer</title>
+<style>
+.container {
+	width: 100%;
+	margin: 0;
+	padding: 10px;
+	padding-left: 200px;
+	padding-right: 200px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.rightInfo {
+	display: flex;
+	justify-content: flex-end;
+	text-align: right;
+	flex-grow: 1;
+}
+
+p {
+	margin: 0;
+}
+</style>
 </head>
 <body>
-	<footer class="text-center text-lg-start bg-light text-muted">
-  <section class="d-flex justify-content-center justify-content-center p-4 border-bottom">
-    <div>
-     	¾ğÁ¦³ª ÇÑ°á°°ÀÌ
-    </div>
-  </section>
 
 
-    <div class="container" style="padding-left: 200px; padding-right: 200px;">
-    
+	<div class="container">
+		<div class="leftInfo">
+			<img src="${contextPath}/resources/images/logo/logo2.png"
+				width="80px"><br>
+			<br>
+			<p>
+				(ì£¼)ìœ¡ë£° | ì£¼ì†Œ: ì„œìš¸ ì„±ë™êµ¬ ë§ˆì¥ë¡œ33ê¸¸ 53<br> ê°œì¸ì •ë³´ê´€ë¦¬ì±…ì„ì:
+				ì˜¤ë™ë¦¼(privacy@meatrule.com)
+			</p>
 
-        <div class="col-md-4 col-lg-2 col-xl-2 mx-auto mb-4">
-          <h6 class="text-uppercase fw-bold mb-4">
-            ÀÚÁÖ ¾²´Â ¸Ş´º
-          </h6>
-          <p>
-            <a href="${contextPath}/main/main.do" class="text-reset">È¨</a>
-          </p>
-          <p>
-            <a href="${contextPath}/admin/notice/listNotice.do" class="text-reset">°øÁö»çÇ×</a>
-          </p>
-          <p>
-            <a href="${contextPath}/board/qna/listQna.do" class="text-reset">Áú¹®°ú´äº¯</a>
-          </p>
-          <p>
-            <a href="${contextPath}/board/review/listReview.do" class="text-reset">ÈÄ±â</a>
-          </p>
-        </div>
 
-        <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
-          <h6 class="text-uppercase fw-bold mb-4">°í°´¼¾ÅÍ</h6>
-          <div id="daumRoughmapContainer1678798418740" class="root_daum_roughmap root_daum_roughmap_landing"></div>
-	      <script charset="UTF-8" class="daum_roughmap_loader_script" src="https://ssl.daumcdn.net/dmaps/map_js_init/roughmapLoader.js"></script>
-		  <script charset="UTF-8">
-		    new daum.roughmap.Lander({
-			"timestamp" : "1678798418740",
-			"key" : "2e3bt",
-			"mapWidth" : "400",
-			"mapHeight" : "200"
-			}).render();
-		  </script>
-          <p>´ëÀü±¤¿ª½Ã ¼­±¸ °è·æ·Î 637 Á¤ÀÏºôµù 3Ãş</p>
-          <p>+82 123 456 78</p>
-          <p>+82 234 567 89</p>
-        </div>    
-    </div>
 
-  <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
-	   <p class="footer_p">Copyright 2023. À°·ê<br>
-		All rights reserved.</p>
-  </div>
-</footer>
+
+			<span><a href="${contextPath}/admin/notice/listNotice.do"
+				class="text-reset">ê³µì§€ì‚¬í•­ | </a></span> <span><a
+				href="${contextPath}/board/qna/listQna.do" class="text-reset">ê³ ê°ì„¼í„°</a></span>
+
+
+			<h6 class="text-uppercase fw-bold mb-4">
+				<p>Copyright 2023. ìœ¡ë£° All rights reserved.
+			</h6>
+		</div>
+
+
+		<div class="rightInfo">
+			<div class="col-md-4 col-lg-3 col-xl-3 ml-auto mb-md-0 mb-4">
+				<h6 class="text-uppercase fw-bold mb-4">ê³ ê°ì„¼í„°</h6>
+				</B>
+				<h3>
+					<p>1800-0202</p>
+				</h3>
+				<p>ì›”-í† ìš”ì¼ : 08:30 - 17:30</p>
+				<p>ì ì‹¬ : 12:30 - 13:30</p>
+				<p>(ì¼ìš”ì¼ ë° ê³µíœ´ì¼ íœ´ë¬´)</p>
+				<p>ì¹´ì¹´ì˜¤í†¡: @ìœ¡ë£°</p>
+				<p>ì´ë©”ì¼: help@meatrule.com</p>
+			</div>
+		</div>
+	</div>
+
+
+
 </body>
 </html>

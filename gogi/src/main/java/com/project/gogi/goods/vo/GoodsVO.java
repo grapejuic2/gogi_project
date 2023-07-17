@@ -1,0 +1,142 @@
+package com.project.gogi.goods.vo;
+
+import java.util.Date;
+
+
+public class GoodsVO {
+	/*0713 오동림 0714 오동림 수정*/
+	
+    private int goods_id;
+    private String goods_sort; 
+    private String goods_name;
+    private String goods_seller; 
+    private String goods_country; 
+    private int goods_price;
+    private int goods_point;
+    private Date good_delivery_date; 
+    private String goods_intro;
+    private String goods_status; // 상품분류(B: 베스트상품 / S: 세일상품 / N: 기본상품)
+    
+    
+    public GoodsVO() {}
+
+
+	public GoodsVO(int goods_id, String goods_sort, String goods_name, String goods_seller, String goods_country,
+			int goods_price, int goods_point, Date good_delivery_date, String goods_intro, String goods_status) {
+		super();
+		this.goods_id = goods_id;
+		this.goods_sort = goods_sort;
+		this.goods_name = goods_name;
+		this.goods_seller = goods_seller;
+		this.goods_country = goods_country;
+		this.goods_price = goods_price;
+		this.goods_point = goods_point;
+		this.good_delivery_date = good_delivery_date;
+		this.goods_intro = goods_intro;
+		this.goods_status = goods_status;
+	}
+
+
+	public int getGoods_id() {
+		return goods_id;
+	}
+
+
+	public void setGoods_id(int goods_id) {
+		this.goods_id = goods_id;
+	}
+
+
+	public String getGoods_sort() {
+		return goods_sort;
+	}
+
+
+	public void setGoods_sort(String goods_sort) {
+		this.goods_sort = goods_sort;
+	}
+
+
+	public String getGoods_name() {
+		return goods_name;
+	}
+
+
+	public void setGoods_name(String goods_name) {
+		this.goods_name = goods_name;
+	}
+
+
+	public String getGoods_seller() {
+		return goods_seller;
+	}
+
+
+	public void setGoods_seller(String goods_seller) {
+		this.goods_seller = goods_seller;
+	}
+
+
+	public String getGoods_country() {
+		return goods_country;
+	}
+
+
+	public void setGoods_country(String goods_country) {
+		this.goods_country = goods_country;
+	}
+
+
+	public int getGoods_price() {
+		return goods_price;
+	}
+
+
+	public void setGoods_price(int goods_price) {
+		this.goods_price = goods_price;
+	}
+
+
+	public int getGoods_point() {
+		return goods_point;
+	}
+
+
+	public void setGoods_point(int goods_point) {
+		this.goods_point = goods_point;
+	}
+
+
+	public Date getGood_delivery_date() {
+		return good_delivery_date;
+	}
+
+
+	public void setGood_delivery_date(Date good_delivery_date) {
+		this.good_delivery_date = good_delivery_date;
+	}
+
+
+	public String getGoods_intro() {
+		return goods_intro;
+	}
+
+
+	public void setGoods_intro(String goods_intro) {
+		this.goods_intro = goods_intro;
+	}
+
+
+	public String getGoods_status() {
+		return goods_status;
+	}
+
+
+	public void setGoods_status(String goods_status) {
+		this.goods_status = goods_status;
+	}
+	
+	
+    
+	
+}
