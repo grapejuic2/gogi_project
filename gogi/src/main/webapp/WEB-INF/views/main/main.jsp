@@ -29,9 +29,10 @@
   	background-color: transparent;
     width:250px;
     object-fit: contain; /* 이미지를 가운데로 정렬 */
+    
   	} 
 </style>
-<title>Insert title here</title>
+<title>육룰 - 고기의 기준</title>
 </head>
 <body>
 		<!-- 메인페이지 배너 -->

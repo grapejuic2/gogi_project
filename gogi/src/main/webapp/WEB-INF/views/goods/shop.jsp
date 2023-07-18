@@ -79,6 +79,15 @@ $(document).ready(function() {
     width:250px;
     object-fit: contain; /* 이미지를 가운데로 정렬 */
   }
+    .slidewrap {
+    width: 100%;
+    margin: 0 auto;
+    position: relative;
+    margin-bottom: 35px;
+    /* height: 100vh; */
+    overflow: hidden;
+  }
+
 </style>
 </head>
 <body>
@@ -96,7 +105,6 @@ $(document).ready(function() {
 
 		<div id="productsContainer" class="main-best_div row row-cols-1 row-cols-md-3 text-center mb-4">
 			<!-- goods_sort에 따라 상품 목록 출력 -->
-			
 			
 				<c:forEach var="pig" items="${goodsMap.pig}">
 				<c:if test="${pig.goods_sort eq 'PIG'}"> 

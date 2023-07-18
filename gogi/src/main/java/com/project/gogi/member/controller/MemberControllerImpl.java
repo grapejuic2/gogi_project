@@ -199,5 +199,7 @@ public class MemberControllerImpl extends BaseController implements MemberContro
 		mav.setViewName(viewName);
 		return mav;
 	}
+	
+	
 
 }

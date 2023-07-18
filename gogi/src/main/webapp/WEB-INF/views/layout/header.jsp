@@ -39,9 +39,6 @@ ul.nav.navbar-nav li a:hover {
 	width: 100%;
 	z-index: 1000;
 }
-
-.dh6 {
-	
 }
 </style>
 <title>Bootstrap Example</title>
@@ -56,9 +53,8 @@ ul.nav.navbar-nav li a:hover {
 <!-- 폰트:나눔고딕 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link
-	href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap"
-	rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
+
 <script>
 	$(document).ready(function() {
 		var isLogOn = false; // 로그인 여부를 확인하는 변수, 실제 값에 따라 변경되어야 합니다.
@@ -122,7 +118,7 @@ ul.nav.navbar-nav li a:hover {
 				<li class="logged-in hidden"><a
 					href="${contextPath}/member/logout.do" id="logoutBtn"><span
 						class="glyphicon glyphicon-log-out"></span> 로그아웃</a></li>
-				<li class="logged-in hidden"><a href="#"><span
+				<li class="logged-in hidden"><a href="${contextPath}/member/mypageForm.do"><span
 						class="glyphicon glyphicon-user"></span> 마이페이지</a></li>
 				<li class="logged-in hidden"><a href="#"><span
 						class="glyphicon glyphicon-shopping-cart"></span> 장바구니</a></li>
