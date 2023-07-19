@@ -68,7 +68,7 @@ ul.nav.navbar-nav li a:hover {
 			<ul class="nav navbar-nav" >
 				<li><a href="${contextPath}/goods/shop.do">쇼핑하기</a></li>
 				<li><a href="${contextPath}/main/delivery.do">배송안내</a></li>
-				<li><a href="#">공지사항</a></li>
+				<li><a href="${contextPath}/notice/list.do">공지사항</a></li>
 				<li><a href="#">고객센터</a></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
