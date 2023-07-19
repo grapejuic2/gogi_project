@@ -1,6 +1,6 @@
 @charset "UTF-8";
 .memberForm-page {
-  width: 600px;
+  width: 100%;
   margin: auto; 
 }
 
@@ -17,11 +17,23 @@
   position: relative;
   z-index: 1;
   background: #FFFFFF;
-  max-width: 550px;
+  max-width: 1200px;
   margin: 0 auto 100px;
   padding: 45px;
   text-align: center;
-  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+  border: 3px solid #EDEDED; /* 추가: 옅은 선으로 외곽 마감 처리 */
+}
+
+/* 추가: 가운데 옅은 경계선 */
+.form::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1px;
+  height: 80%;
+  background-color: #EDEDED;
+  transform: translate(-50%, -50%);
 }
 
 .form input {
@@ -179,12 +191,3 @@ body {
   margin-right: 5px;
 }
 
-.form-group.button-group {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 10px;
-}
-
-.form-group.button-group button {
-  margin-left: 10px;
-}
