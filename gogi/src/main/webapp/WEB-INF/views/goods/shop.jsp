@@ -11,53 +11,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.2/css/bootstrap.min.css" integrity="sha512-/Dmo1NVtQ05uS0vOI5qEZZn7mWaswFJzDa4RRRF29phxNQqkUkRk5xpyRUpekzoiO7CbdWXFbMHaapzVnNP2ZQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="script.js"></script>
-<script>
-$(document).ready(function() {
-	  $(".category a").click(function(e) {
-	    e.preventDefault();
-	    var category = $(this).attr("data-category");
-	    loadProducts(category);
-
-	    // 슬라이드 배너 이미지 업데이트
-	    var imageUrl;
-	    switch (category) {
-	      case "pig":
-	        imageUrl = "${contextPath}/resources/images/shop/banner_pig.png";
-	        break;
-	      case "cow":
-	        imageUrl = "${contextPath}/resources/images/shop/banner_cow.png";
-	        break;
-	      case "chicken":
-	        imageUrl = "${contextPath}/resources/images/shop/banner_chicken.png";
-	        break;
-	      case "mealkit":
-	        imageUrl = "${contextPath}/resources/images/shop/banner_mealkit.png";
-	        break;
-	      default:
-	    	  imageUrl = "${contextPath}/resources/images/shop/banner_pig.png";
-	        break;
-	    }
-	    $("#bannerImage").attr("src", imageUrl);
-	  });
-
-  function loadProducts(category) {
-    $.ajax({
-      url: "${contextPath}/goods/shop.do",
-      data: { category: category },
-      success: function(response) {
-        // JSP 파일의 내용 중 #productsContainer 부분만 추출하여 업데이트합니다.
-        var html = $(response).find("#productsContainer").html();
-        $("#productsContainer").html(html);
-      },
-      error: function(xhr, status, error) {
-        console.log("An error occurred: " + error);
-      }
-    });
-  }
-});
-</script>
 <meta charset="UTF-8">
-
 <title>Insert title here</title>
 <style>
 .main{width: 100%;margin:0 ; padding: 10px; padding-left: 260px; padding-right: 260px;}
@@ -179,6 +133,50 @@ $(document).ready(function() {
 			</c:forEach>
 		</div>
 </div>
+<script>
+$(document).ready(function() {
+	  $(".category a").click(function(e) {
+	    e.preventDefault();
+	    var category = $(this).attr("data-category");
+	    loadProducts(category);
 
+	    // 슬라이드 배너 이미지 업데이트
+	    var imageUrl;
+	    switch (category) {
+	      case "pig":
+	        imageUrl = "${contextPath}/resources/images/shop/banner_pig.png";
+	        break;
+	      case "cow":
+	        imageUrl = "${contextPath}/resources/images/shop/banner_cow.png";
+	        break;
+	      case "chicken":
+	        imageUrl = "${contextPath}/resources/images/shop/banner_chicken.png";
+	        break;
+	      case "mealkit":
+	        imageUrl = "${contextPath}/resources/images/shop/banner_mealkit.png";
+	        break;
+	      default:
+	    	  imageUrl = "${contextPath}/resources/images/shop/banner_pig.png";
+	        break;
+	    }
+	    $("#bannerImage").attr("src", imageUrl);
+	  });
+
+  function loadProducts(category) {
+    $.ajax({
+      url: "${contextPath}/goods/shop.do",
+      data: { category: category },
+      success: function(response) {
+        // JSP 파일의 내용 중 #productsContainer 부분만 추출하여 업데이트합니다.
+        var html = $(response).find("#productsContainer").html();
+        $("#productsContainer").html(html);
+      },
+      error: function(xhr, status, error) {
+        console.log("An error occurred: " + error);
+      }
+    });
+  }
+});
+</script>
 </body>
 </html>
