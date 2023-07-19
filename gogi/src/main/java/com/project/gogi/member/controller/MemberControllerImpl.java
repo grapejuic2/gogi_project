@@ -157,7 +157,7 @@ public class MemberControllerImpl extends BaseController implements MemberContro
 		System.out.println("인증번호:" + num);
 		
 		/* 이메일 보내기 */
-        String setFrom = "rmsi5@naver.com";
+        String setFrom = "육룰";
         String toMail = email;
         String title = "회원가입 인증 이메일 입니다.";
         String content = 
