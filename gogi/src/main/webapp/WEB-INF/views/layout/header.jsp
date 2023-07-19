@@ -20,11 +20,8 @@
 	font-family: 'Nanum Gothic', sans-serif;
 	font-weight: 700;
 	display: block;
-	font-size: 18px;
-}
-
-ul.nav.navbar-nav li  {
-	color: black;
+	font-size: 20px;
+	font-weight: bold;
 }
 
 ul.nav.navbar-nav li a:hover {
@@ -43,46 +40,24 @@ ul.nav.navbar-nav li a:hover {
 	z-index: 1000;
 }
 
-
+ 
 </style>
 <title>Bootstrap Example</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <!-- 폰트:나눔고딕 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
-
-</head>
-
-<body>
-	<nav class="navbar navbar-inverse navbar-fixed">
-		<div class="container-fluid">
-			<div class="navbar-header">
-				<a href="${contextPath}/main/main.do"><img
-					src="${contextPath}/resources/images/logo/logo.png" width="100px"></a>
-			</div>
-			<ul class="nav navbar-nav" >
-				<li><a href="${contextPath}/goods/shop.do">쇼핑하기</a></li>
-				<li><a href="${contextPath}/main/delivery.do">배송안내</a></li>
-				<li><a href="#">공지사항</a></li>
-				<li><a href="#">고객센터</a></li>
-			</ul>
-			<ul class="nav navbar-nav navbar-right">
-				<li class="logged-out"><a href="${contextPath}/member/memberForm.do"><span class="glyphicon glyphicon-user"></span> 회원가입</a></li>
-				<li class="logged-out"><a href="${contextPath}/member/loginForm.do" id="loginBtn"><span class="glyphicon glyphicon-log-in"></span> 로그인</a></li>
-				<li class="logged-in hidden"><a href="${contextPath}/member/logout.do" id="logoutBtn"><span class="glyphicon glyphicon-log-out"></span> 로그아웃</a></li>
-				<li class="logged-in hidden"><a href="#"><span class="glyphicon glyphicon-user"></span> 마이페이지</a></li>
-				<li class="logged-in hidden"><a href="${contextPath}/cart/myCartList.do""><span class="glyphicon glyphicon-shopping-cart"></span> 장바구니</a></li>
-			</ul>
-		</div>
-	</nav>
-	
-	<!-- 헤더 스크립트 -->
-	<script>
+<link
+	href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap"
+	rel="stylesheet">
+<script>
 	$(document).ready(function() {
 		var isLogOn = false; // 로그인 여부를 확인하는 변수, 실제 값에 따라 변경되어야 합니다.
 
@@ -119,5 +94,38 @@ ul.nav.navbar-nav li a:hover {
 		});
 	});
 </script>
+</head>
+
+<body>
+	<nav class="navbar navbar-inverse navbar-fixed">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a href="${contextPath}/main/main.do"><img
+					src="${contextPath}/resources/images/logo/logo.png" width="100px"></a>
+			</div>
+			<ul class="nav navbar-nav" style="font-size: 18px;">
+				<li><a href="${contextPath}/goods/shop.do">쇼핑하기</a></li>
+				<li><a href="${contextPath}/main/delivery.do">배송안내</a></li>
+				<li><a href="${contextPath}/notice/list.do">공지사항</a></li>
+				<li><a href="#">고객센터</a></li>
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+				<li class="logged-out"><a
+					href="${contextPath}/member/memberForm.do"><span
+						class="glyphicon glyphicon-user"></span> 회원가입</a></li>
+				<li class="logged-out"><a
+					href="${contextPath}/member/loginForm.do" id="loginBtn"><span
+						class="glyphicon glyphicon-log-in"></span> 로그인</a></li>
+
+				<li class="logged-in hidden"><a
+					href="${contextPath}/member/logout.do" id="logoutBtn"><span
+						class="glyphicon glyphicon-log-out"></span> 로그아웃</a></li>
+				<li class="logged-in hidden"><a href="#"><span
+						class="glyphicon glyphicon-user"></span> 마이페이지</a></li>
+				<li class="logged-in hidden"><a href="#"><span
+						class="glyphicon glyphicon-shopping-cart"></span> 장바구니</a></li>
+			</ul>
+		</div>
+	</nav>
 </body>
 </html>

@@ -141,7 +141,7 @@
 					<b>캠핑장에서 원하는 고가를 즐길수 있도록 육룰이 달려갑니다.</b>
 					<div class="dv_c_d2">
 						<div class="span_dv">
-							<p  c > 월~일 도착</p>
+							<p  > 월~일 도착</p>
 						</div>
 						<ul>
 							<li>
