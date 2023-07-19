@@ -200,6 +200,7 @@ font-family: 'Nanum Gothic', sans-serif;
 	font-size: 30px;
 	letter-spacing: -1.2px;
 	text-align: center;
+	color: #ff9300;
 }
 
 
@@ -360,7 +361,8 @@ font-family: 'Nanum Gothic', sans-serif;
 	letter-spacing: -1.2px;
 	text-align: center;
 	margin-bottom: 20px;
-	color: orange;
+	color: #ff9300;
+	 font-weight: bold;
 }
  
 
