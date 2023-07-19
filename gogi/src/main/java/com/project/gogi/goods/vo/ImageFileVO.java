@@ -2,6 +2,9 @@ package com.project.gogi.goods.vo;
 
 import java.util.Date;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class ImageFileVO {
 	private int image_id;
 	private int goods_id;
