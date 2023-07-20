@@ -35,7 +35,6 @@ ul.nav.navbar-nav li a:hover {
 <title>로그인</title>
 </head>
 <body>
-
 	<div class="login-page">
 		<div class="login-text">
 			<a href="${contextPath}/main/main.do"><img
@@ -59,6 +58,9 @@ ul.nav.navbar-nav li a:hover {
 						alt="naver-icon"></a>
 				</div>
 			</form>
+			<c:if test="${not empty message}">
+				<p class="error-message">${message}</p>
+			</c:if>
 		</div>
 	</div>
 </body>

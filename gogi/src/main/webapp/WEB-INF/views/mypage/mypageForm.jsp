@@ -62,31 +62,50 @@ ul.nav.navbar-nav li a:hover {
 </head>
 
 <script> 
-		$.ajax({
-			type : "post",
-			async : false, //false인 경우 동기식으로 처리한다.
-			url : "${contextPath}/mypage/modifyMyInfo.do",
-			data : {
-				attribute:attribute,
-				value:value,
-			},
-			success : function(data, textStatus) {
-				if(data.trim()=='mod_success'){
-					alert("회원 정보를 수정했습니다.");
-				}else if(data.trim()=='failed'){
-					alert("다시 시도해 주세요.");	
-				}
-				
-			},
-			error : function(data, textStatus) {
-				alert("에러가 발생했습니다."+data);
-			},
-			complete : function(data, textStatus) {
-				alert("작업을완료 했습니다");
-				
-			}
-		}); //end ajax
-		
+function fn_modify_member_info(attribute) {
+    var value;
+
+    var frm_mod_member = document.frm_mod_member;
+    if (attribute === 'mem_pw') {
+        value = frm_mod_member.mem_pw.value;
+    } else if (attribute === 'mem_name') {
+        value = frm_mod_member.mem_name.value;
+    } else if (attribute === 'mem_tel') {
+        value = frm_mod_member.member_tel1.value + ',' +
+                frm_mod_member.member_tel2.value + ',' +
+                frm_mod_member.member_tel3.value;
+    } else if (attribute === 'mem_birth') {
+        value = frm_mod_member.mem_birth_y.value + ',' +
+                frm_mod_member.mem_birth_m.value + ',' +
+                frm_mod_member.mem_birth_d.value;
+    } else if (attribute === 'mem_email') {
+        value = frm_mod_member.mem_email.value;
+    }
+
+    console.log(attribute);
+    $.ajax({
+        type: "post",
+        async: false, //false인 경우 동기식으로 처리한다.
+        url: "${contextPath}/mypage/modifyMyInfo.do",
+        data: {
+            attribute: attribute,
+            value: value,
+        },
+        success: function(data, textStatus) {
+            if (data.trim() === 'mod_success') {
+                alert("회원 정보를 수정했습니다.");
+            } else if (data.trim() === 'failed') {
+                alert("다시 시도해 주세요.");	
+            }
+        },
+        error: function(data, textStatus) {
+            alert("에러가 발생했습니다." + data);
+        },
+        complete: function(data, textStatus) {
+            alert("작업을 완료 했습니다");
+        }
+    });
+}
 </script>
 
 <body>
@@ -115,7 +134,7 @@ ul.nav.navbar-nav li a:hover {
 		</div>
 
 		<div class="form">
-			<form id="configForm" class="configform"
+			<form name="frm_mod_member" class="configform"
 				action="${contextPath}/mypage/modifyMyInfo.do" method="post">
 				<h2 style="margin-bottom: 20px; margin-top: 0px;">개인 정보 수정</h2>
 
@@ -123,14 +142,14 @@ ul.nav.navbar-nav li a:hover {
                     <div class="label-group">
                         <label for="myp_id">아이디</label>
                     </div>
-                    <input type="text" id="mem_id" name="mem_id" value="${memberInfo.mem_id}" disabled />
+                    <input type="text" name="mem_id" value="${memberInfo.mem_id}" disabled />
                 </div>
 
                 <div class="form-group">
                     <div class="label-group">
                         <label for="mem_pw">비밀번호</label>
                     </div>
-                    <input type="password" placeholder="비밀번호" id="mem_pw" name="mem_pw"
+                    <input type="password" placeholder="비밀번호" name="mem_pw"
                         style="margin-right: 5px;">
                 </div>
 
@@ -138,7 +157,7 @@ ul.nav.navbar-nav li a:hover {
                     <div class="label-group">
                         <label for="mem_name">이름</label>
                     </div>
-                    <input type="text" id="mem_name" name="mem_name" value="${memberInfo.mem_name}" disabled />
+                    <input type="text" name="mem_name" value="${memberInfo.mem_name}" disabled />
                 </div>
 
                 <div class="form-group">
@@ -176,7 +195,7 @@ ul.nav.navbar-nav li a:hover {
                     <input type="text" placeholder="이메일" id="mem_email" name="mem_email" />
                 </div>
 
-                <button type="submit">정보 수정</button>
+                <button type="button">정보 수정</button>
                 
             </form>
         </div>

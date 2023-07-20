@@ -28,8 +28,6 @@ public class mypageControllerImpl implements mypageController {
 	@Autowired
 	private MemberVO memberVO;
 	@Autowired
-	private mypageVO mypageVO;
-	@Autowired
 	private mypageService mypageService;
 
 	// 회원 정보
@@ -84,11 +82,11 @@ public class mypageControllerImpl implements mypageController {
 		memberMap.put("mem_email", mem_email);
 
 		// 회원 정보 수정 후 다시 갱신된 회원 정보를 조회합니다.
-		mypageVO = (mypageVO) mypageService.modifyMyInfo(memberMap);
+		memberVO = (MemberVO) mypageService.modifyMyInfo(memberMap);
 
 		// 세션에 저장된 기존 회원 정보를 삭제한 후 갱신된 회원 정보를 저장합니다.
 		session.removeAttribute("memberInfo");
-		session.setAttribute("memberInfo", mypageVO);
+		session.setAttribute("memberInfo", memberVO);
 
 		String message = null;
 		ResponseEntity resEntity = null;

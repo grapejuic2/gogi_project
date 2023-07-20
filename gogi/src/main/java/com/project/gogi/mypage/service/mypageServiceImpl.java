@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.project.gogi.member.vo.MemberVO;
 import com.project.gogi.mypage.dao.mypageDAO;
 import com.project.gogi.mypage.vo.mypageVO;
 
@@ -18,14 +19,14 @@ public class mypageServiceImpl implements mypageService{
 	mypageDAO mypageDAO;
 	
 	@Override
-	public mypageVO modifyMyInfo(Map memberMap) throws Exception {
-		 String myp_id=(String)memberMap.get("myp_id");
+	public MemberVO modifyMyInfo(Map memberMap) throws Exception {
+		 String mem_id=(String)memberMap.get("mem_id");
 		 mypageDAO.updateMyInfo(memberMap);
-		 return mypageDAO.selectMyDetailInfo(myp_id);
+		 return mypageDAO.selectMyDetailInfo(mem_id);
 	}
 
 	@Override
-	public mypageVO myDetailInfo(String myp_id) throws Exception{
-		return mypageDAO.selectMyDetailInfo(myp_id);
+	public MemberVO myDetailInfo(String mem_id) throws Exception{
+		return mypageDAO.selectMyDetailInfo(mem_id);
 	}
 }
