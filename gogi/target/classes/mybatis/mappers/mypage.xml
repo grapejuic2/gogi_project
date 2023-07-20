@@ -8,32 +8,32 @@
 <update id="updateMyInfo" parameterType="java.util.HashMap">
 		update gogi_mypage
 			<set>
-				<if test=" member_pw!='' and member_pw!=null">
-					member_pw=#{member_pw},
+				<if test=" myp_pw!='' and myp_pw!=null">
+					myp_pw=#{myp_pw},
 				</if>
-				<if test=" member_birth_y!='' and member_birth_y!=null">
-					member_birth_y=#{member_birth_y},
+				<if test=" myp_birth_y!='' and myp_birth_y!=null">
+					myp_birth_y=#{myp_birth_y},
 				</if>
-			      <if test=" member_birth_m!='' and member_birth_m!=null">
-			         member_birth_m=#{member_birth_m},
+			      <if test=" myp_birth_m!='' and myp_birth_m!=null">
+			         myp_birth_m=#{myp_birth_m},
 			      </if>
-			      <if test=" member_birth_d!='' and member_birth_d!=null">
-			         member_birth_d=#{member_birth_d},
+			      <if test=" myp_birth_d!='' and myp_birth_d!=null">
+			         myp_birth_d=#{myp_birth_d},
 			      </if>
-			      <if test=" tel1!='' and tel1!=null">
-			         tel1=#{tel1},
+			      <if test=" myp_tel1!='' and myp_tel1!=null">
+			         myp_tel1=#{myp_tel1},
 			      </if>
-			      <if test=" tel2!='' and tel2!=null">
-			         tel2=#{tel2},
+			      <if test=" myp_tel2!='' and myp_tel2!=null">
+			         myp_tel2=#{myp_tel2},
 			      </if>
-			      <if test=" tel3!='' and tel3!=null">
-			         tel3=#{tel3},
+			      <if test=" myp_tel3!='' and myp_tel3!=null">
+			         myp_tel3=#{myp_tel3},
 			      </if>
 			      <!-- <if test=" smssts_yn!='' and smssts_yn!=null">
 			         smssts_yn=#{smssts_yn},
 			      </if> -->
-			      <if test=" email1!='' and email1!=null">
-			         email1=#{email1},
+			      <if test=" myp_email!='' and myp_email!=null">
+			         myp_email=#{myp_email},
 			      </if>
 			     <!--  <if test=" emailsts_yn!='' and emailsts_yn!=null">
 			         emailsts_yn=#{emailsts_yn},

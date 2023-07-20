@@ -1,5 +1,8 @@
 package com.project.gogi.mypage.vo;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class mypageVO {
 	private String myp_id;
 	private String myp_pw;

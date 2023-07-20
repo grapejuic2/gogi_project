@@ -76,7 +76,7 @@ ul.nav.navbar-nav li a:hover {
 				<li class="logged-out"><a href="${contextPath}/member/memberForm.do"><span class="glyphicon glyphicon-user"></span> 회원가입</a></li>
 				<li class="logged-out"><a href="${contextPath}/member/loginForm.do" id="loginBtn"><span class="glyphicon glyphicon-log-in"></span> 로그인</a></li>
 				<li class="logged-in hidden"><a href="${contextPath}/member/logout.do" id="logoutBtn"><span class="glyphicon glyphicon-log-out"></span> 로그아웃</a></li>
-				<li class="logged-in hidden"><a href="${contextPath}/member/mypageForm.do"><span class="glyphicon glyphicon-user"></span> 마이페이지</a></li>
+				<li class="logged-in hidden"><a href="${contextPath}/mypage/mypageForm.do"><span class="glyphicon glyphicon-user"></span> 마이페이지</a></li>
 				<li class="logged-in hidden"><a href="${contextPath}/cart/myCartList.do"><span class="glyphicon glyphicon-shopping-cart"></span> 장바구니</a></li>
 			</ul>
 		</div>
@@ -146,7 +146,7 @@ ul.nav.navbar-nav li a:hover {
 				<li class="logged-in hidden"><a
 					href="${contextPath}/member/logout.do" id="logoutBtn"><span
 						class="glyphicon glyphicon-log-out"></span> 로그아웃</a></li>
-				<li class="logged-in hidden"><a href="${contextPath}/member/mypageForm.do"><span
+				<li class="logged-in hidden"><a href="${contextPath}/mypage/mypageForm.do"><span
 						class="glyphicon glyphicon-user"></span> 마이페이지</a></li>
 				<li class="logged-in hidden"><a href="#"><span
 						class="glyphicon glyphicon-shopping-cart"></span> 장바구니</a></li>

@@ -9,6 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 public interface mypageController {
 	
+	//
 	public ModelAndView myDetailInfo(HttpServletRequest request, HttpServletResponse response)  throws Exception;
 	
 	//개인정보 수정
