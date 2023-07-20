@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.mypage">
+
+<update id="updateMyInfo" parameterType="java.util.HashMap">
+		update gogi_mypage
+			<set>
+				<if test=" member_pw!='' and member_pw!=null">
+					member_pw=#{member_pw},
+				</if>
+				<if test=" member_birth_y!='' and member_birth_y!=null">
+					member_birth_y=#{member_birth_y},
+				</if>
+			      <if test=" member_birth_m!='' and member_birth_m!=null">
+			         member_birth_m=#{member_birth_m},
+			      </if>
+			      <if test=" member_birth_d!='' and member_birth_d!=null">
+			         member_birth_d=#{member_birth_d},
+			      </if>
+			      <if test=" tel1!='' and tel1!=null">
+			         tel1=#{tel1},
+			      </if>
+			      <if test=" tel2!='' and tel2!=null">
+			         tel2=#{tel2},
+			      </if>
+			      <if test=" tel3!='' and tel3!=null">
+			         tel3=#{tel3},
+			      </if>
+			      <!-- <if test=" smssts_yn!='' and smssts_yn!=null">
+			         smssts_yn=#{smssts_yn},
+			      </if> -->
+			      <if test=" email1!='' and email1!=null">
+			         email1=#{email1},
+			      </if>
+			     <!--  <if test=" emailsts_yn!='' and emailsts_yn!=null">
+			         emailsts_yn=#{emailsts_yn},
+			      </if> -->
+<!-- 			  <if test=" zipcode!='' and zipcode!=null">
+			         zipcode=#{zipcode},
+			      </if>
+			      <if test=" roadAddress!='' and roadAddress!=null">
+			         roadAddress=#{roadAddress},
+			      </if>			     
+			      <if test=" jibunAddress!='' and jibunAddress!=null">
+			         jibunAddress=#{jibunAddress},
+			      </if>
+			      <if test=" namujiAddress!='' and namujiAddress!=null">
+			         namujiAddress=#{namujiAddress}
+			      </if> -->
+			   </set>
+		where 
+		myp_id=#{myp_id}
+	</update>
+	
+	<select id="selectMyDetailInfo" resultType="mypageVO"   parameterType="String"  >
+	    <![CDATA[
+			select * from gogi_mypage 
+			where myp_id=#{myp_id}
+    	]]>
+	</select>
+
+</mapper>
+

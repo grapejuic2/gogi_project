@@ -203,6 +203,4 @@ public class MemberControllerImpl extends BaseController implements MemberContro
 		return mav;
 	}
 	
-	
-
 }

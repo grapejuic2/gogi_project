@@ -82,15 +82,13 @@ ul.nav.navbar-nav li a:hover {
 		<div class="form">
 			<form id="memberForm" class="member-form"
 				action="${contextPath}/member/mypageForm.do" method="post">
-				<h2 style="margin-bottom: 20px; margin-top: 0px;">가입정보 기입</h2>
+				<h2 style="margin-bottom: 20px; margin-top: 0px;">개인 정보 수정</h2>
 
 				<div class="form-group" style="margin-bottom: 0px;">
 					<div class="label-group">
 						<label for="mem_id">아이디</label>
 					</div>
-					<input type="text" placeholder="아이디" id="mem_id" name="mem_id" />
-
-					<button type="button" id="checkIdButton">중복 체크</button>
+					<input type="text" placeholder="아이디" id="mem_id" name="mem_id" value="${memberForm.id }" disabled/>
 				</div>
 
 				<font id="checkId" size="2" style="margin-right: 100px;"></font>
@@ -108,7 +106,7 @@ ul.nav.navbar-nav li a:hover {
 					<div class="label-group">
 						<label for="mem_name">이름</label>
 					</div>
-					<input type="text" placeholder="이름" id="mem_name" name="mem_name" />
+					<input type="text" id="mem_name" name="mem_name" disabled/>
 				</div>
 
 				<div class="form-group">
@@ -116,11 +114,9 @@ ul.nav.navbar-nav li a:hover {
 						<label for="mem_birth">생년월일</label>
 					</div>
 					<div class="input-group">
-						<input type="text" id="mem_birth_y" name="mem_birth_y"
-							placeholder="년" maxlength="4"> <input type="text"
-							id="mem_birth_m" name="mem_birth_m" placeholder="월" maxlength="2">
-						<input type="text" id="mem_birth_d" name="mem_birth_d"
-							placeholder="일" maxlength="2">
+						<input type="text" id="mem_birth_y" name="mem_birth_y" placeholder="년" maxlength="4"> 
+						<input type="text" id="mem_birth_m" name="mem_birth_m" placeholder="월" maxlength="2">
+						<input type="text" id="mem_birth_d" name="mem_birth_d" placeholder="일" maxlength="2" disabled>
 					</div>
 				</div>
 
@@ -143,17 +139,9 @@ ul.nav.navbar-nav li a:hover {
 					</div>
 					<input type="text" placeholder="이메일" id="mem_email"
 						name="mem_email" />
-					<button type="button" id="sendMail" style="margin-top: 0px;">메일
-						인증</button>
 				</div>
-
-				<div id="emailConfirm" class="hide">
-					<input type="text" id="emailCode" name="emailCode"
-						placeholder="인증번호 입력">
-					<button type="button" id="verifyBtn">인증 확인</button>
-				</div>
-
-				<button type="submit">회원가입</button>
+				
+				<button type="submit">정보 수정</button>
 			</form>
 		</div>
 	</div>

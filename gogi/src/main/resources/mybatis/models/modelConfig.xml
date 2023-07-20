@@ -6,10 +6,13 @@
   <typeAliases>
 
     <typeAlias type="com.project.gogi.member.vo.MemberVO" alias="memberVO" />
+    <typeAlias type="com.project.gogi.mypage.vo.mypageVO" alias="mypageVO" />    
     <typeAlias type="com.project.gogi.goods.vo.GoodsVO" alias="goodsVO" />
     <typeAlias type="com.project.gogi.goods.vo.ImageFileVO" alias="imageFileVO" />
     <typeAlias type="com.project.gogi.cart.vo.CartVO" alias="cartVO" />
-    <typeAlias type="com.project.gogi.notice.domain.NoticeVO" alias="noticeVO" />	
+    <typeAlias type="com.project.gogi.notice.domain.NoticeVO" alias="noticeVO" />
+    <typeAlias type="com.project.gogi.notice.domain.Criteria" alias="Criteria2" /> 
+    <typeAlias type="com.project.gogi.notice.domain.PageMaker" alias="PageMaker2" />	
 
   </typeAliases>
 </configuration>
