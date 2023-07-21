@@ -73,6 +73,12 @@ public class CartVO {
 	public void setDelivery_option(String delivery_option) {
 		this.delivery_option = delivery_option;
 	}
+
+	@Override
+	public String toString() {
+		return "CartVO [mem_id=" + mem_id + ", goods_id=" + goods_id + ", cart_no=" + cart_no + ", cart_count="
+				+ cart_count + ", cart_time=" + cart_time + ", delivery_option=" + delivery_option + "]";
+	}
 	
 	
 	

@@ -8,7 +8,7 @@
 <style>
   body {padding-top: 143px; /* 헤더 높이 만큼 바디에 패딩 추가 */}
 </style>
-<title>육룰 - 고기의 기준</title>
+<title>Insert title here</title>
 </head>
 <body>
 	<!-- header -->

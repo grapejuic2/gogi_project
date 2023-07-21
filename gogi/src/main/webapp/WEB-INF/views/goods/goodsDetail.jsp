@@ -6,6 +6,7 @@
 <c:set var="contextPath"  value="${pageContext.request.contextPath}"  />
 <c:set var="goods"  value="${goodsMap.goodsVO}"  />
 <c:set var="imageList"  value="${goodsMap.imageList }"  />
+<c:set var="goods_sort" value="${goods.goods_sort }"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -46,6 +47,60 @@
 	float: right;
 }
 
+/* Style the buttons that are used to open the tab content */
+.tab button {
+	background-color: inherit;
+	float: left;
+	border: none;
+	outline: none;
+	cursor: pointer;
+	padding: 14px 16px;
+	transition: 0.3s;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+	text-decoration: underline;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+	color: black;
+	text-decoration: underline;
+}
+
+/* Style the tab content */
+.tabcontent {
+	display: none;
+	padding: 6px 12px;
+	border: 1px solid #ccc;
+	border-top: none;
+}
+.tab{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    height: 100px;
+    border-bottom: 1px solid #ccc;
+}
+.tab .tablinks{
+height: 100px;
+width: 200px;
+font-weight: 700;
+font-size: 17px;
+color: #909090;
+}
+.tab-menu{
+font-family: 'Nanum Gothic', sans-serif' !important;
+}
+#theDay .goods_detail{
+   justify-content: center;
+    text-align: center;
+}
+.goods_detail img {
+  display: block; /* 이미지들을 블록 레벨 요소로 설정하여 아래로 배치 */
+  margin: 10px auto; /* 이미지들을 가운데 정렬하기 위해 margin 사용 */
+}
 </style>
 </head>
 <body>
@@ -54,7 +109,7 @@
 		<img src="${contextPath}/thumbnails.do?goods_id=${goods.goods_id}&amp;fileName=${goods.file_name}" class="card-img-top" alt="...">
 		<div class="content">
 			<p class="goodsName">${goods.goods_name}</p>	        
-	        <div class="text-right">
+	        <div class="text">
 	          <div class="100_price" style="font-size: 14px; margin-top: 20px;">
 	          	<fmt:formatNumber value="${Math.ceil(goods.goods_price/100)}" type="number" var="goods_price_100g" />100g당 ${goods_price_100g}원
 	          </div>
@@ -71,7 +126,7 @@
 					    </td>
 					    <td>
 					      <select name="delivery_option" id="delivery_option">
-					        <option value="normal">--------------- 선택하세요 ---------------</option>
+					        <option value="normal">----------------- 선택하세요 -----------------</option>
 					        <option value="camp">캠핑장 직접배송</option>
 					      </select>
 					    </td>
@@ -117,7 +172,45 @@
 		</div> 
 	</div>
 	</div>
-	
+	<div class="tab-menu">
+				<!-- Tab 이름 -->
+				<div class="tab">
+					<button class="tablinks" onclick="deliveryOpen(event, 'theDay')">상품설명</button>
+					<button class="tablinks" onclick="deliveryOpen(event, 'dawn')">리뷰</button>
+					<button class="tablinks" onclick="deliveryOpen(event, 'camping')">상품안내</button>
+				</div>
+
+				<!-- Tab 내용 -->
+				<div id="theDay" class="tabcontent" style="display: block;">
+					<div class="goods_detail">
+					<c:if test="${goods_sort eq 'PIG' }">
+						<img  src="${contextPath}/resources/images/goods_detail_image/pork_detail.png">
+						<div><img  src="${contextPath}/resources/images/goods_detail_image/delivery.png" style="display: block; margin-top: 10px;"></div>
+					</c:if>
+					<c:if test="${goods_sort eq 'COW' }">
+						<img  src="${contextPath}/resources/images/goods_detail_image/cow_detail.png">
+					</c:if>
+					<c:if test="${goods_sort eq 'CHICKEN' }">
+						<img  src="${contextPath}/resources/images/goods_detail_image/chicken_detail.png">
+					</c:if>
+					<c:if test="${goods_sort eq 'MEALKIT' and goods.goods_id==6 }">
+						<div><img  src="${contextPath}/resources/images/goods_detail_image/mealkit4.png"></div>
+            			<div><img  src="${contextPath}/resources/images/goods_detail_image/delivery.png" style="display: block; margin-top: 10px;"></div>
+					</c:if>
+					
+					</div>
+					
+				</div>
+
+				<div id="dawn" class="tabcontent">
+					
+				</div>
+
+				<div id="camping" class="tabcontent">
+					<h4>캠핑배송</h4>
+					
+				</div>
+</div>
 	
 <script type="text/javascript">    
     //장바구니 추가
@@ -166,19 +259,52 @@
 		}
 	}
 </script>
-		<div id="layer" style="visibility: hidden">
-			<!-- visibility:hidden 으로 설정하여 해당 div안의 모든것들을 가려둔다. -->
-			<div id="popup" >
-				<!-- 팝업창 닫기 버튼 -->
-				<font size="3.5" id="contents">
-				<b>상품을 장바구니에 담았습니다.</b></font>
-				<%-- <a href='${contextPath}/cart/myCartList.do'><input value="장바구니 보기" type="button" class="btn btn-secondary btn-sm"></a> --%>
-				<a href="javascript:" onClick="javascript:imagePopup('close', '.layer01');">
-					<!-- <input type="button" class="btn btn-secondary btn-sm" value="닫기"/> -->
-				</a>
-			</div>
-		</div>
+<!--Tab 관련  -->
+	<script type="text/javascript">
+		// 페이지 로드 시 상품설명 탭이 기본으로 선택되도록 설정
+		  document.addEventListener("DOMContentLoaded", function() {
+		    // "상품설명" 탭 버튼을 선택
+		    var defaultTabButton = document.querySelector(".tablinks");
+		    defaultTabButton.click(); // 프로그래밍 방식으로 클릭 이벤트 발생
+		  });
+
+		function deliveryOpen(evt, deliveryName) {
+			var i, tabcontent, tablinks;
+
+			// Get all elements with class="tabcontent" and hide them
+			tabcontent = document.getElementsByClassName("tabcontent");
+			for (i = 0; i < tabcontent.length; i++) {
+				tabcontent[i].style.display = "none";
+			}
+
+			// Get all elements with class="tablinks" and remove the class "active"
+			tablinks = document.getElementsByClassName("tablinks");
+			for (i = 0; i < tablinks.length; i++) {
+				tablinks[i].className = tablinks[i].className.replace(
+						" active", "");
+			}
+
+			// Show the current tab, and add an "active" class to the button that opened the tab
+			document.getElementById(deliveryName).style.display = "block";
+			evt.currentTarget.className += " active";
+		}
+	</script>
+
+
+<div id="layer" style="visibility: hidden">
+<!-- visibility:hidden 으로 설정하여 해당 div안의 모든것들을 가려둔다. -->
+<div id="popup" >
+	<!-- 팝업창 닫기 버튼 -->
+	<font size="3.5" id="contents">
+	<b>상품을 장바구니에 담았습니다.</b></font>
+	<%-- <a href='${contextPath}/cart/myCartList.do'><input value="장바구니 보기" type="button" class="btn btn-secondary btn-sm"></a> --%>
+	<a href="javascript:" onClick="javascript:imagePopup('close', '.layer01');">
+		<!-- <input type="button" class="btn btn-secondary btn-sm" value="닫기"/> -->
+		</a>
+	</div>
+</div>
 <!-- 로그인 상태를 <hidden> 태그에 저장합니다. -->
 <input type="hidden" name="isLogOn" id="isLogOn" value="${isLogOn}"/>
+
 </body>
 </html>

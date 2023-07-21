@@ -12,19 +12,23 @@
 	padding-right: 200px;
 	background: white;
 	border: none;
+	
 }
 
 .nav.navbar-nav {
-	margin-top: 70px;
+	margin-top: 60px;
 	margin-left: 40px;
 	font-family: 'Nanum Gothic', sans-serif;
 	font-weight: 700;
 	display: block;
-	font-size: 18px;
+	font-size: 20px;
+	
 }
+.nav.navbar-nav.navbar-right{
+font-size: 16px;}
 
-ul.nav.navbar-nav li  {
-	color: black;
+ul.nav.navbar-nav li a{
+	color:black;
 }
 
 ul.nav.navbar-nav li a:hover {
@@ -40,7 +44,7 @@ ul.nav.navbar-nav li a:hover {
 	top: 0;
 	left: 0;
 	width: 100%;
-	z-index: 1000;
+	z-index: 1;
 }
 
 
@@ -59,16 +63,16 @@ ul.nav.navbar-nav li a:hover {
 </head>
 
 <body>
-	<nav class="navbar navbar-inverse navbar-fixed">
+	<nav class="navbar navbar-inverse navbar-fixed" >
+	
 		<div class="container-fluid">
 			<div class="navbar-header">
-				<a href="${contextPath}/main/main.do"><img
-					src="${contextPath}/resources/images/logo/logo.png" width="100px"></a>
+				<a href="${contextPath}/main/main.do"><img src="${contextPath}/resources/images/logo/logo.png" width="100px"></a>
 			</div>
-			<ul class="nav navbar-nav" >
+			<ul class="nav navbar-nav" style="color:black;">
 				<li><a href="${contextPath}/goods/shop.do">쇼핑하기</a></li>
 				<li><a href="${contextPath}/main/delivery.do">배송안내</a></li>
-				<li><a href="#">공지사항</a></li>
+				<li><a href="${contextPath}/notice/list.do">공지사항</a></li>
 				<li><a href="#">고객센터</a></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
