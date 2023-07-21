@@ -2,9 +2,7 @@ package com.project.gogi.goods.vo;
 
 import java.util.Date;
 
-import org.springframework.stereotype.Component;
 
-@Component
 public class GoodsVO {
 	/*0713 오동림 0714 오동림 수정*/
 	
@@ -19,7 +17,6 @@ public class GoodsVO {
     private Date good_delivery_date; 
     private String goods_intro;
     private String goods_status; // 상품분류(B: 베스트상품 / S: 세일상품 / N: 기본상품)
-    private int goods_weight;
     private String file_name; //이미지파일 이름 저장하기 위한 객체
     
     
@@ -27,8 +24,7 @@ public class GoodsVO {
 
 
 	public GoodsVO(int goods_id, String goods_sort, String goods_name, String goods_seller, String goods_country,
-			int goods_price, int goods_sales_price, int goods_point, Date good_delivery_date, String goods_intro, 
-			String goods_status, String file_name,int goods_weight) {
+			int goods_price, int goods_sales_price, int goods_point, Date good_delivery_date, String goods_intro, String goods_status, String file_name) {
 		super();
 		this.goods_id = goods_id;
 		this.goods_sort = goods_sort;
@@ -42,7 +38,6 @@ public class GoodsVO {
 		this.goods_intro = goods_intro;
 		this.goods_status = goods_status;
 		this.file_name = file_name;
-		this.goods_weight=goods_weight;
 	}
 
 
@@ -164,15 +159,9 @@ public class GoodsVO {
 	public void setGoods_sales_price(int goods_sales_price) {
 		this.goods_sales_price = goods_sales_price;
 	}
-
-
-	public int getGoods_weight() {
-		return goods_weight;
-	}
-
-
-	public void setGoods_weight(int goods_weight) {
-		this.goods_weight = goods_weight;
-	}
+	
+	
+	
+    
 	
 }

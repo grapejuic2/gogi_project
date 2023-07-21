@@ -69,12 +69,12 @@
 
 				</table>
 				<!--글쓰기 버튼  -->
-				<!--<div class="writeButton">
+				<div class="writeButton">
 					<button type="button" class="btn btn-sm btn-primary greylist  "
 						id="btnWriteForm">
 						<a class="atw" href="${contextPath}/notice/write.do">글쓰기</a>
 					</button>
-				</div>-->
+				</div>
 
 			</div>
 
@@ -153,12 +153,12 @@
 
 
 				<!--글쓰기 버튼  -->
-			<!--	<div class="writeButton">
+				<div class="writeButton">
 					<button type="button" class="btn btn-sm btn-primary greylist"
 						id="btnWriteForm">
 						<a class="atw" href="${contextPath}/notice/faqwrite.do">글쓰기</a>
 					</button>
-				</div>   -->
+				</div>
 
 			</div>
 

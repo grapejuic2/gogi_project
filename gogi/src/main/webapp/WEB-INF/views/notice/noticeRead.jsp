@@ -10,10 +10,9 @@
 <body>
 
  <article>
-      <div class="container" role="main">
+      <div  role="main">
          <h2>게시물  상세보기</h2>
          
-<!--주의! 입력 엘리먼트인 <input> 과 <textarea>의 이름(name) 속성의 값이 BoardVO와 동일해야함  -->
 <div class="mb-3">
 <label style="width:70px;" >제목</label>
 ${noticeRead.notice_title}<br />

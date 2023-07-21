@@ -28,14 +28,11 @@ public class GoodsControllerImpl extends BaseController implements GoodsControll
 	@Override
 	@RequestMapping(value = "/shop.do", method = { RequestMethod.POST, RequestMethod.GET })
 	public ModelAndView shop(HttpServletRequest request, HttpServletResponse response, @RequestParam(required = false) String category) throws Exception {
-	    HttpSession session= request.getSession();
-	    session.getAttribute("memberInfo");
-	    
+	    HttpSession session;
 	    ModelAndView mav = new ModelAndView();
 	    String viewName = (String) request.getAttribute("viewName");
 	    mav.setViewName(viewName);
-
-	    
+	    session = request.getSession();
 	    Map<String, List<GoodsVO>> goodsMap = goodsService.listShopGoods();
 
 	    // 카테고리에 따라 상품 목록 필터링
@@ -55,8 +52,6 @@ public class GoodsControllerImpl extends BaseController implements GoodsControll
 		
 		String viewName = (String) request.getAttribute("viewName"); 
 		HttpSession session= request.getSession();
-		System.out.println(session.getAttribute("memberInfo"));
-		
 		Map goodsMap=goodsService.goodsDetail(goods_id);
 		System.out.println("상품디테일 컨트롤러: "+goodsMap);
 		ModelAndView mav = new ModelAndView(viewName);

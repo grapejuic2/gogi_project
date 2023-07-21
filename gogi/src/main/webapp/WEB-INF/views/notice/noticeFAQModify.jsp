@@ -16,18 +16,18 @@
 <!--주의! 입력 엘리먼트인 <input> 과 <textarea>의 이름(name) 속성의 값이 BoardVO와 동일해야함  -->
 <div class="mb-3">
 <label  style="width:70px;">제목</label>
-<input type="text" name="notice_title" value="${noticeRead.notice_title}"/><br />
+<input type="text" name="notice_title_faq" value="${noticeFAQRead.notice_title_faq}"/><br />
 </div>
 
 <div class="mb-3">
 <label style="width:70px;">작성자</label>
-<input type="text" name="mem_id" value="${noticeRead.mem_id}" /><br />
+<input type="text" name="mem_id_faq" value="${noticeFAQRead.mem_id}" /><br />
 </div>
  
 
 <div class="mb-3">
 <label style="width:70px;">내용</label>
-<textarea cols="50" rows="5" name="notice_content" >${noticeRead.notice_content}</textarea><br />
+<textarea cols="50" rows="5" name="notice_content_faq" >${noticeFAQRead.notice_content_faq}</textarea><br />
 </div>
 <button type="submit" class="btn btn-sm btn-primary" >완료</button>
 

@@ -19,7 +19,7 @@
 
 <div class="mb-3">
 <label style="width:70px;">제목</label>
-<input type="text" name="notice_title" placeholder="제목을 입력해 주세요" /><br />
+<input type="text" name="notice_title_faq" placeholder="제목을 입력해 주세요" /><br />
 </div>
 <div class="mb-3">
 <label style="width:70px;">작성자</label>
@@ -28,7 +28,7 @@
  
 <div class="mb-3">
 <label style="width:70px;">내용</label>
-<textarea cols="50" rows="5" name="notice_content" placeholder="내용을 입력해 주세요" ></textarea><br />
+<textarea cols="50" rows="5" name="notice_content_faq" placeholder="내용을 입력해 주세요" ></textarea><br />
 </div>
 <button type="submit" class="btn btn-sm btn-primary" id="btnSave">작성</button>
 
