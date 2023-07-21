@@ -73,7 +73,13 @@ public class mypageControllerImpl implements mypageController {
 			val = value.split(",");
 			memberMap.put("mem_email", val[0]);
 			// memberMap.put("emailsts_yn", val[2]);
-		} else {
+		} else if(attribute.equals("address")){
+			val=value.split(",");
+			memberMap.put("zipcode",val[0]);
+			memberMap.put("roadAddress",val[1]);
+			memberMap.put("jibunAddress", val[2]);
+			memberMap.put("namujiAddress", val[3]);
+		}else {
 			memberMap.put(attribute, value);
 		}
 
