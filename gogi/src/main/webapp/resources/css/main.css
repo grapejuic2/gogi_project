@@ -30,11 +30,7 @@
 	/* 베스트상품, 할인상품 스타일 */
 	.main{width: 100%;margin:0 ; padding: 10px; padding-left: 200px; padding-right: 200px;}
 	
-	body {
-  	font-family: "Roboto", sans-serif;
-  	-webkit-font-smoothing: antialiased;
-  	-moz-osx-font-smoothing: grayscale;      
-	}
+
 	
 	.image-background {
     background-color: #f1f1f1; /* 배경색 설정 */
@@ -48,3 +44,41 @@
     width:250px;
     object-fit: contain; /* 이미지를 가운데로 정렬 */
   	}
+  	.main-sort{
+  	font-family: 'Nanum Gothic', sans-serif;
+	font-weight: 800;
+	font-size: 30px;
+	margin-top: 20px;
+	margin-bottom: 20px;
+  	}
+  	
+  	.card-title{
+  	font-family: 'Nanum Gothic', sans-serif;
+  	font-size: 17px;
+  	font-weight: 800;  	
+  	padding-bottom: 1px;
+  	}
+  	
+  	.card-text{
+  	margin-top:2px;
+  	font-family: 'Nanum Gothic', sans-serif;
+  	font-size: 14px; 
+  	}
+  	
+	.section .slide-control .left {left:5px;background:url('${contextPath}/resources/images/main/left.png') center center / 100% no-repeat;}
+	.section .slide-control .right {right:5px;background:url('${contextPath}/resources/images/main/right.png') center center / 100% no-repeat;}
+	.main{width: 100%; margin:0 ; padding: 10px; padding-left: 260px; padding-right: 260px;}
+	.card {margin-bottom: 50px; }
+	.image-background {
+    background-color: #f1f1f1; /* 배경색 설정 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width:376px; height:416px;
+  	}
+  	.image-background img {
+  	background-color: transparent;
+    width:250px;
+    object-fit: contain; /* 이미지를 가운데로 정렬 */
+  	} 
+  	
