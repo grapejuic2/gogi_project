@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -78,17 +79,6 @@ public class mypageControllerImpl implements mypageController {
 		HttpHeaders responseHeaders = new HttpHeaders();
 		message = "mod_success";
 		resEntity = new ResponseEntity(message, responseHeaders, HttpStatus.OK);
-		return resEntity;
-	}
-
-	//비밀번호 확인
-	@Override
-	@RequestMapping(value="/checkpw.do", method = RequestMethod.POST)
-	public ResponseEntity checkpw(@RequestParam("mem_pw") String pw,
-									 HttpServletRequest request, HttpServletResponse response) throws Exception{
-		ResponseEntity resEntity = null;
-		String result = mypageService.checkpw(pw); // ID 중복 검사를 합니다.
-		resEntity = new ResponseEntity(result, HttpStatus.OK);
 		return resEntity;
 	}
 	

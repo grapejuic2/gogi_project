@@ -55,13 +55,6 @@
 			where mem_id=#{mem_id}
     	]]>
 	</select>
-	
-		<!-- ID 중복 체크 -->
-	<select id="checkpw" parameterType="String" resultType="String">
-		select decode(count(*), 1, 'true', 0, 'false')
-		from gogi_member
-		where mem_pw = #{mem_pw}
-	</select>
 
 </mapper>
 

@@ -1,6 +1,11 @@
 package com.project.gogi.mypage.dao;
 
+import java.util.HashMap;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +31,5 @@ public class mypageDAOImpl implements mypageDAO{
 		MemberVO mypageVO=(MemberVO)sqlSession.selectOne("mapper.mypage.selectMyDetailInfo",mem_id);
 		return mypageVO;
 	}
-	
-	@Override
-	public String checkpw(String pw) throws DataAccessException {
-		String result = sqlSession.selectOne("mapper.mypage.checkpw",pw);
-		return result;
-	}
+
 }

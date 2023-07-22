@@ -16,9 +16,6 @@ public interface mypageController {
 	public ResponseEntity modifyMyInfo(@RequestParam("value")  String value,
      	   HttpServletRequest request, HttpServletResponse response)  throws Exception;
 	
-	//아이디 중복검사
-	public ResponseEntity checkpw(@RequestParam("mem_pw") String pw,HttpServletRequest request, HttpServletResponse response) throws Exception;
-	
 	//폼 처리
 	public  ModelAndView form(@RequestParam(value = "result", required = false) String result,
 			@RequestParam(value = "goods_id", required = false) String goods_id,

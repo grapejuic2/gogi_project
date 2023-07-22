@@ -66,13 +66,11 @@ ul.nav.navbar-nav li a:hover {
 </head>
 <script>
 
-var isPasswordConfirmed = false;
-
 function fn_mod_member(){
 	    var frm_mod_member = document.frm_mod_member;
 
 	    // 각 속성의 값을 바로 가져와서 변수에 설정
-	    var mem_pw = frm_mod_member.mem_pw_confirm.value;
+	    var mem_pw = frm_mod_member.mem_pw.value;
 	    var mem_tel1 = frm_mod_member.mem_tel1.value;
 	    var mem_tel2 = frm_mod_member.mem_tel2.value;
 	    var mem_tel3 = frm_mod_member.mem_tel3.value;
@@ -81,12 +79,6 @@ function fn_mod_member(){
 	    var roadAddress = frm_mod_member.roadAddress.value;
 	    var jibunAddress = frm_mod_member.jibunAddress.value;
 	    var namujiAddress = frm_mod_member.namujiAddress.value;
-	    
-	 	// 비밀번호와 비밀번호 확인이 다를 경우 처리
-	    if (mem_pw !== mem_pw_confirm) {
-	        alert("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
-	        return;
-	    }
 	 	
 	    // value 변수에 모든 값을 하나의 문자열로 합침
 	    var value = mem_pw + "," + mem_tel1 + "," + mem_tel2 + "," + mem_tel3 + "," + zipcode + "," + roadAddress + "," + jibunAddress + "," + namujiAddress + "," +mem_email;
@@ -167,45 +159,6 @@ function fn_mod_member(){
 	  }).open();
 	}
 	
-	//비밀번호 확인
-	$(document).ready(function() {
-		  $("#checkpwButton").on("click", function() {
-		    var mem_pw = $("#mem_pw").val();
-		    if (mem_pw == '') {
-		      alert("비밀번호를 입력하세요.");
-		      return;
-		    }
-		    $.ajax({
-		      type: "post",
-		      async: false,
-		      url: "${contextPath}/mypage/checkpw.do",
-		      dataType: "json",
-		      data: {
-		        mem_pw: mem_pw
-		      },
-		      success: function(result) {
-		        if (result == 0) {
-		          alert("비밀번호 확인 완료");
-		          /* $("#checkpw").text("사용할 수 있는 아이디입니다.").css("color", "green"); */
-		        } else {
-		          alert("비밀번호가 일치하지 않습니다.");
-		          /* $("#checkId").text("사용할 수 없는 아이디입니다.").css("color", "red"); */
-		        }
-		        $("#mem_pw").prop("readonly", false);
-		        $("#checkpwButton").prop("disabled", false);
-		      },
-		      error: function(xhr, status, error) {
-		        console.error(error);
-		        alert("에러가 발생했습니다.");
-		        $("#mem_pw").prop("readonly", false);
-		        $("#checkpwButton").prop("disabled", false);
-		      },
-		      complete: function(xhr, status) {
-		      }
-		    });
-		  });
-		});
-	
 </script>
 
 <body>
@@ -247,16 +200,9 @@ function fn_mod_member(){
 
 				<div class="form-group">
 				    <div class="label-group">
-				        <label for="mem_pw">기존 비밀번호</label>
+				        <label for="mem_pw">비밀번호</label>
 				    </div>
 				    <input type="password" placeholder="비밀번호" id="mem_pw" name="mem_pw" style="margin-right: 5px;">
-				    <button type="button" id="checkpwButton" style="margin-top: 0px;">중복 체크</button>
-				</div>
-				<div class="form-group">
-				    <div class="label-group">
-				        <label for="mem_pw_confirm">변경할 비밀번호</label>
-				    </div>
-				    <input type="password" placeholder="비밀번호 확인" id="mem_pw_confirm" name="mem_pw_confirm">
 				</div>
 
 				<div class="form-group">
