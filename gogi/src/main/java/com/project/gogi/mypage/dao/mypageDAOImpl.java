@@ -27,4 +27,9 @@ public class mypageDAOImpl implements mypageDAO{
 		return mypageVO;
 	}
 	
+	@Override
+	public String checkpw(String pw) throws DataAccessException {
+		String result = sqlSession.selectOne("mapper.mypage.checkpw",pw);
+		return result;
+	}
 }

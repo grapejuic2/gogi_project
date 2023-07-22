@@ -4,6 +4,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <head>
 <style>
 .navbar.navbar-inverse { padding: 10px; padding-left: 200px; padding-right: 200px; background:white; border:none; }
@@ -50,7 +51,6 @@ ul.nav.navbar-nav li a:hover{color:#000000;}
 
 
 <link href="${contextPath}/resources/css/memberForm.css" rel="stylesheet" type="text/css">
-<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
  
@@ -300,15 +300,12 @@ ul.nav.navbar-nav li a:hover{color:#000000;}
 	      if(data.autoRoadAddress) {
 	        //예상되는 도로명 주소에 조합형 주소를 추가한다.
 	        var expRoadAddr = data.autoRoadAddress + extraRoadAddr;
-	        document.getElementById('guide').innerHTML = '(예상 도로명 주소 : ' + expRoadAddr + ')';
+	        document.getElementById('roadAddress').innerHTML = '(예상 도로명 주소 : ' + expRoadAddr + ')';
 	
 	      } else if(data.autoJibunAddress) {
 	          var expJibunAddr = data.autoJibunAddress;
-	          document.getElementById('guide').innerHTML = '(예상 지번 주소 : ' + expJibunAddr + ')';
-	      } else {
-	          document.getElementById('guide').innerHTML = '';
-	      }
-	      
+	          document.getElementById('jibunAddress').innerHTML = '(예상 지번 주소 : ' + expJibunAddr + ')';
+	      } 
 	      window.close();
 	    }
 	  }).open();

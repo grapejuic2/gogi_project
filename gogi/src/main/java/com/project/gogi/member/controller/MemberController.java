@@ -16,7 +16,7 @@ import com.project.gogi.member.vo.MemberVO;
 public interface MemberController {
 
 	// 로그인
-	public ModelAndView login(@RequestParam Map<String, String> loginMap, HttpServletRequest request,
+	public ModelAndView loginForm(@RequestParam Map<String, String> loginMap, HttpServletRequest request,
 			HttpServletResponse response) throws Exception;
 
 	// 로그아웃

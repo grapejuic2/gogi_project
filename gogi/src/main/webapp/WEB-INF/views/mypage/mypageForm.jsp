@@ -1,10 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
+
 <!DOCTYPE html>
 <html lang="ko">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <head>
 <style>
 .navbar.navbar-inverse {
@@ -58,120 +61,44 @@ ul.nav.navbar-nav li a:hover {
 
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
+
 <title>회원 페이지</title>
 </head>
-
 <script>
-function fn_modify_member_info(attribute){
-	var value;
-	// alert(member_id);
-	// alert("mod_type:"+mod_type);
-		var frm_mod_member=document.frm_mod_member;
-		if(attribute=='member_pw'){
-			value=frm_mod_member.member_pw.value;
-			//alert("member_pw:"+value);
-		}else if(attribute=='member_gender'){
-			var member_gender=frm_mod_member.member_gender;
-			for(var i=0; member_gender.length;i++){
-			 	if(member_gender[i].checked){
-					value=member_gender[i].value;
-					break;
-				} 
-			}
-			
-		}else if(attribute=='member_birth'){
-			var member_birth_y=frm_mod_member.member_birth_y;
-			var member_birth_m=frm_mod_member.member_birth_m;
-			var member_birth_d=frm_mod_member.member_birth_d;
-			var member_birth_gn=frm_mod_member.member_birth_gn;
-			
-			for(var i=0; member_birth_y.length;i++){
-			 	if(member_birth_y[i].selected){
-					value_y=member_birth_y[i].value;
-					break;
-				} 
-			}
-			for(var i=0; member_birth_m.length;i++){
-			 	if(member_birth_m[i].selected){
-					value_m=member_birth_m[i].value;
-					break;
-				} 
-			}
-			
-			for(var i=0; member_birth_d.length;i++){
-			 	if(member_birth_d[i].selected){
-					value_d=member_birth_d[i].value;
-					break;
-				} 
-			}
-			
-			//alert("수정 년:"+value_y+","+value_m+","+value_d);
-			for(var i=0; member_birth_gn.length;i++){
-			 	if(member_birth_gn[i].checked){
-					value_gn=member_birth_gn[i].value;
-					break;
-				} 
-			}
-			//alert("생년 양음년 "+value_gn);
-			value=+value_y+","+value_m+","+value_d+","+value_gn;
-		}else if(attribute=='tel'){
-			var tel1=frm_mod_member.tel1;
-			var tel2=frm_mod_member.tel2;
-			var tel3=frm_mod_member.tel3;
-			
-			for(var i=0; tel1.length;i++){
-			 	if(tel1[i].selected){
-					value_tel1=tel1[i].value;
-					break;
-				} 
-			}
-			value_tel2=tel2.value;
-			value_tel3=tel3.value;
-			value=value_tel1+","+value_tel2+", "+value_tel3;
-		}else if(attribute=='hp'){
-			var hp1=frm_mod_member.hp1;
-			var hp2=frm_mod_member.hp2;
-			var hp3=frm_mod_member.hp3;
-			var smssts_yn=frm_mod_member.smssts_yn;
-			
-			for(var i=0; hp1.length;i++){
-			 	if(hp1[i].selected){
-					value_hp1=hp1[i].value;
-					break;
-				} 
-			}
-			value_hp2=hp2.value;
-			value_hp3=hp3.value;
-			value_smssts_yn=smssts_yn.checked;
-			value=value_hp1+","+value_hp2+", "+value_hp3+","+value_smssts_yn;
-		}else if(attribute=='mem_email'){
-			var email1=frm_mod_member.email1;
-			
-			value_email1=email1.value;
-			value=value_email1;
-			//alert(value);
-		}else if(attribute=='address'){
-			var zipcode=frm_mod_member.zipcode;
-			var roadAddress=frm_mod_member.roadAddress;
-			var jibunAddress=frm_mod_member.jibunAddress;
-			var namujiAddress=frm_mod_member.namujiAddress;
-			
-			value_zipcode=zipcode.value;
-			value_roadAddress=roadAddress.value;
-			value_jibunAddress=jibunAddress.value;
-			value_namujiAddress=namujiAddress.value;
-			value=value_zipcode+","+value_roadAddress+","+value_jibunAddress+","+value_namujiAddress;
-		}
-		console.log(attribute);
+
+var isPasswordConfirmed = false;
+
+function fn_mod_member(){
+	    var frm_mod_member = document.frm_mod_member;
+
+	    // 각 속성의 값을 바로 가져와서 변수에 설정
+	    var mem_pw = frm_mod_member.mem_pw_confirm.value;
+	    var mem_tel1 = frm_mod_member.mem_tel1.value;
+	    var mem_tel2 = frm_mod_member.mem_tel2.value;
+	    var mem_tel3 = frm_mod_member.mem_tel3.value;
+	    var mem_email = frm_mod_member.mem_email.value;
+	    var zipcode = frm_mod_member.zipcode.value;
+	    var roadAddress = frm_mod_member.roadAddress.value;
+	    var jibunAddress = frm_mod_member.jibunAddress.value;
+	    var namujiAddress = frm_mod_member.namujiAddress.value;
+	    
+	 	// 비밀번호와 비밀번호 확인이 다를 경우 처리
+	    if (mem_pw !== mem_pw_confirm) {
+	        alert("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
+	        return;
+	    }
+	 	
+	    // value 변수에 모든 값을 하나의 문자열로 합침
+	    var value = mem_pw + "," + mem_tel1 + "," + mem_tel2 + "," + mem_tel3 + "," + zipcode + "," + roadAddress + "," + jibunAddress + "," + namujiAddress + "," +mem_email;
+
+	    console.log(value);
 		
 		$.ajax({
 			type : "post",
 			async : false, //false인 경우 동기식으로 처리한다.
 			url : "${contextPath}/mypage/modifyMyInfo.do",
 			data : {
-				attribute : attribute,
-				value : value,
+				value : value
 			},
 			success : function(data, textStatus) {
 				if (data.trim() === 'mod_success') {
@@ -181,74 +108,108 @@ function fn_modify_member_info(attribute){
 				}
 			},
 			error : function(data, textStatus) {
+				console.log(data, textStatus);
 				alert("에러가 발생했습니다." + data);
 			},
 			complete : function(data, textStatus) {
+				console.log(data, textStatus);
 				alert("작업을 완료 했습니다");
 			}
 		});
 	}
 
-	//주소 스크립트
+		//주소 스크립트
 	function execDaumPostcode() {
-		new daum.Postcode(
-				{
-					oncomplete : function(data) {
-						// 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
-
-						// 도로명 주소의 노출 규칙에 따라 주소를 조합한다.
-						// 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
-						var fullRoadAddr = data.roadAddress; // 도로명 주소 변수
-						var extraRoadAddr = ''; // 도로명 조합형 주소 변수
-
-						// 법정동명이 있을 경우 추가한다. (법정리는 제외)
-						// 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
-						if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
-							extraRoadAddr += data.bname;
-						}
-						// 건물명이 있고, 공동주택일 경우 추가한다.
-						if (data.buildingName !== '' && data.apartment === 'Y') {
-							extraRoadAddr += (extraRoadAddr !== '' ? ', '
-									+ data.buildingName : data.buildingName);
-						}
-						// 도로명, 지번 조합형 주소가 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
-						if (extraRoadAddr !== '') {
-							extraRoadAddr = ' (' + extraRoadAddr + ')';
-						}
-						// 도로명, 지번 주소의 유무에 따라 해당 조합형 주소를 추가한다.
-						if (fullRoadAddr !== '') {
-							fullRoadAddr += extraRoadAddr;
-						}
-
-						// 우편번호와 주소 정보를 해당 필드에 넣는다.
-						document.getElementById('zipcode').value = data.zonecode; //5자리 새우편번호 사용
-						document.getElementById('roadAddress').value = fullRoadAddr;
-						document.getElementById('jibunAddress').value = data.jibunAddress;
-
-						// 사용자가 '선택 안함'을 클릭한 경우, 예상 주소라는 표시를 해준다.
-						if (data.autoRoadAddress) {
-							//예상되는 도로명 주소에 조합형 주소를 추가한다.
-							var expRoadAddr = data.autoRoadAddress
-									+ extraRoadAddr;
-							document.getElementById('guide').innerHTML = '(예상 도로명 주소 : '
-									+ expRoadAddr + ')';
-
-						} else if (data.autoJibunAddress) {
-							var expJibunAddr = data.autoJibunAddress;
-							document.getElementById('guide').innerHTML = '(예상 지번 주소 : '
-									+ expJibunAddr + ')';
-						} else {
-							document.getElementById('guide').innerHTML = '';
-						}
-
-						window.close();
-					}
-				}).open();
+	  new daum.Postcode({
+	    oncomplete: function(data) {
+	      // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+	
+	      // 도로명 주소의 노출 규칙에 따라 주소를 조합한다.
+	      // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+	      var fullRoadAddr = data.roadAddress; // 도로명 주소 변수
+	      var extraRoadAddr = ''; // 도로명 조합형 주소 변수
+	
+	      // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+	      // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+	      if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+	        extraRoadAddr += data.bname;
+	      }
+	      // 건물명이 있고, 공동주택일 경우 추가한다.
+	      if(data.buildingName !== '' && data.apartment === 'Y'){
+	        extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+	      }
+	      // 도로명, 지번 조합형 주소가 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+	      if(extraRoadAddr !== ''){
+	        extraRoadAddr = ' (' + extraRoadAddr + ')';
+	      }
+	      // 도로명, 지번 주소의 유무에 따라 해당 조합형 주소를 추가한다.
+	      if(fullRoadAddr !== ''){
+	        fullRoadAddr += extraRoadAddr;
+	      }
+	
+	      // 우편번호와 주소 정보를 해당 필드에 넣는다.
+	      document.getElementById('zipcode').value = data.zonecode; //5자리 새우편번호 사용
+	      document.getElementById('roadAddress').value = fullRoadAddr;
+	      document.getElementById('jibunAddress').value = data.jibunAddress;
+	
+	      // 사용자가 '선택 안함'을 클릭한 경우, 예상 주소라는 표시를 해준다.
+	      if(data.autoRoadAddress) {
+	        //예상되는 도로명 주소에 조합형 주소를 추가한다.
+	        var expRoadAddr = data.autoRoadAddress + extraRoadAddr;
+	        document.getElementById('roadAddress').innerHTML = '(예상 도로명 주소 : ' + expRoadAddr + ')';
+	
+	      } else if(data.autoJibunAddress) {
+	          var expJibunAddr = data.autoJibunAddress;
+	          document.getElementById('jibunAddress').innerHTML = '(예상 지번 주소 : ' + expJibunAddr + ')';
+	      } 
+	      window.close();
+	    }
+	  }).open();
 	}
+	
+	//비밀번호 확인
+	$(document).ready(function() {
+		  $("#checkpwButton").on("click", function() {
+		    var mem_pw = $("#mem_pw").val();
+		    if (mem_pw == '') {
+		      alert("비밀번호를 입력하세요.");
+		      return;
+		    }
+		    $.ajax({
+		      type: "post",
+		      async: false,
+		      url: "${contextPath}/mypage/checkpw.do",
+		      dataType: "json",
+		      data: {
+		        mem_pw: mem_pw
+		      },
+		      success: function(result) {
+		        if (result == 0) {
+		          alert("비밀번호 확인 완료");
+		          /* $("#checkpw").text("사용할 수 있는 아이디입니다.").css("color", "green"); */
+		        } else {
+		          alert("비밀번호가 일치하지 않습니다.");
+		          /* $("#checkId").text("사용할 수 없는 아이디입니다.").css("color", "red"); */
+		        }
+		        $("#mem_pw").prop("readonly", false);
+		        $("#checkpwButton").prop("disabled", false);
+		      },
+		      error: function(xhr, status, error) {
+		        console.error(error);
+		        alert("에러가 발생했습니다.");
+		        $("#mem_pw").prop("readonly", false);
+		        $("#checkpwButton").prop("disabled", false);
+		      },
+		      complete: function(xhr, status) {
+		      }
+		    });
+		  });
+		});
+	
 </script>
 
 <body>
-	<div class="memberForm-page">
+	<div class="frm_mod_member">
 		<div class="memberForm-text">
 			<a href="${contextPath}/main/main.do"><img
 				src="${contextPath}/resources/images/logo/logo2.png" alt="logo2"
@@ -272,10 +233,9 @@ function fn_modify_member_info(attribute){
 				탈퇴</a>
 		</div>
 
-		<div class="form">
-			<form name="frm_mod_member" class="configform"
-				action="${contextPath}/mypage/modifyMyInfo.do" method="post">
-				<h2 style="margin-bottom: 20px; margin-top: 0px;">개인 정보 수정</h2>
+        <div class="form">
+            <form name="frm_mod_member" action="${contextPath}/mypage/modifyMyInfo.do" method="post">
+                <h2 style="margin-bottom: 20px; margin-top: 0px;">개인 정보 수정</h2>
 
 				<div class="form-group" style="margin-bottom: 0px;">
 					<div class="label-group">
@@ -286,11 +246,17 @@ function fn_modify_member_info(attribute){
 				</div>
 
 				<div class="form-group">
-					<div class="label-group">
-						<label for="mem_pw">비밀번호</label>
-					</div>
-					<input type="password" placeholder="비밀번호" name="mem_pw"
-						style="margin-right: 5px;">
+				    <div class="label-group">
+				        <label for="mem_pw">기존 비밀번호</label>
+				    </div>
+				    <input type="password" placeholder="비밀번호" id="mem_pw" name="mem_pw" style="margin-right: 5px;">
+				    <button type="button" id="checkpwButton" style="margin-top: 0px;">중복 체크</button>
+				</div>
+				<div class="form-group">
+				    <div class="label-group">
+				        <label for="mem_pw_confirm">변경할 비밀번호</label>
+				    </div>
+				    <input type="password" placeholder="비밀번호 확인" id="mem_pw_confirm" name="mem_pw_confirm">
 				</div>
 
 				<div class="form-group">
@@ -301,90 +267,74 @@ function fn_modify_member_info(attribute){
 						disabled />
 				</div>
 
+                <div class="form-group">
+                    <div class="label-group">
+                        <label for="mem_birth">생년월일</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="mem_birth_y" name="mem_birth_y" placeholder="년" maxlength="4" value="${memberInfo.mem_birth_y}" disabled>
+                        <input type="text" id="mem_birth_m" name="mem_birth_m" placeholder="월" maxlength="2" value="${memberInfo.mem_birth_m}" disabled>
+                        <input type="text" id="mem_birth_d" name="mem_birth_d" placeholder="일" maxlength="2" value="${memberInfo.mem_birth_d}" disabled> 
+                    </div>
+                </div>
+
+                <!-- 연락처 입력 부분 -->
 				<div class="form-group">
-					<div class="label-group">
-						<label for="mem_birth">생년월일</label>
-					</div>
-					<div class="input-group">
-						<input type="text" id="mem_birth_y" name="mem_birth_y"
-							placeholder="년" maxlength="4"> <input type="text"
-							id="mem_birth_m" name="mem_birth_m" placeholder="월" maxlength="2">
-						<input type="text" id="mem_birth_d" name="mem_birth_d"
-							placeholder="일" maxlength="2">
-					</div>
+				    <div class="label-group">
+				        <label for="mem_tel">연락처</label>
+				    </div>
+				    <div class="input-group">
+				        <input type="text" id="mem_tel1" name="mem_tel1" placeholder="통신사" maxlength="3" value="${memberInfo.mem_tel1}">
+				        <input type="text" id="mem_tel2" name="mem_tel2" placeholder="중간 번호" maxlength="4" value="${memberInfo.mem_tel2}">
+				        <input type="text" id="mem_tel3" name="mem_tel3" placeholder="마지막 번호" maxlength="4" value="${memberInfo.mem_tel3}">
+				    </div>
 				</div>
 
-				<div class="form-group">
-					<div class="label-group">
-						<label for="mem_tel">연락처</label>
-					</div>
-					<div class="input-group">
-						<input type="text" id="mem_tel1" name="member_tel1"
-							placeholder="통신사" maxlength="3"> <input type="text"
-							id="mem_tel2" name="member_tel2" placeholder="중간 번호"
-							maxlength="4"> <input type="text" id="mem_tel3"
-							name="member_tel3" placeholder="마지막 번호" maxlength="4">
-					</div>
-				</div>
+                <!-- 주소 입력 부분 -->
+                <div class="form-group">
+                    <div class="label-group">
+                        <label for="mem_addr">주소</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="zipcode" name="address_zipcode" size="50" placeholder="우편번호" value="${memberInfo.zipcode}">
+                    </div>
+                </div>
+                <input type="button" value="우편번호검색" onclick="execDaumPostcode()">
 
-				<div class="form-group">
-					<!-- 주소 폼 -->
-					<div class="label-group">
-						<label for="mem_addr">주소</label>
+                <div class="form-group">
+                    <div class="label-group">
+                        <label for="mem_addr">도로명 주소</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="roadAddress" name="roadAddress" size="50" placeholder="도로명 주소" value="${memberInfo.roadAddress}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="label-group">
+                        <label for="mem_addr">지번 주소</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="jibunAddress" name="jibunAddress" size="50" placeholder="지번 주소" value="${memberInfo.jibunAddress}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="label-group">
+                        <label for="mem_addr">나머지 주소</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="namujiAddress" name="namujiAddress" size="50" placeholder="나머지 주소" value="${memberInfo.namujiAddress}">
+                    </div>
+                </div>
 
-					</div>
-					<div class="input-group">
-						<input type="text" id="zipcode" name="zipcode" size="50">
-					</div>
-				</div>
-				<button>
-					<a href="javascript:execDaumPostcode()">우편번호검색</a>
-				</button>
+                <div class="form-group">
+                    <div class="label-group">
+                        <label for="mem_email">이메일</label>
+                    </div>
+                    <input type="text" placeholder="이메일" id="mem_email" name="mem_email" value="${memberInfo.mem_email}">
+                </div>
 
-				<div class="form-group">
-					<div class="label-group">
-						<label for="mem_addr">도로명 주소</label>
-						</div>
-						<div class="input-group">
-							<input type="text" id="roadAddress" name="roadAddress" size="50"><br>
-						</div>
-				</div>
-				<div class="form-group">
-					<div class="label-group">
-						<label for="mem_addr">지번 주소</label>
-						</div>
-						<div class="input-group">
-							<input type="text" id="jibunAddress" name="jibunAddress"
-								size="50"><br>
-						</div>
-					</div>
-				<div class="form-group">
-					<div class="label-group">
-						<label for="mem_addr">나머지 주소</label>
-						</div>
-						<div class="input-group">
-							<input type="text" name="namujiAddress" size="50" />
-						</div>
-				</div>
-
-				<div class="form-group">
-					<div class="label-group">
-						<label for="mem_email">이메일</label>
-					</div>
-					<input type="text" placeholder="이메일" id="mem_email" name="mem_email" />
-				</div>
-
-				<button type="button" onclick="fn_modify_member_info()">정보수정</button>
-
-				<input type="hidden" name="mem_id" value="${memberInfo.mem_id}" />
-				<input type="hidden" name="mem_name" value="${memberInfo.mem_name}" />
-				<input type="hidden" name="mem_birth_y" value="" /> 
-				<input type="hidden" name="mem_birth_m" value="" /> 
-				<input type="hidden" name="mem_birth_d" value="" /> 
-				<input type="hidden" name="mem_tel1" value="" /> 
-				<input type="hidden" name="mem_tel2" value="" /> 
-				<input type="hidden" name="mem_tel3" value="" /> 
-				<input type="hidden" name="mem_email" value="" />
+                <button type="button" onclick="fn_mod_member()">정보수정</button>
+                
 			</form>
 		</div>
 	</div>

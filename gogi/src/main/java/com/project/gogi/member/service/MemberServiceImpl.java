@@ -20,8 +20,8 @@ public class MemberServiceImpl implements MemberService{
 	
 	//로그인
 	@Override
-	public MemberVO login(Map loginMap) throws Exception{
-		return memberDAO.login(loginMap);
+	public MemberVO loginForm(Map loginMap) throws Exception{
+		return memberDAO.loginForm(loginMap);
 	}
 	
 	//회원가입

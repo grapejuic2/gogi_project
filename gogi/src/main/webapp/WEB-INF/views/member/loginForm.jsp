@@ -2,6 +2,21 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
+
+<c:if test='${not empty message }'>
+<script>
+window.onload=function()
+{
+  result();
+}
+
+function result(){
+   alert("아이디나  비밀번호가 틀립니다. 다시 로그인해주세요");
+   window.location.href = "${contextPath}/member/loginForm.do";
+}
+</script>
+</c:if>
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -38,29 +53,24 @@ ul.nav.navbar-nav li a:hover {
 	<div class="login-page">
 		<div class="login-text">
 			<a href="${contextPath}/main/main.do"><img
-				src="${contextPath}/resources/images/logo/logo2.png" alt="logo2"
-				width="150px"></a>
+				src="${contextPath}/resources/images/logo/logo2.png" alt="logo2" width="150px"></a>
 		</div>
 		<div class="form">
-			<form id="loginForm" class="login-form"
-				action="${contextPath}/member/login.do" method="post">
-				<input type="text" placeholder="아이디" id="mem_id" name="mem_id" /> <input
-					type="password" placeholder="비밀번호" id="mem_pw" name="mem_pw" />
+			<form id="loginForm" class="login-form" action="${contextPath}/member/loginForm.do" method="post">
+				<input type="text" placeholder="아이디" id="mem_id" name="mem_id" /> 
+				<input type="password" placeholder="비밀번호" id="mem_pw" name="mem_pw" />
 				<button type="submit">로그인</button>
+				
 				<p class="message">
 					<a href="${contextPath}/member/memberForm.do">회원가입</a>
 				</p>
+				
 				<div class="login-icon">
 					<a href="#"><img
-						src="${contextPath}/resources/images/login/kakao-icon.png"
-						alt="kakao-icon"></a> <a href="#"><img
-						src="${contextPath}/resources/images/login//naver-icon.png"
-						alt="naver-icon"></a>
+						src="${contextPath}/resources/images/login/kakao-icon.png" alt="kakao-icon"></a> 
+						<a href="#"><img src="${contextPath}/resources/images/login//naver-icon.png" alt="naver-icon"></a>
 				</div>
 			</form>
-			<c:if test="${not empty message}">
-				<p class="error-message">${message}</p>
-			</c:if>
 		</div>
 	</div>
 </body>

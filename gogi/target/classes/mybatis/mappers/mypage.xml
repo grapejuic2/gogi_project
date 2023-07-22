@@ -6,60 +6,61 @@
 <mapper namespace="mapper.mypage">
 
 <update id="updateMyInfo" parameterType="java.util.HashMap">
-		update gogi_mypage
+		update gogi_member
 			<set>
-				<if test=" myp_pw!='' and myp_pw!=null">
-					myp_pw=#{myp_pw},
+				<if test="mem_pw!='' and mem_pw!=null">
+					mem_pw=#{mem_pw},
 				</if>
-				<if test=" myp_birth_y!='' and myp_birth_y!=null">
-					myp_birth_y=#{myp_birth_y},
+				<if test="mem_birth_y!='' and mem_birth_y!=null">
+					mem_birth_y=#{mem_birth_y},
 				</if>
-			      <if test=" myp_birth_m!='' and myp_birth_m!=null">
-			         myp_birth_m=#{myp_birth_m},
+			      <if test="mem_birth_m!='' and mem_birth_m!=null">
+			         mem_birth_m=#{mem_birth_m},
 			      </if>
-			      <if test=" myp_birth_d!='' and myp_birth_d!=null">
-			         myp_birth_d=#{myp_birth_d},
+			      <if test="mem_birth_d!='' and mem_birth_d!=null">
+			         mem_birth_d=#{mem_birth_d},
 			      </if>
-			      <if test=" myp_tel1!='' and myp_tel1!=null">
-			         myp_tel1=#{myp_tel1},
+			      <if test="mem_tel1!='' and mem_tel1!=null">
+			         mem_tel1=#{mem_tel1},
 			      </if>
-			      <if test=" myp_tel2!='' and myp_tel2!=null">
-			         myp_tel2=#{myp_tel2},
+			      <if test="mem_tel2!='' and mem_tel2!=null">
+			         mem_tel2=#{mem_tel2},
 			      </if>
-			      <if test=" myp_tel3!='' and myp_tel3!=null">
-			         myp_tel3=#{myp_tel3},
+			      <if test="mem_tel3!='' and mem_tel3!=null">
+			         mem_tel3=#{mem_tel3},
 			      </if>
-			      <!-- <if test=" smssts_yn!='' and smssts_yn!=null">
-			         smssts_yn=#{smssts_yn},
-			      </if> -->
-			      <if test=" myp_email!='' and myp_email!=null">
-			         myp_email=#{myp_email},
+			      <if test="mem_email!='' and mem_email!=null">
+			         mem_email=#{mem_email},
 			      </if>
-			     <!--  <if test=" emailsts_yn!='' and emailsts_yn!=null">
-			         emailsts_yn=#{emailsts_yn},
-			      </if> -->
-<!-- 			  <if test=" zipcode!='' and zipcode!=null">
+			      <if test="zipcode!='' and zipcode!=null">
 			         zipcode=#{zipcode},
 			      </if>
-			      <if test=" roadAddress!='' and roadAddress!=null">
+			      <if test="roadAddress!='' and roadAddress!=null">
 			         roadAddress=#{roadAddress},
 			      </if>			     
-			      <if test=" jibunAddress!='' and jibunAddress!=null">
+			      <if test="jibunAddress!='' and jibunAddress!=null">
 			         jibunAddress=#{jibunAddress},
 			      </if>
-			      <if test=" namujiAddress!='' and namujiAddress!=null">
+			      <if test="namujiAddress!='' and namujiAddress!=null">
 			         namujiAddress=#{namujiAddress}
-			      </if> -->
+			      </if>
 			   </set>
 		where 
-		myp_id=#{myp_id}
+		mem_id=#{mem_id}
 	</update>
 	
-	<select id="selectMyDetailInfo" resultType="mypageVO"   parameterType="String"  >
+	<select id="selectMyDetailInfo" resultType="memberVO"   parameterType="String"  >
 	    <![CDATA[
-			select * from gogi_mypage 
-			where myp_id=#{myp_id}
+			select * from gogi_member 
+			where mem_id=#{mem_id}
     	]]>
+	</select>
+	
+		<!-- ID 중복 체크 -->
+	<select id="checkpw" parameterType="String" resultType="String">
+		select decode(count(*), 1, 'true', 0, 'false')
+		from gogi_member
+		where mem_pw = #{mem_pw}
 	</select>
 
 </mapper>

@@ -29,4 +29,10 @@ public class mypageServiceImpl implements mypageService{
 	public MemberVO myDetailInfo(String mem_id) throws Exception{
 		return mypageDAO.selectMyDetailInfo(mem_id);
 	}
+	
+	//비밀번호 검사
+	@Override
+	public String checkpw(String pw) throws Exception{
+		return mypageDAO.checkpw(pw);
+	}
 }
