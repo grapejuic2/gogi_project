@@ -31,5 +31,11 @@ public class mypageDAOImpl implements mypageDAO{
 		MemberVO mypageVO=(MemberVO)sqlSession.selectOne("mapper.mypage.selectMyDetailInfo",mem_id);
 		return mypageVO;
 	}
+	
+	@Override
+	public int deleteMember(String mem_id) throws DataAccessException {
+		int result = sqlSession.delete("mapper.mypage.deleteMember", mem_id);
+		return result;
+	}
 
 }

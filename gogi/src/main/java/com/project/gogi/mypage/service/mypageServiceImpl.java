@@ -33,4 +33,8 @@ public class mypageServiceImpl implements mypageService{
 		return mypageDAO.selectMyDetailInfo(mem_id);
 	}
 	
+	@Override
+	public int deleteMember(String mem_id) throws Exception {
+		return mypageDAO.deleteMember(mem_id);
+	}
 }

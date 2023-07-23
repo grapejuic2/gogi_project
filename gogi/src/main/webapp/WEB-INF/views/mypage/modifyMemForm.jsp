@@ -56,7 +56,7 @@ ul.nav.navbar-nav li a:hover {
 }
 </style>
 
-<link href="${contextPath}/resources/css/mypageForm.css"
+<link href="${contextPath}/resources/css/mypage/mypageForm.css"
 	rel="stylesheet" type="text/css">
 
 <meta charset="utf-8">
@@ -68,7 +68,7 @@ ul.nav.navbar-nav li a:hover {
 
 function fn_mod_member(){
 	    var frm_mod_member = document.frm_mod_member;
-
+	    
 	    // 각 속성의 값을 바로 가져와서 변수에 설정
 	    var mem_pw = frm_mod_member.mem_pw.value;
 	    var mem_tel1 = frm_mod_member.mem_tel1.value;
@@ -80,6 +80,12 @@ function fn_mod_member(){
 	    var jibunAddress = frm_mod_member.jibunAddress.value;
 	    var namujiAddress = frm_mod_member.namujiAddress.value;
 	 	
+	    // 비밀번호 입력 칸이 비어 있는지 확인
+	    if (mem_pw === '') {
+	        alert('비밀번호를 입력해주세요.');
+	        return;
+	    }
+	      
 	    // value 변수에 모든 값을 하나의 문자열로 합침
 	    var value = mem_pw + "," + mem_tel1 + "," + mem_tel2 + "," + mem_tel3 + "," + zipcode + "," + roadAddress + "," + jibunAddress + "," + namujiAddress + "," +mem_email;
 
@@ -110,7 +116,7 @@ function fn_mod_member(){
 		});
 	}
 
-		//주소 스크립트
+	//주소 스크립트
 	function execDaumPostcode() {
 	  new daum.Postcode({
 	    oncomplete: function(data) {
@@ -174,9 +180,9 @@ function fn_mod_member(){
 				style="margin-bottom: 20px; margin-right: 10px; margin-left: 10px;">개인정보
 				수정</a> <a href="#" data-category="문의 내역"
 				style="margin-bottom: 20px; margin-right: 10px; margin-left: 10px;">문의내역</a>
-			<a href="#" data-category="포인트 조회"
-				style="margin-bottom: 20px; margin-right: 10px; margin-left: 10px;">포인트조회</a>
-			<a href="#" data-category="주문 내역"
+<!-- 			<a href="#" data-category="포인트 조회"
+				style="margin-bottom: 20px; margin-right: 10px; margin-left: 10px;">포인트조회</a> -->
+ 			<a href="#" data-category="주문 내역"
 				style="margin-bottom: 20px; margin-right: 10px; margin-left: 10px;">주문내역</a>
 			<a href="#" data-category="장바구니"
 				style="margin-bottom: 20px; margin-right: 10px; margin-left: 10px;">장바구니</a>

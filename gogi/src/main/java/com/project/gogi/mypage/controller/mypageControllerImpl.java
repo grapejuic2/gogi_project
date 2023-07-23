@@ -82,6 +82,18 @@ public class mypageControllerImpl implements mypageController {
 		return resEntity;
 	}
 	
+	//회원 삭제
+	@Override
+	@RequestMapping(value="/deleteMember.do", method = RequestMethod.POST)
+	public ModelAndView deleteMember(@RequestParam("mem_id") String mem_id, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		HttpSession session=request.getSession();
+		session.setAttribute("isLogon", true);
+		session.setAttribute("memberInfo", memberVO);
+		mypageService.deleteMember(mem_id);
+		ModelAndView mav = new ModelAndView("redirect:/main/main.do");
+		return mav;
+	}
+	
 	// /mypage/*Form.do 처리
 	@RequestMapping(value = "/*Form.do", method = RequestMethod.GET)
 	public ModelAndView form(@RequestParam(value = "result", required = false) String result,

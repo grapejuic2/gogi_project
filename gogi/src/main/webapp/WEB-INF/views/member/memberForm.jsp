@@ -50,7 +50,7 @@ ul.nav.navbar-nav li a:hover{color:#000000;}
 </style>
 
 
-<link href="${contextPath}/resources/css/memberForm.css" rel="stylesheet" type="text/css">
+<link href="${contextPath}/resources/css/member/memberForm.css" rel="stylesheet" type="text/css">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
  
@@ -82,9 +82,10 @@ ul.nav.navbar-nav li a:hover{color:#000000;}
 	  </div>
 	  <input type="password" placeholder="비밀번호" id="mem_pw" name="mem_pw" style="margin-right: 5px;">
 	  <input type="password" placeholder="비밀번호 확인" id="mem_pw_confirm" name="mem_pw_confirm" />
-	  <span id="pwMismatchMessage" style="color: red;"></span> <!-- 일치하지 않을 때 메시지를 표시할 위치 -->
 	</div>	
-
+	  <span id="pwMismatchMessage" style="color: red;"></span>
+	  <!-- 일치하지 않을 때 메시지를 표시할 위치 -->
+	
       <div class="form-group">
         <div class="label-group">
           <label for="mem_name">이름</label>
