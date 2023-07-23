@@ -56,7 +56,7 @@ ul.nav.navbar-nav li a:hover {
 }
 </style>
 
-<link href="${contextPath}/resources/css/memberForm.css"
+<link href="${contextPath}/resources/css/mypageForm.css"
 	rel="stylesheet" type="text/css">
 
 <meta charset="utf-8">
@@ -165,12 +165,11 @@ function fn_mod_member(){
 	<div class="frm_mod_member">
 		<div class="memberForm-text">
 			<a href="${contextPath}/main/main.do"><img
-				src="${contextPath}/resources/images/logo/logo2.png" alt="logo2"
-				width="150px"></a>
+				src="${contextPath}/resources/images/logo/logo2.png" alt="logo2" width="150px"  style="text-align: center;"></a>
 		</div>
 
 		<div class="category">
-			<a href="${contextPath}/mypage/mypageForm.do"
+			<a href="${contextPath}/mypage/modifyMemForm.do"
 				data-category="개인 정보 수정"
 				style="margin-bottom: 20px; margin-right: 10px; margin-left: 10px;">개인정보
 				수정</a> <a href="#" data-category="문의 내역"
@@ -181,9 +180,8 @@ function fn_mod_member(){
 				style="margin-bottom: 20px; margin-right: 10px; margin-left: 10px;">주문내역</a>
 			<a href="#" data-category="장바구니"
 				style="margin-bottom: 20px; margin-right: 10px; margin-left: 10px;">장바구니</a>
-			<a href="#" data-category="회원탈퇴"
-				style="margin-bottom: 20px; margin-right: 10px; margin-left: 10px;">회원
-				탈퇴</a>
+			<a href="${contextPath}/mypage/deleteMemForm.do" data-category="회원탈퇴"
+				style="margin-bottom: 20px; margin-right: 10px; margin-left: 10px;">회원탈퇴</a>
 		</div>
 
         <div class="form">
