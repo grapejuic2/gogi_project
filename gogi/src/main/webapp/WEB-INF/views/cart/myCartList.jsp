@@ -82,11 +82,14 @@
 						<tr>	  
 					  <c:set var="cart_count" value="${myCartList[cnt.count-1].cart_count}"/>
 					  <c:set var="cart_no" value="${myCartList[cnt.count-1].cart_no}"/>
+					  <c:set var="delivery_option" value="${myCartList[cnt.count-1].delivery_option}"/>
 					  	<td>
 					  		<input type="checkbox" name="checked_goods" checked value="${item.goods_id}" data-cart-no="${cart_no}" onClick="calculateTotal()">
 					  	</td>
 						<td><a href="${contextPath}/goods/goodsDetail.do?goods_id=${item.goods_id} "><img src="${contextPath}/thumbnails.do?goods_id=${item.goods_id}&fileName=${item.file_name}" width="110px;"/></a></td>
-						<td class="goodsName"><a href="${contextPath}/goods/goodsDetail.do?goods_id=${item.goods_id} ">${item.goods_name}</a></td>
+						<td class="goodsName"><a href="${contextPath}/goods/goodsDetail.do?goods_id=${item.goods_id} ">${item.goods_name}</a>
+						<p>상품 ${cnt.count}의 배송 옵션: <c:out value="${delivery_option}" /></p>
+						</td>
 						<td>
 							<input type="hidden" value="${item.goods_price }" class="goods_price"/>	
 						 	<button type="button" class="minus" >-</button>
@@ -162,6 +165,9 @@
 			
 <!-- JavaScript 코드 -->
 <script>
+
+
+
 //체크박스 전체 선택시
 function goodsAllCheckboxes() {
     const checkboxes = document.querySelectorAll('input[name="checked_goods"]');
@@ -340,6 +346,48 @@ function calculateTotal() {
 
 		  // 페이지 이동
 		  window.location.href = cartListUrl;
+		}
+	  
+	  
+	  function fn_order_each_goods(goods_id, goods_name, goods_price, file_name) {
+
+		    var order_quantity = document.getElementById("cart_count").value;
+		    var delivery_option = document.getElementById("delivery_option").value; // 배송옵션 추가
+		    var total_price = parseInt(goods_price) * parseInt(order_quantity);
+
+		    var formObj = document.createElement("form");
+		    var i_goods_id = document.createElement("input");
+		    var i_goods_name = document.createElement("input");
+		    var i_goods_price = document.createElement("input");
+		    var i_file_name = document.createElement("input");
+		    var i_order_quantity = document.createElement("input");
+		    var i_delivery_option = document.createElement("input"); // 배송옵션을 넘기기 위한 input 엘리먼트 추가
+
+		    i_goods_id.name = "goods_id";
+		    i_goods_name.name = "goods_name";
+		    i_goods_price.name = "goods_sales_price";
+		    i_file_name.name = "file_name";
+		    i_order_quantity.name = "order_quantity";
+		    i_delivery_option.name = "order_delivery_option"; // 배송옵션을 넘기기 위해 name 설정
+		    
+		    i_goods_id.value = goods_id;
+		    i_goods_name.value = goods_name;
+		    i_goods_price.value = goods_price;
+		    i_file_name.value = file_name;
+		    i_order_quantity.value = order_quantity;	   
+		    i_delivery_option.value = delivery_option; // 배송옵션을 넘기기 위해 value 설정
+
+		    formObj.appendChild(i_goods_id);
+		    formObj.appendChild(i_goods_name);
+		    formObj.appendChild(i_goods_price);
+		    formObj.appendChild(i_file_name);
+		    formObj.appendChild(i_order_quantity);
+		    formObj.appendChild(i_delivery_option); // 배송옵션을 넘기기 위한 input 엘리먼트를 폼에 추가
+
+		    document.body.appendChild(formObj);
+		    formObj.method = "post";
+		    formObj.action = "${contextPath}/order/orderEachGoods.do";
+		    formObj.submit();
 		}
 </script>
 
