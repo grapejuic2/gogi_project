@@ -13,9 +13,7 @@
  <!-- 폰트:나눔고딕 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link
-	href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap"
-	rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
  
 </head>
 <title>배송 안내</title>
@@ -141,7 +139,7 @@
 					<b>캠핑장에서 원하는 고가를 즐길수 있도록 육룰이 달려갑니다.</b>
 					<div class="dv_c_d2">
 						<div class="span_dv">
-							<p  > 월~일 도착</p>
+							<p  c > 월~일 도착</p>
 						</div>
 						<ul>
 							<li>

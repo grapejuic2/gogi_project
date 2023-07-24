@@ -4,22 +4,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-
-<!-- Bootstrap CSS -->
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-
-<style>
-body {
-  padding-top: 70px;
-  padding-bottom: 30px;
-}
-</style>
-<title>게시물 수정</title>
+<meta charset="UTF-8"> 
+<title>게시물 조회</title>
 </head>
 <body>
-<article> 
-<div class="container" role="main">
+ 
+<div role="main">
          <h2>게시물 수정</h2>
 
 <form method="post"><!-- POST 방식은 폼 데이터를 별도로 첨부하여 서버로 전달하는 방식 -->
@@ -31,17 +21,17 @@ body {
 
 <div class="mb-3">
 <label style="width:70px;">작성자</label>
-<input type="text" name="mem)id" value="${noticeRead.mem_id}" /><br />
+<input type="text" name="mem_id" value="${noticeRead.mem_id}" /><br />
 </div>
  
 
 <div class="mb-3">
 <label style="width:70px;">내용</label>
-<textarea cols="50" rows="5" name="notice_content" >${noticeRead.notice_content</textarea><br />
+<textarea cols="50" rows="5" name="notice_content" >${noticeRead.notice_content}</textarea><br />
 </div>
 <button type="submit" class="btn btn-sm btn-primary" >완료</button>
 
 </form>
+
 </body>
 </html>
-

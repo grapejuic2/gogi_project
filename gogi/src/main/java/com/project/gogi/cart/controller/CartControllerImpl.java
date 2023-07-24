@@ -1,5 +1,8 @@
 package com.project.gogi.cart.controller;
 
+import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -68,8 +71,53 @@ public class CartControllerImpl extends BaseController implements CartController
 		String viewName = (String) request.getAttribute("viewName"); 
 		ModelAndView mav=new ModelAndView(viewName);
 		HttpSession session= request.getSession();
-		//System.out.println(session.getAttribute("memberInfo"));
+		memberVO=(MemberVO) session.getAttribute("memberInfo");
+		System.out.println(session.getAttribute("memberInfo"));
+		
+		String mem_id=memberVO.getMem_id();
+		cartVO.setMem_id(mem_id);
+		System.out.println("장바구니 메인:"+mem_id);
+		
+		//장바구니 페이지에 표시할 상품 정보 조회
+		Map<String, List> cartMap=cartService.myCartList(cartVO);
+		//System.out.println("cartMap:"+cartMap.toString());
+		//장바구니 목록 세션 저장
+		session.setAttribute("cartMap", cartMap);
+		
 		return mav;
 	}
+
+	@Override
+	@RequestMapping(value="/modifyCount.do")
+	public @ResponseBody String modifyGoodsCount(@RequestParam("goods_id") int goods_id, @RequestParam("cart_count") int cart_count, 
+			HttpServletRequest request,HttpServletResponse response) throws Exception {
+		HttpSession session= request.getSession();
+		memberVO=(MemberVO) session.getAttribute("memberInfo");
+		System.out.println(session.getAttribute("memberInfo"));
+		
+		String mem_id=memberVO.getMem_id();
+		cartVO.setGoods_id(goods_id);
+		cartVO.setMem_id(mem_id);
+		cartVO.setCart_count(cart_count);
+		boolean result=cartService.updateGoodsCount(cartVO);
+		
+		if(result==true) {
+			return "modify_success";
+		}else {
+			return "modify_failed";
+		}
+	}
+
+	@Override
+	@RequestMapping(value="/deleteGoods.do", method = RequestMethod.POST)
+	public ModelAndView removeCartGoods(@RequestParam("cart_no") int cart_no, HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		ModelAndView mav=new ModelAndView();
+		cartService.deleteGoods(cart_no);		
+		mav.setViewName("redirect:/cart/myCartList.do");
+		
+		return mav;
+	}
+
 
 }

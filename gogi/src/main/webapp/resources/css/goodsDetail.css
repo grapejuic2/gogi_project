@@ -23,7 +23,7 @@
 }
 
 .content {
-  width:380px;
+  width:450px;
   margin-right: 450px; /* 간격 조정을 위해 값을 조정해보세요 */
   margin-top:80px;
   align-items: flex-start; /* content 영역의 요소들을 왼쪽으로 정렬 */ 
@@ -33,7 +33,7 @@
     text-align: left;
 }
 #orderButton, #cartButton {
-    width: 180px;
+    width: 200px;
     height: 50px;
     line-height: 50px;
     text-align: center;
@@ -48,38 +48,45 @@
 .price{font-size: 20px; font-weight: bold;}
 .100_price{font-size: 14px;}
 #orderButton{background-color: #1D1D1D;}
-#cartButton{background-color:#ff9300;}
+#cartButton{background-color:#6CC148;}
 .cartStock{width:360px;}
-.option{font-size: 18px; font-weight: 400;} 
+.option{font-size: 18px; font-weight: 400;margin-left: 18px;} 
 .numBox{width:215px;text-align: center; }
  .numBox,
-  #deliver_option {
+  #delivery_option {
     /* 공통 스타일 */
     height: 30px;
+    width: 310px;
     padding: 0 5px; /* 내부 여백을 설정하여 텍스트와 보더 간의 간격 조정 */
     font-size: 15px;
     border: 0.5px solid ; /* 보더 라인 스타일 */
+    text-align: center;
   }
 
   .numBox {
-    width: 210px;
-    text-align: center;
+      height: 30px; /* 인풋 요소의 높이를 버튼과 동일하게 설정합니다. */
+	  width: 245px; /* 인풋 요소의 너비를 원하는 값으로 설정합니다. */
+	  text-align: center; /* 숫자를 중앙 정렬합니다. */
+	  margin: 4px; /* 기본적인 margin 값을 0으로 설정합니다. */
+	  padding: 0; /* 기본적인 padding 값을 0으로 설정합니다. */
   }
 
-  #deliver_option {
-    width: 280px;
-    text-align: center;
-  }
-.minus, .plus{background: transparent;  border: 1px solid; cursor: pointer;text-align: center;width: 30px;
-    height: 30px;}
-      .cartStock {
-    display: flex; /* 요소들을 가로로 배치 */
-    align-items: center; /* 요소들을 수직 중앙 정렬 */
-  }
 
-  table {
-    width: 100%;
-    margin-bottom: 50px;
+
+.minus, .plus{
+	background: transparent;  border: 1px solid; cursor: pointer;text-align: center;width: 30px;
+    height: 30px;
+    font-weight: bold;
+}
+
+.cartStock {
+   display: flex; /* 요소들을 가로로 배치 */
+   align-items: center; /* 요소들을 수직 중앙 정렬 */
+}
+
+ table {
+    width: 450px;
+    margin-bottom: 30px;
     border-collapse: separate; /* 셀의 경계를 합치지 않음 */
   }
 
@@ -95,4 +102,19 @@
 
 .option-row  {
    height: 45px;
-}}
+}
+  .text-right {
+    margin-left: 20px;
+  }
+  
+  .numBox-cell {
+  display: flex; /* Flexbox를 사용하여 내부 요소들을 수평 정렬합니다. */
+  align-items: center; /* 내부 요소들을 수직으로 중앙 정렬합니다. */
+}
+
+.numBox-cell button {
+  height: 30px; /* 버튼의 높이를 원하는 값으로 설정합니다. */
+}
+
+
+

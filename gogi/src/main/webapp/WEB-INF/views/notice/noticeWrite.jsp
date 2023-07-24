@@ -13,7 +13,7 @@
 <body>
 <section>
   
-<div class="container" role="main">
+<div  role="main">
          <h2>게시물 작성</h2>
 <form method="post" name="form" id="form" role="form"> 
 
