@@ -205,8 +205,8 @@ ul.nav.navbar-nav li a:hover {
 				style="margin-bottom: 20px; margin-right: 10px; margin-left: 10px;">포인트조회</a> -->
 			<a href="#" data-category="주문 내역"
 				style="margin-bottom: 20px; margin-right: 10px; margin-left: 10px;">주문내역</a>
-			<a href="#" data-category="장바구니"
-				style="margin-bottom: 20px; margin-right: 10px; margin-left: 10px;">장바구니</a>
+			<a href="#" data-category="리뷰 확인"
+				style="margin-bottom: 20px; margin-right: 10px; margin-left: 10px;">리뷰확인</a>
 			<a href="${contextPath}/mypage/deleteMemForm.do" data-category="회원탈퇴"
 				style="margin-bottom: 20px; margin-right: 10px; margin-left: 10px;">회원탈퇴</a>
 		</div>

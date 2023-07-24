@@ -87,7 +87,7 @@ function fn_mod_member(){
 	    }
 	      
 	    // value 변수에 모든 값을 하나의 문자열로 합침
-	    var value = mem_pw + "," + mem_tel1 + "," + mem_tel2 + "," + mem_tel3 + "," + zipcode + "," + roadAddress + "," + jibunAddress + "," + namujiAddress + "," +mem_email;
+	    var value = mem_pw + "," + mem_tel1 + "," + mem_tel2 + "," + mem_tel3 + "," + zipcode + "," + roadAddress + "," + jibunAddress + "," + namujiAddress + "," + mem_email;
 
 	    console.log(value);
 		

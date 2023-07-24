@@ -59,7 +59,7 @@ public class mypageControllerImpl implements mypageController {
 		memberMap.put("mem_tel1", val[1]);
 		memberMap.put("mem_tel2", val[2]);
 		memberMap.put("mem_tel3", val[3]);
-		memberMap.put("zipcode", val[5]);
+		memberMap.put("zipcode", val[4]);
 		memberMap.put("roadAddress", val[5]);
 		memberMap.put("jibunAddress", val[6]);
 		memberMap.put("namujiAddress", val[7]);
