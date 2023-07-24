@@ -119,5 +119,18 @@ public class CartControllerImpl extends BaseController implements CartController
 		return mav;
 	}
 
+	//체크박스로 여러개 선택시 삭제 수행 
+	@RequestMapping(value = "/checkDeleteGoods.do", method = RequestMethod.POST)
+	public ModelAndView removeCheckCartGoods(@RequestParam("cart_no") int[] cart_no,
+	         HttpServletRequest request, HttpServletResponse response) throws Exception {
+	    ModelAndView mav = new ModelAndView();
+	       
+	    for (int cartNo : cart_no) {
+	    	cartService.deleteGoods(cartNo);
+	        }
+
+	    mav.setViewName("redirect:/cart/myCartList.do");
+	    return mav;
+	}	
 
 }

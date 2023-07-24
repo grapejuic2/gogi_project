@@ -336,7 +336,7 @@ function calculateTotal() {
 
 	    document.body.appendChild(formObj);
 	    formObj.method = 'post';
-	    formObj.action = '${contextPath}/cart/deleteGoods.do';
+	    formObj.action = '${contextPath}/cart/checkDeleteGoods.do';
 	    formObj.submit();
 	  }
 	  
