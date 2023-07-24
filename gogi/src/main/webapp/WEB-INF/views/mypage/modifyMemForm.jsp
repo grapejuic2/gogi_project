@@ -180,12 +180,10 @@ function fn_mod_member(){
 				style="margin-bottom: 20px; margin-right: 10px; margin-left: 10px;">개인정보
 				수정</a> <a href="#" data-category="문의 내역"
 				style="margin-bottom: 20px; margin-right: 10px; margin-left: 10px;">문의내역</a>
-<!-- 			<a href="#" data-category="포인트 조회"
-				style="margin-bottom: 20px; margin-right: 10px; margin-left: 10px;">포인트조회</a> -->
- 			<a href="#" data-category="주문 내역"
+ 			<a href="${contextPath}/mypage/listMyOrderHistory.do" data-category="주문 내역"
 				style="margin-bottom: 20px; margin-right: 10px; margin-left: 10px;">주문내역</a>
-			<a href="#" data-category="장바구니"
-				style="margin-bottom: 20px; margin-right: 10px; margin-left: 10px;">장바구니</a>
+			<a href="#" data-category="리뷰 확인"
+				style="margin-bottom: 20px; margin-right: 10px; margin-left: 10px;">리뷰확인</a>
 			<a href="${contextPath}/mypage/deleteMemForm.do" data-category="회원탈퇴"
 				style="margin-bottom: 20px; margin-right: 10px; margin-left: 10px;">회원탈퇴</a>
 		</div>
@@ -246,7 +244,7 @@ function fn_mod_member(){
                         <label for="mem_addr">주소</label>
                     </div>
                     <div class="input-group">
-                        <input type="text" id="zipcode" name="address_zipcode" size="50" placeholder="우편번호" value="${memberInfo.zipcode}">
+                        <input type="text" id="zipcode" name="address_zipcode" size="200" placeholder="우편번호" value="${memberInfo.zipcode}">
                     </div>
                 </div>
                 <input type="button" value="우편번호검색" onclick="execDaumPostcode()">
@@ -256,7 +254,7 @@ function fn_mod_member(){
                         <label for="mem_addr">도로명 주소</label>
                     </div>
                     <div class="input-group">
-                        <input type="text" id="roadAddress" name="roadAddress" size="50" placeholder="도로명 주소" value="${memberInfo.roadAddress}">
+                        <input type="text" id="roadAddress" name="roadAddress" size="200" placeholder="도로명 주소" value="${memberInfo.roadAddress}">
                     </div>
                 </div>
                 <div class="form-group">
@@ -264,7 +262,7 @@ function fn_mod_member(){
                         <label for="mem_addr">지번 주소</label>
                     </div>
                     <div class="input-group">
-                        <input type="text" id="jibunAddress" name="jibunAddress" size="50" placeholder="지번 주소" value="${memberInfo.jibunAddress}">
+                        <input type="text" id="jibunAddress" name="jibunAddress" size="200" placeholder="지번 주소" value="${memberInfo.jibunAddress}">
                     </div>
                 </div>
                 <div class="form-group">
@@ -272,7 +270,7 @@ function fn_mod_member(){
                         <label for="mem_addr">나머지 주소</label>
                     </div>
                     <div class="input-group">
-                        <input type="text" id="namujiAddress" name="namujiAddress" size="50" placeholder="나머지 주소" value="${memberInfo.namujiAddress}">
+                        <input type="text" id="namujiAddress" name="namujiAddress" size="200" placeholder="나머지 주소" value="${memberInfo.namujiAddress}">
                     </div>
                 </div>
 

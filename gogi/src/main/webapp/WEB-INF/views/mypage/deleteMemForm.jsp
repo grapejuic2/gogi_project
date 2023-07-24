@@ -201,9 +201,7 @@ ul.nav.navbar-nav li a:hover {
 				style="margin-bottom: 20px; margin-right: 10px; margin-left: 10px;">개인정보
 				수정</a> <a href="#" data-category="문의 내역"
 				style="margin-bottom: 20px; margin-right: 10px; margin-left: 10px;">문의내역</a>
-			<!-- <a href="#" data-category="포인트 조회"
-				style="margin-bottom: 20px; margin-right: 10px; margin-left: 10px;">포인트조회</a> -->
-			<a href="#" data-category="주문 내역"
+			<a href="${contextPath}/mypage/listMyOrderHistorys" data-category="주문 내역"
 				style="margin-bottom: 20px; margin-right: 10px; margin-left: 10px;">주문내역</a>
 			<a href="#" data-category="리뷰 확인"
 				style="margin-bottom: 20px; margin-right: 10px; margin-left: 10px;">리뷰확인</a>

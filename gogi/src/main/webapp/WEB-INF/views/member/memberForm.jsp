@@ -120,7 +120,7 @@ ul.nav.navbar-nav li a:hover{color:#000000;}
 			<label for="mem_addr">주소</label>
 		</div>
 			<div class="input-group">
-				<input type="text" id="zipcode" name="zipcode" size="50">
+				<input type="text" id="zipcode" name="zipcode" size="200">
 			</div>
 		</div>
 	<button>
@@ -132,7 +132,7 @@ ul.nav.navbar-nav li a:hover{color:#000000;}
 				<label for="mem_addr">도로명 주소</label>
 			</div>
 			<div class="input-group">
-				<input type="text" id="roadAddress" name="roadAddress" size="50"><br>
+				<input type="text" id="roadAddress" name="roadAddress" size="200"><br>
 			</div>
 		</div>
 		
@@ -141,7 +141,7 @@ ul.nav.navbar-nav li a:hover{color:#000000;}
 				<label for="mem_addr">지번 주소</label>
 			</div>
 				<div class="input-group">
-					<input type="text" id="jibunAddress" name="jibunAddress"size="50"><br>
+					<input type="text" id="jibunAddress" name="jibunAddress"size="200"><br>
 				</div>
 		</div>
 		
@@ -150,7 +150,7 @@ ul.nav.navbar-nav li a:hover{color:#000000;}
 		  	<label for="mem_addr">나머지 주소</label>
 		 </div>
 		<div class="input-group">
-		  	<input type="text" name="namujiAddress" size="50" />
+		  	<input type="text" name="namujiAddress" size="200" />
 		</div>
 	  </div>
 

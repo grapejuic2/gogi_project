@@ -1,6 +1,7 @@
 package com.project.gogi.mypage.dao;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Repository;
 
 import com.project.gogi.member.vo.MemberVO;
 import com.project.gogi.mypage.vo.mypageVO;
+import com.project.gogi.order.vo.OrderVO;
 
 @Repository("mypageDAO")
 public class mypageDAOImpl implements mypageDAO{
@@ -30,6 +32,15 @@ public class mypageDAOImpl implements mypageDAO{
 	public MemberVO selectMyDetailInfo(String mem_id) throws DataAccessException {
 		MemberVO mypageVO=(MemberVO)sqlSession.selectOne("mapper.mypage.selectMyDetailInfo",mem_id);
 		return mypageVO;
+	}
+	
+	public List<OrderVO> selectMyOrderHistoryList(Map dateMap) throws DataAccessException{
+		List<OrderVO> myOrderHistList=(List)sqlSession.selectList("mapper.mypage.selectMyOrderHistoryList",dateMap);
+		return myOrderHistList;
+	}
+	
+	public void updateMyOrderCancel(String order_id) throws DataAccessException{
+		sqlSession.update("mapper.mypage.updateMyOrderCancel",order_id);
 	}
 	
 	@Override

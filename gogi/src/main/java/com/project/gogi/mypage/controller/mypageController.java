@@ -1,5 +1,7 @@
 package com.project.gogi.mypage.controller;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -15,6 +17,12 @@ public interface mypageController {
 	//개인정보 수정
 	public ResponseEntity modifyMyInfo(@RequestParam("value")  String value,
      	   HttpServletRequest request, HttpServletResponse response)  throws Exception;
+	
+	//주문 내역
+	public ModelAndView listMyOrderHistory(@RequestParam Map<String, String> dateMap,HttpServletRequest request, HttpServletResponse response)  throws Exception;
+	
+	//주문 취소
+	public ModelAndView cancelMyOrder(@RequestParam("order_id")  String order_id,HttpServletRequest request, HttpServletResponse response)  throws Exception;
 	
 	//회원 삭제
 	public ModelAndView deleteMember(@RequestParam("mem_id") String mem_id, HttpServletRequest request,
