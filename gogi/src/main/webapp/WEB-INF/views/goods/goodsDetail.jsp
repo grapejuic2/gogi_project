@@ -45,6 +45,7 @@
 #close {
 	z-index: 4;
 	float: right;
+	margin-left: 15px;
 }
 
 /* Style the buttons that are used to open the tab content */
@@ -126,9 +127,9 @@ font-family: 'Nanum Gothic', sans-serif' !important;
 					    </td>
 					    <td>
 					      <select name="delivery_option" id="delivery_option">
-					        <option value="normal">----------------- 선택하세요 -----------------</option>
-					        <option value="camp">캠핑장 직접배송</option>
-					      </select>
+						    <option value="normal">----------------- 선택하세요 -----------------</option>
+						    <option value="camp">캠핑장 직접배송</option>
+						  </select>
 					    </td>
 					  </tr>
 					  <tr></tr><tr> </tr>
@@ -138,7 +139,7 @@ font-family: 'Nanum Gothic', sans-serif' !important;
 					    </td>
 					    <td class="numBox-cell">
 					      <button type="button" class="minus">-</button>
-					      <input type="number" name="cart_count" class="numBox" min="1" max="20" value="1" readonly="readonly"/>
+					      <input type="number" id="cart_count" name="cart_count" class="numBox" min="1" max="20" value="1" readonly="readonly"/>
 					      <button type="button" class="plus">+</button>
 					    </td>
 					  </tr>					  
@@ -167,7 +168,7 @@ font-family: 'Nanum Gothic', sans-serif' !important;
 	        </div>
 	        <div class="text-right">
 	            <a class="cart" href="javascript:add_cart('${goods.goods_id}')"><button type="button" id="cartButton" >장바구니</button></a>
-	            <button type="button" id="orderButton" onclick="order()">주문하기</button>
+	            <a class="buy" href="javascript:fn_order_each_goods('${goods.goods_id}','${goods.goods_name}','${goods.goods_price}','${goods.file_name}');"><button type="button" id="orderButton">주문하기</button></a>
 	        </div>
 		</div> 
 	</div>
@@ -213,13 +214,19 @@ font-family: 'Nanum Gothic', sans-serif' !important;
 </div>
 	
 <script type="text/javascript">    
-    //장바구니 추가
+	//상품옵션값 보내기 위한 함수
+	function getDeliveryOption() {
+	    var deliveryOption  = document.getElementById("delivery_option").value;
+	    return deliveryOption;
+	}
     
-    /* document.getElementsByName("cart_count")와 document.getElementsByName("delivery_option")은 배열과 유사한 NodeList을 반환하므로, 
+    
+    //장바구니 추가   
+    /* document.getElementsByName("cart_count")은 배열과 유사한 NodeList을 반환하므로, 
     	해당 이름을 가진 요소가 하나뿐인 경우 인덱스 0을 사용하여 해당 요소에 접근 */
     function add_cart(goods_id){
     	var cart_count=document.getElementsByName("cart_count")[0].value;
-        var delivery_option=document.getElementsByName("delivery_option")[0].value;
+     	var delivery_option = getDeliveryOption(); // getDeliveryOption() 함수를 호출하여 옵션 값을 얻음
         
     	$.ajax({
     		type:"post",
@@ -258,6 +265,54 @@ font-family: 'Nanum Gothic', sans-serif' !important;
 			jQuery('#layer').attr('style', 'visibility:hidden');
 		}
 	}
+    
+	function fn_order_each_goods(goods_id, goods_name, goods_price, file_name) {
+	    var _isLogOn = document.getElementById("isLogOn");
+	    var isLogOn = _isLogOn.value;
+
+	    if (isLogOn === "false" || isLogOn === '') {
+	        alert("로그인 후 주문이 가능합니다!!");
+	    }
+
+	    var order_quantity = document.getElementById("cart_count").value;
+	    var delivery_option = document.getElementById("delivery_option").value; // 배송옵션 추가
+	    var total_price = parseInt(goods_price) * parseInt(order_quantity);
+
+	    var formObj = document.createElement("form");
+	    var i_goods_id = document.createElement("input");
+	    var i_goods_name = document.createElement("input");
+	    var i_goods_price = document.createElement("input");
+	    var i_file_name = document.createElement("input");
+	    var i_order_quantity = document.createElement("input");
+	    var i_delivery_option = document.createElement("input"); // 배송옵션을 넘기기 위한 input 엘리먼트 추가
+
+	    i_goods_id.name = "goods_id";
+	    i_goods_name.name = "goods_name";
+	    i_goods_price.name = "goods_sales_price";
+	    i_file_name.name = "file_name";
+	    i_order_quantity.name = "order_quantity";
+	    i_delivery_option.name = "order_delivery_option"; // 배송옵션을 넘기기 위해 name 설정
+	    
+	    i_goods_id.value = goods_id;
+	    i_goods_name.value = goods_name;
+	    i_goods_price.value = goods_price;
+	    i_file_name.value = file_name;
+	    i_order_quantity.value = order_quantity;	   
+	    i_delivery_option.value = delivery_option; // 배송옵션을 넘기기 위해 value 설정
+
+	    formObj.appendChild(i_goods_id);
+	    formObj.appendChild(i_goods_name);
+	    formObj.appendChild(i_goods_price);
+	    formObj.appendChild(i_file_name);
+	    formObj.appendChild(i_order_quantity);
+	    formObj.appendChild(i_delivery_option); // 배송옵션을 넘기기 위한 input 엘리먼트를 폼에 추가
+
+	    document.body.appendChild(formObj);
+	    formObj.method = "post";
+	    formObj.action = "${contextPath}/order/orderEachGoods.do";
+	    formObj.submit();
+	}
+    
 </script>
 <!--Tab 관련  -->
 	<script type="text/javascript">
@@ -299,12 +354,12 @@ font-family: 'Nanum Gothic', sans-serif' !important;
 	<b>상품을 장바구니에 담았습니다.</b></font>
 	<%-- <a href='${contextPath}/cart/myCartList.do'><input value="장바구니 보기" type="button" class="btn btn-secondary btn-sm"></a> --%>
 	<a href="javascript:" onClick="javascript:imagePopup('close', '.layer01');">
-		<!-- <input type="button" class="btn btn-secondary btn-sm" value="닫기"/> -->
+		<input type="button" class="btn btn-secondary btn-sm" value="닫기"/> 
 		</a>
 	</div>
 </div>
 <!-- 로그인 상태를 <hidden> 태그에 저장합니다. -->
-<input type="hidden" name="isLogOn" id="isLogOn" value="${isLogOn}"/>
+<input type="hidden" name="isLogOn" id="isLogOn" value="${isLogon}"/>
 
 </body>
 </html>

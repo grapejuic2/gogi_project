@@ -33,9 +33,9 @@ public class GoodsControllerImpl extends BaseController implements GoodsControll
 	    
 	    ModelAndView mav = new ModelAndView();
 	    String viewName = (String) request.getAttribute("viewName");
+	    Boolean isLogOn=(Boolean) session.getAttribute("isLogon"); //로그인 여부
 	    mav.setViewName(viewName);
-
-	    
+	  
 	    Map<String, List<GoodsVO>> goodsMap = goodsService.listShopGoods();
 
 	    // 카테고리에 따라 상품 목록 필터링
@@ -45,6 +45,7 @@ public class GoodsControllerImpl extends BaseController implements GoodsControll
 
 	    System.out.println("shop 컨트롤러 " + goodsMap);
 	    mav.addObject("goodsMap", goodsMap);
+	    mav.addObject("isLogOn", isLogOn);
 	    return mav;
 	}
 
