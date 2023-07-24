@@ -56,11 +56,9 @@ public class OrderControllerImpl extends BaseController implements OrderControll
 		}
 		
 		String viewName=(String) request.getAttribute("viewName");
-		System.out.println("주문"+viewName);
 		ModelAndView mav=new ModelAndView(viewName);
 		List myOrderList=new ArrayList<OrderVO>(); //주문정보 저장할 ArrayList 생성
 		myOrderList.add(orderVO);//주문정보 저장
-		System.out.println("myOrderList: "+myOrderList.toString());
 		MemberVO memberInfo=(MemberVO) session.getAttribute("memberInfo");
 		session.setAttribute("myOrderList", myOrderList); //주문정보 세션에 바인딩
 		session.setAttribute("orderer", memberInfo);//주문자정보 세션에 바인딩
@@ -80,16 +78,20 @@ public class OrderControllerImpl extends BaseController implements OrderControll
 		HttpSession session=request.getSession();
 		MemberVO memberVO=(MemberVO) session.getAttribute("orderer");
 		String mem_id=memberVO.getMem_id();
+		System.out.println("pay: "+mem_id);
 		String orderer_name=memberVO.getMem_name();
+		System.out.println("pay: "+orderer_name);
 		String ordere_hp=memberVO.getMem_tel1()+"-"+memberVO.getMem_tel2()+"-"+memberVO.getMem_tel3();
-		List<OrderVO> myOrderList=(List<OrderVO>) session.getAttribute("myOrderList");
+		System.out.println("pay: "+ordere_hp);
+		List<OrderVO> myOrderList=(List<OrderVO>) session.getAttribute("myOrderList");	
+		System.out.println("pay:"+myOrderList.toString());
 		
-		System.out.println(myOrderList.toString());
 		for(int i=0; i<myOrderList.size();i++) {
 			OrderVO orderVO=(OrderVO)myOrderList.get(i);
 			orderVO.setMem_id(mem_id);
+			orderVO.setMem_name(orderer_name);
 			orderVO.setPay_orderer_hp_num(ordere_hp);
-			orderVO.setOrder_rec_name(receiverMap.get("receiver_name"));
+			orderVO.setOrder_rec_name(receiverMap.get("order_rec_name"));
 			orderVO.setOrder_rec_hp1(receiverMap.get("order_rec_hp1"));
 			orderVO.setOrder_rec_hp2(receiverMap.get("order_rec_hp2"));
 			orderVO.setOrder_rec_hp3(receiverMap.get("order_rec_hp3"));
@@ -104,7 +106,7 @@ public class OrderControllerImpl extends BaseController implements OrderControll
 			myOrderList.set(i, orderVO);
 		}
 		orderService.addNewOrder(myOrderList);
-		
+		System.out.println("add pay:" +myOrderList.toString());
 		mav.addObject("myOrderInfo", receiverMap);
 		mav.addObject("myOrderList", myOrderList);
 		

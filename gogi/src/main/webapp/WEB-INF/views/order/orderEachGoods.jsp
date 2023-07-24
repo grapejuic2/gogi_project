@@ -755,7 +755,7 @@ function fn_process_pay_order(){
     i_delivery_message.name="order_delivery_message";
     i_delivery_method.name="order_delivery_method";
     i_pay_method.name="order_pay_method";
-    i_delivery_option="order_delivery_option";
+/*     i_delivery_option="order_delivery_option"; */
     i_card_com_name.name="card_company_name";
     i_card_pay_month.name="card_pay_month";
     i_pay_orderer_hp_num.name="pay_orderer_hp_num";
@@ -764,13 +764,13 @@ function fn_process_pay_order(){
     i_receiver_hp1.value=hp1;
     i_receiver_hp2.value=hp2;
     i_receiver_hp3.value=hp3;
-    i_delivery_address.value=delivery_address;
+    i_delivery_address.value=roadAddress;
     i_delivery_message.value=delivery_message;
     i_delivery_method.value=delivery_method;
     i_pay_method.value=pay_method;
     i_card_com_name.value=card_com_name;
     i_card_pay_month.value=card_pay_month;
-    i_pay_orderer_hp_num.value=pay_orderer_hp_num;
+    i_pay_orderer_hp_num.value=pay_order_tel1;
     
     formObj.appendChild(i_receiver_name);
     formObj.appendChild(i_receiver_hp1);
