@@ -52,12 +52,16 @@ public class MemberControllerImpl extends BaseController implements MemberContro
 			session.setAttribute("memberInfo", memberVO);
 			System.out.println("로그인"+memberVO.getMem_id());
 
-				System.out.println(memberVO.getMem_id()+ " 로그인 완료");
-				/*0719 오동림 추가 (71-72)*/
-				session = request.getSession(true);
-	            session.setMaxInactiveInterval(30 * 60); //세션 30분 유지
-				mav.setViewName("redirect:/main/main.do");
-			
+	        // 관리자 계정 확인: memberVO에서 관리자 이메일 또는 ID를 확인하고 세션에 isAdmin 값을 설정.
+	        if (memberVO.getMem_id().equals("admin")) {
+	            session.setAttribute("isAdmin", true);
+	        } else {
+	            session.setAttribute("isAdmin", false);
+	        }
+	        System.out.println(memberVO.getMem_id()+ " 로그인 완료");
+			session = request.getSession(true);
+	        session.setMaxInactiveInterval(30 * 60); //세션 30분 유지
+	        mav.setViewName("redirect:/main/main.do");
 		}else{
 			String message="아이디나  비밀번호가 틀립니다. 다시 로그인해주세요";
 			mav.addObject("message", message);
