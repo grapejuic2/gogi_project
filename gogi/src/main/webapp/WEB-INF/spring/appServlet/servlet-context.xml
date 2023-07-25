@@ -45,5 +45,13 @@
 	</beans:bean>
 	
 	<context:component-scan base-package="com.project.gogi" />
+	<!--  스프링이 NoticeDAO와 NoticeService를 찾게 해주는 코드=> 스프링이 패키지를 찾아서 사용할수 있게 된다 -->
+<!-- 	<context:component-scan base-package="com.project.gogi.notice.domain" />
+	<context:component-scan base-package="com.project.gogi.notice.dao" />
+	<context:component-scan base-package="com.project.gogi.notice.service" />
+  -->
+	
 	
 </beans:beans>
+
+

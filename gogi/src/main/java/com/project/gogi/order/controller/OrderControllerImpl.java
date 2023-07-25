@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.project.gogi.common.base.BaseController;
+import com.project.gogi.goods.vo.GoodsVO;
 import com.project.gogi.member.vo.MemberVO;
 import com.project.gogi.order.service.OrderService;
 import com.project.gogi.order.vo.OrderVO;
@@ -56,16 +57,60 @@ public class OrderControllerImpl extends BaseController implements OrderControll
 		}
 		
 		String viewName=(String) request.getAttribute("viewName");
-		System.out.println("주문"+viewName);
 		ModelAndView mav=new ModelAndView(viewName);
+		System.out.println("상품디테일주문:"+viewName);
 		List myOrderList=new ArrayList<OrderVO>(); //주문정보 저장할 ArrayList 생성
 		myOrderList.add(orderVO);//주문정보 저장
-		System.out.println("myOrderList: "+myOrderList.toString());
 		MemberVO memberInfo=(MemberVO) session.getAttribute("memberInfo");
 		session.setAttribute("myOrderList", myOrderList); //주문정보 세션에 바인딩
 		session.setAttribute("orderer", memberInfo);//주문자정보 세션에 바인딩
 		//로그인 여부 
 		mav.addObject("isLogOn", isLogOn);
+		
+		return mav;
+	}
+	
+	
+	@RequestMapping(value = "/orderCartGoods.do", method = RequestMethod.POST)
+	public ModelAndView orderAllCartGoods(@RequestParam("cart_qty") String[] cart_qty,
+	HttpServletRequest request, HttpServletResponse response) throws Exception {	
+		ModelAndView mav = new ModelAndView("orderCartGoods");
+		HttpSession session = request.getSession();
+
+		Map cartMap = (Map) session.getAttribute("cartMap");
+		
+		List myOrderList = new ArrayList<OrderVO>();
+		List<GoodsVO> myGoodsList = (List<GoodsVO>) cartMap.get("myGoodsList");
+		
+		MemberVO memberVO = (MemberVO) session.getAttribute("memberInfo");
+		System.out.println("myGoodsList:"+myGoodsList.toString()+"myGoodsList size:"+myGoodsList.size());
+		for (int i = 0; i < cart_qty.length; i++) {
+			String[] cart_goods = cart_qty[i].split(":");
+			for (int j = 0; j < myGoodsList.size(); j++) {
+				GoodsVO goodsVO = myGoodsList.get(j);
+				int goods_id = goodsVO.getGoods_id();
+				if (goods_id == Integer.parseInt(cart_goods[0])) {
+					OrderVO _orderVO = new OrderVO();
+					String goods_name = goodsVO.getGoods_name();
+					int goods_sales_price = goodsVO.getGoods_price();
+					System.out.println("가격:"+goods_sales_price);
+					String file_name = goodsVO.getFile_name();
+					//int goods_delivery_price = Integer.parseInt(goodsVO.getGoods_delivery_price());
+					int goods_point = goodsVO.getGoods_point();
+					_orderVO.setGoods_id(goods_id);
+					//_orderVO.setGoods_point(goods_point);
+					_orderVO.setGoods_name(goods_name);
+					_orderVO.setGoods_sales_price(goods_sales_price);
+					//_orderVO.setGoods_delivery_price(goods_delivery_price);
+					_orderVO.setFile_name(file_name);
+					_orderVO.setOrder_quantity(Integer.parseInt(cart_goods[1]));
+					myOrderList.add(_orderVO);
+					break;
+				}
+			}
+		}
+		session.setAttribute("myOrderList", myOrderList);
+		session.setAttribute("orderer", memberVO);
 		
 		return mav;
 	}
@@ -80,16 +125,20 @@ public class OrderControllerImpl extends BaseController implements OrderControll
 		HttpSession session=request.getSession();
 		MemberVO memberVO=(MemberVO) session.getAttribute("orderer");
 		String mem_id=memberVO.getMem_id();
+		System.out.println("pay: "+mem_id);
 		String orderer_name=memberVO.getMem_name();
+		System.out.println("pay: "+orderer_name);
 		String ordere_hp=memberVO.getMem_tel1()+"-"+memberVO.getMem_tel2()+"-"+memberVO.getMem_tel3();
-		List<OrderVO> myOrderList=(List<OrderVO>) session.getAttribute("myOrderList");
+		System.out.println("pay: "+ordere_hp);
+		List<OrderVO> myOrderList=(List<OrderVO>) session.getAttribute("myOrderList");	
+		System.out.println("pay:"+myOrderList.toString());
 		
-		System.out.println(myOrderList.toString());
 		for(int i=0; i<myOrderList.size();i++) {
 			OrderVO orderVO=(OrderVO)myOrderList.get(i);
 			orderVO.setMem_id(mem_id);
+			orderVO.setMem_name(orderer_name);
 			orderVO.setPay_orderer_hp_num(ordere_hp);
-			orderVO.setOrder_rec_name(receiverMap.get("receiver_name"));
+			orderVO.setOrder_rec_name(receiverMap.get("order_rec_name"));
 			orderVO.setOrder_rec_hp1(receiverMap.get("order_rec_hp1"));
 			orderVO.setOrder_rec_hp2(receiverMap.get("order_rec_hp2"));
 			orderVO.setOrder_rec_hp3(receiverMap.get("order_rec_hp3"));
@@ -104,15 +153,15 @@ public class OrderControllerImpl extends BaseController implements OrderControll
 			myOrderList.set(i, orderVO);
 		}
 		orderService.addNewOrder(myOrderList);
-		
+		System.out.println("add pay:" +myOrderList.toString());
 		mav.addObject("myOrderInfo", receiverMap);
 		mav.addObject("myOrderList", myOrderList);
 		
 		System.out.println("receiverMap : " + receiverMap.toString());
 		System.out.println("myOrderList : " + myOrderList.toString());
 		
-		
-		
+		//주문 후 장바구니 내역 삭제
+		session.removeAttribute("cartMap");
 		return mav;
 	}
 }

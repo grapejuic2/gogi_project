@@ -21,7 +21,6 @@ public class GoodsVO {
     private String goods_status; // 상품분류(B: 베스트상품 / S: 세일상품 / N: 기본상품)
     private int goods_weight;
     private String file_name; //이미지파일 이름 저장하기 위한 객체
-
     
     
     public GoodsVO() {}
@@ -44,7 +43,6 @@ public class GoodsVO {
 		this.goods_status = goods_status;
 		this.file_name = file_name;
 		this.goods_weight=goods_weight;
-
 	}
 
 
@@ -176,9 +174,5 @@ public class GoodsVO {
 	public void setGoods_weight(int goods_weight) {
 		this.goods_weight = goods_weight;
 	}
-
-
-
-	
 	
 }
