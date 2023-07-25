@@ -1,10 +1,10 @@
 @charset "UTF-8";
-.memberForm-page {
+.frm_mod_member {
   width: 600px;
   margin: auto; 
 }
 
-.memberForm-page .memberForm-text {
+.memberForm-text {
   padding-top: 70px;
   margin-bottom: 80px;
   text-align: center;

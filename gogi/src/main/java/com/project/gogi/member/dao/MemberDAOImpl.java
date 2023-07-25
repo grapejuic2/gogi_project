@@ -18,7 +18,7 @@ public class MemberDAOImpl implements MemberDAO{
 	
 	//로그인
 	@Override
-	public MemberVO login(Map loginMap) throws DataAccessException{
+	public MemberVO loginForm(Map loginMap) throws DataAccessException{
 		MemberVO member=(MemberVO)sqlSession.selectOne("mapper.member.login",loginMap);
 	    return member;
 	}

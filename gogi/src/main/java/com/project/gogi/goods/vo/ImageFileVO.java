@@ -2,11 +2,14 @@ package com.project.gogi.goods.vo;
 
 import java.util.Date;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class ImageFileVO {
 	private int image_id;
 	private int goods_id;
 	private String file_name;
-	private int reg_id;
+	private String reg_id;
 	private String file_type;
 	private Date creDate;
 	
@@ -14,7 +17,7 @@ public class ImageFileVO {
 		// TODO Auto-generated constructor stub
 	}
 
-	public ImageFileVO(int image_id, int goods_id, String file_name, int reg_id, String file_type, Date creDate) {
+	public ImageFileVO(int image_id, int goods_id, String file_name, String reg_id, String file_type, Date creDate) {
 		super();
 		this.image_id = image_id;
 		this.goods_id = goods_id;
@@ -48,11 +51,11 @@ public class ImageFileVO {
 		this.file_name = file_name;
 	}
 
-	public int getReg_id() {
+	public String getReg_id() {
 		return reg_id;
 	}
 
-	public void setReg_id(int reg_id) {
+	public void setReg_id(String reg_id) {
 		this.reg_id = reg_id;
 	}
 

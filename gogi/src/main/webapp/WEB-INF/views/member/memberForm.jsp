@@ -4,6 +4,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <head>
 <style>
 .navbar.navbar-inverse { padding: 10px; padding-left: 200px; padding-right: 200px; background:white; border:none; }
@@ -20,21 +21,36 @@ ul.nav.navbar-nav li a:hover{color:#000000;}
 }
 #checkIdButton,
 #sendEmailButton {
-  display: inline-block;
-  vertical-align: middle;
-  margin-left: 5px;
-  margin-top: 0px;
-  width: 130px;
+	display: inline-block;
+	vertical-align: middle;
+	margin-left: 5px;
+	margin-top: 0px;
+	width: 130px;
 }
 #emailConfirm {
-  margin-top: 10px;
-  width: 200px;
+	margin-top: 10px;
+	width: 200px;
+}
+.form-group.address-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+/* Adjust width of the address containers as needed */
+.address-container {
+  width: 100%; /* This will make the address fields occupy the full width of the form */
+}
+
+/* Optional: Adjust spacing between address fields */
+.address-container input {
+  margin-bottom: 5px;
 }
 </style>
 
 
-<link href="${contextPath}/resources/css/memberForm.css" rel="stylesheet" type="text/css">
-
+<link href="${contextPath}/resources/css/member/memberForm.css" rel="stylesheet" type="text/css">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
  
@@ -60,14 +76,16 @@ ul.nav.navbar-nav li a:hover{color:#000000;}
 
 	<font id="checkId" size="2" style="margin-right: 100px;"></font>
 	
-      <div class="form-group">
-        <div class="label-group">
-          <label for="mem_pw">비밀번호</label>
-        </div>
-        <input type="password" placeholder="비밀번호" id="mem_pw" name="mem_pw" style="margin-right: 5px;">
-        <input type="password" placeholder="비밀번호 확인" id="mem_pw_confirm" name="mem_pw_confirm" />
-      </div>
-
+	<div class="form-group">
+	  <div class="label-group">
+	    <label for="mem_pw">비밀번호</label>
+	  </div>
+	  <input type="password" placeholder="비밀번호" id="mem_pw" name="mem_pw" style="margin-right: 5px;">
+	  <input type="password" placeholder="비밀번호 확인" id="mem_pw_confirm" name="mem_pw_confirm" />
+	</div>	
+	  <span id="pwMismatchMessage" style="color: red;"></span>
+	  <!-- 일치하지 않을 때 메시지를 표시할 위치 -->
+	
       <div class="form-group">
         <div class="label-group">
           <label for="mem_name">이름</label>
@@ -96,6 +114,45 @@ ul.nav.navbar-nav li a:hover{color:#000000;}
           <input type="text" id="mem_tel3" name="mem_tel3" placeholder="마지막 번호" maxlength="4">
         </div>
       </div>
+      
+	<div class="form-group">
+		<div class="label-group">
+			<label for="mem_addr">주소</label>
+		</div>
+			<div class="input-group">
+				<input type="text" id="zipcode" name="zipcode" size="200">
+			</div>
+		</div>
+	<button>
+		<a href="javascript:execDaumPostcode()">우편번호검색</a>
+	</button>
+
+		<div class="form-group">
+			<div class="label-group">
+				<label for="mem_addr">도로명 주소</label>
+			</div>
+			<div class="input-group">
+				<input type="text" id="roadAddress" name="roadAddress" size="200"><br>
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<div class="label-group">
+				<label for="mem_addr">지번 주소</label>
+			</div>
+				<div class="input-group">
+					<input type="text" id="jibunAddress" name="jibunAddress"size="200"><br>
+				</div>
+		</div>
+		
+  	   <div class="form-group">
+		 <div class="label-group">
+		  	<label for="mem_addr">나머지 주소</label>
+		 </div>
+		<div class="input-group">
+		  	<input type="text" name="namujiAddress" size="200" />
+		</div>
+	  </div>
 
       <div class="form-group">
         <div class="label-group">
@@ -136,6 +193,11 @@ ul.nav.navbar-nav li a:hover{color:#000000;}
 	        if (result == 0) {
 	          alert("사용할 수 있는 아이디입니다.");
 	          $("#checkId").text("사용할 수 있는 아이디입니다.").css("color", "green");
+	          $("#checkIdButton").prop("disabled", true);
+	          $("#mem_pw").prop("disabled", false);
+	          $("#mem_pw_confirm").prop("disabled", false);
+	          $("#mem_name").prop("disabled", false);
+	          $("#mem_email").prop("disabled", false);
 	        } else {
 	          alert("사용할 수 없는 아이디입니다.");
 	          $("#checkId").text("사용할 수 없는 아이디입니다.").css("color", "red");
@@ -201,6 +263,108 @@ ul.nav.navbar-nav li a:hover{color:#000000;}
 	  });
 	});
 	
+	//주소 스크립트
+	function execDaumPostcode() {
+	  new daum.Postcode({
+	    oncomplete: function(data) {
+	      // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+	
+	      // 도로명 주소의 노출 규칙에 따라 주소를 조합한다.
+	      // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+	      var fullRoadAddr = data.roadAddress; // 도로명 주소 변수
+	      var extraRoadAddr = ''; // 도로명 조합형 주소 변수
+	
+	      // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+	      // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+	      if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+	        extraRoadAddr += data.bname;
+	      }
+	      // 건물명이 있고, 공동주택일 경우 추가한다.
+	      if(data.buildingName !== '' && data.apartment === 'Y'){
+	        extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+	      }
+	      // 도로명, 지번 조합형 주소가 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+	      if(extraRoadAddr !== ''){
+	        extraRoadAddr = ' (' + extraRoadAddr + ')';
+	      }
+	      // 도로명, 지번 주소의 유무에 따라 해당 조합형 주소를 추가한다.
+	      if(fullRoadAddr !== ''){
+	        fullRoadAddr += extraRoadAddr;
+	      }
+	
+	      // 우편번호와 주소 정보를 해당 필드에 넣는다.
+	      document.getElementById('zipcode').value = data.zonecode; //5자리 새우편번호 사용
+	      document.getElementById('roadAddress').value = fullRoadAddr;
+	      document.getElementById('jibunAddress').value = data.jibunAddress;
+	
+	      // 사용자가 '선택 안함'을 클릭한 경우, 예상 주소라는 표시를 해준다.
+	      if(data.autoRoadAddress) {
+	        //예상되는 도로명 주소에 조합형 주소를 추가한다.
+	        var expRoadAddr = data.autoRoadAddress + extraRoadAddr;
+	        document.getElementById('roadAddress').innerHTML = '(예상 도로명 주소 : ' + expRoadAddr + ')';
+	
+	      } else if(data.autoJibunAddress) {
+	          var expJibunAddr = data.autoJibunAddress;
+	          document.getElementById('jibunAddress').innerHTML = '(예상 지번 주소 : ' + expJibunAddr + ')';
+	      } 
+	      window.close();
+	    }
+	  }).open();
+	}
+	
+	 function validateForm() {
+		    // 필수 입력 사항 체크
+		    if ($("#mem_id").val() === "") {
+		      alert("아이디를 입력하세요.");
+		      return false;
+		    }
+
+		    if ($("#mem_pw").val() === "" || $("#mem_pw_confirm").val() === "") {
+		      alert("비밀번호를 입력하세요.");
+		      return false;
+		    }
+
+		    if ($("#mem_name").val() === "") {
+		      alert("이름을 입력하세요.");
+		      return false;
+		    }
+		    
+		    if ($("#mem_email").val() === "") {
+			      alert("메일을 입력하세요.");
+			      return false;
+			}
+		    return true;
+	  }
+	 
+	  $("#memberForm").on("submit", function(e) {
+		    // 필수 입력 사항 체크를 통과하지 않으면 폼 제출을 막습니다.
+		    if (!validateForm()) {
+		      e.preventDefault();
+		    }
+		  });
+	  
+	  function checkPasswordMatch() {
+		  var password = $("#mem_pw").val();
+		  var confirmPassword = $("#mem_pw_confirm").val();
+		  if (password !== confirmPassword) {
+		    $("#pwMismatchMessage").text("비밀번호가 일치하지 않습니다.");
+		    return false;
+		  } else {
+		    $("#pwMismatchMessage").text(""); // 일치하면 메시지 제거
+		    return true;
+		  }
+		}
+
+		// 비밀번호와 비밀번호 확인 입력칸이 변경될 때마다 비교 함수 호출
+		$("#mem_pw, #mem_pw_confirm").on("keyup", checkPasswordMatch);
+
+		// 폼 제출 시에도 비밀번호 일치 여부 체크
+		$("#memberForm").on("submit", function (e) {
+		  if (!checkPasswordMatch()) {
+		    e.preventDefault(); // 비밀번호가 일치하지 않으면 폼 제출을 막음
+		  }
+		});
+		
 </script>
 
 </body>

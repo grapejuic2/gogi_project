@@ -16,6 +16,7 @@
 		<result property="goods_status" column="goods_status" />
 		<result property="goods_sales_price" column="goods_sales_price" />
 		<result property="file_name" column="file_name" />
+		<result property="goods_weight" column="goods_weight" />
 	</resultMap>
 	
 	<!-- imageFileVO resultMap 정의 -->

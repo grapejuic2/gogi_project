@@ -18,6 +18,12 @@
 	
 		<result property="mem_email" column="mem_email" />
 		
+		<result property="zipcode" column="zipcode" />
+		<result property="roadAddress" column="roadAddress" />
+		<result property="jibunAddress" column="jibunAddress" />
+		<result property="namujiAddress" column="namujiAddress" />
+		<result property="joinDate" column="joinDate" />
+		
 		<result property="mem_reg_date" column="mem_reg_date" />
 		<result property="mem_del_yn" column="mem_del_yn" />
 	</resultMap>
@@ -35,8 +41,14 @@
 			mem_tel1,
 			mem_tel2,
 			mem_tel3,
-			mem_email
-			)
+			
+			mem_email,
+			
+            zipcode,
+            roadAddress,
+            jibunAddress,
+            namujiAddress
+            )
 			values(
 			#{mem_id},
 			#{mem_pw},
@@ -47,7 +59,11 @@
 			#{mem_tel1},
 			#{mem_tel2},
 			#{mem_tel3},
-			#{mem_email}
+			#{mem_email},
+			#{zipcode},
+            #{roadAddress},
+            #{jibunAddress},
+            #{namujiAddress}
 			)
 		]]>
 	</insert>
