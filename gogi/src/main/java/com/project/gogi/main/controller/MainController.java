@@ -17,36 +17,30 @@ import com.project.gogi.goods.service.GoodsService;
 import com.project.gogi.goods.vo.GoodsVO;
 
 @Controller("mainController")
-@RequestMapping(value = "/main")
+@RequestMapping(value="/main")
 public class MainController {
 	@Autowired
 	private GoodsService goodsService;
-
-	@RequestMapping(value = "/main.do", method = { RequestMethod.POST, RequestMethod.GET })
-	public ModelAndView main(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	
+	@RequestMapping(value= "/main.do", method={RequestMethod.POST,RequestMethod.GET})
+	public ModelAndView main(HttpServletRequest request, HttpServletResponse response) throws Exception{	
 		HttpSession session;
-		ModelAndView mav = new ModelAndView();
-		String viewName = (String) request.getAttribute("viewName");
+		ModelAndView mav=new ModelAndView();
+		String viewName=(String) request.getAttribute("viewName");
 		mav.setViewName(viewName);
-		session = request.getSession();
-		// session.setAttribute(name, value); 로그인 했을때 표시되는 메뉴 항목 설정 ( 회원, 관리자 )
-		Map<String, List<GoodsVO>> goodsMap = goodsService.listMainGoods();
+		session=request.getSession();
+		//session.setAttribute(name, value); 로그인 했을때 표시되는 메뉴 항목 설정 ( 회원, 관리자 )
+		Map<String, List<GoodsVO>> goodsMap=goodsService.listMainGoods();
 		mav.addObject("goodsMap", goodsMap);
-		System.out.println("controller" + goodsMap);
+		System.out.println("controller"+goodsMap);
 		return mav;
-	}
+	}	
 
-	// 배송안내 페이지
-	@RequestMapping(value = "/delivery.do", method = RequestMethod.GET)
-	public String deliveryPage() {
-		return "delivery/delivery";
-	}
 
-	// 공지사항 페이지
-	@RequestMapping(value = "/notice.do", method = RequestMethod.GET)
-	private String noticePage() {
-		return "notice/notice";
+	//배송안내 페이지
+		@RequestMapping(value = "/delivery.do", method = RequestMethod.GET)
+		public String deliveryPage() {
+			return "delivery/delivery";
+		}	
+}	
 
-	}
-
-}

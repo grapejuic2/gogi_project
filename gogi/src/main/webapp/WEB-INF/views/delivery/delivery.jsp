@@ -13,9 +13,7 @@
  <!-- 폰트:나눔고딕 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link
-	href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap"
-	rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
  
 </head>
 <title>배송 안내</title>
@@ -58,7 +56,7 @@
 						onclick="findAddr()">
 					<!-- c:if 사용 불가: 동적인 조거부 블록은 서버 측에서 실행되기 떄문에  JavaScript랑 같이 사용 불가 -> script 사용해 조건부로 표기해야함 -->
 					<div id="delivery_message" style="display: none;">
-						<p id="dv_w_p" >배달 가능 지역입니다.</p>
+						<p id="dv_w_p">배달 가능 지역입니다.</p>
 					</div>
 				</div>
 			</div>
@@ -114,7 +112,7 @@
 					<b class="tab_d_b">저녁에 주문하면 다음 날 아침 전에 도착!</b>
 					<div class="dv_c_d2">
 						<div class="span_dv">
-							<p   > 월~일 도착</p>
+							<p  > 월~일 도착</p>
 						</div>
 						<ul>
 							<li>
@@ -141,7 +139,7 @@
 					<b>캠핑장에서 원하는 고가를 즐길수 있도록 육룰이 달려갑니다.</b>
 					<div class="dv_c_d2">
 						<div class="span_dv">
-							<p  > 월~일 도착</p>
+							<p  c > 월~일 도착</p>
 						</div>
 						<ul>
 							<li>

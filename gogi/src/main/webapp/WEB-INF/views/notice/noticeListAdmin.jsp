@@ -12,7 +12,9 @@
 <head>
 <meta charset="UTF-8">
 <link href="${contextPath}/resources/css/noticeList.css" rel="stylesheet" type="text/css">
+<style type="text/css">
 
+</style>
 <title>Insert title here</title>
 </head>
 <body>
@@ -43,11 +45,11 @@
 					</colgroup>
 					<thead>
 						<tr>
-							<th class="center tw fg">번호</th>
-							<th class="center tw fg">제목</th>
-							<th class="center tw fg">작성일</th>
-							<th class="center tw fg">작성자</th>
-							<th class="center tw fg">조회수</th>
+							<th class="center tw fg lb">번호</th>
+							<th class="center tw fg lb">제목</th>
+							<th class="center tw fg lb">작성일</th>
+							<th class="center tw fg lb">작성자</th>
+							<th class="center tw fg lb">조회수</th>
 						</tr>
 					</thead>
 

@@ -47,7 +47,7 @@ public class NoticeController {
 	private MemberVO memberVO;
 
 
-	//공지사항~ 로그인 여부 확인
+	//공지사항~
 	//게시물 목록  +페이징
 		@RequestMapping(value = "/list.do", method = RequestMethod.GET)
 		public String getNoticeList(Model model,Criteria cri,Criteria2 cri2, HttpServletRequest request, HttpServletResponse response,NoticeVO vo) throws Exception {

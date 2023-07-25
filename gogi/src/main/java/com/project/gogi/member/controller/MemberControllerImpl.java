@@ -51,7 +51,7 @@ public class MemberControllerImpl extends BaseController implements MemberContro
 			HttpSession session = request.getSession();
 			session.setAttribute("isLogon", true);
 			session.setAttribute("memberInfo", memberVO);
-			
+			System.out.println("로그인"+memberVO.getMem_id());
 			String action = (String)session.getAttribute("action");
 			
 			if(action != null) {
@@ -67,9 +67,11 @@ public class MemberControllerImpl extends BaseController implements MemberContro
 				
 			} else { // action 값이 null인경우 main으로 넘김
 					System.out.println(memberVO.getMem_id()+ " 로그인 완료");
+					/*0719 오동림 추가 (71-72)*/
+					session = request.getSession(true);
+		            session.setMaxInactiveInterval(30 * 60); //세션 30분 유지
 					mav.setViewName("redirect:/main/main.do");
 			}
-			
 		}else{
 			String message="아이디나  비밀번호가 틀립니다. 다시 로그인해주세요";
 			mav.addObject("message", message);
@@ -199,5 +201,5 @@ public class MemberControllerImpl extends BaseController implements MemberContro
 		mav.setViewName(viewName);
 		return mav;
 	}
-
+	
 }
