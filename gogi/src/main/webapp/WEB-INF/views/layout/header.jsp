@@ -103,7 +103,7 @@ ul.nav.navbar-nav li a:hover {
 			} 
 			
 			if (isAdmin) {
-				$('.non-admin-in').removeClass('hidden');
+				$('.admin-in').removeClass('hidden');
 				$('.admin-out').addClass('hidden');
 			} else {
 				$('.admin-in').addClass('hidden');
