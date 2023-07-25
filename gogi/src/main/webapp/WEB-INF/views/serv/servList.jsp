@@ -11,12 +11,13 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link href="${contextPath}/resources/css/noticeList.css" rel="stylesheet" type="text/css">
+<link href="${contextPath}/resources/css/noticeList.css"
+	rel="stylesheet" type="text/css">
 
 <title>Insert title here</title>
 </head>
 <body>
- 
+
 	<div id="Notice" class="tabcontent container1" style="display: block;">
 		<h3 style="text-align: center;">고객센터</h3>
 		<hr class="hr1" noshade>
@@ -46,9 +47,12 @@
 						<c:forEach items="${servList}" var="servList">
 							<tr>
 								<td class="center fgl">${servList.cust_serv_no}</td>
-								<td class="left fgl"><a
-									href="${contextPath}/serv/read.do?cust_serv_no=${servList.cust_serv_no}">${servList.cust_serv_title}</a>
-								</td>
+								<td class="left fgl">
+								<c:if test="${servList.cust_serv_notice eq 1}">
+											<img src="${contextPath}/resources/images/serv/hit.png" width="30px" alt="new" />
+										</c:if>
+								<a href="${contextPath}/serv/read.do?cust_serv_no=${servList.cust_serv_no}">${servList.cust_serv_title}
+								</a></td>
 								<td class="center fgl"><fmt:formatDate
 										value="${servList.cust_serv_date}" /></td>
 								<td class="center fgl">${servList.mem_id}</td>
@@ -57,7 +61,7 @@
 						</c:forEach>
 					</tbody>
 
-
+ 
 				</table>
 				<!--글쓰기 버튼  -->
 				<div class="writeButton">
@@ -99,12 +103,12 @@
 		</div>
 
 	</div>
- 
-
-	 
 
 
- 
- 
+
+
+
+
+
 </body>
 </html>

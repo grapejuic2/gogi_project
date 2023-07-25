@@ -21,7 +21,6 @@ public interface ServDAO {
 	   
 	   // 수정  
 	   public void ServUpdate(ServVO vo) throws Exception;
-	    
 	   
 	   // 삭제
 	   public void ServDelete(int cust_serv_no) throws Exception;
@@ -38,7 +37,7 @@ public interface ServDAO {
  
 		public boolean CheckAdmin(ServVO vo)  throws Exception;
 		
-	 
+		 public String getServPw(int cust_serv_no) throws Exception;
 		
 	    
 		    

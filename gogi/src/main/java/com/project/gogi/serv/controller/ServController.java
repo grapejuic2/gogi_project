@@ -21,6 +21,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.project.gogi.member.vo.MemberVO;
 import com.project.gogi.serv.domain.Criteria3;
@@ -113,27 +115,8 @@ public class ServController {
 		}
 		
 	  
-		//게시물 수정
-		@RequestMapping(value = "/modify.do", method = RequestMethod.GET)
-		public String getServModify(@RequestParam("cust_serv_no")int cust_serv_no, Model model) throws Exception{
-			ServVO vo= service.ServRead(cust_serv_no);
-			model.addAttribute("servRead", vo);
 		
-			return "serv/servModify";
-		}
 		
-
-		// 게시물 수정
-		@RequestMapping(value = "/modify.do", method = RequestMethod.POST)
-		public String postServModify(ServVO vo) throws Exception {
-
-			service.ServUpdate(vo);
-	
-			//redirect는 value 경로 넣어주기..꼭!!!!!!  
-		 return "redirect:/serv/read.do?cust_serv_no=" + vo.getCust_serv_no();
-		}
-		  
-	  
 		// 게시물 삭제
 		@RequestMapping(value = "/delete.do", method = RequestMethod.GET)
 		public String getServDelete(@RequestParam("cust_serv_no") int cust_serv_no) throws Exception {
@@ -145,7 +128,46 @@ public class ServController {
 		
  
 		
-	  
+		
+		// 게시물 수정 페이지 이동
+		@RequestMapping(value = "/modify.do", method = RequestMethod.GET)
+		public String getServModify(@RequestParam("cust_serv_no") int cust_serv_no, Model model) throws Exception {
+		    ServVO vo = service.ServRead(cust_serv_no);
+		    model.addAttribute("servRead", vo);
+		    return "serv/servModify";
+		}
+
+		 // 게시물 수정 처리
+	    @RequestMapping(value = "/modify.do", method = RequestMethod.POST)
+	    @ResponseBody
+	    public Map<String, Object> postServModify(ServVO vo) throws Exception {
+	        Map<String, Object> result = new HashMap<>();
+	        
+	        ServVO servFromDB = service.ServRead(vo.getCust_serv_no());
+	        String enteredPassword = vo.getCust_serv_pw();
+
+	        if (servFromDB == null) {
+	            result.put("success", false);
+	            result.put("message", "해당 게시물을 찾을 수 없습니다.");
+	            return result;
+	        }
+
+	        String storedPassword = servFromDB.getCust_serv_pw();
+
+	        if (storedPassword.equals(enteredPassword)) {
+	            service.ServUpdate(vo);
+	            result.put("success", true);
+	            result.put("message", "게시물이 수정되었습니다.");
+	        } else {
+	            result.put("success", false);
+	            result.put("message", "일치하지 않는 비밀번호입니다.");
+	        }
+
+	        return result;
+	    }
+		    
+		 
+	 
 				}	 
 	
 				

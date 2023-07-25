@@ -10,10 +10,9 @@
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <link href="${contextPath}/resources/css/noticeRead.css"
 	rel="stylesheet" type="text/css">
-	<style type="text/css">
-	@charset "UTF-8";
+<style type="text/css">
+@charset "UTF-8";
 
- 
 .row1 {
 	margin: 0px auto;
 	width: 1100px;
@@ -24,15 +23,18 @@
 	text-align: center;
 	justify-content: center;
 }
-h1{
-text-align: center;margin-top: 50px;
-font-family: 'Nanum Gothic', sans-serif;
-	font-weight: 800;
-	font-size:60px;
-margin-bottom: 10px;}
 
-.bbu{
-    border-bottom: 1px solid #ddd;
+h1 {
+	text-align: center;
+	margin-top: 50px;
+	font-family: 'Nanum Gothic', sans-serif;
+	font-weight: 800;
+	font-size: 60px;
+	margin-bottom: 10px;
+}
+
+.bbu {
+	border-bottom: 1px solid #ddd;
 }
 
 .greylist {
@@ -78,22 +80,26 @@ margin-bottom: 10px;}
 	font-size: 20px;
 	font-weight: bold;
 }
+
 .fgl {
 	font-family: 'Nanum Gothic', sans-serif;
 	font-weight: 400;
 	font-size: 20px;
 }
-.fw{
-color: white;
-}
-.lb{
-background-color: #292929;}
 
-.rightbtn{
+.fw {
+	color: white;
+}
+
+.lb {
+	background-color: #292929;
+}
+
+.rightbtn {
 	float: right;
 }
- 
-	</style>>
+</style>
+>
 </head>
 <body>
 
@@ -105,23 +111,29 @@ background-color: #292929;}
 				<table class="table">
 					<tr>
 						<th width=15% class="text-center   fg lb fw">작성자</th>
-						<td width=35% class="text-left fgl">
-						<input
+						<td width=35% class="text-left fgl"><input
 							style="width: 350px;" type="text" name="mem_id"
 							placeholder="이름을 입력해 주세요" /></td>
 					</tr>
+
 					<tr>
 						<th width=15% class="text-center lb fg fw">제목</th>
 						<td colspan="2" class="fgl"><input style="width: 350px;"
 							type="text" name="cust_serv_title" placeholder="제목을 입력해 주세요" /></td>
 					</tr>
 					<tr>
+						<th width=15% class="text-center   fg lb fw">글 선택</th>
+						<td width=35% class="text-left fgl">
+						<input type="radio"  value="1" name="cust_serv_notice"/>공지사항 
+						<input type="radio"  value="0" name="cust_serv_notice"/>일반글 </td>
+					</tr>
+					<tr>
 						<th width=15% class="text-center lb fg fw">비밀번호</th>
 						<td colspan="2" class="fgl"><input style="width: 350px;"
 							type="text" name="cust_serv_pw" placeholder="비밀번호를 입력해 주세요" /></td>
 					</tr>
-					
-					
+
+
 					<tr>
 						<td colspan="4" class="text-left fg" valign="top" height="200">
 							<pre class="fgl"

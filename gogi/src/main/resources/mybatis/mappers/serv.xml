@@ -7,14 +7,14 @@
    <!-- 목록+페이징 v-->
    <select id="servList" resultType="servVO"  parameterType="Criteria3">
     <![CDATA[
-    select cust_serv_no, cust_serv_title, cust_serv_content, mem_id, cust_serv_date, cust_serv_hits
+     select cust_serv_no, cust_serv_title, cust_serv_content, mem_id, cust_serv_date, cust_serv_hits,cust_serv_notice
     from (
-        select cust_serv_no, cust_serv_title, cust_serv_content, mem_id, cust_serv_date, cust_serv_hits,
-            row_number() over(order by cust_serv_no desc) as rNum2
+        select cust_serv_no, cust_serv_title, cust_serv_content, mem_id, cust_serv_date, cust_serv_hits,cust_serv_notice,
+            row_number() over(order by cust_serv_notice desc, cust_serv_no desc) as rNum
         from  GOGI_CUST_SERV_BOARD
-        ) mb2
-    where rNum2 between  #{rowStart} and #{rowEnd}
-        order by cust_serv_no desc
+        ) mb
+   where rNum between  #{rowStart} and #{rowEnd}
+        ORDER by cust_serv_notice desc, cust_serv_no desc
          ]]>
 </select>
  
@@ -30,8 +30,8 @@
 
     <!-- -작성 -->
    <insert id="servWrite">
-    insert into GOGI_CUST_SERV_BOARD(cust_serv_no, cust_serv_title, cust_serv_content,mem_id,cust_serv_pw)
-        values (seq_serv.nextval, #{cust_serv_title}, #{cust_serv_content}, #{mem_id},#{cust_serv_pw})
+    insert into GOGI_CUST_SERV_BOARD(cust_serv_no, cust_serv_title, cust_serv_content,mem_id,cust_serv_pw,cust_serv_notice)
+        values (seq_serv.nextval, #{cust_serv_title}, #{cust_serv_content}, #{mem_id},#{cust_serv_pw},#{cust_serv_notice})
  	</insert>
    
    <!-- 조회 -->
@@ -51,23 +51,23 @@
 </update>
 
 
-
-   <!--  수정 -->   
-   <update id="servUpdate" parameterType="servVO">
-    update GOGI_CUST_SERV_BOARD
-     set
-      cust_serv_title = #{cust_serv_title},
-      cust_serv_content = #{cust_serv_content},
-      mem_id=#{mem_id}
-  where cust_serv_no = #{cust_serv_no}
-   </update>
+ 
    
-   <!-- 비밀번호 값 받아오기 -->
-    <select id="servGetPw" resultType="int">
-	select cust_serv_pw
-	from GOGI_CUST_SERV_BOARD
-	where cust_serv_no = #{cust_serv_no}
-   </select>
+   <!-- 게시물 수정 -->
+  <update id="servUpdate" parameterType="servVO" >
+    UPDATE GOGI_CUST_SERV_BOARD
+    SET cust_serv_title = #{cust_serv_title},
+        cust_serv_content = #{cust_serv_content}
+    WHERE cust_serv_no = #{cust_serv_no}
+</update>
+   
+   
+   
+   <select id="servGetPw" resultType="String">
+    select cust_serv_pw
+    from GOGI_CUST_SERV_BOARD
+    where cust_serv_no = #{cust_serv_no}
+</select>
 
    
    <!--  삭제 -->
