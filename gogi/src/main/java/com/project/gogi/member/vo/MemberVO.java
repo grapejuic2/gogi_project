@@ -15,7 +15,7 @@ public class MemberVO {
 	private String mem_tel1; // 회원 폰 번호 - 통신사
 	private String mem_tel2; // 회원 폰 번호 - 중간 번호
 	private String mem_tel3; // 회원 폰 번호 - 마지막 번호
-	private String zipcode;  // 회원 주소
+	private String zipcode;  		// 회원 주소
 	private String roadAddress;  	// 도로 주소
 	private String jibunAddress; 	// 지번 주소
 	private String namujiAddress;	// 나머지 주소

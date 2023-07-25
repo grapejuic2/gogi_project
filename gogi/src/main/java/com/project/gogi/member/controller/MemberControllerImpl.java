@@ -1,6 +1,5 @@
 package com.project.gogi.member.controller;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
@@ -41,41 +40,28 @@ public class MemberControllerImpl extends BaseController implements MemberContro
 	private JavaMailSender mailSender;
 	
 	@Override
-	@RequestMapping(value =  "/login.do", method = RequestMethod.POST)
-	public ModelAndView login(@RequestParam Map<String, String> loginMap, HttpServletRequest request, HttpServletResponse response) throws Exception{
+	@RequestMapping(value = "/loginForm.do", method = RequestMethod.POST)
+	public ModelAndView loginForm(@RequestParam Map<String, String> loginMap, HttpServletRequest request, HttpServletResponse response) throws Exception{
 		
 		ModelAndView mav = new ModelAndView();
+		memberVO = memberService.loginForm(loginMap);
 		
-		memberVO = memberService.login(loginMap);
 		if(memberVO!= null && memberVO.getMem_id()!=null) {
 			HttpSession session = request.getSession();
 			session.setAttribute("isLogon", true);
 			session.setAttribute("memberInfo", memberVO);
 			System.out.println("로그인"+memberVO.getMem_id());
-			String action = (String)session.getAttribute("action");
+
+				System.out.println(memberVO.getMem_id()+ " 로그인 완료");
+				/*0719 오동림 추가 (71-72)*/
+				session = request.getSession(true);
+	            session.setMaxInactiveInterval(30 * 60); //세션 30분 유지
+				mav.setViewName("redirect:/main/main.do");
 			
-			if(action != null) {
-				if(action.equals("/order/orderEachGoods.do")){
-					mav.setViewName("forward:"+action);
-				}else if(action.equals("/board/review/reviewForm.do")){
-					mav.setViewName("redirect:" + action);
-				}else if(action.equals("/board/qna/qnaForm.do")){
-					mav.setViewName("redirect:" + action);
-				}else if(action.equals("/goods/goodsDetail.do")) {
-					mav.setViewName("forward:" + action);
-				}
-				
-			} else { // action 값이 null인경우 main으로 넘김
-					System.out.println(memberVO.getMem_id()+ " 로그인 완료");
-					/*0719 오동림 추가 (71-72)*/
-					session = request.getSession(true);
-		            session.setMaxInactiveInterval(30 * 60); //세션 30분 유지
-					mav.setViewName("redirect:/main/main.do");
-			}
 		}else{
 			String message="아이디나  비밀번호가 틀립니다. 다시 로그인해주세요";
 			mav.addObject("message", message);
-			mav.setViewName("/member/loginForm.do");
+			mav.setViewName("/member/loginForm");
 		}
 		return mav;
 	}

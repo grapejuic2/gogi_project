@@ -4,6 +4,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <head>
 <style>
 .navbar.navbar-inverse { padding: 10px; padding-left: 200px; padding-right: 200px; background:white; border:none; }
@@ -49,8 +50,7 @@ ul.nav.navbar-nav li a:hover{color:#000000;}
 </style>
 
 
-<link href="${contextPath}/resources/css/memberForm.css" rel="stylesheet" type="text/css">
-<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
+<link href="${contextPath}/resources/css/member/memberForm.css" rel="stylesheet" type="text/css">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
  
@@ -76,14 +76,16 @@ ul.nav.navbar-nav li a:hover{color:#000000;}
 
 	<font id="checkId" size="2" style="margin-right: 100px;"></font>
 	
-      <div class="form-group">
-        <div class="label-group">
-          <label for="mem_pw">비밀번호</label>
-        </div>
-        <input type="password" placeholder="비밀번호" id="mem_pw" name="mem_pw" style="margin-right: 5px;">
-        <input type="password" placeholder="비밀번호 확인" id="mem_pw_confirm" name="mem_pw_confirm" />
-      </div>
-
+	<div class="form-group">
+	  <div class="label-group">
+	    <label for="mem_pw">비밀번호</label>
+	  </div>
+	  <input type="password" placeholder="비밀번호" id="mem_pw" name="mem_pw" style="margin-right: 5px;">
+	  <input type="password" placeholder="비밀번호 확인" id="mem_pw_confirm" name="mem_pw_confirm" />
+	</div>	
+	  <span id="pwMismatchMessage" style="color: red;"></span>
+	  <!-- 일치하지 않을 때 메시지를 표시할 위치 -->
+	
       <div class="form-group">
         <div class="label-group">
           <label for="mem_name">이름</label>
@@ -299,15 +301,12 @@ ul.nav.navbar-nav li a:hover{color:#000000;}
 	      if(data.autoRoadAddress) {
 	        //예상되는 도로명 주소에 조합형 주소를 추가한다.
 	        var expRoadAddr = data.autoRoadAddress + extraRoadAddr;
-	        document.getElementById('guide').innerHTML = '(예상 도로명 주소 : ' + expRoadAddr + ')';
+	        document.getElementById('roadAddress').innerHTML = '(예상 도로명 주소 : ' + expRoadAddr + ')';
 	
 	      } else if(data.autoJibunAddress) {
 	          var expJibunAddr = data.autoJibunAddress;
-	          document.getElementById('guide').innerHTML = '(예상 지번 주소 : ' + expJibunAddr + ')';
-	      } else {
-	          document.getElementById('guide').innerHTML = '';
-	      }
-	      
+	          document.getElementById('jibunAddress').innerHTML = '(예상 지번 주소 : ' + expJibunAddr + ')';
+	      } 
 	      window.close();
 	    }
 	  }).open();
@@ -343,6 +342,29 @@ ul.nav.navbar-nav li a:hover{color:#000000;}
 		      e.preventDefault();
 		    }
 		  });
+	  
+	  function checkPasswordMatch() {
+		  var password = $("#mem_pw").val();
+		  var confirmPassword = $("#mem_pw_confirm").val();
+		  if (password !== confirmPassword) {
+		    $("#pwMismatchMessage").text("비밀번호가 일치하지 않습니다.");
+		    return false;
+		  } else {
+		    $("#pwMismatchMessage").text(""); // 일치하면 메시지 제거
+		    return true;
+		  }
+		}
+
+		// 비밀번호와 비밀번호 확인 입력칸이 변경될 때마다 비교 함수 호출
+		$("#mem_pw, #mem_pw_confirm").on("keyup", checkPasswordMatch);
+
+		// 폼 제출 시에도 비밀번호 일치 여부 체크
+		$("#memberForm").on("submit", function (e) {
+		  if (!checkPasswordMatch()) {
+		    e.preventDefault(); // 비밀번호가 일치하지 않으면 폼 제출을 막음
+		  }
+		});
+		
 </script>
 
 </body>

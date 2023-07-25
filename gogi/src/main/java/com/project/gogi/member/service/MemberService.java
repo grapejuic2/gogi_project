@@ -10,7 +10,7 @@ public interface MemberService {
 	public void insertNewMember(MemberVO memberVO) throws Exception;
 	
 	//로그인
-	public MemberVO login(Map loginMap) throws Exception;
+	public MemberVO loginForm(Map loginMap) throws Exception;
 	
 	//아이디 중복검사
 	public String checkId(String id) throws Exception;
