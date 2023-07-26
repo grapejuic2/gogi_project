@@ -32,7 +32,8 @@ import com.project.gogi.member.vo.MemberVO;
 @Controller("adminGoodsController")
 @RequestMapping(value="/admin/goods")
 public class AdminGoodsControllerImpl extends BaseController implements AdminGoodsController{
-	private static final String CURR_IMAGE_REPO_PATH = "C:\\shopping\\file_repo";
+	private static final String CURR_IMAGE_REPO_PATH = "C:\\meatrule\\file_repo";
+	
 	@Autowired
 	private AdminGoodsService adminGoodsService;
 	
@@ -43,7 +44,7 @@ public class AdminGoodsControllerImpl extends BaseController implements AdminGoo
 		ModelAndView mav = new ModelAndView(viewName);
 		HttpSession session=request.getSession();
 		session=request.getSession();
-		session.setAttribute("side_menu", "admin_mode"); //마이페이지 사이드 메뉴로 설정한다.
+		//session.setAttribute("side_menu", "admin_mode"); //마이페이지 사이드 메뉴로 설정한다.
 		
 		String fixedSearchPeriod = dateMap.get("fixedSearchPeriod");
 		String section = dateMap.get("section");
@@ -84,8 +85,6 @@ public class AdminGoodsControllerImpl extends BaseController implements AdminGoo
 		return mav;
 		
 	}
-	
-
 	
 	@RequestMapping(value="/addNewGoods.do" ,method={RequestMethod.POST})
 	public ResponseEntity addNewGoods(MultipartHttpServletRequest multipartRequest, HttpServletResponse response) throws Exception {
@@ -175,9 +174,7 @@ public class AdminGoodsControllerImpl extends BaseController implements AdminGoo
 		return mav;
 	}
 	
-	
 	@RequestMapping(value="/modifyGoodsInfo.do" ,method={RequestMethod.POST})
-										  // 상품 정보 수정창에서 Ajax로 수정할 상품 번호, 상품 속성, 수정 값을 전달받습니다.
 	public ResponseEntity modifyGoodsInfo(@RequestParam("goods_id") String goods_id,
 			                     		  @RequestParam("attribute") String attribute,
 			                     		  @RequestParam("value") String value,
@@ -201,7 +198,6 @@ public class AdminGoodsControllerImpl extends BaseController implements AdminGoo
 		return resEntity;
 	}
 	
-
 	@RequestMapping(value="/modifyGoodsImageInfo.do" ,method={RequestMethod.POST})
 	public void modifyGoodsImageInfo(MultipartHttpServletRequest multipartRequest, HttpServletResponse response)  throws Exception {
 		System.out.println("modifyGoodsImageInfo");
@@ -336,8 +332,6 @@ public class AdminGoodsControllerImpl extends BaseController implements AdminGoo
 		}
 	}
 	
-	
-	//삭제
 	@Override
 	@RequestMapping(value="/removeGoods.do", method={RequestMethod.POST})
 	public void removeGoodsImage(@RequestParam("goods_id") int goods_id,

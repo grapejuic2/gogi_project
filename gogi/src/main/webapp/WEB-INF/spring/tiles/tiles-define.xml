@@ -15,5 +15,66 @@
     </definition>
     <definition name="*" extends="baseLayout">
         <put-attribute name="body" value="/WEB-INF/views/{1}.jsp" />
+    </definition>
+    
+    <definition name="orderCartGoods" extends="baseLayout">
+       <put-attribute name="body" value="/WEB-INF/views/order/orderEachGoods.jsp" />
+    </definition>
+    
+    <!-- 관리자 부분 -->
+    <!-- 주문관리 -->
+    <definition name="/admin/order/adminOrderMain" extends="baseLayout">
+       <put-attribute name="title" value="주문 관리 페이지" />
+       <put-attribute name="body" value="/WEB-INF/views/admin/order/adminOrderMain.jsp" />
+    </definition>
+    <definition name="/admin/order/orderDetail" extends="baseLayout">
+       <put-attribute name="title" value="주문 관리 페이지" />
+       <put-attribute name="body" value="/WEB-INF/views/admin/order/adminOrderDetail.jsp" />
+    </definition>   
+    
+    <!-- 상품관리 -->
+    <definition name="/admin/goods/adminGoodsMain" extends="baseLayout">
+       <put-attribute name="title" value="관리자 메인 페이지" />
+       <put-attribute name="body" value="/WEB-INF/views/admin/goods/adminGoodsMain.jsp" />
+    </definition>
+    <definition name="/admin/goods/addNewGoodsForm" extends="baseLayout">
+       <put-attribute name="title" value="새 상품 추가 페이지" />
+       <put-attribute name="body" value="/WEB-INF/views/admin/goods/addNewGoodsForm.jsp" />
+    </definition>
+    <definition name="/admin/goods/modifyGoodsForm" extends="baseLayout">
+       <put-attribute name="title" value="상품 수정 페이지" />
+       <put-attribute name="body" value="/WEB-INF/views/admin/goods/modifyGoodsForm.jsp" />
     </definition>   	
+    
+    <!-- 회원관리 -->
+    <definition name="/admin/member/adminMemberMain" extends="baseLayout">
+       <put-attribute name="title" value="회원 관리 페이지" />
+       <put-attribute name="body" value="/WEB-INF/views/admin/member/adminMemberMain.jsp" />
+    </definition>
+    
+    <definition name="/admin/member/memberDetail" extends="baseLayout">
+       <put-attribute name="title" value="회원 상세 페이지" />
+       <put-attribute name="body" value="/WEB-INF/views/admin/member/memberDetail.jsp" />
+    </definition> 
+    
+    <!-- 공지관리 -->
+   	<definition name="/admin/notice/listNotice" extends="baseLayout">
+		<put-attribute name="title" value="공지목록" />
+		<put-attribute name="body" value="/WEB-INF/views/admin/notice/listNotice.jsp" />
+	</definition>
+
+	<definition name="/admin/notice/insertNotice" extends="baseLayout">
+		<put-attribute name="title" value="공지쓰기" />
+		<put-attribute name="body" value="/WEB-INF/views/admin/notice/insertNoticeForm.jsp" />
+	</definition>
+	
+	 <definition name="/admin/notice/viewNotice" extends="baseLayout">
+       <put-attribute name="title" value="공지상세" />
+       <put-attribute name="body" value="/WEB-INF/views/admin/notice/viewNotice.jsp" />
+    </definition>
+    
+      <!-- 장바구니에 담긴 모든 상품을 주문할 경우 주문 페이지를 표시 -->
+    <definition name="orderCartGoods" extends="baseLayout">
+       <put-attribute name="body" value="/WEB-INF/views/order/orderEachGoods.jsp" />
+    </definition>  	
 </tiles-definitions>
