@@ -88,51 +88,51 @@ ul.nav.navbar-nav li a:hover {
 </nav>
 
 <!-- 헤더 스크립트 -->
-	<script>
-		$(document).ready(function() {
-		    var isLogOn = false;
-		    var isAdmin = false;
-		    
-		    function toggleForm() {
-		        if (isAdmin) {
-		            $('.admin-logged-in').removeClass('hidden');
-		            $('.user-logged-in, .logged-out').addClass('hidden');
-		        } else if (isLogOn) {
-		            $('.user-logged-in').removeClass('hidden');
-		            $('.admin-logged-in, .logged-out').addClass('hidden');
-		        } else {
-		            $('.logged-out').removeClass('hidden');
-		            $('.user-logged-in, .admin-logged-in').addClass('hidden');
-		        }
-		    }
-		
-		    // 로그인 상태 변경 시 폼 변경
-		    toggleForm();
-		
-		    var isLogonValue = '<c:out value="${sessionScope.isLogon}" />';
-		    if (isLogonValue === 'true') {
-		        isLogOn = true;
-		    }
-		    toggleForm();
-		    
-		    var isAdminValue = '<c:out value="${sessionScope.isAdmin}" />';
-		    if (isAdminValue === 'true') {
-		        isAdmin = true;
-		    }
-		    toggleForm();
-		
-		    $('#loginBtn').click(function() {
-		        isLogOn = true;
-		        isAdmin = true;
-		        toggleForm();
-		    });
-		
-		    $('#logoutBtn').click(function() {
-		        isLogOn = false;
-		        isAdmin = false;
-		        toggleForm();
-		    });
-		});
+<script>
+	$(document).ready(function() {
+	    var isLogOn = false;
+	    var isAdmin = false;
+	    
+	    function toggleForm() {
+	        if (isAdmin) {
+	            $('.admin-logged-in').removeClass('hidden');
+	            $('.user-logged-in, .logged-out').addClass('hidden');
+	        } else if (isLogOn) {
+	            $('.user-logged-in').removeClass('hidden');
+	            $('.admin-logged-in, .logged-out').addClass('hidden');
+	        } else {
+	            $('.logged-out').removeClass('hidden');
+	            $('.user-logged-in, .admin-logged-in').addClass('hidden');
+	        }
+	    }
+	
+	    // 로그인 상태 변경 시 폼 변경
+	    toggleForm();
+	
+	    var isLogonValue = '<c:out value="${sessionScope.isLogon}" />';
+	    if (isLogonValue === 'true') {
+	        isLogOn = true;
+	    }
+	    toggleForm();
+	    
+	    var isAdminValue = '<c:out value="${sessionScope.isAdmin}" />';
+	    if (isAdminValue === 'true') {
+	        isAdmin = true;
+	    }
+	    toggleForm();
+	
+	    $('#loginBtn').click(function() {
+	        isLogOn = true;
+	        isAdmin = true;
+	        toggleForm();
+	    });
+	
+	    $('#logoutBtn').click(function() {
+	        isLogOn = false;
+	        isAdmin = false;
+	        toggleForm();
+	    });
+	});
 	</script>
 </body>
 </html>

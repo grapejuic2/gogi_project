@@ -73,4 +73,8 @@
        <put-attribute name="body" value="/WEB-INF/views/admin/notice/viewNotice.jsp" />
     </definition>
     
+      <!-- 장바구니에 담긴 모든 상품을 주문할 경우 주문 페이지를 표시 -->
+    <definition name="orderCartGoods" extends="baseLayout">
+       <put-attribute name="body" value="/WEB-INF/views/order/orderEachGoods.jsp" />
+    </definition>  	
 </tiles-definitions>

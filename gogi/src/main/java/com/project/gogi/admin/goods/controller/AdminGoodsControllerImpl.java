@@ -174,9 +174,7 @@ public class AdminGoodsControllerImpl extends BaseController implements AdminGoo
 		return mav;
 	}
 	
-	
 	@RequestMapping(value="/modifyGoodsInfo.do" ,method={RequestMethod.POST})
-										  // 상품 정보 수정창에서 Ajax로 수정할 상품 번호, 상품 속성, 수정 값을 전달받습니다.
 	public ResponseEntity modifyGoodsInfo(@RequestParam("goods_id") String goods_id,
 			                     		  @RequestParam("attribute") String attribute,
 			                     		  @RequestParam("value") String value,
@@ -200,7 +198,6 @@ public class AdminGoodsControllerImpl extends BaseController implements AdminGoo
 		return resEntity;
 	}
 	
-
 	@RequestMapping(value="/modifyGoodsImageInfo.do" ,method={RequestMethod.POST})
 	public void modifyGoodsImageInfo(MultipartHttpServletRequest multipartRequest, HttpServletResponse response)  throws Exception {
 		System.out.println("modifyGoodsImageInfo");
@@ -335,8 +332,6 @@ public class AdminGoodsControllerImpl extends BaseController implements AdminGoo
 		}
 	}
 	
-	
-	//삭제
 	@Override
 	@RequestMapping(value="/removeGoods.do", method={RequestMethod.POST})
 	public void removeGoodsImage(@RequestParam("goods_id") int goods_id,

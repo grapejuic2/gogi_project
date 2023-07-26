@@ -54,11 +54,12 @@
 </head>
 <body>
 <div class="cartList">
+	<form name="frm_order_all_cart" style="width:1000px;">
 	<span style="font-size: 35px;font-weight: 700;">장바구니</span><br>
-		<div class="btn-container">
+		<div class="btn-container">				
 		  <input value="선택삭제" type="button" class="btn btn-secondary btn-sm" onClick="deleteCheckedGoods()" />
 		</div>
-		<table>
+		<table style=" width:90%;">
 			<tr>
 				<th><input type="checkbox" id="selectAllCheckbox" onClick="goodsAllCheckboxes()"></th>
 				<th>상품정보</th>
@@ -69,36 +70,36 @@
 				<th>삭제</th>
 			</tr>
 			
-		<form name="frm_order_all_cart">	
+
 			<c:choose>
 				<c:when test="${empty myCartList }">
 					<tr><td colspan="6" class="fixed"><strong>장바구니가 비었습니다.</strong></td></tr>
 				</c:when>
 				
 				
-				<c:otherwise>				
-															
+				<c:otherwise>																			
 					<c:forEach var="item" items="${myGoodsList}" varStatus="cnt">
 						<tr>	  
-					  <c:set var="cart_count" value="${myCartList[cnt.count-1].cart_count}"/>
-					  <c:set var="cart_no" value="${myCartList[cnt.count-1].cart_no}"/>
-					  <c:set var="delivery_option" value="${myCartList[cnt.count-1].delivery_option}"/>
+					  <c:set var="cart_qty" value="${myCartList[cnt.index].cart_count}"/>
+					  <c:set var="cart_no" value="${myCartList[cnt.index].cart_no}"/>
+					  <c:set var="delivery_option" value="${myCartList[cnt.index].delivery_option}"/>
 					  	<td>
-					  		<input type="checkbox" name="checked_goods" checked value="${item.goods_id}" data-cart-no="${cart_no}" onClick="calculateTotal()">
+					  		<input type="checkbox" name="checked_goods" checked value="${item.goods_id}" data-cart-no="${cart_no}" data-cart-count="${cart_qty}" onClick="calculateTotal()">
 					  	</td>
 						<td><a href="${contextPath}/goods/goodsDetail.do?goods_id=${item.goods_id} "><img src="${contextPath}/thumbnails.do?goods_id=${item.goods_id}&fileName=${item.file_name}" width="110px;"/></a></td>
-						<td class="goodsName"><a href="${contextPath}/goods/goodsDetail.do?goods_id=${item.goods_id} ">${item.goods_name}</a>
+						<td class="goodsName" style="text-align: left;"><a href="${contextPath}/goods/goodsDetail.do?goods_id=${item.goods_id} ">${item.goods_name}</a>
 						<p>상품 ${cnt.count}의 배송 옵션: <c:out value="${delivery_option}" /></p>
+						<input type="hidden" value="${item.goods_id }" class="goods_id"/>	
 						</td>
 						<td>
 							<input type="hidden" value="${item.goods_price }" class="goods_price"/>	
 						 	<button type="button" class="minus" >-</button>
-					        <input type="number" name="cart_count" class="numBox" min="1" max="20" value="${cart_count}" readonly="readonly"/>
+					        <input type="number" name="cart_count" class="numBox" min="1" max="20" value="${cart_qty}" readonly="readonly"/>
 					        <button type="button" class="plus" >+</button>
-					        <button type="button" class="btn btn-secondary btn-sm" onclick="modify_qty(${item.goods_id },${item.goods_price },${cnt.count-1 })">변경</button>
+					        <button type="button" class="btn btn-secondary btn-sm" onclick="modify_qty(${item.goods_id },${item.goods_price },${cnt.index })">변경</button>
 						</td>						
 						<td>
-						 <fmt:formatNumber value="${item.goods_price*cart_count}" type="number" var="total_price" />
+						 <fmt:formatNumber value="${item.goods_price*cart_qty}" type="number" var="total_price" />
 		            	<span class="price">${total_price}원</span>
 						</td>
 						<td>${delivery_fee}원</td>	
@@ -107,7 +108,7 @@
 						</td>	
 						</tr>
 							
-							<c:set  var="totalGoodsPrice" value="${item.goods_price*cart_count }" />								
+							<c:set  var="totalGoodsPrice" value="${item.goods_price*cart_qty }" />								
 							<c:set  var="totalGoodsNum" value="${totalGoodsNum+1 }" />				
 					</c:forEach>				
 					</c:otherwise>					
@@ -148,15 +149,16 @@
 					</tr>
 				</table>
 			    <br><br>	
+			    
 			    <div class="order-button">
 			    	<input value="주문하기" type="button" class="btn btn-secondary btn-sm" onClick="fn_order_all_cart_goods()" style="background-color:#6CC148;color:white" />
 			    	<input value="쇼핑 계속하기" type="button" class="btn btn-secondary btn-sm" onClick="backToList(this.form)" />
 				</div>
 					
 					
-
+	
 			</div>	
-		</form>					
+	</form>				
 </div>
 	
 	
@@ -349,46 +351,41 @@ function calculateTotal() {
 		}
 	  
 	  
-	  function fn_order_each_goods(goods_id, goods_name, goods_price, file_name) {
+	 
+	  function fn_order_all_cart_goods() {
+		  var objForm = document.frm_order_all_cart;
+		  var goods_id; // 서버전송 상품아이디
+		  var order_quantity; // 서버전송 수량
+		  var cart_count = objForm.cart_count;
+		  // var checked_goods = objForm.checked_goods;
+		  const checkboxes = document.querySelectorAll('input[name="checked_goods"]:checked');
+		  var cart_qty = []; // 선택된 항목들을 담을 배열 생성
 
-		    var order_quantity = document.getElementById("cart_count").value;
-		    var delivery_option = document.getElementById("delivery_option").value; // 배송옵션 추가
-		    var total_price = parseInt(goods_price) * parseInt(order_quantity);
+		  checkboxes.forEach((checkbox) => {
+		    // 체크된 체크박스와 관련된 행을 찾습니다.
+		    goods_id = checkbox.value;
+		    order_quantity = parseInt(checkbox.getAttribute('data-cart-count'), 10);
+		    cart_qty.push(goods_id + ":" + order_quantity);
+		  });
 
-		    var formObj = document.createElement("form");
-		    var i_goods_id = document.createElement("input");
-		    var i_goods_name = document.createElement("input");
-		    var i_goods_price = document.createElement("input");
-		    var i_file_name = document.createElement("input");
-		    var i_order_quantity = document.createElement("input");
-		    var i_delivery_option = document.createElement("input"); // 배송옵션을 넘기기 위한 input 엘리먼트 추가
+		  // 선택한 항목이 없는 경우 경고창을 띄우고 함수 종료
+		  if (cart_qty.length === 0) {
+		    alert("주문할 상품을 선택해주세요.");
+		    return;
+		  }
 
-		    i_goods_id.name = "goods_id";
-		    i_goods_name.name = "goods_name";
-		    i_goods_price.name = "goods_sales_price";
-		    i_file_name.name = "file_name";
-		    i_order_quantity.name = "order_quantity";
-		    i_delivery_option.name = "order_delivery_option"; // 배송옵션을 넘기기 위해 name 설정
-		    
-		    i_goods_id.value = goods_id;
-		    i_goods_name.value = goods_name;
-		    i_goods_price.value = goods_price;
-		    i_file_name.value = file_name;
-		    i_order_quantity.value = order_quantity;	   
-		    i_delivery_option.value = delivery_option; // 배송옵션을 넘기기 위해 value 설정
+		  // 'cart_qty' 데이터를 전달할 숨은 입력 필드를 폼에 추가
+		  var input = document.createElement("input");
+		  input.type = "hidden";
+		  input.name = "cart_qty"; // 컨트롤러 메소드에서 사용하는 파라미터 이름과 일치해야 합니다.
+		  input.value = cart_qty.join(","); // 배열을 콤마로 구분된 문자열로 변환하여 입력 필드 값으로 설정합니다.
+		  objForm.appendChild(input);
 
-		    formObj.appendChild(i_goods_id);
-		    formObj.appendChild(i_goods_name);
-		    formObj.appendChild(i_goods_price);
-		    formObj.appendChild(i_file_name);
-		    formObj.appendChild(i_order_quantity);
-		    formObj.appendChild(i_delivery_option); // 배송옵션을 넘기기 위한 input 엘리먼트를 폼에 추가
-
-		    document.body.appendChild(formObj);
-		    formObj.method = "post";
-		    formObj.action = "${contextPath}/order/orderEachGoods.do";
-		    formObj.submit();
+		  objForm.method = "post";
+		  objForm.action = "${contextPath}/order/orderCartGoods.do";
+		  objForm.submit();
 		}
+
 </script>
 
 </body>
