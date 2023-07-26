@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.serv">
+ 
+   
+   <!-- 목록+페이징 v-->
+   <select id="servList" resultType="servVO"  parameterType="Criteria3">
+    <![CDATA[
+     select cust_serv_no, cust_serv_title, cust_serv_content, mem_id, cust_serv_date, cust_serv_hits,cust_serv_notice
+    from (
+        select cust_serv_no, cust_serv_title, cust_serv_content, mem_id, cust_serv_date, cust_serv_hits,cust_serv_notice,
+            row_number() over(order by cust_serv_notice desc, cust_serv_no desc) as rNum
+        from  GOGI_CUST_SERV_BOARD
+        ) mb
+   where rNum between  #{rowStart} and #{rowEnd}
+        ORDER by cust_serv_notice desc, cust_serv_no desc
+         ]]>
+</select>
+ 
+ 
+   <!-- :게시물 총 갯수 확인 - -->
+<!-- 번호만 있으면 확인 가능해 매개변수 타입 정수로 설정 -->
+<select id="servListCount" resultType="int">
+   <![CDATA[
+ select count(cust_serv_no) from GOGI_CUST_SERV_BOARD
+ where cust_serv_no > 0
+  ]]>
+</select>
+
+    <!-- -작성 -->
+   <insert id="servWrite">
+    insert into GOGI_CUST_SERV_BOARD(cust_serv_no, cust_serv_title, cust_serv_content,mem_id,cust_serv_pw,cust_serv_notice)
+        values (seq_serv.nextval, #{cust_serv_title}, #{cust_serv_content}, #{mem_id},#{cust_serv_pw},#{cust_serv_notice})
+ 	</insert>
+   
+   <!-- 조회 -->
+   <select id="servRead" resultType="servVO" parameterType="int">
+	select cust_serv_no, cust_serv_title, cust_serv_content,mem_id, cust_serv_date,cust_serv_hits
+	from GOGI_CUST_SERV_BOARD
+	where cust_serv_no = #{cust_serv_no}
+   </select>
+   
+   
+   <!--  조회수  -->
+ <update id="updateServViewCnt">
+    update GOGI_CUST_SERV_BOARD
+    set 
+    cust_serv_hits = cust_serv_hits +1
+    where cust_serv_no = #{cust_serv_no}
+</update>
+ 
+
+ 
+   
+   <!-- 게시물 수정 -->
+  <update id="servUpdate" parameterType="servVO" >
+    UPDATE GOGI_CUST_SERV_BOARD
+    SET cust_serv_title = #{cust_serv_title},
+        cust_serv_content = #{cust_serv_content}
+    WHERE cust_serv_no = #{cust_serv_no}
+</update>
+   
+   
+   
+   <select id="servGetPw" resultType="String">
+    select cust_serv_pw
+    from GOGI_CUST_SERV_BOARD
+    where cust_serv_no = #{cust_serv_no}
+</select>
+
+   
+   <!--  삭제 -->
+   <delete id="servDelete" parameterType="int">
+    delete from
+    GOGI_CUST_SERV_BOARD
+  where cust_serv_no = #{cust_serv_no}
+   </delete>
+   </mapper>
