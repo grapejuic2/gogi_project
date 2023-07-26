@@ -38,12 +38,12 @@
 				<TD>
 				  <span>${item.goods_id }</span>
 				</TD>
-				<TD >
+				<TD>
 				 <a href="${pageContext.request.contextPath}/admin/goods/modifyGoodsForm.do?goods_id=${item.goods_id}">
 				    <span>${item.goods_name } </span>
 				 </a> 
 				</TD>
-				<TD >
+				<TD>
 				   <span>${item.goods_seller }</span> 
 				</TD>
 				<td>
@@ -52,7 +52,6 @@
 				<td>
 				 <span>${item.goods_delivery_date }</span> 
 				</td>
-				
 			</TR>
 	</c:forEach>
 	</c:otherwise>
@@ -69,7 +68,6 @@
 		         </c:if> 
 	      		</c:forEach>
 	      		</td>
-     
 		</TBODY>
 	</TABLE>
 	

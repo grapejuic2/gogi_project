@@ -263,7 +263,6 @@ public class AdminGoodsControllerImpl extends BaseController implements AdminGoo
 		
 	}
 	
-
 	@Override
 	@RequestMapping(value="/addNewGoodsImage.do" ,method={RequestMethod.POST})
 	public void addNewGoodsImage(MultipartHttpServletRequest multipartRequest, HttpServletResponse response)

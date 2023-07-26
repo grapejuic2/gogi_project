@@ -110,10 +110,12 @@
 		                                     goods_id,
 											 file_name,
 											 file_type,
+											 reg_id,
 											 credate)
 									  values(#{image_id},
 											 #{goods_id},
 											 #{file_name},
+											 #{reg_id},
 											 #{file_type},
 											 #{credate} )
 		]]>

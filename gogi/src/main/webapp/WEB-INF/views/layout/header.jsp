@@ -88,7 +88,7 @@ ul.nav.navbar-nav li a:hover {
 </nav>
 
 <!-- 헤더 스크립트 -->
-<script>
+	<script>
 	$(document).ready(function() {
 	    var isLogOn = false;
 	    var isAdmin = false;
