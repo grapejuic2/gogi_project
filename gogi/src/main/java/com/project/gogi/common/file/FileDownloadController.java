@@ -14,7 +14,7 @@ import net.coobird.thumbnailator.Thumbnails;
 
 @Controller
 public class FileDownloadController {
-	private static final String GOGI_IMAGE_REPO = "C:\\meatrule\\file_repo";
+	private static final String GOGI_IMAGE_REPO = "C:\\meatrule\\file_repo\\goods";
 
 	@RequestMapping(value = "/download")
 	protected void download(@RequestParam("fileName") String fileName, @RequestParam("goods_id") int goods_id,

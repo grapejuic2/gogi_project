@@ -45,9 +45,11 @@ public class GoodsVO {
 		this.goods_weight=goods_weight;
 	}
 
+
 	public int getGoods_id() {
 		return goods_id;
 	}
+
 
 	public void setGoods_id(int goods_id) {
 		this.goods_id = goods_id;
@@ -119,7 +121,7 @@ public class GoodsVO {
 	}
 
 
-	public void setGoods_delivery_date(Date goods_delivery_date) {
+	public void setGood_delivery_date(Date goods_delivery_date) {
 		this.goods_delivery_date = goods_delivery_date;
 	}
 

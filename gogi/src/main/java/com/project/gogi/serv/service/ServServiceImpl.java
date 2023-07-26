@@ -53,9 +53,8 @@ public class ServServiceImpl implements ServService {
 	//수정
 	@Override
 	public void ServUpdate(ServVO vo) throws Exception {
-		dao.ServUpdate(vo);
+	    dao.ServUpdate(vo);
 	}
-
 	
 	//삭제
 	@Override
@@ -89,6 +88,12 @@ public class ServServiceImpl implements ServService {
 		        return "admin".equals(mem_id);
 		    }
 			
+			
+			@Override
+		    public String getServPw(int cust_serv_no) throws Exception {
+		        return dao.getServPw(cust_serv_no);
+		    }
+
 			
 			
 			

@@ -34,6 +34,12 @@
 					<pre class="fgl" style="white-space: pre-wrap; border: none; background-color: white;"> ${servRead.cust_serv_content}</pre>
 					</td>
 				</tr>
+				<div class="result-images">
+				<c:forEach var="imageFileName" items="${servMap.fileList}">
+					<img alt="" src="${contextPath}/download?imageFileName=${imageFileName}" }>
+					<br><br>
+				</c:forEach>
+				</div>
 				<tr>
 					<td td colspan="4" class="text-right">
 						<div>
