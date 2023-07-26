@@ -40,27 +40,27 @@
 		
 		<result property="order_quantity" column="order_quantity" />
 		<result property="order_rec_name" column="order_rec_name" />
-		<result property="order_rec_hp1" column="receiver_hp1" />
-		<result property="order_rec_hp2" column="receiver_hp2" />
-		<result property="order_rec_hp3" column="receiver_hp3" />
+		<result property="order_rec_hp1" column="order_rec_hp1" />
+		<result property="order_rec_hp2" column="order_rec_hp2" />
+		<result property="order_rec_hp3" column="order_rec_hp3" />
 		
-		<result property="order_rec_tel1" column="receiver_tel1" />
-		<result property="order_rec_tel2" column="receiver_tel2" />
-		<result property="order_rec_tel3" column="receiver_tel3" />
+		<result property="order_rec_tel1" column="order_rec_tel1" />
+		<result property="order_rec_tel2" column="order_rec_tel2" />
+		<result property="order_rec_tel3" column="order_rec_tel3" />
 		
 		<result property="delivery_address" column="delivery_address" />
 		<result property="delivery_message" column="delivery_message" />
 		<result property="delivery_method" column="delivery_method" />
 		
 		<result property="order_pay_method" column="order_pay_method" />
-		<result property="card_company_name" column="card_com_name" />
+		<result property="card_company_name" column="card_company_name" />
 		<result property="card_pay_month" column="card_pay_month" />
 		
 		<result property="pay_orderer_hp_num" column="pay_orderer_hp_num" />
 		<result property="order_time" column="order_time" />
 		<result property="delivery_state" column="delivery_state" />
 		
-		<result property="file_Name" column="goods_fileName" />
+		<result property="file_Name" column="file_Name" />
 	</resultMap>
 	
 		<!-- <selectKey> => 새 상품을 추가하기 전에 시퀀스에서 상품 번호를 먼저 가져옵니다. -->
@@ -126,13 +126,13 @@
 			   		  goods_id,
 			          goods_name,
 			          goods_seller,
-			          goods_sales_price,
-			          to_char(goods_delivery_date,'YYYY-MM-DD')  as creDate
+			          goods_price,
+			          to_char(goods_delivery_date,'YYYY-MM-DD') as creDate
 			       from (
 			             select goods_id,
 			             		goods_name,
 			             		goods_seller,
-			             		goods_sales_price,
+			             		goods_price,
 			             		goods_delivery_date
 			              from gogi_goods
 			              where  to_char(goods_delivery_date,'YYYY-MM-DD')  between #{beginDate} and #{endDate}
@@ -165,17 +165,15 @@
 		recNum between (#{section}-1)*100+ (#{pageNum}-1)*10+1 and (#{section}-1)*100+(#{pageNum})*10				        
 	</select>
 	
- 
-
-	
-	<select id="selectGoodsDetail" resultMap="goodsResult"   parameterType="String"  >
+	<select id="selectGoodsDetail" resultMap="goodsResult" parameterType="String">
 	    <![CDATA[
-		    select g.*,to_char(g.goods_published_date,'YYYY-MM-DD') as goods_published_date, d.fileName from gogi_goods g, gogi_goods_image d
-	        where g.goods_id=d.goods_id
-	        and d.filetype='main_image'
-	        and g.goods_id=#{goods_id}
+	        select g.*, to_char(g.goods_delivery_date,'YYYY-MM-DD') as goods_delivery_date, d.file_name as fileName
+	        from gogi_goods g, gogi_goods_image d
+	        where g.goods_id = d.goods_id
+	        and d.file_type = 'main_image'
+	        and g.goods_id = #{goods_id}
 	        order by g.goods_id
-    	]]>
+	    ]]>
 	</select>
 	
 	<select id="selectGoodsImageFileList" resultMap="imageResult"   parameterType="String"  >

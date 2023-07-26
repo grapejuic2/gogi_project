@@ -75,73 +75,64 @@ ul.nav.navbar-nav li a:hover {
 				<li><a href="${contextPath}/notice/list.do">공지사항</a></li>
 				<li><a href="${contextPath}/serv/list.do">고객센터</a></li>
 			</ul>
-			<ul class="nav navbar-nav navbar-right">
-				<li class="logged-out"><a href="${contextPath}/member/memberForm.do"><span class="glyphicon glyphicon-user"></span> 회원가입</a></li>
-				<li class="logged-out"><a href="${contextPath}/member/loginForm.do" id="loginBtn"><span class="glyphicon glyphicon-log-in"></span> 로그인</a></li>
-				<li class="logged-in hidden"><a href="${contextPath}/member/logout.do" id="logoutBtn"><span class="glyphicon glyphicon-log-out"></span> 로그아웃</a></li>
-				<li class="logged-in hidden"><a href="${contextPath}/mypage/modifyMemForm.do"><span class="glyphicon glyphicon-user"></span> 마이페이지</a></li>
-				<li class="logged-in hidden"><a href="${contextPath}/cart/myCartList.do"><span class="glyphicon glyphicon-shopping-cart"></span> 장바구니</a></li>
-				<li class="admin-in hidden"><a href="${contextPath}/member/logout.do" id="logoutBtn"><span class="glyphicon glyphicon-log-out"></span> 로그아웃</a></li>
-				<li class="admin-in hidden"><a href="${contextPath}/admin/modifyGoodsForm.do"><span class="glyphicon glyphicon-user"></span> 관리자 페이지</a></li>
-			</ul>
-		</div>
-	</nav>
-	
-	<!-- 헤더 스크립트 -->
+		<ul class="nav navbar-nav navbar-right">
+		    <li class="logged-out"><a href="${contextPath}/member/memberForm.do"><span class="glyphicon glyphicon-user"></span> 회원가입</a></li>
+		    <li class="logged-out"><a href="${contextPath}/member/loginForm.do" id="loginBtn"><span class="glyphicon glyphicon-log-in"></span> 로그인</a></li>
+		    <li class="user-logged-in hidden"><a href="${contextPath}/member/logout.do" id="logoutBtn"><span class="glyphicon glyphicon-log-out"></span> 로그아웃</a></li>
+		    <li class="user-logged-in hidden"><a href="${contextPath}/mypage/modifyMemForm.do"><span class="glyphicon glyphicon-user"></span> 마이페이지</a></li>
+		    <li class="user-logged-in hidden"><a href="${contextPath}/cart/myCartList.do"><span class="glyphicon glyphicon-shopping-cart"></span> 장바구니</a></li>
+		    <li class="admin-logged-in hidden"><a href="${contextPath}/member/logout.do" id="logoutBtn"><span class="glyphicon glyphicon-log-out"></span> 로그아웃</a></li>
+		    <li class="admin-logged-in hidden"><a href="${contextPath}/admin/goods/adminGoodsMain.do"><span class="glyphicon glyphicon-user"></span> 관리자 페이지</a></li>
+		</ul>
+	</div>
+</nav>
+
+<!-- 헤더 스크립트 -->
 	<script>
-	$(document).ready(function() {
-		var isLogOn = false; // 로그인 여부를 확인하는 변수, 실제 값에 따라 변경되어야 합니다.
-		var isAdmin = false;
+		$(document).ready(function() {
+		    var isLogOn = false;
+		    var isAdmin = false;
+		    
+		    function toggleForm() {
+		        if (isAdmin) {
+		            $('.admin-logged-in').removeClass('hidden');
+		            $('.user-logged-in, .logged-out').addClass('hidden');
+		        } else if (isLogOn) {
+		            $('.user-logged-in').removeClass('hidden');
+		            $('.admin-logged-in, .logged-out').addClass('hidden');
+		        } else {
+		            $('.logged-out').removeClass('hidden');
+		            $('.user-logged-in, .admin-logged-in').addClass('hidden');
+		        }
+		    }
 		
-		function toggleForm() {
-			if (isLogOn) {
-				$('.logged-in').removeClass('hidden');
-				$('.logged-out').addClass('hidden');
-			} else {
-				$('.logged-in').addClass('hidden');
-				$('.logged-out').removeClass('hidden');
-			} 
-			
-			if (isAdmin) {
-				$('.non-admin-in').removeClass('hidden');
-				$('.admin-out').addClass('hidden');
-			} else {
-				$('.admin-in').addClass('hidden');
-				$('.admin-out').removeClass('hidden');
-			} 
-		}
-
-		// 로그인 상태 변경 시 폼 변경
-		toggleForm();
-
-		// 세션에서 isLogon 값을 가져와서 로그인 상태 변경
-		var isLogonValue = '<c:out value="${sessionScope.isLogon}" />';
-		if (isLogonValue === 'true') {
-			isLogOn = true;
-		}
-		toggleForm();
+		    // 로그인 상태 변경 시 폼 변경
+		    toggleForm();
 		
-		var isAdminValue = '<c:out value="${sessionScope.isAdmin}" />';
-		if (isAdminValue === 'true') {
-			isAdmin = true;
-		}
-		toggleForm();
-
-		// 로그인 버튼 클릭 시 로그인 상태 변경
-		$('#loginBtn').click(function() {
-			isLogOn = true;
-			isAdmin = true;// 로그인 상태로 변경되어야 합니다.
-			toggleForm();
+		    var isLogonValue = '<c:out value="${sessionScope.isLogon}" />';
+		    if (isLogonValue === 'true') {
+		        isLogOn = true;
+		    }
+		    toggleForm();
+		    
+		    var isAdminValue = '<c:out value="${sessionScope.isAdmin}" />';
+		    if (isAdminValue === 'true') {
+		        isAdmin = true;
+		    }
+		    toggleForm();
+		
+		    $('#loginBtn').click(function() {
+		        isLogOn = true;
+		        isAdmin = true;
+		        toggleForm();
+		    });
+		
+		    $('#logoutBtn').click(function() {
+		        isLogOn = false;
+		        isAdmin = false;
+		        toggleForm();
+		    });
 		});
-
-		// 로그아웃 버튼 클릭 시 로그인 상태 변경
-		$('#logoutBtn').click(function() {
-			isLogOn = false;
-			isAdmin = false;// 로그아웃 상태로 변경되어야 합니다.
-			toggleForm();
-		});
-	});
-	
-</script>
+	</script>
 </body>
 </html>

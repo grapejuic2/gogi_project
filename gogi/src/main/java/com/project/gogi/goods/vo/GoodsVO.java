@@ -16,7 +16,7 @@ public class GoodsVO {
     private int goods_price;
     private int goods_sales_price;
     private int goods_point;
-    private Date good_delivery_date; 
+    private Date goods_delivery_date; 
     private String goods_intro;
     private String goods_status; // 상품분류(B: 베스트상품 / S: 세일상품 / N: 기본상품)
     private int goods_weight;
@@ -27,7 +27,7 @@ public class GoodsVO {
 
 
 	public GoodsVO(int goods_id, String goods_sort, String goods_name, String goods_seller, String goods_country,
-			int goods_price, int goods_sales_price, int goods_point, Date good_delivery_date, String goods_intro, 
+			int goods_price, int goods_sales_price, int goods_point, Date goods_delivery_date, String goods_intro, 
 			String goods_status, String file_name,int goods_weight) {
 		super();
 		this.goods_id = goods_id;
@@ -38,18 +38,16 @@ public class GoodsVO {
 		this.goods_price = goods_price;
 		this.goods_sales_price = goods_sales_price;
 		this.goods_point = goods_point;
-		this.good_delivery_date = good_delivery_date;
+		this.goods_delivery_date = goods_delivery_date;
 		this.goods_intro = goods_intro;
 		this.goods_status = goods_status;
 		this.file_name = file_name;
 		this.goods_weight=goods_weight;
 	}
 
-
 	public int getGoods_id() {
 		return goods_id;
 	}
-
 
 	public void setGoods_id(int goods_id) {
 		this.goods_id = goods_id;
@@ -116,13 +114,13 @@ public class GoodsVO {
 	}
 
 
-	public Date getGood_delivery_date() {
-		return good_delivery_date;
+	public Date getGoods_delivery_date() {
+		return goods_delivery_date;
 	}
 
 
-	public void setGood_delivery_date(Date good_delivery_date) {
-		this.good_delivery_date = good_delivery_date;
+	public void setGoods_delivery_date(Date goods_delivery_date) {
+		this.goods_delivery_date = goods_delivery_date;
 	}
 
 

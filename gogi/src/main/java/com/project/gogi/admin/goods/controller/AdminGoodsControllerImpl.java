@@ -32,7 +32,8 @@ import com.project.gogi.member.vo.MemberVO;
 @Controller("adminGoodsController")
 @RequestMapping(value="/admin/goods")
 public class AdminGoodsControllerImpl extends BaseController implements AdminGoodsController{
-	private static final String CURR_IMAGE_REPO_PATH = "C:\\shopping\\file_repo";
+	private static final String CURR_IMAGE_REPO_PATH = "C:\\meatrule\\file_repo";
+	
 	@Autowired
 	private AdminGoodsService adminGoodsService;
 	
@@ -43,7 +44,7 @@ public class AdminGoodsControllerImpl extends BaseController implements AdminGoo
 		ModelAndView mav = new ModelAndView(viewName);
 		HttpSession session=request.getSession();
 		session=request.getSession();
-		session.setAttribute("side_menu", "admin_mode"); //마이페이지 사이드 메뉴로 설정한다.
+		//session.setAttribute("side_menu", "admin_mode"); //마이페이지 사이드 메뉴로 설정한다.
 		
 		String fixedSearchPeriod = dateMap.get("fixedSearchPeriod");
 		String section = dateMap.get("section");
@@ -84,8 +85,6 @@ public class AdminGoodsControllerImpl extends BaseController implements AdminGoo
 		return mav;
 		
 	}
-	
-
 	
 	@RequestMapping(value="/addNewGoods.do" ,method={RequestMethod.POST})
 	public ResponseEntity addNewGoods(MultipartHttpServletRequest multipartRequest, HttpServletResponse response) throws Exception {
