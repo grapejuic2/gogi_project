@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.project.gogi.cart.service.CartService;
+import com.project.gogi.cart.vo.CartVO;
 import com.project.gogi.common.base.BaseController;
 import com.project.gogi.goods.vo.GoodsVO;
 import com.project.gogi.member.vo.MemberVO;
@@ -29,7 +31,9 @@ public class OrderControllerImpl extends BaseController implements OrderControll
 	@Autowired
 	private OrderService orderService;
 	@Autowired
-	private OrderVO orderVO;	
+	private OrderVO orderVO;
+	@Autowired
+	private CartService cartService;
 
 	@Override
 	@RequestMapping(value="/orderEachGoods.do", method=RequestMethod.POST)
@@ -124,14 +128,12 @@ public class OrderControllerImpl extends BaseController implements OrderControll
 		
 		HttpSession session=request.getSession();
 		MemberVO memberVO=(MemberVO) session.getAttribute("orderer");
+		
 		String mem_id=memberVO.getMem_id();
-		System.out.println("pay: "+mem_id);
 		String orderer_name=memberVO.getMem_name();
-		System.out.println("pay: "+orderer_name);
-		String ordere_hp=memberVO.getMem_tel1()+"-"+memberVO.getMem_tel2()+"-"+memberVO.getMem_tel3();
-		System.out.println("pay: "+ordere_hp);
+		String ordere_hp=memberVO.getMem_tel1()+"-"+memberVO.getMem_tel2()+"-"+memberVO.getMem_tel3();		
 		List<OrderVO> myOrderList=(List<OrderVO>) session.getAttribute("myOrderList");	
-		System.out.println("pay:"+myOrderList.toString());
+	
 		
 		for(int i=0; i<myOrderList.size();i++) {
 			OrderVO orderVO=(OrderVO)myOrderList.get(i);
@@ -161,7 +163,18 @@ public class OrderControllerImpl extends BaseController implements OrderControll
 		System.out.println("myOrderList : " + myOrderList.toString());
 		
 		//주문 후 장바구니 내역 삭제
-		session.removeAttribute("cartMap");
+		Map cartMap = (Map) session.getAttribute("cartMap"); //cartMap 세션	
+		
+		if(cartMap != null) {//장바구니 거치지않고 상품상세페이지에서 바로 주문하는 경우와 구분하기 위해 if문 사용
+		    List<CartVO> myCartList = (List<CartVO>) cartMap.get("myCartList");//cartMap 세션에서 myCartList 가져옴
+		    System.out.println("장바구니삭제:"+myCartList.containsAll(myCartList)+" : "+myCartList.get(0));
+		    if (myCartList != null && !myCartList.isEmpty()) {
+		        for (CartVO cartVO : myCartList) {
+		            int cart_no = cartVO.getCart_no();
+		            cartService.deleteGoods(cart_no); //해당 cart_no 삭제
+		        }
+		    }
+		}
 		return mav;
 	}
 }

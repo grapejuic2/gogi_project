@@ -65,8 +65,7 @@
   	font-size: 14px; 
   	}
   	
-	.section .slide-control .left {left:5px;background:url('${contextPath}/resources/images/main/left.png') center center / 100% no-repeat;}
-	.section .slide-control .right {right:5px;background:url('${contextPath}/resources/images/main/right.png') center center / 100% no-repeat;}
+	
 	.main{width: 100%; margin:0 ; padding: 10px; padding-left: 260px; padding-right: 260px;}
 	.card {margin-bottom: 50px; }
 	.image-background {

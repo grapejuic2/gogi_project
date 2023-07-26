@@ -45,6 +45,7 @@ public class CartServoceImpl implements CartService{
 		System.out.println("service: mycart"+myCartList.toString());
 		List<GoodsVO> myGoodsList=dao.selectGoodsList(myCartList, mem_id);
 		
+		//cartMap에 myCartList, myGoodsList 저장
 		cartMap.put("myCartList", myCartList);
 		cartMap.put("myGoodsList",myGoodsList);
 		
