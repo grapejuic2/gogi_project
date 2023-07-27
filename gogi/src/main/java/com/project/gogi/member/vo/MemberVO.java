@@ -177,6 +177,4 @@ public class MemberVO {
 		this.mem_del_yn = mem_del_yn;
 	}
 	
-	
-
 }

@@ -54,7 +54,6 @@
     	]]>
 	</select>	
 	
-
 	<update id="modifymemberInfo" parameterType="java.util.HashMap">
 	   update gogi_member
 			   <set>
@@ -74,15 +73,15 @@
 			         mem_birth_d=#{mem_birth_d},
 			      </if>
 			      
-			      <if test=" tel1!='' and tel1!=null">
+			      <if test=" mem_tel1!='' and mem_tel1!=null">
 			         mem_tel1=#{mem_tel1},
 			      </if>
 			      
-			      <if test=" tel2!='' and tel2!=null">
+			      <if test=" mem_tel2!='' and mem_tel2!=null">
 			         mem_tel2=#{mem_tel2},
 			      </if>
 			      
-			      <if test=" tel3!='' and tel3!=null">
+			      <if test=" mem_tel3!='' and mem_tel3!=null">
 			         mem_tel3=#{mem_tel3},
 			      </if>
 			      
@@ -114,11 +113,10 @@
 		mem_id=#{mem_id}
 	</update>	
 	
-	<!-- 멤버삭제 -->
-	<delete id="deletemember" parameterType="String">
+	<!-- 회원삭제 -->
+	<delete id="deleteMember" parameterType="String">
 	  delete from gogi_member
 	  where mem_id=#{mem_id}
 	</delete>
-	
 	
 </mapper>

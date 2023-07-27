@@ -32,8 +32,8 @@ public class AdminMemberControllerImpl extends BaseController implements AdminMe
 		String viewName=(String)request.getAttribute("viewName");
 		ModelAndView mav = new ModelAndView(viewName);
 		HttpSession session=request.getSession();
-		session.setAttribute("side_menu", "admin_mode");
-
+		session=request.getSession();
+		
 		String fixedSearchPeriod = dateMap.get("fixedSearchPeriod");
 		String section = dateMap.get("section");
 		String pageNum = dateMap.get("pageNum");
@@ -56,8 +56,10 @@ public class AdminMemberControllerImpl extends BaseController implements AdminMe
 		condMap.put("pageNum",pageNum);
 		condMap.put("beginDate",beginDate);
 		condMap.put("endDate", endDate);
+		
 		ArrayList<MemberVO> listMember = adminMemberService.listMember(condMap);
-		mav.addObject("listmember", listMember);
+		mav.addObject("listMember", listMember);
+		System.out.println("회원정보"+listMember);
 		
 		String beginDate1[]=beginDate.split("-");
 		String endDate2[]=endDate.split("-");
@@ -71,7 +73,6 @@ public class AdminMemberControllerImpl extends BaseController implements AdminMe
 		mav.addObject("section", section);
 		mav.addObject("pageNum", pageNum);
 		return mav;
-		
 	}
 	
 	@RequestMapping(value="/memberDetail.do" ,method={RequestMethod.POST,RequestMethod.GET})
@@ -141,10 +142,9 @@ public class AdminMemberControllerImpl extends BaseController implements AdminMe
 		memberMap.put("mem_del_yn", mem_del_yn);
 		memberMap.put("mem_id", mem_id);
 		
-		adminMemberService.modifyMemberInfo(memberMap);
+		adminMemberService.removeMember(mem_id);
 		mav.setViewName("redirect:/admin/member/adminMemberMain.do");
 		return mav;
-		
 	}
 		
 }

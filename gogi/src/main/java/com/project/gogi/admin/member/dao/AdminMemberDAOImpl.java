@@ -22,8 +22,8 @@ public class AdminMemberDAOImpl  implements AdminMemberDAO{
 	}
 	
 	public MemberVO memberDetail(String mem_id) throws DataAccessException{
-		MemberVO memberBean=(MemberVO)sqlSession.selectOne("mapper.admin.member.memberDetail",mem_id);
-		return memberBean;
+		MemberVO memberDetail=(MemberVO)sqlSession.selectOne("mapper.admin.member.memberDetail",mem_id);
+		return memberDetail;
 	}
 	
 	public void modifyMemberInfo(HashMap memberMap) throws DataAccessException{

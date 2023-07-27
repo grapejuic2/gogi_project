@@ -6,7 +6,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> 
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <c:set var="contextPath"  value="${pageContext.request.contextPath}"  />
-
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -19,9 +18,7 @@ function search_member(search_period){
 	endDate=date[1];
 	//alert("beginDate:"+beginDate+",endDate:"+endDate);
 	//return ;
-	
 	var formObj=document.createElement("form");
-    
 	var formObj=document.createElement("form");
 	var i_beginDate = document.createElement("input"); 
 	var i_endDate = document.createElement("input");
@@ -35,27 +32,24 @@ function search_member(search_period){
     formObj.appendChild(i_endDate);
     document.body.appendChild(formObj); 
     formObj.method="get";
-    formObj.action="/${contextPath}/admin/member/adminMemberMain.do";
+    formObj.action="/gogi/admin/member/adminMemberMain.do";
     formObj.submit();
 }
 
-function fn_member_detail(order_id){
-	//alert(order_id);
-	var frm_delivery_list=document.frm_delivery_list;
-	
+function fn_member_detail(mem_id){
+    var frm_delivery_list = document.frm_delivery_list;
 
-	var formObj=document.createElement("form");
-	var i_order_id = document.createElement("input");
-	
-	i_order_id.name="order_id";
-	i_order_id.value=order_id;
-	
-    formObj.appendChild(i_order_id);
+    var formObj = document.createElement("form");
+    var i_mem_id = document.createElement("input");
+    
+    i_mem_id.name = "mem_id";
+    i_mem_id.value = mem_id;
+    
+    formObj.appendChild(i_mem_id);
     document.body.appendChild(formObj); 
-    formObj.method="post";
-    formObj.action="/${contextPath}/admin/member/memberDetail.do";
+    formObj.method = "post";
+    formObj.action = "/gogi/admin/member/memberDetail.do";
     formObj.submit();
-	
 }
 
 //상세조회 버튼 클릭 시 수행
@@ -77,7 +71,6 @@ function fn_detail_search(){
 	var i_endDate = document.createElement("input");
 	var i_search_type = document.createElement("input");
 	var i_search_word = document.createElement("input");
-    
 	
     i_command.name="command";
     i_beginDate.name="beginDate";
@@ -121,7 +114,7 @@ function fn_detail_search(){
 				<td><span><b>탈퇴여부</b></span></td>
 			</tr>
    <c:choose>
-     <c:when test="${empty member_list}">			
+     <c:when test="${empty listMember}">			
 			<tr>
 		       <td colspan=5 class="fixed">
 				  <strong>조회된 회원이 없습니다.</strong>
@@ -129,7 +122,7 @@ function fn_detail_search(){
 		     </tr>
 	 </c:when>
 	 <c:otherwise>
-	     <c:forEach var="item" items="${member_list}" varStatus="item_num">
+	     <c:forEach var="item" items="${listMember}" varStatus="item_num">
 	            <tr >       
 					<td width=10%>
 					  <a href="${pageContext.request.contextPath}/admin/member/memberDetail.do?mem_id=${item.mem_id}">

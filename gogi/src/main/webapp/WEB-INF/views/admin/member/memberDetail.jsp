@@ -22,15 +22,11 @@ function test(){
 }
 function init(){
 	var frm_mod_member=document.frm_mod_member;
-	var h_tel1=frm_mod_member.h_tel1;
-	var h_hp1=frm_mod_member.h_hp1;
-	var tel1=h_tel1.value;
-	var hp1=h_hp1.value;
+	var mem_tel1=frm_mod_member.mem_tel1;
+	var mem_tel1=mem_tel1.value;
 	
-	var select_tel1=frm_mod_member.tel1;
-	var select_hp1=frm_mod_member.hp1;
-	select_tel1.value=tel1;
-	select_hp1.value=hp1;
+	var select_tel1=frm_mod_member.mem_tel1;
+	select_tel1.value=mem_tel1;
 }
 
 </script>
@@ -60,7 +56,9 @@ function init(){
     var roadAddress = frm_mod_member.roadAddress.value;
     var jibunAddress = frm_mod_member.jibunAddress.value;
     var namujiAddress = frm_mod_member.namujiAddress.value;
+    var mem_del_yn = frm_mod_member.mem_del_yn.value;
 }
+
 </script>
 </c:otherwise>
 </c:choose>
@@ -150,21 +148,17 @@ function fn_modify_member_info(mem_id,mod_type){
 			}
 			value=+value_y+","+value_m+","+value_d;
 			
-		}else if(mod_type=='mem_tel'){
+		}else if(mod_type=='mem_tel1','mem_tel2','mem_tel3'){
 			var tel1=frm_mod_member.mem_tel1;
 			var tel2=frm_mod_member.mem_tel2;
 			var tel3=frm_mod_member.mem_tel3;
 			
-			for(var i=0; mem_tel1.length;i++){
-			 	if(tel1[i].selected){
-					value_tel1=mem_tel1[i].value;
-					break;
-				} 
-			}
+			value_tel1=mem_tel1.value;
 			value_tel2=mem_tel2.value;
 			value_tel3=mem_tel3.value;
 			
 			value=value_tel1+","+value_tel2+", "+value_tel3;
+			
 		}else if(mod_type=='email'){
 			var email1=frm_mod_mem.email;
 			
@@ -218,7 +212,7 @@ function fn_delete_member(mem_id){
   	$.ajax({
 		type : "post",
 		async : true, //false인 경우 동기식으로 처리한다.
-		url : "/${contextPath}/admin/member/deleteMember.do",
+		url : "${contextPath}/admin/member/deleteMember.do",
 		data: {mem_id:mem_id},
 		success : function(data, textStatus) {
 			alert("회원 삭제가 완료되었습니다");
@@ -277,26 +271,6 @@ function backToList(obj) {
 					  <input type="button" value="수정하기" class="btn btn-secondary btn-sm" disabled onClick="fn_modify_member_info('${member_info.mem_id }','mem_name')" />
 					</td>
 				</tr>
-<%-- 				<tr class="dot_line">
-					<td class="fixed_join">성별</td>
-					<td>
-					  <c:choose >
-					    <c:when test="${member_info.member_gender =='101' }">
-					      <input type="radio" name="member_gender" value="102" />
-						  여성&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					   <input type="radio" name="member_gender" value="101" checked />남성
-					    </c:when>
-					    <c:otherwise>
-					      <input type="radio" name="member_gender" value="102"  checked />
-						   여성&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					      <input type="radio" name="member_gender" value="101"  />남성
-					   </c:otherwise>
-					   </c:choose>
-					</td>
-					<td>
-					  <input type="button" value="수정하기" class="btn btn-secondary btn-sm" onClick="fn_modify_member_info('${member_info.member_id }','member_gender')" />
-					</td>
-				</tr> --%>
 				<tr class="dot_line">
 					<td class="fixed_join">법정생년월일</td>
 					<td>
@@ -345,12 +319,7 @@ function backToList(obj) {
 				<tr class="dot_line">
 					<td class="fixed_join">전화번호</td>
 					<td>
-					    <select  name="mem_tel1" >
-							<option>없음</option>
-							<option value="010">010</option>
-							<option value="011">011</option>
-							<option value="016">016</option>
-					</select> 
+						  <input type="text" size=4  name="tel2" value="${member_info.mem_tel1 }">	
 					    - <input type="text" size=4  name="tel2" value="${member_info.mem_tel2 }"> 
 					    - <input type="text" size=4  name="tel3" value="${member_info.mem_tel3 }">
 					</td>
@@ -361,7 +330,7 @@ function backToList(obj) {
 				<tr class="dot_line">
 					<td class="fixed_join">이메일(e-mail)</td>
 					<td>
-					   <input type="text" name="email1" size=10 
+					   <input type="text" name="email1" size=20
 					   	value="${member_info.mem_email}" />
 					</td>
 					<td>
@@ -393,21 +362,19 @@ function backToList(obj) {
 		<tr>
 			<td >
 				<input type="hidden" name="command"  value="modify_my_info" /> 
-				<%-- <c:choose>
-				  <c:when test="${member_info.del_yn=='Y' }">
-				    <input  type="button"  value="회원복원" onClick="fn_delete_member('${member_info.member_id }','N')">   
+				 <c:choose>
+				  <c:when test="${member_info.mem_del_yn=='Y' }">
+				    <input  type="button"  value="회원복원" onClick="fn_delete_member('${member_info.mem_id }','N')">
 				  </c:when>
-				  <c:when  test="${member_info.del_yn=='N' }">
-				    <input  type="button"  value="회원탈퇴" class="btn btn-secondary btn-sm" onClick="fn_delete_member('${member_info.member_id }','Y')">
-				  </c:when>
-				  
-				</c:choose> --%>
+				  <c:when test="${member_info.mem_del_yn=='N' }">
+				    <input type="button" value="회원탈퇴" class="btn btn-secondary btn-sm" onClick="fn_delete_member('${member_info.mem_id }','Y')">
+				  </c:when>	  
+				</c:choose>
 				<input  type="button"  value="회원삭제" class="btn btn-secondary btn-sm" onClick="fn_delete_member('${member_info.mem_id }'), backToList(this.form)">
 			</td>
 		</tr>
 	</table>
 	</div>
-	<input  type="hidden" name="h_tel1" value="${member_info.mem_tel1}" />
 </form>	
 </body>
 </html>

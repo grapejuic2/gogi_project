@@ -41,20 +41,7 @@ ul.nav.navbar-nav li a:hover {
 			<a href="${contextPath}/main/main.do"><img
 				src="${contextPath}/resources/images/logo/logo2.png" alt="logo2" width="150px"  style="text-align: center;"></a>
 		</div>
-
-		<div class="category">
-			<a href="${contextPath}/mypage/modifyMemForm.do" data-category="개인 정보 수정"
-				style="margin-bottom: 20px; margin-right: 10px; margin-left: 10px;">개인정보수정</a> 
-			<a href="#" data-category="문의 내역"
-				style="margin-bottom: 20px; margin-right: 10px; margin-left: 10px;">문의내역</a>
- 			<a href="${contextPath}/mypage/listMyOrderHistory.do" data-category="주문 내역"
-				style="margin-bottom: 20px; margin-right: 10px; margin-left: 10px;">주문내역</a>
-			<a href="#" data-category="리뷰 확인"
-				style="margin-bottom: 20px; margin-right: 10px; margin-left: 10px;">리뷰확인</a>
-			<a href="${contextPath}/mypage/deleteMemForm.do" data-category="회원탈퇴"
-				style="margin-bottom: 20px; margin-right: 10px; margin-left: 10px;">회원탈퇴</a>
-		</div>
-	
+		
 	<!-- <div class="title_underline" id="order-history-title"> -->
 		<h3><b>주문 배송 조회</b></h3>
 	<!-- </div> -->
