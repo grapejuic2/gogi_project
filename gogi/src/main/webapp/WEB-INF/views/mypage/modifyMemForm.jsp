@@ -66,7 +66,7 @@ ul.nav.navbar-nav li a:hover {
 </head>
 <script>
 
-function fn_mod_member(){
+	function fn_mod_member(){
 	    var frm_mod_member = document.frm_mod_member;
 	    
 	    // 각 속성의 값을 바로 가져와서 변수에 설정

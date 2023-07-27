@@ -17,12 +17,12 @@ public class AdminMemberDAOImpl  implements AdminMemberDAO{
 	
 	
 	public ArrayList<MemberVO> listMember(HashMap condMap) throws DataAccessException{
-		ArrayList<MemberVO>  memberList=(ArrayList)sqlSession.selectList("mapper.admin.member.listMember",condMap);
-		return memberList;
+		ArrayList<MemberVO> listMember=(ArrayList)sqlSession.selectList("mapper.admin.member.listMember",condMap);
+		return listMember;
 	}
 	
-	public MemberVO memberDetail(String member_id) throws DataAccessException{
-		MemberVO memberBean=(MemberVO)sqlSession.selectOne("mapper.admin.member.memberDetail",member_id);
+	public MemberVO memberDetail(String mem_id) throws DataAccessException{
+		MemberVO memberBean=(MemberVO)sqlSession.selectOne("mapper.admin.member.memberDetail",mem_id);
 		return memberBean;
 	}
 	
@@ -30,8 +30,8 @@ public class AdminMemberDAOImpl  implements AdminMemberDAO{
 		sqlSession.update("mapper.admin.member.modifyMemberInfo",memberMap);
 	}
 	
-	public void deleteMember(String member_id) throws DataAccessException {
-		sqlSession.delete("mapper.admin.member.deleteMember" ,member_id);
+	public void deleteMember(String mem_id) throws DataAccessException {
+		sqlSession.delete("mapper.admin.member.deleteMember" ,mem_id);
 	}
 	
 }

@@ -45,7 +45,6 @@ public class AdminMemberControllerImpl extends BaseController implements AdminMe
 		dateMap.put("beginDate", beginDate);
 		dateMap.put("endDate", endDate);
 		
-		
 		HashMap<String,Object> condMap=new HashMap<String,Object>();
 		if(section== null) {
 			section = "1";
@@ -57,8 +56,8 @@ public class AdminMemberControllerImpl extends BaseController implements AdminMe
 		condMap.put("pageNum",pageNum);
 		condMap.put("beginDate",beginDate);
 		condMap.put("endDate", endDate);
-		ArrayList<MemberVO> member_list =adminMemberService.listMember(condMap);
-		mav.addObject("member_list", member_list);
+		ArrayList<MemberVO> listMember = adminMemberService.listMember(condMap);
+		mav.addObject("listmember", listMember);
 		
 		String beginDate1[]=beginDate.split("-");
 		String endDate2[]=endDate.split("-");
@@ -74,13 +73,15 @@ public class AdminMemberControllerImpl extends BaseController implements AdminMe
 		return mav;
 		
 	}
+	
 	@RequestMapping(value="/memberDetail.do" ,method={RequestMethod.POST,RequestMethod.GET})
 	public ModelAndView memberDetail(HttpServletRequest request, HttpServletResponse response)  throws Exception{
 		String viewName=(String)request.getAttribute("viewName");
 		ModelAndView mav = new ModelAndView(viewName);
-		String id=request.getParameter("id");
-		MemberVO member_info=adminMemberService.memberDetail(id);
+		String mem_id = request.getParameter("mem_id");
+		MemberVO member_info = adminMemberService.memberDetail(mem_id);
 		mav.addObject("member_info",member_info);
+		System.out.println("==========회원정보=========="+member_info);
 		return mav;
 	}
 	
@@ -135,10 +136,10 @@ public class AdminMemberControllerImpl extends BaseController implements AdminMe
 	public ModelAndView deleteMember(HttpServletRequest request, HttpServletResponse response)  throws Exception {
 		ModelAndView mav = new ModelAndView();
 		HashMap<String,String> memberMap=new HashMap<String,String>();
-		String member_id=request.getParameter("member_id");
-		String del_yn=request.getParameter("del_yn");
-		memberMap.put("del_yn", del_yn);
-		memberMap.put("member_id", member_id);
+		String mem_id=request.getParameter("mem_id");
+		String mem_del_yn=request.getParameter("mem_del_yn");
+		memberMap.put("mem_del_yn", mem_del_yn);
+		memberMap.put("mem_id", mem_id);
 		
 		adminMemberService.modifyMemberInfo(memberMap);
 		mav.setViewName("redirect:/admin/member/adminMemberMain.do");

@@ -22,8 +22,8 @@ public class AdminMemberServiceImpl implements AdminMemberService {
 		return adminMemberDAO.listMember(condMap);
 	}
 
-	public MemberVO memberDetail(String member_id) throws Exception{
-		 return adminMemberDAO.memberDetail(member_id);
+	public MemberVO memberDetail(String mem_id) throws Exception{
+		 return adminMemberDAO.memberDetail(mem_id);
 	}
 	
 	public void  modifyMemberInfo(HashMap memberMap) throws Exception{
@@ -31,7 +31,7 @@ public class AdminMemberServiceImpl implements AdminMemberService {
 		 adminMemberDAO.modifyMemberInfo(memberMap);
 	}
 
-	public void removeMember(String member_id) throws Exception {
-		adminMemberDAO.deleteMember(member_id);
+	public void removeMember(String mem_id) throws Exception {
+		adminMemberDAO.deleteMember(mem_id);
 	}
 }

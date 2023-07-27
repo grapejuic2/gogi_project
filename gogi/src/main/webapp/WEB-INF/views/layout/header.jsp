@@ -47,7 +47,9 @@ ul.nav.navbar-nav li a:hover {
 	z-index: 1;
 }
 
-
+.navbar .dropdown-menu .dropdown-toggle {
+    z-index: 9999;
+ }
 </style>
 <title>Bootstrap Example</title>
 <meta charset="utf-8">
@@ -82,7 +84,16 @@ ul.nav.navbar-nav li a:hover {
 		    <li class="user-logged-in hidden"><a href="${contextPath}/mypage/modifyMemForm.do"><span class="glyphicon glyphicon-user"></span> 마이페이지</a></li>
 		    <li class="user-logged-in hidden"><a href="${contextPath}/cart/myCartList.do"><span class="glyphicon glyphicon-shopping-cart"></span> 장바구니</a></li>
 		    <li class="admin-logged-in hidden"><a href="${contextPath}/member/logout.do" id="logoutBtn"><span class="glyphicon glyphicon-log-out"></span> 로그아웃</a></li>
-		    <li class="admin-logged-in hidden"><a href="${contextPath}/admin/goods/adminGoodsMain.do"><span class="glyphicon glyphicon-user"></span> 관리자 페이지</a></li>
+		    <li class="dropdown admin-logged-in hidden" >
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                <span class="glyphicon glyphicon-user"></span> 관리자 페이지 <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+                <li><a href="${contextPath}/admin/goods/adminGoodsMain.do">상품 관리</a></li>
+                <li><a href="${contextPath}/admin/member/adminMemberMain.do">회원 관리</a></li>
+                <li><a href="${contextPath}/admin/order/adminOrderMain.do">주문 관리</a></li>	       
+            </ul>
+            </li>
 		</ul>
 	</div>
 </nav>
