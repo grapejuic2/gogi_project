@@ -64,8 +64,7 @@
 		select rowNum as recNum,t.*
 		from (
 		select * from gogi_order
-		where to_char(pay_order_time,'yyyy-mm-dd') between #{beginDate} and
-		#{endDate}
+		where to_char(order_time,'yyyy-mm-dd') between #{beginDate} and #{endDate}
 		<if test="search_type=='mem_id'">
 			AND mem_id=#{search_word}
 		</if>

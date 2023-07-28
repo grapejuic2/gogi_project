@@ -32,8 +32,8 @@ public class AdminOrderServiceImpl implements AdminOrderService {
 		Map orderMap=new HashMap();
 		ArrayList<OrderVO> orderList =adminOrderDAO.selectOrderDetail(order_id);
 		OrderVO deliveryInfo=(OrderVO)orderList.get(0);
-		String member_id=(String)deliveryInfo.getMem_id();
-		MemberVO orderer=adminOrderDAO.selectOrderer(member_id);
+		String mem_id=(String)deliveryInfo.getMem_id();
+		MemberVO orderer=adminOrderDAO.selectOrderer(mem_id);
 		orderMap.put("orderList",orderList);
 		orderMap.put("deliveryInfo",deliveryInfo);
 		orderMap.put("orderer", orderer);

@@ -91,32 +91,29 @@ public class AdminMemberControllerImpl extends BaseController implements AdminMe
 		HashMap<String,String> memberMap=new HashMap<String,String>();
 		String val[]=null;
 		PrintWriter pw=response.getWriter();
-		String member_id=request.getParameter("member_id");
+		String mem_id=request.getParameter("mem_id");
 		String mod_type=request.getParameter("mod_type");
 		String value =request.getParameter("value");
+		System.out.println("수정할 회원 "+ mem_id);
+		System.out.println("수정되는 내용 "+mod_type);
+		System.out.println("밸류값 "+value);
+		
 		if(mod_type.equals("member_birth")){
 			val=value.split(",");
-			memberMap.put("member_birth_y",val[0]);
-			memberMap.put("member_birth_m",val[1]);
-			memberMap.put("member_birth_d",val[2]);
-			memberMap.put("member_birth_gn",val[3]);
-		}else if(mod_type.equals("tel")){
-			val=value.split(",");
-			memberMap.put("tel1",val[0]);
-			memberMap.put("tel2",val[1]);
-			memberMap.put("tel3",val[2]);
+			memberMap.put("mem_birth_y",val[0]);
+			memberMap.put("mem_birth_m",val[1]);
+			memberMap.put("mem_birth_d",val[2]);
 			
-		}else if(mod_type.equals("hp")){
+		}else if(mod_type.equals("mem_tel")){
 			val=value.split(",");
-			memberMap.put("hp1",val[0]);
-			memberMap.put("hp2",val[1]);
-			memberMap.put("hp3",val[2]);
-			memberMap.put("smssts_yn", val[3]);
-		}else if(mod_type.equals("email")){
+			memberMap.put("mem_tel1",val[0]);
+			memberMap.put("mem_tel2",val[1]);
+			memberMap.put("mem_tel3",val[2]);
+			
+		}else if(mod_type.equals("mem_email")){
 			val=value.split(",");
-			memberMap.put("email1",val[0]);
-			memberMap.put("email2",val[1]);
-			memberMap.put("emailsts_yn", val[2]);
+			memberMap.put("mem_email",val[0]);
+			
 		}else if(mod_type.equals("address")){
 			val=value.split(",");
 			memberMap.put("zipcode",val[0]);
@@ -125,12 +122,11 @@ public class AdminMemberControllerImpl extends BaseController implements AdminMe
 			memberMap.put("namujiAddress", val[3]);
 		}
 		
-		memberMap.put("member_id", member_id);
+		memberMap.put("mem_id", mem_id);
 		
 		adminMemberService.modifyMemberInfo(memberMap);
 		pw.print("mod_success");
 		pw.close();		
-		
 	}
 	
 	@RequestMapping(value="/deleteMember.do" ,method={RequestMethod.POST})

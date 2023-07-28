@@ -39,7 +39,7 @@
 			                <if test="search_type=='mem_tel'">
 			                   AND mem_tel1||mem_tel2||mem_tel3=#{search_word} 
 			                </if>
-			              order by mem_reg_date desc
+			              order by mem_reg_date DESC
 					    ) t
 				)							
 			where
@@ -54,11 +54,11 @@
     	]]>
 	</select>	
 	
-	<update id="modifymemberInfo" parameterType="java.util.HashMap">
+	<update id="modifyMemberInfo" parameterType="java.util.HashMap">
 	   update gogi_member
 			   <set>
 			      <if test=" mem_pw!='' and mem_pw!=null">
-			        mem_pw=#{mem_pw },
+			        mem_pw=#{mem_pw},
 			      </if>
 			      
 			       <if test=" mem_birth_y!='' and mem_birth_y!=null">
@@ -85,7 +85,7 @@
 			         mem_tel3=#{mem_tel3},
 			      </if>
 			      
-			      <if test=" email1!='' and email1!=null">
+			      <if test=" mem_email!='' and mem_email!=null">
 			         mem_email=#{mem_email},
 			      </if>
 			      
@@ -103,10 +103,6 @@
 			      
 			      <if test=" namujiAddress!='' and namujiAddress!=null">
 			         namujiAddress=#{namujiAddress}
-			      </if>
-			      
-			      <if test=" mem_del_yn!='' and mem_del_yn!=null">
-			         mem_del_yn=#{mem_del_yn}
 			      </if>
 			   </set>
 		where 

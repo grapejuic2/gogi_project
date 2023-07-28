@@ -30,8 +30,8 @@ public class AdminOrderDAOImpl implements AdminOrderDAO{
 	}
 
 
-	public MemberVO selectOrderer(String member_id) throws DataAccessException{
-		MemberVO orderer=(MemberVO)sqlSession.selectOne("mapper.admin.order.selectOrderer",member_id);
+	public MemberVO selectOrderer(String mem_id) throws DataAccessException{
+		MemberVO orderer=(MemberVO)sqlSession.selectOne("mapper.admin.order.selectOrderer",mem_id);
 		return orderer;
 		
 	}

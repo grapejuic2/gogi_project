@@ -6,6 +6,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> 
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <c:set var="contextPath"  value="${pageContext.request.contextPath}"  />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -142,7 +143,7 @@ function fn_detail_search(){
 					</td>
 					<td width=15%>
 					   <c:set var="join_date" value="${item.mem_reg_date}" />
-					   <c:set var="arr" value="${fn:split(mem_reg_date,' ')}" />
+					   <c:set var="arr" value="${fn:split(join_date,' ')}" />
 					   <span><c:out value="${arr[0]}" /></span>
 				    </td>
 				    <td width=10%>

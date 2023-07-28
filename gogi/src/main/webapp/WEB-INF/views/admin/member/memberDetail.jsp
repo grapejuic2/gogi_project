@@ -8,6 +8,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <c:choose>
 <c:when test='${modified_personal_info==true }'>
 <script>
@@ -24,9 +25,17 @@ function init(){
 	var frm_mod_member=document.frm_mod_member;
 	var mem_tel1=frm_mod_member.mem_tel1;
 	var mem_tel1=mem_tel1.value;
+	var mem_tel2=frm_mod_member.mem_tel2;
+	var mem_tel2=mem_tel2.value;
+	var mem_tel3=frm_mod_member.mem_tel3;
+	var mem_tel3=mem_tel3.value;
 	
 	var select_tel1=frm_mod_member.mem_tel1;
 	select_tel1.value=mem_tel1;
+	var select_tel2=frm_mod_member.mem_tel2;
+	select_tel1.value=mem_tel2;
+	var select_tel3=frm_mod_member.mem_tel3;
+	select_tel1.value=mem_tel3;
 }
 
 </script>
@@ -56,7 +65,7 @@ function init(){
     var roadAddress = frm_mod_member.roadAddress.value;
     var jibunAddress = frm_mod_member.jibunAddress.value;
     var namujiAddress = frm_mod_member.namujiAddress.value;
-    var mem_del_yn = frm_mod_member.mem_del_yn.value;
+/*     var mem_del_yn = frm_mod_member.mem_del_yn.value; */
 }
 
 </script>
@@ -114,97 +123,58 @@ function init(){
     }
 </script>
 <script>
-function fn_modify_member_info(mem_id,mod_type){
-	var value;
-	// alert(member_id);
-	// alert("mod_type:"+mod_type);
-		var frm_mod_member=document.frm_mod_member;
-		if(mod_type=='mem_pw'){
-			value=frm_mod_member.mem_pw.value;
-			
-		}else if(mod_type=='mem_birth'){
-			var member_birth_y=frm_mod_member.mem_birth_y;
-			var member_birth_m=frm_mod_member.mem_birth_m;
-			var member_birth_d=frm_mod_member.mem_birth_d;
-			
-			for(var i=0; mem_birth_y.length;i++){
-			 	if(mem_birth_y[i].selected){
-					value_y=mem_birth_y[i].value;
-					break;
-				} 
-			}
-			for(var i=0; mem_birth_m.length;i++){
-			 	if(mem_birth_m[i].selected){
-					value_m=mem_birth_m[i].value;
-					break;
-				} 
-			}
-			
-			for(var i=0; mem_birth_d.length;i++){
-			 	if(mem_birth_d[i].selected){
-					value_d=mem_birth_d[i].value;
-					break;
-				} 
-			}
-			value=+value_y+","+value_m+","+value_d;
-			
-		}else if(mod_type=='mem_tel1','mem_tel2','mem_tel3'){
-			var tel1=frm_mod_member.mem_tel1;
-			var tel2=frm_mod_member.mem_tel2;
-			var tel3=frm_mod_member.mem_tel3;
-			
-			value_tel1=mem_tel1.value;
-			value_tel2=mem_tel2.value;
-			value_tel3=mem_tel3.value;
-			
-			value=value_tel1+","+value_tel2+", "+value_tel3;
-			
-		}else if(mod_type=='email'){
-			var email1=frm_mod_mem.email;
-			
-			value_email1=email.value;
+    function fn_modify_member_info(mem_id, mod_type) {
+        var value;
 
-			value=value_email;
-			
-		}else if(mod_type=='address'){
-			var zipcode=frm_mod_member.zipcode;
-			var roadAddress=frm_mod_member.roadAddress;
-			var jibunAddress=frm_mod_member.jibunAddress;
-			var namujiAddress=frm_mod_member.namujiAddress;
-			
-			value_zipcode=zipcode.value;
-			value_roadAddress=roadAddress.value;
-			value_jibunAddress=jibunAddress.value;
-			value_namujiAddress=namujiAddress.value;
-			
-			value=value_zipcode+","+value_roadAddress+","+value_jibunAddress+","+value_namujiAddress;
-		}
+        if (mod_type === 'mem_pw') {
+            value = frm_mod_member.mem_pw.value;
+
+        } else if (mod_type === 'mem_birth') {
+            var mem_birth_y = frm_mod_member.mem_birth_y.value;
+            var mem_birth_m = frm_mod_member.mem_birth_m.value;
+            var mem_birth_d = frm_mod_member.mem_birth_d.value;
+            value = mem_birth_y + "," + mem_birth_m + "," + mem_birth_d;
+
+        } else if (mod_type === 'mem_tel') {
+            var mem_tel1 = frm_mod_member.mem_tel1.value;
+            var mem_tel2 = frm_mod_member.mem_tel2.value;
+            var mem_tel3 = frm_mod_member.mem_tel3.value;
+            value = mem_tel1 + "," + mem_tel2 + "," + mem_tel3;
+
+        } else if (mod_type === 'mem_email') {
+            value = frm_mod_member.mem_email.value;
+
+        } else if (mod_type === 'address') {
+            var zipcode = frm_mod_member.zipcode.value;
+            var roadAddress = frm_mod_member.roadAddress.value;
+            var jibunAddress = frm_mod_member.jibunAddress.value;
+            var namujiAddress = frm_mod_member.namujiAddress.value;
+            value = zipcode + "," + roadAddress + "," + jibunAddress + "," + namujiAddress;
+        }
 	 
-		$.ajax({
-			type : "post",
-			async : false, //false인 경우 동기식으로 처리한다.
-			url : "http://localhost:9090/gogi/admin/member/modifyMemberInfo.do",
-			data : {
-				mem_id:mem_id,
-				mod_type:mod_type,
-				value:value
-			},
-			success : function(data, textStatus) {
-				if(data.trim()=='mod_success'){
-					alert("회원 정보를 수정했습니다.");
-				}else if(data.trim()=='failed'){
-					alert("다시 시도해 주세요.");	
-				}
-				
-			},
-			error : function(data, textStatus) {
-				alert("에러가 발생했습니다."+data);
-			},
-			complete : function(data, textStatus) {
-				//alert("작업을완료 했습니다");
-				
-			}
-		}); //end ajax
+	    $.ajax({
+	        type : "post",
+	        async : false,
+	        url : "${contextPath}/admin/member/modifyMemberInfo.do", // 수정된 URL로 변경
+	        data : {
+	            mem_id: mem_id,
+	            mod_type: mod_type,
+	            value: value
+	        },
+	        success : function(data, textStatus) {
+	            if (data.trim() == 'mod_success') {
+	                alert("회원 정보를 수정했습니다.");
+	            } else if (data.trim() == 'failed') {
+	                alert("다시 시도해 주세요.");
+	            }
+	        },
+	        error : function(data, textStatus) {
+	            alert("에러가 발생했습니다." + data);
+	        },
+	        complete : function(data, textStatus) {
+	            // 작업을 완료 했습니다
+	        }
+	    }); // end ajax
 }
 
 //멤버 삭제
@@ -222,8 +192,7 @@ function fn_delete_member(mem_id){
 			alert("에러가 발생했습니다."+textStatus);
 		},
 		complete : function(data, textStatus) {
-			//alert("작업을완료 했습니다");
-			
+			alert("작업을완료 했습니다");
 		}
 	}); //end ajax	
 }
@@ -250,7 +219,7 @@ function backToList(obj) {
 						<input name="mem_id" type="text" size="20" value="${member_info.mem_id }"  disabled/>
 					</td>
 					 <td>
-					  <input type="button" value="수정하기" class="btn btn-secondary btn-sm" disabled onClick="fn_modify_member_info('${member_info.mem_id }','mem_name')" />
+					  <input type="button" value="수정하기" class="btn btn-secondary btn-sm" disabled onClick="fn_modify_member_info('${member_info.mem_id }','mem_id')" />
 					</td>
 				</tr>
 				<tr class="dot_line">
@@ -259,7 +228,7 @@ function backToList(obj) {
 					  <input name="mem_pw" type="password" size="20" value="${member_info.mem_pw }" />
 					</td>
 					<td>
-					  <input type="button" value="수정하기" class="btn btn-secondary btn-sm" onClick="fn_modify_member_info('${member_info.mem_id }','mem_pw')" />
+					  <input type="button" value="수정하기" class="btn btn-secondary btn-sm" onClick="fn_modify_member_info('${member_info.mem_pw }','mem_pw')" />
 					</td>
 				</tr>
 				<tr class="dot_line">
@@ -268,7 +237,7 @@ function backToList(obj) {
 					  <input name="mem_name" type="text" size="20" value="${member_info.mem_name }"  disabled />
 					 </td>
 					 <td>
-					  <input type="button" value="수정하기" class="btn btn-secondary btn-sm" disabled onClick="fn_modify_member_info('${member_info.mem_id }','mem_name')" />
+					  <input type="button" value="수정하기" class="btn btn-secondary btn-sm" disabled onClick="fn_modify_member_info('${member_info.mem_name }','mem_name')" />
 					</td>
 				</tr>
 				<tr class="dot_line">
@@ -317,24 +286,25 @@ function backToList(obj) {
 					</td>
 				</tr>
 				<tr class="dot_line">
-					<td class="fixed_join">전화번호</td>
+					<td class="fixed_join" >전화번호</td>
 					<td>
-						  <input type="text" size=4  name="tel2" value="${member_info.mem_tel1 }">	
-					    - <input type="text" size=4  name="tel2" value="${member_info.mem_tel2 }"> 
-					    - <input type="text" size=4  name="tel3" value="${member_info.mem_tel3 }">
+						  <input type="text" size=4  name="mem_tel1" value="${member_info.mem_tel1 }">	
+					    - <input type="text" size=4  name="mem_tel2" value="${member_info.mem_tel2 }"> 
+					    - <input type="text" size=4  name="mem_tel3" value="${member_info.mem_tel3 }">
 					</td>
 					<td>
-					  <input type="button" value="수정하기" class="btn btn-secondary btn-sm" onClick="fn_modify_member_info('${member_info.mem_id }','mem_tel')" />
+					  <input type="button" value="수정하기" class="btn btn-secondary btn-sm" 
+					  onClick="fn_modify_member_info('${member_info.mem_tel1 }','mem_tel1','${member_info.mem_tel2 }','mem_tel2','${member_info.mem_tel3 }','mem_tel3')" />
 					</td>
 				</tr>
 				<tr class="dot_line">
 					<td class="fixed_join">이메일(e-mail)</td>
 					<td>
-					   <input type="text" name="email1" size=20
+					   <input type="text" name="mem_email" size=20
 					   	value="${member_info.mem_email}" />
 					</td>
 					<td>
-					  <input type="button" value="수정하기" class="btn btn-secondary btn-sm" onClick="fn_modify_member_info('${member_info.mem_id }','mem_email')" />
+					  <input type="button" value="수정하기" class="btn btn-secondary btn-sm" onClick="fn_modify_member_info('${member_info.mem_email }','mem_email')" />
 					</td>
 				</tr>
 				<tr class="dot_line">
@@ -350,7 +320,7 @@ function backToList(obj) {
 					   </p>
 					</td>
 					<td>
-					  <input type="button" value="수정하기" class="btn btn-secondary btn-sm" onClick="fn_modify_member_info('${member_info.mem_id }','address')" />
+					  <input type="button" value="수정하기" class="btn btn-secondary btn-sm" onClick="fn_modify_member_info('${member_info.zipcode }','zipcode')" />
 					</td>
 				</tr>
 			</tbody>
@@ -361,16 +331,16 @@ function backToList(obj) {
 		<table align=center>
 		<tr>
 			<td >
-				<input type="hidden" name="command"  value="modify_my_info" /> 
+				<input type="hidden" name="command" value="modify_my_info" /> 
 				 <c:choose>
 				  <c:when test="${member_info.mem_del_yn=='Y' }">
-				    <input  type="button"  value="회원복원" onClick="fn_delete_member('${member_info.mem_id }','N')">
+				    <input  type="button"  value="회원복원" onClick="fn_delete_member('${member_info.mem_del_yn }','N')">
 				  </c:when>
 				  <c:when test="${member_info.mem_del_yn=='N' }">
-				    <input type="button" value="회원탈퇴" class="btn btn-secondary btn-sm" onClick="fn_delete_member('${member_info.mem_id }','Y')">
+				    <input type="button" value="회원탈퇴" class="btn btn-secondary btn-sm" onClick="fn_delete_member('${member_info.mem_del_yn }','Y')">
 				  </c:when>	  
 				</c:choose>
-				<input  type="button"  value="회원삭제" class="btn btn-secondary btn-sm" onClick="fn_delete_member('${member_info.mem_id }'), backToList(this.form)">
+				<input  type="button"  value="회원삭제" class="btn btn-secondary btn-sm" onClick="fn_delete_member('${member_info.mem_del_yn }'), backToList(this.form)">
 			</td>
 		</tr>
 	</table>

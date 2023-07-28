@@ -77,19 +77,16 @@ public class AdminOrderControllerImpl extends BaseController implements AdminOrd
 	
 	@Override
 	@RequestMapping(value="/modifyDeliveryState.do" ,method={RequestMethod.POST})
-											  // Ajax로 전달받은 배송 상태를 Map에 저장합니다.
 	public ResponseEntity modifyDeliveryState(@RequestParam Map<String, String> deliveryMap, 
 			                        		  HttpServletRequest request, HttpServletResponse response) throws Exception {
 		// 배송 상태를 변경합니다.
 		adminOrderService.modifyDeliveryState(deliveryMap);
-		
 		String message = null;
 		ResponseEntity resEntity = null;
 		HttpHeaders responseHeaders = new HttpHeaders();
 		message  = "mod_success";
 		resEntity =new ResponseEntity(message, responseHeaders, HttpStatus.OK);
 		return resEntity;
-		
 	}
 	
 	@Override

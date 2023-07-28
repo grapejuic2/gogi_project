@@ -3,6 +3,7 @@
 	isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="contextPath"  value="${pageContext.request.contextPath}"  />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <html>
 <head>
 <meta  charset="utf-8">
@@ -19,7 +20,6 @@ function init(){
 	var frm_delivery_list=document.frm_delivery_list;
 	var h_delivery_state=frm_delivery_list.h_delivery_state;
 	var s_delivery_state=frm_delivery_list.s_delivery_state;
-	
 	
 	if(h_delivery_state.length==undefined){
 		s_delivery_state.value=h_delivery_state.value; //조회된 주문 정보가 1건인 경우
@@ -65,18 +65,18 @@ function fn_modify_order_state(order_id,select_id){
     var index = s_delivery_state.selectedIndex;
     var value = s_delivery_state[index].value;
     
-    //console.log("value: "+value );
+    console.log("value: "+value );
 	 
 	$.ajax({
 		type : "post",
 		async : false,
 		url : "${contextPath}/admin/order/modifyDeliveryState.do",
 			   // 주문 번호와 배송 상태 값을 컨트롤러로 전송합니다.
-		data : {order_id:order_id, "delivery_state":value},
+		data : {order_id:order_id, "order_delivery_status":value},
 		success : function(data, textStatus) {
 			if(data.trim()=='mod_success'){
 				alert("주문 정보를 수정했습니다.");
-				location.href="${contextPath}//admin/order/adminOrderMain.do";
+				location.href="${contextPath}/admin/order/adminOrderMain.do";
 			}else if(data.trim()=='failed'){
 				alert("다시 시도해 주세요.");	
 			}
@@ -171,10 +171,10 @@ function fn_detail_search(){
 	          <c:when test="${item.order_id != pre_order_id }">  
 	          	<!-- 각 주문 상품에 대한 셀렉트 박스에 현재 주문 상태를 초기 값으로 설정합니다. -->
 	            <c:choose>
-	              <c:when test="${item.delivery_state=='delivery_prepared' }">
+	              <c:when test="${item.order_delivery_status=='delivery_prepared' }">
 	                <tr>    
 	              </c:when>
-	              <c:when test="${item.delivery_state=='finished_delivering' }">
+	              <c:when test="${item.order_delivery_status=='finished_delivering' }">
 	                <tr>    
 	              </c:when>
 	              <c:otherwise>
@@ -185,18 +185,18 @@ function fn_detail_search(){
 					     <span>${item.order_id}</span>
 					</td>
 					<td width=20%>
-					 <span>${item.pay_order_time }</span> 
+					 <span>${item.order_time }</span> 
 					</td>
 					<td width=50% align=left >
-					  <span><b>[주문자]</b> ${item.orderer_name}&nbsp;&nbsp;</span><br>
-					  <span><b>[주문자 전화번호]</b> ${item.orderer_hp}</span><br>
-					  <span><b>[수령자]</b> ${item.receiver_name}&nbsp;&nbsp;</span><br>
-					  <span><b>[수령자 전화번호]</b> ${item.receiver_hp1}-${item.receiver_hp2}-${item.receiver_hp3}</span><br>
-					  <span><b>[주문상품]</b> ${item.goods_title}&nbsp;&nbsp;<b>[수량]</b> ${item.order_goods_qty}</span><br>
+					  <span><b>[주문자]</b> ${item.order_id}&nbsp;&nbsp;</span><br>
+					  <span><b>[주문자 전화번호]</b> ${item.pay_orderer_hp_num}</span><br>
+					  <span><b>[수령자]</b> ${item.order_rec_name}&nbsp;&nbsp;</span><br>
+					  <span><b>[수령자 전화번호]</b> ${item.order_rec_hp1}-${item.order_rec_hp2}-${item.order_rec_hp3}</span><br>
+					  <span><b>[주문상품]</b> ${item.goods_name}&nbsp;&nbsp;<b>[수량]</b> ${item.order_quantity}</span><br>
 					     <c:forEach var="item2" items="${newOrderList}" varStatus="j">
 					       <c:if test="${j.index > i.index }" >
-					          <c:if  test="${item.order_id ==item2.order_id}" >
-					            <span><b>[주문상품명]</b> ${item2.goods_title}&nbsp;&nbsp;<b>[수량]</b> ${item2.order_goods_qty}</span><br>
+					          <c:if  test="${item.order_id == item2.order_id}" >
+					            <span><b>[주문상품명]</b> ${item2.goods_id}&nbsp;&nbsp;<b>[수량]</b> ${item2.order_quantity}</span><br>
 					      </c:if>   
 					       </c:if>
 					    </c:forEach> 
@@ -204,35 +204,35 @@ function fn_detail_search(){
 					<td width=10%>
 					 <select name="s_delivery_state${i.index }"  id="s_delivery_state${i.index }" style="height:35px">
 					 <c:choose>
-					   <c:when test="${item.delivery_state=='delivery_prepared' }">
+					   <c:when test="${item.order_delivery_status=='delivery_prepared' }">
 					     <option  value="delivery_prepared" selected>배송준비중</option>
 					     <option  value="delivering">배송중</option>
 					     <option  value="finished_delivering">배송완료</option>
 					     <option  value="cancel_order">주문취소</option>
 					     <option  value="returning_goods">반품</option>
 					   </c:when>
-					    <c:when test="${item.delivery_state=='delivering' }">
+					    <c:when test="${item.order_delivery_status=='delivering' }">
 					    <option  value="delivery_prepared" >배송준비중</option>
 					     <option  value="delivering" selected >배송중</option>
 					     <option  value="finished_delivering">배송완료</option>
 					     <option  value="cancel_order">주문취소</option>
 					     <option  value="returning_goods">반품</option>
 					   </c:when>
-					   <c:when test="${item.delivery_state=='finished_delivering' }">
+					   <c:when test="${item.order_delivery_status=='finished_delivering' }">
 					    <option  value="delivery_prepared" >배송준비중</option>
 					     <option  value="delivering"  >배송중</option>
 					     <option  value="finished_delivering" selected>배송완료</option>
 					     <option  value="cancel_order">주문취소</option>
 					     <option  value="returning_goods">반품</option>
 					   </c:when>
-					   <c:when test="${item.delivery_state=='cancel_order' }">
+					   <c:when test="${item.order_delivery_status=='cancel_order' }">
 					    <option  value="delivery_prepared" >배송준비중</option>
 					     <option  value="delivering"  >배송중</option>
 					     <option  value="finished_delivering" >배송완료</option>
 					     <option  value="cancel_order" selected>주문취소</option>
 					     <option  value="returning_goods">반품</option>
 					   </c:when>
-					   <c:when test="${item.delivery_state=='returning_goods' }">
+					   <c:when test="${item.order_delivery_status=='returning_goods' }">
 					    <option  value="delivery_prepared" >배송준비중</option>
 					     <option  value="delivering"  >배송중</option>
 					     <option  value="finished_delivering" >배송완료</option>
