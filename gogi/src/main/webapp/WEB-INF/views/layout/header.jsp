@@ -6,26 +6,36 @@
 <html lang="ko">
 <head>
 <style>
+.container-fluid{
+	font-family: 'Noto Sans KR', sans-serif;
+	font-weight: 700;
+}
 .navbar.navbar-inverse {
 	padding: 10px;
 	padding-left: 200px;
 	padding-right: 200px;
 	background: white;
 	border: none;
-	
+	font-family: 'Noto Sans KR', sans-serif;
+	font-weight: 500;
+	font-size: 20px;
 }
 
 .nav.navbar-nav {
 	margin-top: 60px;
 	margin-left: 40px;
-	font-family: 'Nanum Gothic', sans-serif;
-	font-weight: 700;
+	font-family: 'Noto Sans KR', sans-serif;
+	font-weight: 500;
 	display: block;
 	font-size: 20px;
 	
 }
 .nav.navbar-nav.navbar-right{
-font-size: 16px;}
+font-size: 16px;
+font-family: 'Noto Sans KR', sans-serif;
+font-weight: 500;
+display: block;
+}
 
 ul.nav.navbar-nav li a{
 	color:black;
@@ -45,6 +55,8 @@ ul.nav.navbar-nav li a:hover {
 	left: 0;
 	width: 100%;
 	z-index: 1;
+	font-family: 'Noto Sans KR', sans-serif;
+	font-weight: 700;
 }
 
 .navbar .dropdown-menu .dropdown-toggle {
@@ -57,15 +69,14 @@ ul.nav.navbar-nav li a:hover {
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-<!-- 폰트:나눔고딕 -->
+<!-- 폰트:나눔산스 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
-
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@700;800&family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
 </head>
 
 <body>
-	<nav class="navbar navbar-inverse navbar-fixed" >
+	<nav class="navbar navbar-inverse navbar-fixed" style="font-family: 'Noto Sans KR', sans-serif;" >
 	
 		<div class="container-fluid">
 			<div class="navbar-header">
@@ -82,7 +93,7 @@ ul.nav.navbar-nav li a:hover {
 		    <li class="logged-out"><a href="${contextPath}/member/loginForm.do" id="loginBtn"><span class="glyphicon glyphicon-log-in"></span> 로그인</a></li>
 		    <li class="user-logged-in hidden"><a href="${contextPath}/member/logout.do" id="logoutBtn"><span class="glyphicon glyphicon-log-out"></span> 로그아웃</a></li>
 		    <li class="user-logged-in hidden"><a href="${contextPath}/cart/myCartList.do"><span class="glyphicon glyphicon-shopping-cart"></span> 장바구니</a></li>
-		    <li class="dropdown user-logged-in hidden" >
+		    		    <li class="dropdown user-logged-in hidden" >
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                 <span class="glyphicon glyphicon-user"></span> 마이페이지 <span class="caret"></span>
             </a>

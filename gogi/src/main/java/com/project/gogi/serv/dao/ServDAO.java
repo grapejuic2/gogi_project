@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.project.gogi.serv.domain.Criteria3;
+import com.project.gogi.serv.domain.ServImageFileVO;
 import com.project.gogi.serv.domain.ServVO;
 
  
@@ -14,7 +15,10 @@ public interface ServDAO {
 	  public List<ServVO> ServList(Criteria3 cri) throws Exception;
 	
 	   // 작성
-	   public void ServWrite(ServVO vo) throws Exception;
+	   public int ServWrite(Map newServWriteMap) throws Exception;
+	   
+	   //이미지 파일 저장
+	   public void insertServImageFile(List<ServImageFileVO> fileList) throws Exception;
 	   
 	   // 조회
 	   public ServVO ServRead(int cust_serv_no) throws Exception;

@@ -3,6 +3,10 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> 
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <c:set var="contextPath"  value="${pageContext.request.contextPath}"  />
+<c:set var="final_total_order_price" value="0" />
+<c:set var="total_discount_price" value="0"/>
+<c:set var="final_totalQuantity" value="0"/>
+<c:set var="delivery_fee" value="3500"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,381 +14,464 @@
 <link rel="preconnect" href="httpps://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link href="${contextPath}/resources/css/order/orderEachGoods.css" rel="stylesheet" type="text/css">
 <title>Insert title here</title>
 <style>
- .order-container{
-    display: flex;
-    width: 90%;
-    margin: 0 auto; /* Added margin to center the form */
-    align-content: center;
+.detail_table{
+ display: flex;
+  flex-direction: column;
+  align-items: left;
+  margin-top:20px;
+  margin-left: 30px;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight:400;
+  width:90%;
+  border-collapse: separate;
+}
+.detail_table table{
+	margin-top: 10px;
+  margin-bottom: 40px;
+  text-align: left;
+  border-collapse: separate; /* 'collapse'에서 'separate'로 변경 */
+  width:100%;
+}
+ .detail_table table {
+    width: 100%;
   }
-  <style>
-#layer {
-	z-index: 2;
-	position: absolute;
-	top: 0px;
-	left: 0px;
-	width: 100%;
-	/* background-color:rgba(0,0,0,0.8); */
+
+  .detail_table td {
+    text-align: left;
+  }
+  #hp1{
+ font-family: 'Noto Sans KR', sans-serif;
+  outline: 0;
+  height: 40px;
+  border: 1px solid #E8E8E8;
+  margin: 5px 5px 5px 0;
+  padding: 10px;
+  box-sizing: border-box;
+  font-size: 14px;
 }
 
-#popup_order_detail {
-	z-index: 3;
-	position: fixed;
-	text-align: center;
-	left: 10%;
-	top: 0%;
-	width: 60%;
-	height: 100%;
-	background-color:#ccff99;
-	border: 2px solid  #0000ff;
+.payment_table{
+	font-family: 'Noto Sans KR', sans-serif;
+	 font-size: 15px;
+	 margin-top: 30px;
+ 	margin-left: 30px;
+ 	font-weight: 400;
 }
-
-#close {
-	z-index: 4;
-	float: right;
+  .payment_table td {
+	padding:5px;
+  }
+   /* 첫 번째 열의 넓이 조정 */
+  .payment_table td:first-child {
+    width: 100px; /* 원하는 넓이로 조정하세요 */
+  }
+  
+  .detail_table td:first-child {
+   width: 100px; /* 원하는 넓이로 조정하세요 */
+  }
+   .title{
+  font-family: 'Noto Sans KR', sans-serif;
+  text-align: center;
+  margin-top: 30px;
+  font-size: 25px;
+  font-weight: 700;
+  }
+  
+  .delivery_table{
+  font-family: 'Noto Sans KR', sans-serif;
+	 font-size: 15px;
+	 margin-top: 30px;
+ 	margin-left: 30px;
+ 	font-weight: 400;}
+.fixed_join{
+margin-right: 15px;
 }
 </style>
 </head>
 <body>
 <div class="order-container">
-<H1>1.주문확인</H1>
-<form  name="form_order">	
-	<table class="list_view">
-		<tbody align=center>
-			<tr style="background: #33ff00">
-				<td colspan=2 class="fixed">주문상품명</td>
-				<td>수량</td>
-				<td>주문금액</td>
-				<td>배송비</td>
-				<td>예상적립금</td>
-				<td>주문금액합계</td>
-			</tr>
-			<tr>
-				<c:forEach var="item" items="${myOrderList }">
-					<td class="goods_image">
-					  <a href="${contextPath}/goods/goodsDetail.do?goods_id=${item.goods_id }">
-					    <img width="75" alt=""  src="${contextPath}/thumbnails.do?goods_id=${item.goods_id}&fileName=${item.file_name}">
-					    <input   type="hidden" id="h_goods_id" name="h_goods_id" value="${item.goods_id }" />
-					    <input   type="hidden" id="h_goods_fileName" name="h_goods_fileName" value="${item.file_name }" />
-					  </a>
-					</td>
-					<td>
-					  <h2>
-					     <a href="${contextPath}/goods/goodsDetail.do?goods_id=${item.goods_id }">${item.goods_name }</A>
-					      <input   type="hidden" id="h_goods_title" name="h_goods_title" value="${item.goods_name }" />
-					  </h2>
-					</td>
-					<td>
-					  <h2>${item.order_quantity }개<h2>
-					    <input   type="hidden" id="h_order_goods_qty" name="h_order_goods_qty" value="${item.order_quantity}" />
-					</td>
-					<td><fmt:formatNumber value="${item.goods_sales_price}" type="number" var="goods_sales_price" />
-					<h2>${goods_sales_price}원</h2></td>
-					<td><h2>0원</h2></td>
-					<td><fmt:formatNumber value="${0.05 *item.goods_sales_price}" type="number" var="goods_sales_price" />
-					<h2>${goods_sales_price}원</h2></td>
-					<td>
-					  <fmt:formatNumber value="${item.goods_sales_price * item.order_quantity}" type="number" var="each_goods_price" />
-					  <h2>${each_goods_price}원</h2>
-					  <input  type="hidden" id="h_each_goods_price"  name="h_each_goods_price" value="${item.goods_sales_price * item.order_quantity}" />
-					</td>
-			</tr>
-			<c:set var="final_total_order_price"
-				value="${final_total_order_price+ item.goods_sales_price* item.order_quantity}" />
-			<c:set var="total_order_price"
-				value="${total_order_price+ item.goods_sales_price* item.order_quantity}" />
-			<c:set var="total_order_goods_qty"
-				value="${total_order_goods_qty+item.order_quantity }" />
-			</c:forEach>
-		</tbody>
-	</table>
-	<div class="clear"></div>
-
-	<br>
-	<br>
-	<H1>2.배송지 정보</H1>
-	<DIV class="detail_table">
-	
-		<table>
-			<tbody>
-				<tr class="dot_line">
-					<td class="fixed_join">배송방법</td>
-					<td>
-					    <input type="radio" id="delivery_method" name="delivery_method" value="일반택배" checked>일반택배 &nbsp;&nbsp;&nbsp; 
-						<input type="radio" id="delivery_method" name="delivery_method" value="편의점택배">편의점택배 &nbsp;&nbsp;&nbsp; 
-						<input type="radio" id="delivery_method" name="delivery_method" value="해외배송">해외배송 &nbsp;&nbsp;&nbsp;
-				    </td>
-				</tr>
-				<tr class="dot_line">
-					<td class="fixed_join">배송지 선택</td>
-					<td><input type="radio" name="delivery_place"
-						onClick="restore_all()" value="기본배송지" checked>기본배송지 &nbsp;&nbsp;&nbsp; 
-						<input type="radio" name="delivery_place" value="새로입력" onClick="reset_all()">새로입력 &nbsp;&nbsp;&nbsp;
-						<input type="radio" name="delivery_place" value="최근배송지">최근배송지 &nbsp;&nbsp;&nbsp;
-				    </td>
-				</tr>
-				<tr class="dot_line">
-					<td class="fixed_join">받으실 분</td>
-					<td><input id="receiver_name" name="receiver_name" type="text" size="40" value="${orderer.mem_name }" />
-					   <input type="hidden" id="h_orderer_name" name="h_orderer_name"  value="${orderer.mem_name }" /> 
-					   <input type="hidden" id="h_receiver_name" name="h_receiver_name"  value="${orderer.mem_name }" />
-					</td>
-				</tr>
-				<tr class="dot_line">
-					<td class="fixed_join">휴대폰번호</td>
-					<td><select id="hp1" name="hp1">
-							<option>없음</option>
-							<option value="010" selected>010</option>
-							<option value="011">011</option>
-							<option value="016">016</option>
-							<option value="017">017</option>
-							<option value="018">018</option>
-							<option value="019">019</option>
-					</select> 
-					 - <input size="10px" type="text" id="hp2" name="hp2" value="${orderer.mem_tel2 }"> 
-					 - <input size="10px" type="text" id="hp3" name="hp3" value="${orderer.mem_tel3 }"><br><br> 
-					  <input type="hidden" id="h_hp1" name="h_hp1" value="${orderer.mem_tel1 }" /> 
-					  <input type="hidden" id="h_hp2" name="h_hp2" value="${orderer.mem_tel2 }" /> 
-					  <input type="hidden" id="h_hp3" name="h_hp3"  value="${orderer.mem_tel3 }" />
-					  <c:set  var="orderer_hp" value="${orderer.mem_tel1}-${orderer.mem_tel2}-${orderer.mem_tel3 }"/>
-					   									
-					         
-				  </tr>
-				
-				<tr class="dot_line">
-					<td class="fixed_join">주소</td>
-					<td><input type="text" id="zipcode" name="zipcode" size="5"
-						value="${orderer.zipcode }"> 
-						<a href="javascript:execDaumPostcode()">우편번호검색</a> <br>
-						<p>
-							지번 주소:<br>
-							<input type="text" id="roadAddress" name="roadAddress" size="50" value="${orderer.roadAddress }" /><br>
-							<br> 도로명 주소: 
-							   <input type="text" id="jibunAddress" name="jibunAddress" size="50"
-								              value="${orderer.jibunAddress }" /><br>
-							<br> 나머지 주소: 
-							   <input type="text" id="namujiAddress"  name="namujiAddress" size="50"
-								     value="${orderer.namujiAddress }" /> 
-						</p> 
-						 <input type="hidden" id="h_zipcode" name="h_zipcode" value="${orderer.zipcode }" /> 
-						 <input type="hidden"  id="h_roadAddress" name="h_roadAddress"  value="${orderer.roadAddress }" /> 
-						 <input type="hidden"  id="h_jibunAddress" name="h_jibunAddress" value="${orderer.jibunAddress }" /> 
-						 <input type="hidden"  id="h_namujiAddress" name="h_namujiAddress" value="${orderer.namujiAddress }" />
-					</td>
-				</tr>
-				<tr class="dot_line">
-					<td class="fixed_join">배송 메시지</td>
-					<td>
-					   <input id="delivery_message" name="delivery_message" type="text" size="50"
-						                   placeholder="택배 기사님께 전달할 메시지를 남겨주세요." />
-				     </td>
-				</tr>
-				<tr class="dot_line">
-					<td class="fixed_join">선물 포장</td>
-					<td><input type="radio" id="gift_wrapping" name="gift_wrapping" value="yes">예
-						&nbsp;&nbsp;&nbsp; <input type="radio"  id="gift_wrapping" name="gift_wrapping" checked value="no">아니요</td>
-				</td>
-			</tboby>
-		</table>
-	</div>
-	<div >
-	  <br><br>
-	   <h2>주문고객</h2>
-		 <table>
-		   <tbody>
+ <div class="title">주문/결제</div>
+	<!-- 최상단 주문자 정보 -->
+	<div class="orderer_info">
+	   <H1>주문자 정보</H1>
+		 <table class="order_cus">
 			 <tr class="dot_line">
-				<td ><h2>이름</h2></td>
+				<td style="vertical-align:middle;"><span class="required" >*</span>이름</td>
 				<td>
-				 <input  type="text" value="${orderer.mem_name}" size="15" />
+				<div class="input-container">
+				 <input type="text" value="${orderer.mem_name}" size="15" />
+				</div>
 				</td>
 			  </tr>
 			  <tr class="dot_line">
-				<td ><h2>핸드폰</h2></td>
+				<td style="vertical-align:middle;"><span class="required" >*</span>전화번호</td>
 				<td>
-				 <input  type="text" value="${orderer.mem_tel1}-${orderer.mem_tel2}-${orderer.mem_tel3}" size="15" />
+				 <div class="input-container">
+				 	<input type="text" value="${orderer.mem_tel1}-${orderer.mem_tel2}-${orderer.mem_tel3}" size="15" />
+				 </div>
 				</td>
 			  </tr>
 			  <tr class="dot_line">
-				<td ><h2>이메일</h2></td>
+				<td style="vertical-align:middle;"><span class="required" >*</span>이메일</td>
 				<td>
-				 <input  type="text" value="${orderer.mem_email}" size="15" />
+				<div class="input-container">
+				 <input  type="text" value="${orderer.mem_email}"  />
+				</div>
 				</td>
 			  </tr>
-		   </tbody>
-		</table>
-	</div>
-	<div class="clear"></div>
-	<br>
-	<br>
-	<br>
-
-
-	<H1>3.할인 정보</H1>
-	<div class="detail_table">
-		<table>
-			<tbody>
-				<tr class="dot_line">
-					<td width=100>적립금</td>
-					<td><input name="discount_juklip" type="text" size="10" />원/1000원
-						&nbsp;&nbsp;&nbsp; <input type="checkbox" /> 모두 사용하기</td>
-				</tr>
-				<tr class="dot_line">
-					<td>예치금</td>
-					<td><input name="discount_yechi" type="text" size="10" />원/1000원
-						&nbsp;&nbsp;&nbsp; <input type="checkbox" /> 모두 사용하기</td>
-				</tr>
-				<tr class="dot_line">
-					<td>상품권 전환금</td>
-					<td cellpadding="5"><input name="discount_sangpum" type="text"
-						size="10" />원/0원 &nbsp;&nbsp;&nbsp; <input type="checkbox" /> 모두
-						사용하기</td>
-				</tr>
-				<tr class="dot_line">
-					<td>OK 캐쉬백 포인트</td>
-					<td cellpadding="5"><input name="discount_okcashbag" type="text"
-						size="10" />원/0원 &nbsp;&nbsp;&nbsp; <input type="checkbox" /> 모두
-						사용하기</td>
-				</tr>
-				<tr class="dot_line">
-					<td>쿠폰할인</td>
-					<td cellpadding="5"><input name="discount_coupon" type="text"
-						size="10" />원/0원 &nbsp;&nbsp;&nbsp; <input type="checkbox" /> 모두
-						사용하기</td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
-	<div class="clear"></div>
-
-	<br>
-	<table width=80% class="list_view" style="background: #ccffff">
-		<tbody>
-			<tr align=center class="fixed">
-				<td class="fixed">총 상품수</td>
-				<td>총 상품금액</td>
-				<td></td>
-				<td>총 배송비</td>
-				<td></td>
-				<td>총 할인 금액</td>
-				<td></td>
-				<td>최종 결제금액</td>
-			</tr>
-			<tr cellpadding=40 align=center>
-				<td id="">
-					<p id="p_totalNum">${total_order_goods_qty}개</p> 
-					<input id="h_total_order_goods_qty" type="hidden" value="${total_order_goods_qty}" />
-				</td>
+			  <tr class="dot_line">
+				<td class="fixed_join" style="vertical-align:top;"><span class="required">*</span>주소</td>
 				<td>
-					<p id="p_totalPrice">${total_order_price}원</p> <input
-					id="h_totalPrice" type="hidden" value="${total_order_price}" />
-				</td>
-				<td><IMG width="25" alt=""
-					src="${pageContext.request.contextPath}/resources/image/plus.jpg"></td>
-				<td>
-					<p id="p_totalDelivery">${total_delivery_price }원</p> <input
-					id="h_totalDelivery" type="hidden" value="${total_delivery_price}" />
-				</td>
-				<td>
-				<img width="25" alt="" 	src="${pageContext.request.contextPath}/resources/image/minus.jpg"></td>
-				<td>
-					<p id="p_totalSalesPrice">${total_discount_price }원</p> 
-					<input id="h_total_sales_price" type="hidden" value="${total_discount_price}" />
-				</td>
-				<td><img width="25" alt="" src="${pageContext.request.contextPath}/resources/image/equal.jpg"></td>
-				<td>
-					<p id="p_final_totalPrice">
-						<font size="15">${final_total_order_price }원 </font>
-					</p> <input id="h_final_total_Price" type="hidden" value="${final_total_order_price}" />
+					<div class="input-container" style="width:50px;"><input type="text" id="zipcode" name="zipcode" size="5"value="${orderer.zipcode }"> </div>
+					<div class="input-container"><input type="text" id="roadAddress" name="roadAddress" size="50" value="${orderer.roadAddress }" /></div>
+					<div class="input-container"><input type="text" id="jibunAddress" name="jibunAddress" size="50" value="${orderer.jibunAddress }" /></div>
+					<div class="input-container"><input type="text" id="namujiAddress"  name="namujiAddress" size="50" value="${orderer.namujiAddress }" /></div> 
+					<input type="hidden" id="h_zipcode" name="h_zipcode" value="${orderer.zipcode }" /> 
+					 <input type="hidden"  id="h_roadAddress" name="h_roadAddress"  value="${orderer.roadAddress }" /> 
+					 <input type="hidden"  id="h_jibunAddress" name="h_jibunAddress" value="${orderer.jibunAddress }" /> 
+					 <input type="hidden"  id="h_namujiAddress" name="h_namujiAddress" value="${orderer.namujiAddress }" />
 				</td>
 			</tr>
-		</tbody>
-	</table>
-   <div class="clear"></div>
-	<br>
-	<br>
-	<br>
-	<h1>4.결제정보</h1>
-	<div class="detail_table">
-		<table>
-			<tbody>
-				<tr >
-					<td>
-					   <input type="radio" id="pay_method" name="pay_method" value="신용카드"   onClick="fn_pay_card()" checked>신용카드 &nbsp;&nbsp;&nbsp; 
-					   <input type="radio" id="pay_method" name="pay_method" value="제휴 신용카드"  >제휴 신용카드 &nbsp;&nbsp;&nbsp; 
-					   <input type="radio" id="pay_method" name="pay_method" value="실시간 계좌이체">실시간 계좌이체 &nbsp;&nbsp;&nbsp;
-					   <input type="radio" id="pay_method" name="pay_method" value="무통장 입금">무통장 입금 &nbsp;&nbsp;&nbsp;
-					</td>
-				</tr>
-				<tr >
-					<td>
-					   <input type="radio" id="pay_method" name="pay_method" value="휴대폰결제" onClick="fn_pay_phone()">휴대폰 결제 &nbsp;&nbsp;&nbsp;
-					   <input type="radio" id="pay_method" name="pay_method" value="카카오페이(간편결제)">카카오페이(간편결제) &nbsp;&nbsp;&nbsp; 
-					   <input type="radio" id="pay_method" name="pay_method" value="페이나우(간편결제)">페이나우(간편결제) &nbsp;&nbsp;&nbsp; 
-					   <input type="radio" id="pay_method" name="pay_method" value="페이코(간편결제)">페이코(간편결제) &nbsp;&nbsp;&nbsp;
-					</td>
-				</tr>
-				<tr >
-					<td>
-					   <input type="radio"  id="pay_method" name="pay_method" value="직접입금">직접입금&nbsp;&nbsp;&nbsp;
-					</td>
-				</tr>
-				<tr id="tr_pay_card">
-					<td>
-					  <strong>카드 선택<strong>:&nbsp;&nbsp;&nbsp;
-					  <select id="card_com_name" name="card_com_name">
-							<option value="삼성" selected>삼성</option>
-							<option value="하나SK">하나SK</option>
-							<option value="현대">현대</option>
-							<option value="KB">KB</option>
-							<option value="신한">신한</option>
-							<option value="롯데">롯데</option>
-							<option value="BC">BC</option>
-							<option value="시티">시티</option>
-							<option value="NH농협">NH농협</option>
-					</select>
-					<br><Br>
-					<strong>할부 기간:<strong>  &nbsp;&nbsp;&nbsp;
-					<select id="card_pay_month" name="card_pay_month">
-							<option value="일시불" selected>일시불</option>
-							<option value="2개월">2개월</option>
-							<option value="3개월">3개월</option>
-							<option value="4개월">4개월</option>
-							<option value="5개월">5개월</option>
-							<option value="6개월">6개월</option>
-					</select>
+		</table>
+	</div>
+	
+	<!-- 주문정보 -->
+	<form name="form_order">	
+	 <div class="container-fluid" style="min-height: calc(100vh - 136px);max-width: 900px; margin: 0 auto;">
+    <!-- 그룹 태그로 role과 aria-multiselectable를 설정한다. -->
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+    
+      <!-- 하나의 item입니다. data-parent 설청과 href 설정만 제대로 하면 문제없이 작동합니다. -->
+      <div class="panel panel-default" >
+        <div class="panel-heading" role="tab">
+          <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse1" aria-expanded="true">주문내역</a>
+        </div>
+        <div id="collapse1" class="panel-collapse collapse in" role="tabpanel" aria-expanded="true">
+          <div class="panel-body">
+          <H1 style="margin-left: 5px;">주문상품</H1>
+                <table class="list_view">
+			        <tr style="font-size: 15px; text-align: center;background: #1D1D1D; color:white;">
+			            <th colspan="2" class="fixed" style="text-align: center;">주문상품명</th>
+			            <th style="text-align: center;">수량</th>
+			            <th style="text-align: center;">주문금액</th>
+			            <th style="text-align: center;">배송비</th>
+			            <th style="text-align: center;">예상 적립금</th>
+			            <th style="text-align: center;">주문금액 합계</th>
+			        </tr>
+			        <c:forEach var="item" items="${myOrderList}">
+			            <tr style="font-size: 15px; text-align: center; font-weight: 400;">
+			                <td class="goods_image">
+			                    <a href="${contextPath}/goods/goodsDetail.do?goods_id=${item.goods_id}">
+			                        <img width="75" alt="" src="${contextPath}/thumbnails.do?goods_id=${item.goods_id}&fileName=${item.file_name}">
+			                        <input type="hidden" id="h_goods_id" name="h_goods_id" value="${item.goods_id}" />
+			                        <input type="hidden" id="h_goods_fileName" name="h_goods_fileName" value="${item.file_name}" />
+			                    </a>
+			                </td>
+			                <td>           
+			                    <a href="${contextPath}/goods/goodsDetail.do?goods_id=${item.goods_id }" style="text-decoration: none;">${item.goods_name}</a>
+			                    <input type="hidden" id="h_goods_title" name="h_goods_title" value="${item.goods_name}" />              
+			                </td>
+			                <td>
+			                    ${item.order_quantity}개
+			                    <input type="hidden" id="h_order_goods_qty" name="h_order_goods_qty" value="${item.order_quantity}" />
+			                </td>
+			                <td>
+			                    <fmt:formatNumber value="${item.goods_sales_price}" type="number" var="goods_sales_price" />
+			                    ${goods_sales_price}원
+			                </td>
+			                <td><fmt:formatNumber value="${delivery_fee}" type="number" var="delivery_fee2" />${delivery_fee2 }</td>
+			                <td>
+			                    <fmt:formatNumber value="${0.05 * item.goods_sales_price}" type="number" var="goods_sales_price" />
+			                    ${goods_sales_price}원
+			                </td>
+			                <td>
+			                    <fmt:formatNumber value="${item.goods_sales_price * item.order_quantity}" type="number" var="each_goods_price" />
+			                    ${each_goods_price}원
+			                    <input type="hidden" id="h_each_goods_price" name="h_each_goods_price" value="${item.goods_sales_price * item.order_quantity}" />
+			                </td>
+			            </tr>
+			            <c:set var="p_totalQuantity" value="${item.order_quantity}"/>
+			            <c:set var="final_totalQuantity" value="${final_totalQuantity+p_totalQuantity}"/>
+			            <c:set var="p_totalPrice" value="${(item.goods_sales_price * item.order_quantity)}" />
+						<c:set var="final_total_order_price" value="${final_total_order_price + p_totalPrice}" />		           
+			        </c:forEach>
+			         	
+   			 </table>
+   			 <p style="text-align: right;margin-right: 55px;"><span class="required" >*</span>배송비는 한번만 적용됩니다.</p>
+   			 <br>
+ 			<H1 style="margin-left: 5px;">적립금</H1>
+				<div class="detail_table">
+					<table>
+						<tbody>
+							<tr class="dot_line">
+								<td width=100>적립금</td>
+								<td>
+								<div class="input-container2" style="vertical-align: middle;">
+								<input "name="discount_juklip" type="text" style="width:580px;" value="0"/>		
+								<button style="background:#1D1D1D; color:white; height: 35px;" onClick="use_Point();">사용</button>
+								<p style="text-align: right;margin-right: 20px; margin-top: 3px;">사용 가능한 적립금은 ${orderer.mem_point }원 입니다</p>				
+								</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				
+				<H1 style="margin-left: 5px;">최종 결제금액</H1>
+				<div class="cart-total" style="width:100%">
+				 <table class="cart-total-table" >
+					    <tbody>
+					    	<tr>
+						    	<td>총 상품 수</td>
+								<td>	
+									<p id="p_total_order_goods_qty">${final_totalQuantity}개</p> 
+									<input id="h_total_order_goods_qty" type="hidden" value="${final_totalQuantity}" />
+								</td>					    	
+					    	</tr>
+					        <tr>					        
+					            <td>주문금액</td>
+					            <td>
+					             	<fmt:formatNumber value="${final_total_order_price}" type="number" var="final_total_order_price2" />
+					                <p id="final_total_order_price" >${final_total_order_price2}원</p>
+					            </td>
+					            <td>    
+					                <input id="h_totalPrice" type="hidden" value="${p_totalPrice}" />
+					            </td>
+					        </tr>
+					        <tr>
+					            <td>배송비</td>
+					            <td>
+					            	<fmt:formatNumber value="${delivery_fee}" type="number" var="delivery_fee2" />
+					                <p id="p_totalDelivery">${delivery_fee2}원</p>
+					                <input id="h_totalDelivery" type="hidden" value="${delivery_fee}" />
+					            </td>
+					        </tr>
+					        <tr>
+					            <td>할인/적립금 사용</td>
+					            <td>
+					                <p id="p_totalSalesPrice">${total_discount_price}원</p>
+					                <input id="h_total_sales_price" type="hidden" value="${total_discount_price}" />
+					            </td>
+					        </tr>
+					        <tr>
+					            <td style="font-weight: 700;"><span class="required" >*</span>최종 결제 금액</td>
+					            <td>
+					            	<fmt:formatNumber value="${final_total_order_price}" type="number" var="final_total_order_price" />
+					                <p id="p_final_totalPrice">${final_total_order_price}원</p>
+					                <input id="h_final_total_Price" type="hidden" value="${final_total_order_price}" />
+					            </td>
+					        </tr>
+					    </tbody>
+					</table>
+				</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 하나의 item입니다.  -->
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab">
+          <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse2" aria-expanded="false">배송지</a>
+        </div>
+        <div id="collapse2" class="panel-collapse collapse" role="tabpanel">
+          <div class="panel-body">
+            <H1 style="margin-left: 5px;">배송지 정보</H1>
+ 
+				<DIV class="delivery_table">			
+					<table>
+						<tbody>							
+							<tr class="dot_line">								
+								<td colspan="2">
+								<div class="input-container3" style="margin-bottom: 20px;">
+									<input type="radio" name="delivery_place" onClick="restore_all()" value="기본배송지" checked>기본배송지 &nbsp;&nbsp;&nbsp; 
+									<input type="radio" name="delivery_place" value="새로입력" onClick="reset_all()">새로입력 &nbsp;&nbsp;&nbsp;
+								</div>
+							    </td>
+							</tr>
+							<tr class="dot_line">
+								<td class="fixed_join">받으실 분</td>
+								<td>
+								<div class="input-container3">
+									<input id="receiver_name" name="receiver_name" type="text" size="40" value="${orderer.mem_name }" />
+								</div>
+								<div class="input-container3">   
+								   <input type="hidden" id="h_orderer_name" name="h_orderer_name"  value="${orderer.mem_name }" /> 
+								</div>
+								<div class="input-container3">  
+								   <input type="hidden" id="h_receiver_name" name="h_receiver_name"  value="${orderer.mem_name }" />
+								</div>
+								</td>
+							</tr>
+							<tr class="dot_line">
+							    <td class="fixed_join">휴대폰번호</td>
+							    <td style="vertical-align: top;">
+							        <div class="input-container3" style="display: inline-block; box-sizing: border-box;">
+							            <select id="hp1" name="hp1" style="width: 220px;">
+							                <option>없음</option>
+							                <option value="010" selected>010</option>
+							                <option value="011">011</option>
+							                <option value="016">016</option>
+							                <option value="017">017</option>
+							                <option value="018">018</option>
+							                <option value="019">019</option>
+							            </select> 
+							            - <input style="display: inline-block; width:225px;" type="text" id="hp2" name="hp2" value="${orderer.mem_tel2 }"> 
+							            - <input style="display: inline-block; width: 225px;" type="text" id="hp3" name="hp3" value="${orderer.mem_tel3 }">
+							            <input type="hidden" id="h_hp1" name="h_hp1" value="${orderer.mem_tel1 }" /> 
+							            <input type="hidden" id="h_hp2" name="h_hp2" value="${orderer.mem_tel2 }" /> 
+							            <input type="hidden" id="h_hp3" name="h_hp3"  value="${orderer.mem_tel3 }" />
+							            <c:set  var="orderer_hp" value="${orderer.mem_tel1}-${orderer.mem_tel2}-${orderer.mem_tel3 }"/>	
+							        </div>   									
+							    </td>
+							</tr>
+							
+							<tr class="dot_line">
+								<td class="fixed_join">주소</td>
+								<td>
+									<div class="input-container3" style="margin-bottom: 5px;">
+										<input type="text" id="zipcode" name="zipcode" size="5" value="${orderer.zipcode }"style="width:100px;"> 
+										<a href="javascript:execDaumPostcode()"><button style="background:#1D1D1D; color:white; height: 35px;">주소 검색</button></a>
+									</div>	
+									<div class="input-container3" style="margin-bottom: 5px;">
+										<input type="text" id="roadAddress" name="roadAddress" size="50" value="${orderer.roadAddress }" />
+									</div>
+									<div class="input-container3" style="margin-bottom: 5px;">
+										<input type="text" id="jibunAddress" name="jibunAddress" size="50" value="${orderer.jibunAddress }" />
+									</div>
+									<div class="input-container3" style="margin-bottom: 5px;">
+										<input type="text" id="namujiAddress"  name="namujiAddress" size="50" value="${orderer.namujiAddress }" />
+									</div> 
+								
+									 <input type="hidden" id="h_zipcode" name="h_zipcode" value="${orderer.zipcode }" /> 
+									 <input type="hidden"  id="h_roadAddress" name="h_roadAddress"  value="${orderer.roadAddress }" /> 
+									 <input type="hidden"  id="h_jibunAddress" name="h_jibunAddress" value="${orderer.jibunAddress }" /> 
+									 <input type="hidden"  id="h_namujiAddress" name="h_namujiAddress" value="${orderer.namujiAddress }" />
+								</td>
+							</tr>
+							<tr class="dot_line">
+								<td class="fixed_join">배송 메시지</td>
+								<td>
+								<div class="input-container3">
+								   <input id="delivery_message" name="delivery_message" type="text" size="50"placeholder="택배 기사님께 전달할 메시지를 남겨주세요." />
+							     </div>
+							     </td>
+							</tr>
+							<tr class="dot_line">
+								<td class="fixed_join">배송방법</td>
+								<td>
+								    <input type="radio" id="delivery_method" name="delivery_method" value="일반택배" checked>일반택배 &nbsp;&nbsp;&nbsp; 
+									<input type="radio" id="delivery_method" name="delivery_method" value="편의점택배">편의점택배 &nbsp;&nbsp;&nbsp; 
+									<input type="radio" id="delivery_method" name="delivery_method" value="해외배송">해외배송 &nbsp;&nbsp;&nbsp;
+							    </td>
+							</tr>
+							<tr class="dot_line">
+								<td class="fixed_join">선물 포장</td>
+								<td><input type="radio" id="gift_wrapping" name="gift_wrapping" value="yes">예
+									&nbsp;&nbsp;&nbsp; <input type="radio"  id="gift_wrapping" name="gift_wrapping" checked value="no">아니요</td>
+							</tr>
+			
+					</table>
+				</div>	
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab">
+          <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse3" aria-expanded="false">
+            결제수단
+          </a>
+        </div>
+        <div id="collapse3" class="panel-collapse collapse" role="tabpanel">
+          <div class="panel-body">
+            <H1 style="margin-left: 5px;">결제 방법 선택</H1>
+				<div class="payment_table">
+					<table>
 					
-					</td>
-				</tr>
-				<tr id="tr_pay_phone" style="visibility:hidden">
-				  <td>
-				  <strong>휴대폰 번호 입력: <strong>
-				  	       <input  type="text" size="5" value=""  id="pay_order_tel1" name="pay_order_tel1" />-
-				           <input  type="text" size="5" value="" id="pay_order_tel2" name="pay_order_tel2" />-
-				           <input  type="text" size="5" value="" id="pay_order_tel3" name="pay_order_tel3" />
-				  </td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
-</form>
-</div>
-    <div class="clear"></div>
-	<br>
-	<br>
-	<br>
+							<tr>
+								<td>
+								   <input type="radio" id="pay_method" name="pay_method" value="신용카드" onClick="fn_pay_card()" checked>신용카드 
+								</td>
+								<td>							   
+								   <input type="radio" id="pay_method" name="pay_method" value="실시간 계좌이체">실시간 계좌이체				  
+								</td>
+								<td>   
+								   <input type="radio" id="pay_method" name="pay_method" value="무통장 입금">무통장 입금							
+								</td>
+							</tr>
+							<tr>
+								<td>
+								   <input type="radio" id="pay_method" name="pay_method" value="휴대폰결제" onClick="fn_pay_phone()">휴대폰 결제 
+								</td>
+								<td>   
+								   <input type="radio" id="pay_method" name="pay_method" value="카카오페이(간편결제)">카카오페이(간편결제) 
+								</td>
+								<td>    
+								   <input type="radio" id="pay_method" name="pay_method" value="페이코(간편결제)">페이코(간편결제)
+								</td>
+							</tr>
+							<tr id="tr_pay_card">
+								<td>
+								  카드 선택:
+								  <select id="card_com_name" name="card_com_name">
+										<option value="삼성" selected>삼성</option>
+										<option value="하나SK">하나SK</option>
+										<option value="현대">현대</option>
+										<option value="KB">KB</option>
+										<option value="신한">신한</option>
+										<option value="롯데">롯데</option>
+										<option value="BC">BC</option>
+										<option value="시티">시티</option>
+										<option value="NH농협">NH농협</option>
+								</select>
+								<br><Br>
+								할부 기간:
+								<select id="card_pay_month" name="card_pay_month">
+										<option value="일시불" selected>일시불</option>
+										<option value="2개월">2개월</option>
+										<option value="3개월">3개월</option>
+										<option value="4개월">4개월</option>
+										<option value="5개월">5개월</option>
+										<option value="6개월">6개월</option>
+								</select>
+								
+								</td>
+							</tr>
+							<tr id="tr_pay_phone" style="visibility:hidden">
+							  <td>
+							  <strong>휴대폰 번호 입력: </strong>
+							  	       <input  type="text" size="5" value=""  id="pay_order_tel1" name="pay_order_tel1" />-
+							           <input  type="text" size="5" value="" id="pay_order_tel2" name="pay_order_tel2" />-
+							           <input  type="text" size="5" value="" id="pay_order_tel3" name="pay_order_tel3" />
+							  </td>
+							</tr>
 
-		<br>
-		<br> 
-		<a href="javascript:fn_show_order_detail();"> 
-			<input type="button" class="btn btn-secondary" value="최종결제하기" />
+					</table>
+				</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="text-align: right;">
+    	<a href="javascript:fn_show_order_detail();"> 
+			<input type="button" class="btn btn-secondary" value="최종 결제하기" style="background:#1D1D1D; color:white; height: 35px;margin-right: 5px;font-weight: 500;"/>
 		</a> 
 		<a href="${contextPath}/main/main.do"> 
-			<input type="button" class="btn btn-secondary" value="쇼핑계속하기" />
+			<input type="button" class="btn btn-secondary" value="쇼핑 계속하기" style="background:#E8E8E8; color:black; height: 35px;font-weight: 500;"/>
 		</a>
+	</div>
+  </div>  <!-- tab end div -->
+  </form> <!-- end form -->
+</div>
+		
 	
-<div class="clear"></div>		
 	<div id="layer" style="visibility:hidden">
 		<!-- visibility:hidden 으로 설정하여 해당 div안의 모든것들을 가려둔다. -->
 		<div id="popup_order_detail">
@@ -393,8 +480,8 @@
 			 <img  src="${contextPath}/resources/image/close.png" id="close" />
 			</a> 
 			<br/> 
-			  <div class="detail_table">
-			  <h1>최종 주문 사항</h1>
+			  <div class="detail_table2">
+			  <h1>주문 확인</h1>
 			<table>
 				<tbody align=left>
 				 	<tr>
@@ -455,7 +542,7 @@
 				   </tr>
 				   <tr>
 					  <td width=200px>
-					     받는사람 휴대폰번호:
+					     받는사람 휴대전화:
 					 </td>
 					 <td>
 					      <p id="p_receiver_hp_num"></p>
@@ -493,13 +580,12 @@
 					      <p id="p_pay_method">결제방법</p>
 					 </td>
 				   </tr>
-				   <tr>
-				    <td colspan=2 align=center>
-				    <input  name="btn_process_pay_order" type="button" onClick="fn_process_pay_order()" value="최종결제하기">
-				    </td>
-				   </tr>
-				</tbody>
-				</table>
+				   </table>
+				   
+				    <input name="btn_process_pay_order" type="button" onClick="fn_process_pay_order()" value="최종 결제하기" style="margin-top: 15px; color:white; background: black;">
+			
+			
+				
 			</div>
 			</div>
 			</div>
@@ -695,9 +781,9 @@ function fn_show_order_detail(){
 	
 	receiver_hp_num=hp1+"-"+hp2+"-"+hp3;
 	
-	delivery_address="우편번호:"+i_zipcode.value+"<br>"+
-						"도로명 주소:"+i_roadAddress.value+"<br>"+
-						"[지번 주소:"+i_jibunAddress.value+"]<br>"+
+	delivery_address=i_zipcode.value+"<br>"+
+					 i_roadAddress.value+"<br>"+
+					 i_jibunAddress.value+"]<br>"+
 								  i_namujiAddress.value;
 	
 	delivery_message=i_delivery_message.value;
@@ -792,6 +878,21 @@ function fn_process_pay_order(){
     formObj.action="${contextPath}/order/payToOrderGoods.do";
     formObj.submit();
 	imagePopup('close');
+}
+
+//적립금 사용
+function use_Point() {
+    // 사용 가능한 적립금 값 가져오기
+    var availablePoints = parseInt("${orderer.mem_point}");
+    
+    // 입력한 적립금 값 가져오기
+    var usedPoints = parseInt(document.getElementById("discount_juklip").value);
+    
+    // 적립금 사용이 가능한 범위를 넘어가는지 체크
+    if (usedPoints > availablePoints) {
+        alert("사용 가능한 적립금을 넘을 수 없습니다.");
+        return;
+    }
 }
 
 </script>

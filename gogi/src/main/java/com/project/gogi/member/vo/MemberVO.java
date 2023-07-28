@@ -22,6 +22,7 @@ public class MemberVO {
 	private String mem_email; // 회원 이메일 주소
 	private Date mem_reg_date;	//회원 가입 날짜
 	private String mem_del_yn; // 회원 탈퇴 여부
+	private int mem_point;//멤버 포인트
 
 	public MemberVO() {
 		// TODO Auto-generated constructor stub
@@ -29,7 +30,7 @@ public class MemberVO {
 
 	public MemberVO(String mem_id, String mem_pw, String mem_name, String mem_birth_y, String mem_birth_m,
 			String mem_birth_d, String mem_tel1, String mem_tel2, String mem_tel3, String zipcode, String roadAddress,
-			String jibunAddress, String namujiAddress, String mem_email, Date mem_reg_date, String mem_del_yn) {
+			String jibunAddress, String namujiAddress, String mem_email, Date mem_reg_date, String mem_del_yn, int mem_point) {
 		
 		this.mem_id = mem_id;
 		this.mem_pw = mem_pw;
@@ -47,6 +48,7 @@ public class MemberVO {
 		this.mem_email = mem_email;
 		this.mem_reg_date = mem_reg_date;
 		this.mem_del_yn = mem_del_yn;
+		this.mem_point=mem_point;
 	}
 
 	public String getZipcode() {
@@ -176,5 +178,14 @@ public class MemberVO {
 	public void setMem_del_yn(String mem_del_yn) {
 		this.mem_del_yn = mem_del_yn;
 	}
-	
+
+	public int getMem_point() {
+		return mem_point;
+	}
+
+	public void setMem_point(int mem_point) {
+		this.mem_point = mem_point;
+	}
+		
+
 }

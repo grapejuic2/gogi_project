@@ -47,149 +47,186 @@ public class NoticeController {
 	private MemberVO memberVO;
 
 
+	@RequestMapping(value = "/list.do", method = RequestMethod.GET)
+	public String getNoticeList(Model model, Criteria cri,  HttpServletRequest request, 
+	                            HttpServletResponse response) throws Exception {
+	    
+	    List<NoticeVO> noticeList = new ArrayList<NoticeVO>();
+	    noticeList=service.NoticeList(cri);
+	    
+	    model.addAttribute("noticeList", noticeList);
+
+	    //게시판 페이징 가져오기.
+	    PageMaker pageMaker = new PageMaker();
+	    pageMaker.setCri(cri);
+	    pageMaker.setTotalCount(service.NoticeListCount());
+	    model.addAttribute("pageMaker", pageMaker);
+
+	    
+	    Boolean isLogOn = (Boolean) httpSession.getAttribute("isLogon"); //로그인 여부
+
+	    if (isLogOn != null && isLogOn) { //로그인 상태 아니여도 공지사항 읽기 가능
+	        memberVO = (MemberVO) httpSession.getAttribute("memberInfo");
+	        System.out.println("세션:" + memberVO);
+	        String mem_id = memberVO.getMem_id();
+	        System.out.println("멤버아이디" + mem_id);
+	        System.out.println("로그인 여부: "+isLogOn);
+	        model.addAttribute("mem_id",mem_id);
+	        model.addAttribute("isLogOn", isLogOn);
+	    }
+
+	    return "notice/noticeList";
+	}
+
+		    
+		   
+	
+	
+	
+	
 	//공지사항~
 	//게시물 목록  +페이징
-		@RequestMapping(value = "/list.do", method = RequestMethod.GET)
-		public String getNoticeList(Model model,Criteria cri,Criteria2 cri2, HttpServletRequest request, HttpServletResponse response,NoticeVO vo) throws Exception {
-			
-			 request.getSession();
-			    memberVO = (MemberVO) httpSession.getAttribute("memberInfo");
-			    String mem_id = null;
-
-		        // 로그인 상태 확인
-		        if (memberVO != null) {
-		            mem_id = memberVO.getMem_id();
-		        }
-		       
-		        if (mem_id == null) {
-		        	service.NoticeList(cri);
-		        }
-			   
-			    
-			    vo.setMem_id(mem_id);
-
-			    Boolean noticeAdmin = service.CheckAdmin(vo);
-			    System.out.println("관리자 확인:" +mem_id);
-
-			    if (noticeAdmin == true) {
-			        // "admin"인 경우, noticeListAdmin.jsp로 리다이렉트.
-					 List<NoticeVO> noticeList= new ArrayList<NoticeVO>();
-					 vo.setMem_id(mem_id);
-					 noticeList= service.NoticeList(cri);
-					 
-					 model.addAttribute("noticeList",noticeList);
-
-					 
-					 //게시판 페이징   가져오기.
-					 PageMaker pageMaker= new PageMaker();
-					 pageMaker.setCri(cri);
-					 pageMaker.setTotalCount(service.NoticeListCount());
-					 model.addAttribute("pageMaker",pageMaker);
-		 
-			 
-					 //게시판 페이징   가져오기.
-					 PageMaker2 pageMaker2= new PageMaker2();
-					 pageMaker2.setCri(cri);
-					 pageMaker2.setTotalCount(service.NoticeFAQListCount());
-					 model.addAttribute("pageMaker2",pageMaker2);
-		 
-				
-				  //동림언니 페이징
-				  
-				  String _section=request.getParameter("section"); String
-				  _pageNum=request.getParameter("pageNum");
-				  
-				  
-				  //초기값 설정
-				  int section=Integer.parseInt(((_section==null) ? "1" : _section));
-				  int pageNum=Integer.parseInt(((_pageNum==null) ? "1" : _pageNum));
-				  
-				  Map<String, Object> paging = new HashMap<>(); paging.put("section", section);
-				  paging.put("pageNum", pageNum);
-				  
-				  
-				  
-				  List<NoticeVO> noticeFAQList= null; noticeFAQList= service.listBoard(paging);
-				  
-				  int total=service.boardCount();
-				  
-				  model.addAttribute("section", section); 
-				  model.addAttribute("pageNum",  pageNum);
-				  model.addAttribute("noticeFAQList",noticeFAQList);
-				  model.addAttribute("totalBoard",total);
-				 
-					 
-					 
-			        return "notice/noticeListAdmin";
-			     
-			    }  
-			    
-			    else {
-			 	 List<NoticeVO> noticeList= new ArrayList<NoticeVO>();
-					 noticeVO.setMem_id(mem_id);
-					 noticeList= service.NoticeList(cri);
-					 model.addAttribute("noticeList",noticeList);
-
-					 
-					 //게시판 페이징   가져오기.
-					 PageMaker pageMaker= new PageMaker();
-					 pageMaker.setCri(cri);
-					 pageMaker.setTotalCount(service.NoticeListCount());
-					 model.addAttribute("pageMaker",pageMaker);
-		 
-					  
-					 
-					 //faq
-						
-//					 List<NoticeVO> noticeFAQList= null;
-//					 noticeFAQList= service.NoticeFAQList(cri2);
-//					 model.addAttribute("noticeFAQList",noticeFAQList);
-
-					 
-					 //게시판 페이징   가져오기.
-					 PageMaker2 pageMaker2= new PageMaker2();
-					 pageMaker2.setCri(cri);
-					 pageMaker2.setTotalCount(service.NoticeFAQListCount());
-					 model.addAttribute("pageMaker2",pageMaker2);
-		 
-				
-				  //동림언니 페이징
-				  
-				  String _section=request.getParameter("section"); String
-				  _pageNum=request.getParameter("pageNum");
-				  
-				  
-				  //초기값 설정
-				  int section=Integer.parseInt(((_section==null) ? "1" : _section));
-				  int pageNum=Integer.parseInt(((_pageNum==null) ? "1" : _pageNum));
-				  
-				  Map<String, Object> paging = new HashMap<>(); paging.put("section", section);
-				  paging.put("pageNum", pageNum);
-				  
-				  
-				  
-				  List<NoticeVO> noticeFAQList= null; noticeFAQList= service.listBoard(paging);
-				  
-				  int total=service.boardCount();
-				  
-				  model.addAttribute("section", section); 
-				  model.addAttribute("pageNum",  pageNum);
-				  model.addAttribute("noticeFAQList",noticeFAQList);
-				  model.addAttribute("totalBoard",total);
-				 
-					 
-					 
-			        return "notice/noticeList";
-			    }
-			    
-			    
-			    
-			    
-			 
-
-			 
-			
-		}
+//		@RequestMapping(value = "/list.do", method = RequestMethod.GET)
+//		public String getNoticeList(Model model,Criteria cri,Criteria2 cri2, HttpServletRequest request, HttpServletResponse response,NoticeVO vo) throws Exception {
+//			
+//			 request.getSession();
+//			    memberVO = (MemberVO) httpSession.getAttribute("memberInfo");
+//			    String mem_id = null;
+//
+//		        // 로그인 상태 확인
+//		        if (memberVO != null) {
+//		            mem_id = memberVO.getMem_id();
+//		        }
+//		       
+//		        if (mem_id == null) {
+//		        	service.NoticeList(cri);
+//		        }
+//			   
+//			    
+//			    vo.setMem_id(mem_id);
+//
+//			    Boolean noticeAdmin = service.CheckAdmin(vo);
+//			    System.out.println("관리자 확인:" +mem_id);
+//
+//			    if (noticeAdmin == true) {
+//			        // "admin"인 경우, noticeListAdmin.jsp로 리다이렉트.
+//					 List<NoticeVO> noticeList= new ArrayList<NoticeVO>();
+//					 vo.setMem_id(mem_id);
+//					 noticeList= service.NoticeList(cri);
+//					 
+//					 model.addAttribute("noticeList",noticeList);
+//
+//					 
+//					 //게시판 페이징   가져오기.
+//					 PageMaker pageMaker= new PageMaker();
+//					 pageMaker.setCri(cri);
+//					 pageMaker.setTotalCount(service.NoticeListCount());
+//					 model.addAttribute("pageMaker",pageMaker);
+//		 
+//			 
+//					 //게시판 페이징   가져오기.
+//					 PageMaker2 pageMaker2= new PageMaker2();
+//					 pageMaker2.setCri(cri);
+//					 pageMaker2.setTotalCount(service.NoticeFAQListCount());
+//					 model.addAttribute("pageMaker2",pageMaker2);
+//		 
+//				
+//				  //동림언니 페이징
+//				  
+//				  String _section=request.getParameter("section"); String
+//				  _pageNum=request.getParameter("pageNum");
+//				  
+//				  
+//				  //초기값 설정
+//				  int section=Integer.parseInt(((_section==null) ? "1" : _section));
+//				  int pageNum=Integer.parseInt(((_pageNum==null) ? "1" : _pageNum));
+//				  
+//				  Map<String, Object> paging = new HashMap<>(); paging.put("section", section);
+//				  paging.put("pageNum", pageNum);
+//				  
+//				  
+//				  
+//				  List<NoticeVO> noticeFAQList= null; noticeFAQList= service.listBoard(paging);
+//				  
+//				  int total=service.boardCount();
+//				  
+//				  model.addAttribute("section", section); 
+//				  model.addAttribute("pageNum",  pageNum);
+//				  model.addAttribute("noticeFAQList",noticeFAQList);
+//				  model.addAttribute("totalBoard",total);
+//				 
+//					 
+//					 
+//			        return "notice/noticeListAdmin";
+//			     
+//			    }  
+//			    
+//			    else {
+//			 	 List<NoticeVO> noticeList= new ArrayList<NoticeVO>();
+//					 noticeVO.setMem_id(mem_id);
+//					 noticeList= service.NoticeList(cri);
+//					 model.addAttribute("noticeList",noticeList);
+//
+//					 
+//					 //게시판 페이징   가져오기.
+//					 PageMaker pageMaker= new PageMaker();
+//					 pageMaker.setCri(cri);
+//					 pageMaker.setTotalCount(service.NoticeListCount());
+//					 model.addAttribute("pageMaker",pageMaker);
+//		 
+//					  
+//					 
+//					 //faq
+//						
+////					 List<NoticeVO> noticeFAQList= null;
+////					 noticeFAQList= service.NoticeFAQList(cri2);
+////					 model.addAttribute("noticeFAQList",noticeFAQList);
+//
+//					 
+//					 //게시판 페이징   가져오기.
+//					 PageMaker2 pageMaker2= new PageMaker2();
+//					 pageMaker2.setCri(cri);
+//					 pageMaker2.setTotalCount(service.NoticeFAQListCount());
+//					 model.addAttribute("pageMaker2",pageMaker2);
+//		 
+//				
+//				  //동림언니 페이징
+//				  
+//				  String _section=request.getParameter("section"); String
+//				  _pageNum=request.getParameter("pageNum");
+//				  
+//				  
+//				  //초기값 설정
+//				  int section=Integer.parseInt(((_section==null) ? "1" : _section));
+//				  int pageNum=Integer.parseInt(((_pageNum==null) ? "1" : _pageNum));
+//				  
+//				  Map<String, Object> paging = new HashMap<>(); paging.put("section", section);
+//				  paging.put("pageNum", pageNum);
+//				  
+//				  
+//				  
+//				  List<NoticeVO> noticeFAQList= null; noticeFAQList= service.listBoard(paging);
+//				  
+//				  int total=service.boardCount();
+//				  
+//				  model.addAttribute("section", section); 
+//				  model.addAttribute("pageNum",  pageNum);
+//				  model.addAttribute("noticeFAQList",noticeFAQList);
+//				  model.addAttribute("totalBoard",total);
+//				 
+//					 
+//					 
+//			        return "notice/noticeList";
+//			    }
+//			    
+//			    
+//			    
+//			    
+//			 
+//
+//			 
+//			
+//		}
 		
 		
 

@@ -12,7 +12,10 @@
 <head>
 <meta charset="UTF-8">
 <link href="${contextPath}/resources/css/noticeList.css" rel="stylesheet" type="text/css">
-
+<!-- 폰트:나눔산스 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@700;800&family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">s
 <title>Insert title here</title>
 </head>
 <body>
@@ -28,11 +31,11 @@
 
 	<div id="Notice" class="tabcontent container1" style="display: block;">
 		<!-- <h3>공지사항</h3> -->
-		<hr class="hr1" noshade>
+
 
 		<div id="Notice_page">
 			<div class="table-responsive">
-				<table class="table table-striped table-sm">
+				<table class="table table-striped table-sm table-hover">
 
 					<colgroup>
 						<col style="width: 10%;" />
@@ -40,21 +43,21 @@
 						<col style="width: 15%;" />
 						<col style="width: 10%;" />
 						<col style="width: 10%;" />
-					</colgroup>
+					</colgroup> 
 					<thead>
 						<tr>
-							<th class="center tw fg">번호</th>
-							<th class="center tw fg">제목</th>
-							<th class="center tw fg">작성일</th>
-							<th class="center tw fg">작성자</th>
-							<th class="center tw fg">조회수</th>
+							<th scope="col" class="center tw fg">번호</th>
+							<th scope="col" class="center tw fg" >제목</th>
+							<th scope="col" class="center tw fg">작성일</th>
+							<th scope="col" class="center tw fg">작성자</th>
+							<th scope="col" class="center tw fg">조회수</th>
 						</tr>
 					</thead>
 
 					<tbody>
 						<c:forEach items="${noticeList}" var="noticeList">
 							<tr>
-								<td class="center fgl">${noticeList.notice_no}</td>
+								<td class="center fgl" style="font-weight: 500; font-size: 16px;">${noticeList.notice_no}</td>
 								<td class="left fgl"><a
 									href="${contextPath}/notice/read.do?notice_no=${noticeList.notice_no}">${noticeList.notice_title}</a>
 								</td>
@@ -69,12 +72,13 @@
 
 				</table>
 				<!--글쓰기 버튼  -->
-				<!--<div class="writeButton">
-					<button type="button" class="btn btn-sm btn-primary greylist  "
-						id="btnWriteForm">
+				<c:if test="${isLogOn == true && mem_id=='admin' }">
+				<div class="writeButton">
+					<button type="button" class="btn btn-sm btn-primary greylist" id="btnWriteForm">
 						<a class="atw" href="${contextPath}/notice/write.do">글쓰기</a>
 					</button>
-				</div>-->
+				</div>
+				</c:if>
 
 			</div>
 
@@ -112,7 +116,7 @@
  <!-- FAQ -->
 
 	<div id="FAQ" class="tabcontent container1">
-		<hr class="hr1" noshade>
+		
 		<div id="Notice_FAQ_page">
 			<div class="table-responsive">
 				<table class="table table-striped table-sm">
@@ -153,12 +157,14 @@
 
 
 				<!--글쓰기 버튼  -->
-			<!--	<div class="writeButton">
-					<button type="button" class="btn btn-sm btn-primary greylist"
-						id="btnWriteForm">
-						<a class="atw" href="${contextPath}/notice/faqwrite.do">글쓰기</a>
-					</button>
-				</div>   -->
+				<c:if test="${isLogOn == true && mem_id=='admin' }">
+					<div class="writeButton">
+						<button type="button" class="btn btn-sm btn-primary greylist"
+							id="btnWriteForm">
+							<a class="atw" href="${contextPath}/notice/faqwrite.do">글쓰기</a>
+						</button>
+					</div>
+				</c:if>   
 
 			</div>
 

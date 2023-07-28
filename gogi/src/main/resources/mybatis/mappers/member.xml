@@ -23,7 +23,7 @@
 		<result property="jibunAddress" column="jibunAddress" />
 		<result property="namujiAddress" column="namujiAddress" />
 		<result property="joinDate" column="joinDate" />
-		
+		<result property="mem_point" column="mem_point" />
 		<result property="mem_reg_date" column="mem_reg_date" />
 		<result property="mem_del_yn" column="mem_del_yn" />
 	</resultMap>
@@ -40,14 +40,13 @@
 			mem_birth_d,
 			mem_tel1,
 			mem_tel2,
-			mem_tel3,
-			
-			mem_email,
-			
+			mem_tel3,			
+			mem_email,			
             zipcode,
             roadAddress,
             jibunAddress,
-            namujiAddress
+            namujiAddress,
+            mem_point
             )
 			values(
 			#{mem_id},
@@ -63,7 +62,8 @@
 			#{zipcode},
             #{roadAddress},
             #{jibunAddress},
-            #{namujiAddress}
+            #{namujiAddress},
+            3000
 			)
 		]]>
 	</insert>

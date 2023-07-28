@@ -74,6 +74,12 @@ public class ImageFileVO {
 	public void setCredate(Date creDate) {
 		this.creDate = creDate;
 	}
+
+	@Override
+	public String toString() {
+		return "ImageFileVO [image_id=" + image_id + ", goods_id=" + goods_id + ", file_name=" + file_name + ", reg_id="
+				+ reg_id + ", file_type=" + file_type + ", creDate=" + creDate + "]";
+	}
 	
 	
 }

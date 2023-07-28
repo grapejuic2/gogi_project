@@ -12,11 +12,10 @@
 	<head>
 	<meta charset="UTF-8">
 	<link href="${contextPath}/resources/css/goodsDetail.css" rel="stylesheet" type="text/css">
-	<!-- 폰트:나눔고딕 -->
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- 폰트:나눔산스 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@700;800&family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
 	<title>Insert title here</title>
 	<style>
 	#layer {
@@ -34,12 +33,12 @@
 		left: 40%;
 		top: 50%;
 		width: 300px;
-		height: 100px;
+		height: 120px;
 		background-color: white;
-		border: 4px solid #87CEFA;
-		font-family: 'Nanum Gothic', sans-serif' !important;
+		border: 4px solid #ccc;
+		font-family: 'Noto Sans KR', sans-serif;
 		border-radius: 10px;
-		line-height: 90px;
+		line-height: 55px;
 	}
 	
 	#close {
@@ -48,95 +47,6 @@
 		margin-left: 15px;
 	}
 	
-	/* Style the buttons that are used to open the tab content */
-	.tab button {
-		background-color: inherit;
-		float: left;
-		border: none;
-		outline: none;
-		cursor: pointer;
-		padding: 14px 16px;
-		transition: 0.3s;
-	}
-	
-	/* Change background color of buttons on hover */
-	.tab button:hover {
-		text-decoration: underline;
-	}
-	
-	/* Create an active/current tablink class */
-	.tab button.active {
-		color: black;
-		text-decoration: underline;
-	}
-	
-	/* Style the tab content */
-	.tabcontent {
-		display: none;
-		padding: 6px 12px;
-		border: 1px solid #ccc;
-		border-top: none;
-	}
-	.tab{
-	    display: flex;
-	    justify-content: center;
-	    text-align: center;
-	    height: 100px;
-	    border-bottom: 1px solid #ccc;
-	}
-	.tab .tablinks{
-	height: 100px;
-	width: 200px;
-	font-weight: 700;
-	font-size: 17px;
-	color: #909090;
-	}
-	.tab-menu{
-	font-family: 'Nanum Gothic', sans-serif' !important;
-	}
-	#goodsDetail .goods_detail{
-	   justify-content: center;
-	    text-align: center;
-	}
-	.goods_detail img {
-	  display: block; /* 이미지들을 블록 레벨 요소로 설정하여 아래로 배치 */
-	  margin: 10px auto; /* 이미지들을 가운데 정렬하기 위해 margin 사용 */
-	}
-	
-	/* 첫 번째 열의 모든 <td> 요소의 너비를 늘립니다. */
-	#goodsInfo .goods_info table  {
-	   justify-content: center;
-	}
-	#goodsInfo .goods_info{
-		font-family: 'Nanum Gothic', sans-serif' !important;
- 		margin-left: 0;
-	   	}
-	.tab-menu {
-	   text-align: center; /* 텍스트를 중앙에 정렬합니다. */
-	}
-	
-	.goods_detail_tab {
-	   display: inline-block; /* 테이블을 블록 레벨로 표시하여 중앙에 정렬합니다. */
-	   text-align: left; /* 테이블 안의 텍스트는 왼쪽으로 정렬합니다. */
-	   width:65%;
-	   margin-bottom: 30px;
-	}
-	
-	.goodsInfo_table{
-		border-collapse: separate; /* 테이블 경계를 병합하지 않고 개별적으로 표시 */
-	    border-spacing: 0; /* 테이블 셀 간격 없음 */
-	    border-top: 1px solid #000000; /* 테이블 상단 테두리 설정 */
-	    border-bottom: 1px solid #000000; /* 테이블 하단 테두리 설정 */
-	    width:90%;
- 		padding: 10px 0; /* 행 간격을 조절하기 위해 padding 값을 설정합니다. */
-	    border-spacing: 0 10px; /* 상하 여백은 0, 좌우 여백은 10px로 설정 */
-	    font-size:15px;
-	}
-	.goods_info_title{
-		font-size:30px;
-		font-weight: 800;
-		margin-top: 20px;
-	}
 
 
 	</style>
@@ -149,7 +59,7 @@
 			<div class="content">
 				<p class="goodsName">${goods.goods_name}</p>	        
 		        <div class="text">
-		          <div class="100_price" style="font-size: 14px; margin-top: 20px;">
+		          <div class="100_price" style="font-size: 14px; margin-top: 20px;font-weight: 400;">
 		          	<fmt:formatNumber value="${Math.ceil(goods.goods_price/100)}" type="number" var="goods_price_100g" />100g당 ${goods_price_100g}원
 		          </div>
 				  <div class="price">			  
@@ -165,8 +75,8 @@
 						    </td>
 						    <td>
 						      <select name="delivery_option" id="delivery_option">
-							    <option value="normal">----------------- 선택하세요 -----------------</option>
-							    <option value="camp">캠핑장 직접배송</option>
+							    <option value="일반배송">----------------- 선택하세요 -----------------</option>
+							    <option value="캠핑장배송">캠핑장 직접배송</option>
 							  </select>
 						    </td>
 						  </tr>
@@ -238,6 +148,10 @@
 							<c:if test="${goods_sort eq 'MEALKIT' and goods.goods_id==6 }">
 								<div><img  src="${contextPath}/resources/images/goods_detail_image/mealkit4.png"></div>
 		            			<div><img  src="${contextPath}/resources/images/goods_detail_image/delivery.png" style="display: block; margin-top: 10px;"></div>
+							</c:if>	
+							<c:if test="${goods_sort eq 'MEALKIT' and goods.goods_id==29 }">
+								<div><img  src="${contextPath}/resources/images/goods_detail_image/mealkit1.png"></div>
+		            			<div><img  src="${contextPath}/resources/images/goods_detail_image/delivery.png" style="display: block; margin-top: 10px;"></div>
 							</c:if>					
 						</div>					
 					</div>
@@ -262,7 +176,7 @@
 									</tr>
 									<tr>
 										<td>·내용량</td>
-										<td>${goods.goods_weight}g / 제품에 별도 표기</td>
+										<td>${goods_weight}g / 제품에 별도 표기</td>
 										<td></td>
 									</tr>
 									<tr>
@@ -335,14 +249,15 @@
 	    			if(data.trim()=="add_success"){
 	    				imagePopup('open','layer01');
 	    			}else if(data.trim()=="already_existed"){
-	    				alert("이미 카트에 등록된 제품입니다.");
+	    				alert("동일한 상품이 장바구니에 존재합니다.");
 	    			}
 	    		},
 	    		error: function(data, textStatus){
-	    			alert("에러가 발생했습니다."+data);
+	    			alert("로그인 후 이용해주세요.");
+	    			window.location.href = "${contextPath}/member/loginForm.do"; // 로그인 페이지로 이동
 	    		},
 	    		complete: function(data, textStatus){
-	    			alert("장바구니에 추가되었습니다.");
+	    			//alert("장바구니에 추가되었습니다.");
 	    		}
 	    	});
 	    }
@@ -369,7 +284,8 @@
 		    var isLogOn = _isLogOn.value;
 	
 		    if (isLogOn === "false" || isLogOn === '') {
-		        alert("로그인 후 주문이 가능합니다!!");
+		        alert("로그인 후 주문이 가능합니다.");
+		        window.location.href = "${contextPath}/member/loginForm.do"; // 로그인 페이지로 이동
 		    }
 	
 		    var order_quantity = document.getElementById("cart_count").value;

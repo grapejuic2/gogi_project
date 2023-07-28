@@ -16,7 +16,7 @@ public interface ServService {
 	public List<ServVO>ServList(Criteria3 cri) throws Exception;
 	 
 	   // 작성
-	   public void ServWrite(ServVO vo) throws Exception;
+	   public int ServWrite(Map newServWriteMap) throws Exception;
 	   
 	   // 조회
 	   public ServVO ServRead(int cust_serv_no) throws Exception;

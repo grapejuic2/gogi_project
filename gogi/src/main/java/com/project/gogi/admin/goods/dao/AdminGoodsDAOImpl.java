@@ -27,10 +27,10 @@ public class AdminGoodsDAOImpl  implements AdminGoodsDAO{
 	}
 	
 	@Override
-	public void insertGoodsImageFile(List fileList)  throws DataAccessException {
+	public void insertGoodsImageFile(List<ImageFileVO> fileList)  throws DataAccessException {
 		for(int i=0; i<fileList.size();i++){
 			ImageFileVO imageFileVO=(ImageFileVO)fileList.get(i);
-			
+			System.out.println("관리자 상품등록:"+imageFileVO.toString());
 			// 상품 이미지 정보를 추가합니다.
 			sqlSession.insert("mapper.admin.goods.insertGoodsImageFile",imageFileVO);
 		}

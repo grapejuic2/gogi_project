@@ -11,9 +11,12 @@
 <style>
 .container{width: 100%;margin:0 ; padding: 10px; padding-left: 200px; padding-right: 200px; display: flex;
   justify-content: space-between;
-  align-items: center;}
-.rightInfo{display: flex; justify-content: flex-end;text-align: right;
-  flex-grow: 1;}
+  align-items: center;
+  font-family: 'Noto Sans KR', sans-serif;
+  }
+.rightInfo{
+display: flex; justify-content: flex-end;text-align: right;
+flex-grow: 1;font-family: 'Noto Sans KR', sans-serif;}
 p{margin:0;}
 </style>
 </head>

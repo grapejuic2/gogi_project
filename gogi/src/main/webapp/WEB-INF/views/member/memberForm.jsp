@@ -7,9 +7,7 @@
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <head>
 <style>
-.navbar.navbar-inverse { padding: 10px; padding-left: 200px; padding-right: 200px; background:white; border:none; }
-.nav.navbar-nav { margin-top: 70px; margin-left: 40px; }
-ul.nav.navbar-nav li a:hover{color:#000000;}
+
  
 @import url(https://fonts.googleapis.com/css?family=Roboto:300);
 
@@ -47,6 +45,34 @@ ul.nav.navbar-nav li a:hover{color:#000000;}
 .address-container input {
   margin-bottom: 5px;
 }
+
+  .required {
+    color: #DB0000; /* 원하는 색상으로 변경하세요 */
+  }
+ 
+.centered-button {
+  display: block;
+  width: 100px; /* 원하는 너비를 설정하세요 */
+  margin: 0;
+  text-align: center;
+  align-items: right;
+}
+.joinButton{
+margin-top: 20px;
+margin-left: 500pax;
+}
+
+#emailConfirm {
+  display: flex;
+  align-items: center;
+}
+
+#verifyBtn button{
+width: 70px;
+  height: 40px;
+}
+
+
 </style>
 
 
@@ -59,15 +85,14 @@ ul.nav.navbar-nav li a:hover{color:#000000;}
 <body>
 <div class="memberForm-page">
   <div class="memberForm-text">
-    <a href="${contextPath}/main/main.do"><img src="${contextPath}/resources/images/logo/logo2.png" alt="logo2" width="150px"></a>
+   	회원가입
   </div>
   <div class="form">
     <form id="memberForm" class="member-form" action="${contextPath}/member/memberForm.do" method="post">
-	<h2 style="margin-bottom: 20px; margin-top: 0px;">가입정보 기입</h2>
 	
 	<div class="form-group" style="margin-bottom: 0px;">
 	  <div class="label-group">
-	    <label for="mem_id">아이디</label>
+	    <label for="mem_id"><span class="required" >*</span>아이디</label>
 	  </div>
 	  <input type="text" placeholder="아이디" id="mem_id" name="mem_id" />
 	  
@@ -78,7 +103,7 @@ ul.nav.navbar-nav li a:hover{color:#000000;}
 	
 	<div class="form-group">
 	  <div class="label-group">
-	    <label for="mem_pw">비밀번호</label>
+	    <label for="mem_pw"><span class="required" >*</span>비밀번호</label>
 	  </div>
 	  <input type="password" placeholder="비밀번호" id="mem_pw" name="mem_pw" style="margin-right: 5px;">
 	  <input type="password" placeholder="비밀번호 확인" id="mem_pw_confirm" name="mem_pw_confirm" />
@@ -88,14 +113,14 @@ ul.nav.navbar-nav li a:hover{color:#000000;}
 	
       <div class="form-group">
         <div class="label-group">
-          <label for="mem_name">이름</label>
+          <label for="mem_name"><span class="required" >*</span>이름</label>
         </div>
         <input type="text" placeholder="이름" id="mem_name" name="mem_name" />
       </div>
 
       <div class="form-group">
         <div class="label-group">
-          <label for="mem_birth">생년월일</label>
+          <label for="mem_birth"><span class="required" >*</span>생년월일</label>
         </div>
         <div class="input-group">
           <input type="text" id="mem_birth_y" name="mem_birth_y" placeholder="년" maxlength="4">
@@ -106,68 +131,84 @@ ul.nav.navbar-nav li a:hover{color:#000000;}
 
       <div class="form-group">
         <div class="label-group">
-          <label for="mem_tel">연락처</label>
+          <label for="mem_tel"><span class="required" >*</span>연락처</label>
         </div>
         <div class="input-group">
-          <input type="text" id="mem_tel1" name="mem_tel1" placeholder="통신사" maxlength="3">
-          <input type="text" id="mem_tel2" name="mem_tel2" placeholder="중간 번호" maxlength="4">
-          <input type="text" id="mem_tel3" name="mem_tel3" placeholder="마지막 번호" maxlength="4">
+          <select id="mem_tel1" name="mem_tel1">
+			<option>없음</option>
+			<option value="010" selected>010</option>
+			<option value="011">011</option>
+			<option value="016">016</option>
+			<option value="017">017</option>
+			<option value="018">018</option>
+			<option value="019">019</option>
+		  </select> 
+         <!--  <input type="text" id="mem_tel1" name="mem_tel1" placeholder="통신사" maxlength="3"> -->
+          <input type="text" id="mem_tel2" name="mem_tel2"  maxlength="4">
+          <input type="text" id="mem_tel3" name="mem_tel3"  maxlength="4">
         </div>
       </div>
       
-	<div class="form-group">
-		<div class="label-group">
-			<label for="mem_addr">주소</label>
-		</div>
-			<div class="input-group">
-				<input type="text" id="zipcode" name="zipcode" size="200">
+       <div class="form-group" style="display: flex;align-items: center;">
+        <div class="label-group">
+          <label for="mem_email"><span class="required" >*</span>이메일</label>
+        </div>
+        <input type="text" placeholder="이메일" id="mem_email" name="mem_email" style="width:88%"/>
+        <button type="button" id="sendMail" style="margin-left: 5px;">메일 인증</button>
+      </div>
+      <div id="emailConfirm" class="hide" style="width:100%">
+        <input type="text" id="emailCode" name="emailCode" placeholder="인증번호 입력" style="margin-left: 90px;">
+        <button type="button" id="verifyBtn" style="margin-left: 5px; width:100px;">인증 확인</button>
+      </div>
+      
+      
+		<div class="form-group" style="width:100px; vertical-align: middle">
+			<div class="label-group">
+				<label for="mem_addr"><span class="required" >*</span>주소</label>
 			</div>
-		</div>
-	<button>
-		<a href="javascript:execDaumPostcode()">우편번호검색</a>
-	</button>
+			<div class="input-group">
+				<input type="text" id="zipcode" name="zipcode" placeholder="우편번호" style="width:100px; ">
+			</div>
+			<a href="javascript:execDaumPostcode()">
+			<button id="addressSearch" style="margin-left: 5px; ">
+				주소검색
+			</button></a>
+		</div>		
+	
 
 		<div class="form-group">
 			<div class="label-group">
-				<label for="mem_addr">도로명 주소</label>
+				<label for="mem_addr"></label>
 			</div>
 			<div class="input-group">
-				<input type="text" id="roadAddress" name="roadAddress" size="200"><br>
+				<input type="text" id="roadAddress" name="roadAddress" placeholder="도로명주소"><br>
 			</div>
 		</div>
 		
 		<div class="form-group">
 			<div class="label-group">
-				<label for="mem_addr">지번 주소</label>
+				<label for="mem_addr"></label>
 			</div>
 				<div class="input-group">
-					<input type="text" id="jibunAddress" name="jibunAddress"size="200"><br>
+					<input type="text" id="jibunAddress" name="jibunAddress"  placeholder="지번주소"><br>
 				</div>
 		</div>
 		
   	   <div class="form-group">
 		 <div class="label-group">
-		  	<label for="mem_addr">나머지 주소</label>
+		  	<label for="mem_addr"></label>
 		 </div>
-		<div class="input-group">
-		  	<input type="text" name="namujiAddress" size="200" />
+		<div class="input-group"> 
+			<input type="text" name="namujiAddress" placeholder="나머지 주소" style="width:100%">
 		</div>
 	  </div>
 
-      <div class="form-group">
-        <div class="label-group">
-          <label for="mem_email">이메일</label>
-        </div>
-        <input type="text" placeholder="이메일" id="mem_email" name="mem_email" />
-        <button type="button" id="sendMail" style="margin-top: 0px;">메일 인증</button>
+     
+      
+      <div>
+      	<button type="submit" id="centered-button" style="width:200px; height:50px; margin-top:20px; margin-bottom:40px; margin-left: 300px;">
+      	회원가입</button>	
       </div>
-
-      <div id="emailConfirm" class="hide">
-        <input type="text" id="emailCode" name="emailCode" placeholder="인증번호 입력">
-        <button type="button" id="verifyBtn">인증 확인</button>
-      </div>
-
-      <button type="submit">회원가입</button>
     </form>
   </div>
 </div>

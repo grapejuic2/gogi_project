@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import com.project.gogi.member.vo.MemberVO;
 import com.project.gogi.serv.dao.ServDAO;
 import com.project.gogi.serv.domain.Criteria3;
+import com.project.gogi.serv.domain.ServImageFileVO;
 import com.project.gogi.serv.domain.ServVO;
 
 
@@ -39,9 +40,19 @@ public class ServServiceImpl implements ServService {
 	
 	//작성
 	@Override
-	public void ServWrite(ServVO vo) throws Exception {
-		dao.ServWrite(vo);
+	public int ServWrite(Map newServWriteMap) throws Exception {
+		//고객 게시글 테이블에 추가
+		int cust_serv_no=dao.ServWrite(newServWriteMap);
+		ArrayList<ServImageFileVO> imageFileList=(ArrayList<ServImageFileVO>) newServWriteMap.get("imageFileList");
 		
+		//각 이미지 정보에 cust_serv_no 저장
+		for(ServImageFileVO imageFileVO:imageFileList) {
+			imageFileVO.setCust_serv_no(cust_serv_no);
+		}
+		// 이미지 정보를 이미지 테이블에 추가
+		dao.insertServImageFile(imageFileList);
+		
+		return cust_serv_no;
 	}
 
 	//조회

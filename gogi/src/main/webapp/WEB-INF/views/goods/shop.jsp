@@ -11,6 +11,10 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.2/css/bootstrap.min.css" integrity="sha512-/Dmo1NVtQ05uS0vOI5qEZZn7mWaswFJzDa4RRRF29phxNQqkUkRk5xpyRUpekzoiO7CbdWXFbMHaapzVnNP2ZQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="script.js"></script>
+<!-- 폰트:나눔산스 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@700;800&family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
@@ -21,31 +25,31 @@
 .category a:hover img {opacity: 0.8; /* 투명도 조절 */transition: all 0.5s ease-in-out; /* 변경 효과 적용 */ transform: translateY(-10px);}
 .card {margin-bottom: 50px; background-color: transparent;}
 .image-background{width:376px; height:416px;}
- .image-background {
+.image-background {
     background-color: #f1f1f1; /* 배경색 설정 */
     display: flex;
     justify-content: center;
     align-items: center;
     width:376px; height:416px;
   }
-  .image-background img {
+.image-background img {
   	background-color: transparent;
     width:250px;
     object-fit: contain; /* 이미지를 가운데로 정렬 */
   }
-
-   .card-title{
-  	font-family: 'Nanum Gothic', sans-serif;
-  	font-size: 17px;
-  	font-weight: 800;  	
+.card-title{
+  	font-family: 'Noto Sans KR', sans-serif;
+  	font-size: 19px;
+  	font-weight: 700;  	
   	padding-bottom: 1px;
-  	}
+}
   	
-  	.card-text{
-  	margin-top:2px;
-  	font-family: 'Nanum Gothic', sans-serif;
-  	font-size: 14px; 
-  	}
+.card-text{
+	margin-top:2px;
+	font-family: 'Noto Sans KR', sans-serif;
+	font-size: 14px;
+	font-weight: 400;   
+}
 </style>
 </head>
 <body>

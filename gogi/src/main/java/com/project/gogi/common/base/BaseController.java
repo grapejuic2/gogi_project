@@ -54,10 +54,13 @@ public abstract class BaseController {
 	}
 	
 	
-		 private void deleteFile(String fileName) { 
-			 File file =new File(GOGI_IMAGE_REPO+"\\"+fileName); try{ file.delete();
+	 private void deleteFile(String fileName) { 
+		 File file =new File(GOGI_IMAGE_REPO+"\\"+fileName); 
+	
+		 try{ 
+			 file.delete();
 		 }catch(Exception e){ 
-			 e.printStackTrace();  
+		 e.printStackTrace();  
 		 } 
 		 
 	 }

@@ -6,16 +6,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class ServVO {
  
-// 
-//	   CUST_SERV_NO 	    NUMBER	        PRIMARY KEY,
-//	    CUST_SERV_TITLE 	VARCHAR2(100)	NOT NULL,
-//	    CUST_SERV_CONTENT 	VARCHAR2(2000)	NOT NULL,
-//	    CUST_SERV_DATE 	DATE            DEFAULT SYSDATE NOT NULL,
-//	    CUST_SERV_HITS 	NUMBER 	default 0,
-//	    CUST_SERV_PW 	    VARCHAR2(20)    NOT NULL,
-//	    MEM_ID 	        VARCHAR2(20)	NOT NULL,
-//	
-	
 	private int cust_serv_no;
 	private String cust_serv_title;
 	private String cust_serv_content;
@@ -23,13 +13,34 @@ public class ServVO {
 	private Date cust_serv_date;
 	private int cust_serv_hits;
 	private String cust_serv_pw;
-	private int cust_serv_notice;
-	
-	 private String imageFileName;
-	 private String originalFileName;
+	private int cust_serv_notice;	
+	private String imageFileName;
+	private String originalFileName;
 
+	public ServVO() {
+		// TODO Auto-generated constructor stub
+	}
 	
 	
+	
+	public ServVO(int cust_serv_no, String cust_serv_title, String cust_serv_content, String mem_id,
+			Date cust_serv_date, int cust_serv_hits, String cust_serv_pw, int cust_serv_notice, String imageFileName,
+			String originalFileName) {
+		super();
+		this.cust_serv_no = cust_serv_no;
+		this.cust_serv_title = cust_serv_title;
+		this.cust_serv_content = cust_serv_content;
+		this.mem_id = mem_id;
+		this.cust_serv_date = cust_serv_date;
+		this.cust_serv_hits = cust_serv_hits;
+		this.cust_serv_pw = cust_serv_pw;
+		this.cust_serv_notice = cust_serv_notice;
+		this.imageFileName = imageFileName;
+		this.originalFileName = originalFileName;
+	}
+
+
+
 	public int getCust_serv_no() {
 		return cust_serv_no;
 	}

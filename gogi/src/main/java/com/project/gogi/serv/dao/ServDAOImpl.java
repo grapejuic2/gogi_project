@@ -9,6 +9,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import com.project.gogi.serv.domain.Criteria3;
+import com.project.gogi.serv.domain.ServImageFileVO;
 import com.project.gogi.serv.domain.ServVO;
  
 @Repository
@@ -30,9 +31,19 @@ public class ServDAOImpl implements ServDAO {
 	
 	//작성
 	@Override
-	public void ServWrite(ServVO vo) throws Exception {
-		sql.insert(namespace + ".servWrite", vo);
-		
+	public int ServWrite(Map newServWriteMap) throws Exception {
+		sql.insert(namespace + ".servWrite", newServWriteMap);
+		return (int) newServWriteMap.get("cust_serv_no");
+	}
+	
+	//이미지 파일 추가
+	@Override
+	public void insertServImageFile(List<ServImageFileVO> fileList) throws Exception {
+		for(int i=0; i<fileList.size();i++) {
+			ServImageFileVO imageFileVO=fileList.get(i);
+			System.out.println("고객센터 글쓰기 이미지:"+imageFileVO.toString());
+			sql.insert(namespace+".insertServImageFile",fileList);
+		}
 	}
 
 	//조회
@@ -96,6 +107,8 @@ public class ServDAOImpl implements ServDAO {
 		    public String getServPw(int cust_serv_no) throws Exception {
 		        return sql.selectOne(namespace + ".servGetPw", cust_serv_no);
 		    }
+
+		
 		 
 }
 		

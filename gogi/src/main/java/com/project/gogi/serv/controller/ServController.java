@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.io.FileUtils;
 import org.eclipse.core.filesystem.provider.FileInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,9 +35,11 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.project.gogi.common.base.BaseController;
+import com.project.gogi.goods.vo.ImageFileVO;
 import com.project.gogi.member.vo.MemberVO;
 import com.project.gogi.serv.domain.Criteria3;
 import com.project.gogi.serv.domain.PageMaker3;
+import com.project.gogi.serv.domain.ServImageFileVO;
 import com.project.gogi.serv.domain.ServVO;
 import com.project.gogi.serv.service.ServService; 
 
@@ -96,12 +99,14 @@ public class ServController extends BaseController{
 	    // 게시물 작성 post+다중이미지 게시
 	    @RequestMapping(value = "/write.do", method = RequestMethod.POST)
 	    public String postServWrite(ServVO vo, MultipartHttpServletRequest multipartRequest, HttpServletResponse response, RedirectAttributes redirectAttrs) throws Exception {
-	    	service.ServWrite(vo); 
 	        multipartRequest.setCharacterEncoding("utf-8");
+	        response.setContentType("text/html; charset=UTF-8");
+			String imageFileName=null;
+			
 	        // 매개변수 정보와 파일 정보를 저장할 Map 생성
 	        Map<String, Object> servMap = new HashMap<String, Object>();
-
 	        Enumeration enu = multipartRequest.getParameterNames();
+	        
 	        // 전송된 매개변수 값 key/value로 map에 저장
 	        while (enu.hasMoreElements()) {
 	            String name = (String) enu.nextElement();
@@ -113,6 +118,39 @@ public class ServController extends BaseController{
 	        // 다중 이미지 구현 중
 	        // 파일 업로드 후 반환된 파일 이름이 저장된 fileList에 다시 map에 저장
 	        List<String> fileList = fileProcess(multipartRequest);
+	        List<ServImageFileVO> imageFileList=new ArrayList<ServImageFileVO>();
+	        
+	        if(fileList!=null && fileList.size()!=0) {
+	        	for( String fileName:fileList) {
+	        		ServImageFileVO imageFileVO=new ServImageFileVO();
+	        		imageFileVO.setImg_name(fileName);
+	        		imageFileList.add(imageFileVO);
+	        	}
+	        	servMap.put("imageFileList", imageFileList);
+	        }
+	        
+	        try {
+	        	// 상품 정보와 이미지 정보를 각 테이블에 추가합니다.
+	        	int cust_serv_no=service.ServWrite(servMap);
+	        	// 업로드한 이미지를 상품번호 폴더에 저장합니다.
+				if(fileList!=null && fileList.size()!=0) {
+					for(ServImageFileVO  imageFileVO:imageFileList) {
+						imageFileName = imageFileVO.getImg_name();
+						File srcFile = new File(GOGI_IMAGE_REPO_PATH1+"\\"+imageFileName);
+						File destDir = new File(GOGI_IMAGE_REPO_PATH1+"\\"+cust_serv_no);
+						FileUtils.moveFileToDirectory(srcFile, destDir,true);
+					}
+				}
+	        }catch(Exception e) {
+				if(fileList!=null && fileList.size()!=0) {
+					for(ServImageFileVO  imageFileVO:imageFileList) {
+						imageFileName = imageFileVO.getImg_name();
+						File srcFile = new File(GOGI_IMAGE_REPO_PATH1+"\\"+imageFileName);
+						srcFile.delete();
+					}
+				}
+	        }
+	        
 	        servMap.put("fileList", fileList); 
 	      
 	        // 요청 처리 후 servList.jsp로 리다이렉트합니다.
@@ -124,15 +162,19 @@ public class ServController extends BaseController{
 	    
 	    
 	    private List<String> fileProcess(MultipartHttpServletRequest multipartRequest) throws Exception {
-	        List<String> fileList = new ArrayList<String>();
+	    	System.out.println("파일 업로드 타는지?");
+	        List<String> fileList = new ArrayList<>();
 	        Iterator<String> fileNames = multipartRequest.getFileNames();
+	        System.out.println("파일이름: "+fileNames.toString());
+	        
 	        while (fileNames.hasNext()) {
 	            String fileName = fileNames.next();
+	            
 	            MultipartFile mFile = multipartRequest.getFile(fileName);
 	            String originalFileName = mFile.getOriginalFilename();
 	            fileList.add(originalFileName);
-	            File file = new File(GOGI_IMAGE_REPO_PATH1 + "\\" + originalFileName);
 	            
+	            File file = new File(GOGI_IMAGE_REPO_PATH1 + "\\" + originalFileName);	            
 	            if (mFile.getSize() != 0) {
 	                if (!file.exists()) {
 	                    if (file.getParentFile().mkdir()) {
