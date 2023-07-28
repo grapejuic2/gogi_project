@@ -110,10 +110,12 @@
 		                                     goods_id,
 											 file_name,
 											 file_type,
+											 reg_id,
 											 credate)
 									  values(#{image_id},
 											 #{goods_id},
 											 #{file_name},
+											 #{reg_id},
 											 #{file_type},
 											 #{credate} )
 		]]>
@@ -218,8 +220,6 @@
 		    goods_id=#{goods_id}
 	
 	</update>
-	
-	
 	
 	<!-- 상품 이미지 정보를 수정합니다. -->
 	<update id="updateGoodsImage" parameterType="imageFileVO">

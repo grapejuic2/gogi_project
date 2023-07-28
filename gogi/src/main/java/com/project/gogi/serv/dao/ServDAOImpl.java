@@ -38,16 +38,23 @@ public class ServDAOImpl implements ServDAO {
 	//조회
 	@Override
 	public ServVO ServRead(int cust_serv_no) throws Exception {
+		
 		return
 				 sql.selectOne(namespace + ".servRead", cust_serv_no); 
 	}
 
 	//수정
-	@Override
-	public void ServUpdate(ServVO vo) throws Exception {
-		 sql.update(namespace + ".servUpdate", vo);
-		
-	}
+	   @Override
+	   public void ServUpdate(ServVO vo) throws Exception {
+		    sql.update(namespace + ".servUpdate", vo);
+		}
+
+
+	
+ 
+	    
+	
+	
 
 	//삭제
 	@Override
@@ -83,6 +90,13 @@ public class ServDAOImpl implements ServDAO {
 	        // mem_id가 "admin"인지 확인하여 true 또는 false를 반환합니다.
 	        return "admin".equals(mem_id);
 	    }
+		 
+		 
+		  @Override
+		    public String getServPw(int cust_serv_no) throws Exception {
+		        return sql.selectOne(namespace + ".servGetPw", cust_serv_no);
+		    }
+		 
 }
 		
 		

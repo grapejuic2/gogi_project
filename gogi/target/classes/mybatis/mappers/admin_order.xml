@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.admin.order">
+
+	<resultMap id="orderResult" type="OrderVO">
+	    <result property="order_seq_num" column="ORDER_SERIES_NUMBER" />
+	    <result property="order_id" column="ORDER_NUMBER" />
+	    <result property="mem_id" column="MEM_ID" />
+	    <result property="goods_id" column="GOODS_ID" />
+	    <result property="mem_name" column="MEM_NAME" />
+	    <result property="goods_name" column="GOODS_NAME" />
+	    <result property="order_quantity" column="ORDER_QUANTITY" />
+	    <result property="goods_sales_price" column="GOODS_SALES_PRICE" />
+	    <result property="file_name" column="GOODS_FILE_NAME" />
+	    <result property="order_rec_name" column="ORDER_REC_NAME" />
+	    <result property="order_rec_hp1" column="ORDER_REC_MOB_NUMBER1" />
+	    <result property="order_rec_hp2" column="ORDER_REC_MOB_NUMBER2" />
+	    <result property="order_rec_hp3" column="ORDER_REC_MOB_NUMBER3" />
+	    <result property="order_rec_tel1" column="ORDER_REC_LINE_NUMBER1" />
+	    <result property="order_rec_tel2" column="ORDER_REC_LINE_NUMBER2" />
+	    <result property="order_rec_tel3" column="ORDER_REC_LINE_NUMBER3" />
+	    <result property="order_delivery_address" column="ORDER_ADDRESS" />
+	    <result property="order_delivery_method" column="ORDER_DELI_METHOD" />
+	    <result property="order_delivery_message" column="ORDER_MESSAGE" />
+	    <result property="order_delivery_option" column="ORDER_PACK_STATUS" />
+	    <result property="order_pay_method" column="ORDER_PAY_METHOD" />
+	    <result property="card_company_name" column="ORDER_PAY_CARD_COMPANY_NAME" />
+	    <result property="card_pay_month" column="ORDER_PAY_MONTHLY" />
+	    <result property="pay_orderer_hp_num" column="ORDER_ORDERER_MOB_NUMBER" />
+	    <result property="order_pay_hp_payment_num" column="ORDER_PAY_MOB_PAYMENT_NUMBER" />
+	    <result property="order_delivery_status" column="ORDER_DELIVERY_STATUS" />
+	    <result property="order_time" column="ORDER_TIME" />
+	</resultMap>
+	
+	<resultMap id="memberResult" type="memberVO">
+		<result property="mem_id" column="mem_id" />
+		<result property="mem_pw" column="mem_pw" />
+		<result property="mem_name" column="mem_name" />
+		
+		<result property="mem_birth_y" column="mem_birth_y" />
+		<result property="mem_birth_m" column="mem_birth_m" />
+		<result property="mem_birth_d" column="mem_birth_d" />
+
+		<result property="mem_tel1" column="mem_tel1" />
+		<result property="mem_tel2" column="mem_tel2" />
+		<result property="mem_tel3" column="mem_tel3" />
+
+		<result property="mem_email" column="mem_email" />
+		
+		<result property="zipcode" column="zipcode" />
+		<result property="roadAddress" column="roadAddress" />
+		<result property="jibunAddress" column="jibunAddress" />
+		<result property="namujiAddress" column="namujiAddress" />
+		<result property="mem_reg_date" column="mem_reg_date" />
+		<result property="mem_del_yn" column="mem_del_yn" />
+	</resultMap>
+	
+	<!-- 주문 상품 목록을 표시합니다. -->
+	<select id="selectNewOrderList" resultMap="orderResult" parameterType="java.util.HashMap">
+		select * from (
+		select rowNum as recNum,t.*
+		from (
+		select * from gogi_order
+		where to_char(order_time,'yyyy-mm-dd') between #{beginDate} and #{endDate}
+		<if test="search_type=='mem_id'">
+			AND mem_id=#{search_word}
+		</if>
+		<if test="search_type=='mem_name'">
+			AND mem_name=#{search_word}
+		</if>
+		<if test="search_type=='pay_orderer_hp_num'">
+			AND ORDER_ORDERER_MOB_NUMBER=#{search_word}
+		</if>
+		order by order_time desc
+		) t
+		)
+		where
+		recNum between (#{section}-1)*100+ (#{pageNum}-1)*10+1 and
+		(#{section}-1)*100+(#{pageNum})*10
+	</select>
+	
+	<!-- 주문 상품의 배송 상태를 수정합니다. -->
+	<update id="updateDeliveryState" parameterType="java.util.Map">
+		update gogi_order
+		<set>
+			<if test=" order_delivery_status!='' and order_delivery_status!=null">
+				order_delivery_status=#{order_delivery_status}
+			</if>
+		</set>
+		where
+		order_id=#{order_id}
+	</update>
+
+	<select id="selectOrderDetail" resultMap="orderResult" parameterType="int">
+	    <![CDATA[
+		    select * from gogi_order
+            where order_id=#{order_id}
+    	]]>
+	</select>
+
+	<select id="selectOrderer" resultMap="memberResult" parameterType="String">
+	    <![CDATA[
+			select * from gogi_member 
+			where mem_id=#{mem_id}
+		]]>
+	</select>
+</mapper>

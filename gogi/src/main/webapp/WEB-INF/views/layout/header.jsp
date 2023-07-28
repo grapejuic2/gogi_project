@@ -47,7 +47,9 @@ ul.nav.navbar-nav li a:hover {
 	z-index: 1;
 }
 
-
+.navbar .dropdown-menu .dropdown-toggle {
+    z-index: 9999;
+ }
 </style>
 <title>Bootstrap Example</title>
 <meta charset="utf-8">
@@ -79,16 +81,37 @@ ul.nav.navbar-nav li a:hover {
 		    <li class="logged-out"><a href="${contextPath}/member/memberForm.do"><span class="glyphicon glyphicon-user"></span> 회원가입</a></li>
 		    <li class="logged-out"><a href="${contextPath}/member/loginForm.do" id="loginBtn"><span class="glyphicon glyphicon-log-in"></span> 로그인</a></li>
 		    <li class="user-logged-in hidden"><a href="${contextPath}/member/logout.do" id="logoutBtn"><span class="glyphicon glyphicon-log-out"></span> 로그아웃</a></li>
-		    <li class="user-logged-in hidden"><a href="${contextPath}/mypage/modifyMemForm.do"><span class="glyphicon glyphicon-user"></span> 마이페이지</a></li>
 		    <li class="user-logged-in hidden"><a href="${contextPath}/cart/myCartList.do"><span class="glyphicon glyphicon-shopping-cart"></span> 장바구니</a></li>
+		    <li class="dropdown user-logged-in hidden" >
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                <span class="glyphicon glyphicon-user"></span> 마이페이지 <span class="caret"></span>
+            </a>
+	            <ul class="dropdown-menu">
+	                <li><a href="${contextPath}/mypage/modifyMemForm.do">개인정보수정</a></li>
+	                <li><a href="#">문의 내역</a></li>
+	                <li><a href="${contextPath}/mypage/listMyOrderHistory.do">주문 내역</a></li>
+	                <li><a href="#">리뷰 확인</a></li>
+	                <li><a href="${contextPath}/mypage/deleteMemForm.do">회원 탈퇴</a></li>
+	            </ul>
+            </li>
+            
 		    <li class="admin-logged-in hidden"><a href="${contextPath}/member/logout.do" id="logoutBtn"><span class="glyphicon glyphicon-log-out"></span> 로그아웃</a></li>
-		    <li class="admin-logged-in hidden"><a href="${contextPath}/admin/goods/adminGoodsMain.do"><span class="glyphicon glyphicon-user"></span> 관리자 페이지</a></li>
+		    <li class="dropdown admin-logged-in hidden" >
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                <span class="glyphicon glyphicon-user"></span> 관리자 페이지 <span class="caret"></span>
+            </a>
+	            <ul class="dropdown-menu">
+	                <li><a href="${contextPath}/admin/goods/adminGoodsMain.do">상품 관리</a></li>
+	                <li><a href="${contextPath}/admin/member/adminMemberMain.do">회원 관리</a></li>
+	                <li><a href="${contextPath}/admin/order/adminOrderMain.do">주문 관리</a></li>	       
+	            </ul>
+            </li>
 		</ul>
 	</div>
 </nav>
 
 <!-- 헤더 스크립트 -->
-<script>
+	<script>
 	$(document).ready(function() {
 	    var isLogOn = false;
 	    var isAdmin = false;

@@ -6,6 +6,7 @@
 <!DOCTYPE html>
 
 <meta charset="utf-8">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <head>
 <script type="text/javascript">
   // 상세 이미지의 첨부 순서를 나타냅니다.
@@ -21,7 +22,6 @@
   	
   	cnt++;
   }
-  
   
   function fn_add_new_goods(obj){
 		 fileName = $('#f_main_image').val();
@@ -54,20 +54,21 @@
 			<tr >
 				<td width=200 >제품분류</td>
 				<td width=500><select name="goods_sort">
-						<option value="우유" selected>우유
-						<option value="커피">커피
-						<option value="발효유">발효유
+						<option value="PIG" selected>돼지
+						<option value="COW">소
+						<option value="CHICKEN">닭
+						<option value="MEALKIT">양념육/밀키트
 					</select>
 				</td>
 			</tr>
 			<tr >
 				<td >제품이름</td>
-				<td><input name="goods_title" type="text" size="40" /></td>
+				<td><input name="goods_name" type="text" size="40" /></td>
 			</tr>
 			 
 			<tr>
 				<td>제품회사</td>
-				<td><input name="goods_publisher" type="text" size="40" /></td>
+				<td><input name="goods_seller" type="text" size="40" /></td>
 			</tr>
 			
 			<tr>
@@ -80,19 +81,13 @@
 				<td><input name="goods_sales_price" type="text" size="40" /></td>
 			</tr>
 			
-			
-			<tr>
+<!-- 		<tr>
 				<td >제품 구매 포인트</td>
 				<td><input name="goods_point" type="text" size="40" /></td>
-			</tr>
+			</tr> -->
 			
 			<tr>
-				<td >제품제조일</td>
-				<td><input  name="goods_published_date"  type="date" size="40" /></td>
-			</tr>
-			
-			<tr>
-				<td >제품 도착 예정일</td>
+				<td >제품 등록일</td>
 				<td><input name="goods_delivery_date"  type="date" size="40" /></td>
 			</tr>
 			
@@ -100,9 +95,9 @@
 				<td >제품종류</td>
 				<td>
 				<select name="goods_status">
-				  <option value="bestgoods">인기상품</option>
-				  <option value="newgoods" selected>신상품</option>
-				  <option value="on_sale">할인상품</option>
+				  <option value="B">인기상품</option>
+				  <option value="N" selected>신규상품</option>
+				  <option value="S">할인상품</option>
 				</select>
 				</td>
 			</tr>

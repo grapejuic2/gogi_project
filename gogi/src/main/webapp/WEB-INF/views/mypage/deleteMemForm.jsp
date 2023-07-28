@@ -195,20 +195,6 @@ ul.nav.navbar-nav li a:hover {
 				width="150px"></a>
 		</div>
 
-		<div class="category" style="margin-left: 35px; margin-bottom: 25px;">
-			<a href="${contextPath}/mypage/modifyMemForm.do"
-				data-category="개인 정보 수정"
-				style="margin-bottom: 20px; margin-right: 10px; margin-left: 10px;">개인정보
-				수정</a> <a href="#" data-category="문의 내역"
-				style="margin-bottom: 20px; margin-right: 10px; margin-left: 10px;">문의내역</a>
-			<a href="${contextPath}/mypage/listMyOrderHistorys" data-category="주문 내역"
-				style="margin-bottom: 20px; margin-right: 10px; margin-left: 10px;">주문내역</a>
-			<a href="#" data-category="리뷰 확인"
-				style="margin-bottom: 20px; margin-right: 10px; margin-left: 10px;">리뷰확인</a>
-			<a href="${contextPath}/mypage/deleteMemForm.do" data-category="회원탈퇴"
-				style="margin-bottom: 20px; margin-right: 10px; margin-left: 10px;">회원탈퇴</a>
-		</div>
-
 		<div class="form">
 			<form id="memberDeleteForm" class="deleteform" action="${contextPath}/mypage/deleteMember.do" method="post">
 			<p class="sub_title">회원 탈퇴</p>

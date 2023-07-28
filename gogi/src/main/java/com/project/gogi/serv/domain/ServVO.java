@@ -23,6 +23,11 @@ public class ServVO {
 	private Date cust_serv_date;
 	private int cust_serv_hits;
 	private String cust_serv_pw;
+	private int cust_serv_notice;
+	
+	 private String imageFileName;
+	 private String originalFileName;
+
 	
 	
 	public int getCust_serv_no() {
@@ -67,6 +72,25 @@ public class ServVO {
 	public void setCust_serv_pw(String cust_serv_pw) {
 		this.cust_serv_pw = cust_serv_pw;
 	}
+	public int getCust_serv_notice() {
+		return cust_serv_notice;
+	}
+	public void setCust_serv_notice(int cust_serv_notice) {
+		this.cust_serv_notice = cust_serv_notice;
+	}
+	public String getImageFileName() {
+		return imageFileName;
+	}
+	public void setImageFileName(String imageFileName) {
+		this.imageFileName = imageFileName;
+	}
+	public String getOriginalFileName() {
+		return originalFileName;
+	}
+	public void setOriginalFileName(String originalFileName) {
+		this.originalFileName = originalFileName;
+	}
+	
 	
 	 
 }

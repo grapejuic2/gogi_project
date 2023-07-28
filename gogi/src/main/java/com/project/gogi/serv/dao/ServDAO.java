@@ -35,8 +35,10 @@ public interface ServDAO {
 	    
 	    //공지사항 끝
  
-		 
-		    public boolean CheckAdmin(ServVO vo)  throws Exception;
-			
+		public boolean CheckAdmin(ServVO vo)  throws Exception;
+		
+		 public String getServPw(int cust_serv_no) throws Exception;
+		
+	    
 		    
 }
