@@ -27,11 +27,13 @@ public class AdminMemberServiceImpl implements AdminMemberService {
 	}
 	
 	public void  modifyMemberInfo(HashMap memberMap) throws Exception{
-		 String mem_id=(String)memberMap.get("mem_id");
 		 adminMemberDAO.modifyMemberInfo(memberMap);
 	}
 
 	public void removeMember(String mem_id) throws Exception {
 		adminMemberDAO.deleteMember(mem_id);
+	}
+	public void updateStatus(MemberVO memberVO) throws Exception{
+		adminMemberDAO.updateStatus(memberVO);
 	}
 }

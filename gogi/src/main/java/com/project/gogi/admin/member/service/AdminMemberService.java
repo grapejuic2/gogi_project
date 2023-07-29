@@ -10,4 +10,5 @@ public interface AdminMemberService {
 	public MemberVO memberDetail(String mem_id) throws Exception;
 	public void  modifyMemberInfo(HashMap memberMap) throws Exception;
 	public void removeMember(String mem_id) throws Exception;
+	public void updateStatus(MemberVO memberVO) throws Exception;
 }

@@ -192,11 +192,11 @@ function fn_detail_search(){
 					  <span><b>[주문자 전화번호]</b> ${item.pay_orderer_hp_num}</span><br>
 					  <span><b>[수령자]</b> ${item.order_rec_name}&nbsp;&nbsp;</span><br>
 					  <span><b>[수령자 전화번호]</b> ${item.order_rec_hp1}-${item.order_rec_hp2}-${item.order_rec_hp3}</span><br>
-					  <span><b>[주문상품]</b> ${item.goods_name}&nbsp;&nbsp;<b>[수량]</b> ${item.order_quantity}</span><br>
+					  <span><b>[주문상품명]</b> ${item.goods_name}&nbsp;&nbsp;<b>[수량]</b> ${item.order_quantity}</span><br>
 					     <c:forEach var="item2" items="${newOrderList}" varStatus="j">
 					       <c:if test="${j.index > i.index }" >
 					          <c:if  test="${item.order_id == item2.order_id}" >
-					            <span><b>[주문상품명]</b> ${item2.goods_id}&nbsp;&nbsp;<b>[수량]</b> ${item2.order_quantity}</span><br>
+					            <span><b>[주문상품명]</b> ${item2.goods_name}&nbsp;&nbsp;<b>[수량]</b> ${item2.order_quantity}</span><br>
 					      </c:if>   
 					       </c:if>
 					    </c:forEach> 

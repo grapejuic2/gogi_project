@@ -71,7 +71,7 @@ function init(){
 </script>
 </c:otherwise>
 </c:choose>
- <script>
+<script>
     function execDaumPostcode() {
         new daum.Postcode({
             oncomplete: function(data) {

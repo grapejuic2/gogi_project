@@ -111,8 +111,8 @@ public class AdminMemberControllerImpl extends BaseController implements AdminMe
 			memberMap.put("mem_tel3",val[2]);
 			
 		}else if(mod_type.equals("mem_email")){
-			val=value.split(",");
-			memberMap.put("mem_email",val[0]);
+			/* val=value.split(","); */
+			memberMap.put("mem_email",value);
 			
 		}else if(mod_type.equals("address")){
 			val=value.split(",");
@@ -123,7 +123,6 @@ public class AdminMemberControllerImpl extends BaseController implements AdminMe
 		}
 		
 		memberMap.put("mem_id", mem_id);
-		
 		adminMemberService.modifyMemberInfo(memberMap);
 		pw.print("mod_success");
 		pw.close();		
@@ -142,5 +141,25 @@ public class AdminMemberControllerImpl extends BaseController implements AdminMe
 		mav.setViewName("redirect:/admin/member/adminMemberMain.do");
 		return mav;
 	}
-		
+	@RequestMapping(value = "/updateStatus.do", method = RequestMethod.POST)
+	public void updateStatus(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	    try {
+	        // AJAX 요청으로부터 전달받은 데이터 추출
+	        MemberVO memberVO = new MemberVO();
+	        memberVO.setMem_id(request.getParameter("memberId"));
+	        memberVO.setMem_del_yn(request.getParameter("status"));
+	        memberVO.setDel_note(request.getParameter("delNote"));
+	        adminMemberService.updateStatus(memberVO);
+	        // 예시로는 아래와 같이 상태와 메모를 콘솔에 출력하는 것으로 대체하였습니다.
+	        System.out.println("회원 아이디: " + memberVO.getMem_id());
+	        System.out.println("변경된 상태: " + memberVO.getMem_del_yn());
+	        System.out.println("메모: " + memberVO.getDel_note());
+	        
+	        
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        // 클라이언트에게 오류 응답 전송 (실패했을 경우)
+	        response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "상태 변경 중 오류가 발생하였습니다.");
+	    }
+	}
 }

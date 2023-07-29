@@ -19,6 +19,7 @@
     <typeAlias type="com.project.gogi.serv.domain.ServImageFileVO" alias="servImageFileVO" />
 	<typeAlias type="com.project.gogi.serv.domain.PageMaker3" alias="PageMaker3" />
   	<typeAlias type="com.project.gogi.serv.domain.Criteria3" alias="Criteria3" />
+  	<typeAlias type="com.project.gogi.social.KakaoDTO" alias="kdto" />
 
   </typeAliases>
 </configuration>

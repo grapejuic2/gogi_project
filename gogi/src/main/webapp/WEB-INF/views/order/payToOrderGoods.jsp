@@ -237,7 +237,7 @@ margin-top: 20px;
 			  <tr class="dot_line">
 				<td>핸드폰</td>
 				<td>
-				 <input  type="text" value="${orderer.mem_tel1}-${orderer.mem_tel2}-${orderer.mem_tel1}" size="15" disabled />
+				 <input  type="text" value="${orderer.mem_tel1}-${orderer.mem_tel2}-${orderer.mem_tel3}" size="15" disabled />
 				</td>
 			  </tr>
 			  <tr class="dot_line">
@@ -261,7 +261,7 @@ margin-top: 20px;
 				<TR class="dot_line">
 					<TD class="fixed_join">배송방법</TD>
 					<TD>
-					   ${myOrderInfo.delivery_method }
+					   ${myOrderInfo.order_delivery_method }
 				    </TD>
 				</TR>
 				<TR class="dot_line">
@@ -275,8 +275,6 @@ margin-top: 20px;
 					<TD>
 					  ${myOrderInfo.order_rec_hp1}-${myOrderInfo.order_rec_hp2}-${myOrderInfo.order_rec_hp3}</TD>
 				  </TR>
-
-
 				<TR class="dot_line">
 					<TD class="fixed_join">주소</TD>
 					<td>
@@ -342,7 +340,6 @@ margin-top: 20px;
 		</a>
 
 	</div>
-</div>
 
 <DIV class="clear"></DIV>		
 </body>

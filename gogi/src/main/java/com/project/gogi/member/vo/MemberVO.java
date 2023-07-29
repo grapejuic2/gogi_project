@@ -23,6 +23,15 @@ public class MemberVO {
 	private Date mem_reg_date;	//회원 가입 날짜
 	private String mem_del_yn; // 회원 탈퇴 여부
 	private int mem_point;//멤버 포인트
+	private String del_note;
+	
+	public String getDel_note() {
+		return del_note;
+	}
+
+	public void setDel_note(String del_note) {
+		this.del_note = del_note;
+	}
 
 	public MemberVO() {
 		// TODO Auto-generated constructor stub

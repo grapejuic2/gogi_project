@@ -12,4 +12,5 @@ public interface AdminMemberDAO {
 	public MemberVO memberDetail(String mem_id) throws DataAccessException;
 	public void modifyMemberInfo(HashMap memberMap) throws DataAccessException;
 	public void deleteMember(String mem_id) throws DataAccessException;
+	public void updateStatus(MemberVO memberVO) throws DataAccessException;
 }

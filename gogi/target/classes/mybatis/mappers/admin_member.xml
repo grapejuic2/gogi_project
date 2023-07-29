@@ -22,6 +22,7 @@
 		<result property="namujiAddress" column="namujiAddress" />
 		<result property="mem_reg_date" column="mem_reg_date" />
 		<result property="mem_del_yn" column="mem_del_yn" />
+		<result property="del_note" column="del_note"/>
 	</resultMap>
 	
 	<select id="listMember" resultMap="memResult" parameterType="java.util.HashMap"  >
@@ -55,10 +56,10 @@
 	</select>	
 	
 	<update id="modifyMemberInfo" parameterType="java.util.HashMap">
-	   update gogi_member
+	   update gogi_member set
 			   <set>
 			      <if test=" mem_pw!='' and mem_pw!=null">
-			        mem_pw=#{mem_pw},
+			        mem_pw=#{mem_pw}
 			      </if>
 			      
 			       <if test=" mem_birth_y!='' and mem_birth_y!=null">
@@ -70,7 +71,7 @@
 			      </if>
 			      
 			      <if test=" mem_birth_d!='' and mem_birth_d!=null">
-			         mem_birth_d=#{mem_birth_d},
+			         mem_birth_d=#{mem_birth_d}
 			      </if>
 			      
 			      <if test=" mem_tel1!='' and mem_tel1!=null">
@@ -82,23 +83,23 @@
 			      </if>
 			      
 			      <if test=" mem_tel3!='' and mem_tel3!=null">
-			         mem_tel3=#{mem_tel3},
+			         mem_tel3=#{mem_tel3}
 			      </if>
 			      
 			      <if test=" mem_email!='' and mem_email!=null">
-			         mem_email=#{mem_email},
+			         mem_email=#{mem_email}
 			      </if>
 			      
 			      <if test=" zipcode!='' and zipcode!=null">
-			         zipcode=#{zipcode},
+			         zipcode=#{zipcode}
 			      </if>
 			      
 			      <if test=" roadAddress!='' and roadAddress!=null">
-			         roadAddress=#{roadAddress},
-			      </if>	
+			         roadAddress=#{roadAddress}
+			      </if>
 			      		     
 			      <if test=" jibunAddress!='' and jibunAddress!=null">
-			         jibunAddress=#{jibunAddress},
+			         jibunAddress=#{jibunAddress}
 			      </if>
 			      
 			      <if test=" namujiAddress!='' and namujiAddress!=null">
@@ -114,5 +115,11 @@
 	  delete from gogi_member
 	  where mem_id=#{mem_id}
 	</delete>
+	
+	<update id="updateStatus" parameterType="memberVO">
+	   update gogi_member set mem_del_yn=#{mem_del_yn}, del_note=#{del_note} 
+		where 
+		mem_id=#{mem_id}
+	</update>	
 	
 </mapper>

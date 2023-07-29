@@ -33,5 +33,8 @@ public class AdminMemberDAOImpl  implements AdminMemberDAO{
 	public void deleteMember(String mem_id) throws DataAccessException {
 		sqlSession.delete("mapper.admin.member.deleteMember" ,mem_id);
 	}
+	public void updateStatus(MemberVO memberVO) throws DataAccessException{
+		sqlSession.update("mapper.admin.member.updateStatus",memberVO);
+	}
 	
 }

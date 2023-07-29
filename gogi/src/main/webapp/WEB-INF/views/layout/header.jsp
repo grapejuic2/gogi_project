@@ -92,8 +92,10 @@ ul.nav.navbar-nav li a:hover {
 		    <li class="logged-out"><a href="${contextPath}/member/memberForm.do"><span class="glyphicon glyphicon-user"></span> 회원가입</a></li>
 		    <li class="logged-out"><a href="${contextPath}/member/loginForm.do" id="loginBtn"><span class="glyphicon glyphicon-log-in"></span> 로그인</a></li>
 		    <li class="user-logged-in hidden"><a href="${contextPath}/member/logout.do" id="logoutBtn"><span class="glyphicon glyphicon-log-out"></span> 로그아웃</a></li>
+		    <li class="kakao-user-logged-in hidden"><a href="${contextPath}/social/kakao_logout.do" id="logoutBtn"><span class="glyphicon glyphicon-log-out"></span> 로그아웃</a></li>
 		    <li class="user-logged-in hidden"><a href="${contextPath}/cart/myCartList.do"><span class="glyphicon glyphicon-shopping-cart"></span> 장바구니</a></li>
-		    		    <li class="dropdown user-logged-in hidden" >
+		    
+		    <li class="dropdown user-logged-in hidden" >
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                 <span class="glyphicon glyphicon-user"></span> 마이페이지 <span class="caret"></span>
             </a>
@@ -103,6 +105,19 @@ ul.nav.navbar-nav li a:hover {
 	                <li><a href="${contextPath}/mypage/listMyOrderHistory.do">주문 내역</a></li>
 	                <li><a href="#">리뷰 확인</a></li>
 	                <li><a href="${contextPath}/mypage/deleteMemForm.do">회원 탈퇴</a></li>
+	            </ul>
+            </li>
+            
+            <li class="dropdown kakao-user-logged-in hidden" >
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                <span class="glyphicon glyphicon-user"></span> 마이페이지 <span class="caret"></span>
+            </a>
+	            <ul class="dropdown-menu">
+	                <li><a href="${contextPath}/mypage/modifyMemForm.do">카카오-개인정보수정</a></li>
+	                <li><a href="#">문의 내역</a></li>
+	                <li><a href="${contextPath}/mypage/listMyOrderHistory.do">카카오-주문 내역</a></li>
+	                <li><a href="#">리뷰 확인</a></li>
+	                <li><a href="${contextPath}/mypage/deleteMemForm.do">카카오-회원 탈퇴</a></li>
 	            </ul>
             </li>
             
@@ -126,6 +141,7 @@ ul.nav.navbar-nav li a:hover {
 	$(document).ready(function() {
 	    var isLogOn = false;
 	    var isAdmin = false;
+	    var isKakao = false;
 	    
 	    function toggleForm() {
 	        if (isAdmin) {
@@ -133,6 +149,9 @@ ul.nav.navbar-nav li a:hover {
 	            $('.user-logged-in, .logged-out').addClass('hidden');
 	        } else if (isLogOn) {
 	            $('.user-logged-in').removeClass('hidden');
+	            $('.admin-logged-in, .logged-out').addClass('hidden');
+	        } else if (isKakao) {
+	            $('.kakao-user-logged-in').removeClass('hidden');
 	            $('.admin-logged-in, .logged-out').addClass('hidden');
 	        } else {
 	            $('.logged-out').removeClass('hidden');
@@ -154,19 +173,44 @@ ul.nav.navbar-nav li a:hover {
 	        isAdmin = true;
 	    }
 	    toggleForm();
+	    
+        var kakaoTokenValue = '<c:out value="${sessionScope.kakaoToken}" />';
+        if (kakaoTokenValue === 'true') {
+            isKakao = true; // kakaoToken이 존재하면 카카오 로그인으로 판별
+        }
+        toggleForm();
 	
 	    $('#loginBtn').click(function() {
 	        isLogOn = true;
 	        isAdmin = true;
+	        isKakao = true;
 	        toggleForm();
 	    });
 	
 	    $('#logoutBtn').click(function() {
 	        isLogOn = false;
 	        isAdmin = false;
+	        isKakao = false;
 	        toggleForm();
-	    });
-	});
+	    	});
+		});
+	
+		//카카오로그아웃  
+		function kakaoLogout() {
+		    if (Kakao.Auth.getAccessToken()) {
+		      Kakao.API.request({
+		        url: '/v1/user/unlink',
+		        success: function (response) {
+		        	console.log(response)
+		        },
+		        fail: function (error) {
+		          console.log(error)
+		        },
+		      })
+		      Kakao.Auth.setAccessToken(undefined)
+		    }
+		  }  
+		
 	</script>
 </body>
 </html>

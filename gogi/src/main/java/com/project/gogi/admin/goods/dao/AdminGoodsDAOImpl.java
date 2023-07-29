@@ -75,7 +75,6 @@ public class AdminGoodsDAOImpl  implements AdminGoodsDAO{
 	@Override
 	public void updateOrderGoods(Map orderMap) throws DataAccessException{
 		sqlSession.update("mapper.admin.goods.updateOrderGoods",orderMap);
-		
 	}
 
 	@Override
@@ -85,7 +84,6 @@ public class AdminGoodsDAOImpl  implements AdminGoodsDAO{
 			ImageFileVO imageFileVO = imageFileList.get(i);
 			sqlSession.update("mapper.admin.goods.updateGoodsImage",imageFileVO);	
 		}
-		
 	}
 
 	//삭제

@@ -2,6 +2,26 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="mapper.serv">
+
+	<resultMap id="insertServ" type="servVO">
+		   <result property="cust_serv_no" column="cust_serv_no" />
+		   <result property="cust_serv_title" column="cust_serv_title" />
+		   <result property="cust_serv_content" column="cust_serv_content" />
+		   <result property="mem_id" column="mem_id" />
+		   <result property="cust_serv_date" column="cust_serv_date" />
+		   <result property="cust_serv_hits" column="cust_serv_hits" />
+		   <result property="cust_serv_pw" column="cust_serv_pw" />
+		   <result property="cust_serv_notice" column="cust_serv_notice" />
+		   <result property="imageFileName" column="imageFileName" />
+		   <result property="originalFileName" column="originalFileName" />
+	</resultMap>
+
+	<resultMap id="servImageResult" type="servImageFileVO">
+	   <result property="img_no" column="img_no" />
+	   <result property="img_name" column="img_name" />
+	   <result property="img_date" column="img_date" />
+	   <result property="cust_serv_no" column="cust_serv_no" />
+	</resultMap>
  
    
    <!-- 목록+페이징 v-->
@@ -29,10 +49,27 @@
 </select>
 
     <!-- -작성 -->
-   <insert id="servWrite">
+   <insert id="servWrite" parameterType="java.util.Map">
     insert into GOGI_CUST_SERV_BOARD(cust_serv_no, cust_serv_title, cust_serv_content,mem_id,cust_serv_pw)
         values (seq_serv.nextval, #{cust_serv_title}, #{cust_serv_content}, #{mem_id},#{cust_serv_pw})
  	</insert>
+ 	
+ 	
+ 	<insert id="insertServImageFile" parameterType="servImageFileVO" >
+      <selectKey resultType="int" keyProperty="img_no" order="BEFORE">
+          select seq_image_no.nextval from dual
+       </selectKey>
+       <![CDATA[
+         insert into GOGI_SERV_IMAGE (img_no,
+                                      img_name,
+	                                  img_date,
+	                                  cust_serv_no)
+                             values(#{img_no},
+                                  #{img_name},
+                                  sysdate,
+                                  #{cust_serv_no})
+      ]]>
+   </insert>
    
    <!-- 조회 -->
    <select id="servRead" resultType="servVO" parameterType="int">

@@ -2,6 +2,8 @@ package com.project.gogi.social;
 
 import java.io.IOException;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.project.gogi.member.vo.MemberVO;
 
@@ -46,5 +49,21 @@ public class SocialController {
 		session.setAttribute("isLogon", true);
 		
 		return "redirect:/main/main.do";
+	}
+	
+	@RequestMapping(value="/kakao_logout.do" ,method = RequestMethod.GET)
+	public ModelAndView kakaologout(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	    ModelAndView mav = new ModelAndView();
+	    HttpSession session = request.getSession(false); // 기존 세션을 가져옴
+
+	    if (session != null) {
+	        session.invalidate(); // 세션 무효화
+
+	        // 새로운 세션 생성
+	        session = request.getSession(true);
+	        session.setAttribute("isLogOn", false);
+	    }
+	    mav.setViewName("redirect:/main/main.do");
+	    return mav;
 	}
 }

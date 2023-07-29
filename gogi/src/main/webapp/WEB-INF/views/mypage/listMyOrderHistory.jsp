@@ -8,27 +8,38 @@
 <head>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style>
-.navbar.navbar-inverse {
-	padding: 10px;
-	padding-left: 200px;
-	padding-right: 200px;
-	background: white;
-	border: none;
-}
-
-.nav.navbar-nav {
-	margin-top: 70px;
-	margin-left: 40px;
-}
-
-ul.nav.navbar-nav li a:hover {
-	color: #000000;
-}
-
 @import url(https://fonts.googleapis.com/css?family=Roboto:300);
+
+#mem_id, #mem_name, #mem_email, #mem_pw, #mem_pw_confirm{
+	width: 200px;
+}
+#mem_birth_y, #mem_birth_m, #mem_birth_d, #mem_tel1, #mem_tel2, #mem_tel3{
+	width: 120px;
+}
+.form-group.address-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+/* Adjust width of the address containers as needed */
+.address-container {
+  width: 100%; /* This will make the address fields occupy the full width of the form */
+}
+
+/* Optional: Adjust spacing between address fields */
+.address-container input {
+  margin-bottom: 5px;
+}
+
+.required {
+    color: #DB0000; /* 원하는 색상으로 변경하세요 */
+}
+
 </style>
 
-<link href="${contextPath}/resources/css/mypage/deleteMemForm.css" rel="stylesheet" type="text/css">
+<link href="${contextPath}/resources/css/mypage/mypageForm.css" rel="stylesheet" type="text/css">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -43,12 +54,12 @@ ul.nav.navbar-nav li a:hover {
 		</div>
 		
 	<!-- <div class="title_underline" id="order-history-title"> -->
-		<h3><b>주문 배송 조회</b></h3>
+		<h3 style="text-align: center;"><b>주문 배송 조회</b></h3>
 	<!-- </div> -->
 	
 	<table class="form">
 		<tbody align=center >
-			<tr style="background:skyblue" >
+			<tr style="background:#e8e8e8; color: #1d1d1d;" >
 				<td><b>주문번호</b></td>
 				<td><b>주문일자</b></td>
 				<td><b>주문내역</b></td>
@@ -90,7 +101,7 @@ ul.nav.navbar-nav li a:hover {
 				   <strong>
 				      <c:forEach var="item2" items="${myOrderHistList}" varStatus="j">
 				          <c:if  test="${item.order_id == item2.order_id}" >
-				            ${item.goods_sales_price*item.order_quantity }원/${item.order_quantity }<br>
+				            ${item2.goods_sales_price*item2.order_quantity }원/${item2.order_quantity }<br>
 				         </c:if>   
 					 </c:forEach>
 				   </strong>

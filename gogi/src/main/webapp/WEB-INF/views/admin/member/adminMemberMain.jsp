@@ -96,6 +96,28 @@ function fn_detail_search(){
     formObj.submit();
 	
 }
+function updateStatus(memberId, status, delNote) {
+    // AJAX를 사용하여 서버로 상태 변경 요청과 메모를 전달
+    $.ajax({
+        type: 'POST', // POST 방식으로 전송
+        url: '${pageContext.request.contextPath}/admin/member/updateStatus.do', // 요청할 URL (상황에 맞게 수정 필요)
+        data: {
+            memberId: memberId,
+            status: status,
+            delNote: delNote
+        },
+        success: function (response) {
+            // 서버로부터 응답을 받은 후 실행되는 함수
+            alert("변경하였습니다.");
+            // 이후 필요한 처리를 수행하면 됩니다.
+        },
+        error: function (xhr, status, error) {
+            // 서버 요청이 실패한 경우 실행되는 함수
+            console.error("AJAX 오류 발생: " + error);
+            // 이후 실패에 대한 처리를 수행하면 됩니다.
+        }
+    });
+}
 </script>
 </head>
 <body>
@@ -113,6 +135,8 @@ function fn_detail_search(){
 				<td><span><b>주소</b></span></td>
 				<td><span><b>가입일</b></span></td>
 				<td><span><b>탈퇴여부</b></span></td>
+				<td><span><b>비고</b></span></td>
+				<td><span><b>수정하기</b></span></td>
 			</tr>
    <c:choose>
      <c:when test="${empty listMember}">			
@@ -147,14 +171,18 @@ function fn_detail_search(){
 					   <span><c:out value="${arr[0]}" /></span>
 				    </td>
 				    <td width=10%>
-				       <c:choose>
-				         <c:when test="${item.mem_del_yn=='N' }">
-				           <span>활동중</span>  
-				         </c:when>
-				         <c:otherwise>
-				           <span>탈퇴</span>
-				         </c:otherwise>
-				       </c:choose>
+				       <select name="status">
+                <option value="N" <c:if test="${item.mem_del_yn == 'N'}">selected</c:if>>활동중</option>
+                <option value="B" <c:if test="${item.mem_del_yn == 'B'}">selected</c:if>>비활성화</option>
+                <option value="Y" <c:if test="${item.mem_del_yn == 'Y'}">selected</c:if>>탈퇴</option>
+            </select>
+            
+				    </td>
+				    <td>
+				    <span><textarea name="del_note">${item.del_note }</textarea></span>
+				    </td>
+				    <td>
+				    <button onclick="updateStatus('${item.mem_id}', document.getElementsByName('status')[${item_num.index}].value, document.getElementsByName('del_note')[${item_num.index}].value)">변경</button>
 				    </td>
 				</tr>
 		</c:forEach>

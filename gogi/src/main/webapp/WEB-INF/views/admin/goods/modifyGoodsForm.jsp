@@ -1,180 +1,418 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page language="java" contentType="text/html; charset=utf-8"
+	pageEncoding="euc-kr" isELIgnored="false"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
+<c:set var="goods" value="${goodsMap.goods}" />
+<c:set var="imageFileList" value="${goodsMap.imageFileList}" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<c:choose>
+	<c:when test='${not empty goods.goods_status}'>
+		<script>
+			window.onload = function() {
+				init();
+			}
 
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <style>
-        .navbar.navbar-inverse {
-            padding: 10px;
-            padding-left: 200px;
-            padding-right: 200px;
-            background: white;
-            border: none;
-        }
+			function init() {
+				var frm_mod_goods = document.frm_mod_goods;
+				var h_goods_status = frm_mod_goods.h_goods_status;
+				var goods_status = h_goods_status.value;
+				var select_goods_status = frm_mod_goods.goods_status;
+				select_goods_status.value = goods_status;
+			}
+		</script>
+	</c:when>
+</c:choose>
+<script type="text/javascript">
+	// ºˆ¡§µ» ªÛ«∞ ¡§∫∏¿« º”º∫∞˙ ºˆ¡§ ∞™¿ª ƒ¡∆Æ∑—∑Ø∑Œ ¿¸º€«’¥œ¥Ÿ.
+	function fn_modify_goods(goods_id, attribute) {
+		var frm_mod_goods = document.frm_mod_goods;
+		var value = "";
+		if (attribute == 'goods_sort') {
+			value = frm_mod_goods.goods_sort.value;
+		} else if (attribute == 'goods_name') {
+			value = frm_mod_goods.goods_name.value;
+		} else if (attribute == 'goods_seller') {
+			value = frm_mod_goods.goods_seller.value;
+		} else if (attribute == 'goods_price') {
+			value = frm_mod_goods.goods_price.value;
+		} else if (attribute == 'goods_point') {
+			value = frm_mod_goods.goods_point.value;
+		} else if (attribute == 'goods_delivery_date') {
+			value = frm_mod_goods.goods_delivery_date.value;
+			/* 	}else if(attribute=='goods_page_total'){
+			 value=frm_mod_goods.goods_page_total.value;
+			 }else if(attribute=='goods_isbn'){
+			 value=frm_mod_goods.goods_isbn.value; */
+		} else if (attribute == 'goods_delivery_date') {
+			value = frm_mod_goods.goods_delivery_date.value;
+		} else if (attribute == 'goods_status') {
+			value = frm_mod_goods.goods_status.value;
+		} else if (attribute == 'goods_intro') {
+			value = frm_mod_goods.goods_intro.value;
+		} else if (attribute == 'goods_weight') {
+			value = frm_mod_goods.goods_weight.value;
+		}
 
-        .nav.navbar-nav {
-            margin-top: 70px;
-            margin-left: 40px;
-        }
+		$.ajax({
+			type : "post",
+			async : false, //false¿Œ ∞ÊøÏ µø±‚Ωƒ¿∏∑Œ √≥∏Æ«—¥Ÿ.
+			url : "${contextPath}/admin/goods/modifyGoodsInfo.do",
+			data : {
+				goods_id : goods_id,
+				// ªÛ«∞ º”º∫∞˙ ºˆ¡§ ∞™¿ª Ajax∑Œ ¿¸º€«’¥œ¥Ÿ.
+				attribute : attribute,
+				value : value
+			},
+			success : function(data, textStatus) {
+				if (data.trim() == 'mod_success') {
+					alert("ªÛ«∞ ¡§∫∏∏¶ ºˆ¡§«ﬂΩ¿¥œ¥Ÿ.");
+				} else if (data.trim() == 'failed') {
+					alert("¥ŸΩ√ Ω√µµ«ÿ ¡÷ººø‰.");
+				}
 
-        ul.nav.navbar-nav li a:hover {
-            color: #000000;
-        }
+			},
+			error : function(data, textStatus) {
+				alert("ø°∑Ø∞° πﬂª˝«ﬂΩ¿¥œ¥Ÿ." + data);
+			},
+			complete : function(data, textStatus) {
+				//alert("¿€æ˜¿ªøœ∑· «ﬂΩ¿¥œ¥Ÿ");
 
-        @import url(https://fonts.googleapis.com/css?family=Roboto:300);
-    </style>
+			}
+		}); //end ajax	
+	}
 
-    <link href="${contextPath}/resources/css/admin/admin.css" rel="stylesheet" type="text/css">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+	function readURL(input, preview) {
+		//  alert(preview);
+		if (input.files && input.files[0]) {
+			var reader = new FileReader();
+			reader.onload = function(e) {
+				$('#' + preview).attr('src', e.target.result);
+			}
+			reader.readAsDataURL(input.files[0]);
+		}
+	}
 
-    <title>ÏÉÅÌíà ÏàòÏ†ï</title>
+	// '¿ÃπÃ¡ˆ √ﬂ∞°' ≈¨∏Ø Ω√ ªÛºº ¿ÃπÃ¡ˆ ∆ƒ¿œ æ˜∑ŒµÂ∏¶ √ﬂ∞°«’¥œ¥Ÿ.
+	var cnt = 1;
+	function fn_addFile() {
+		$("#d_file").append(
+				"<br>" + "<input  type='file' name='detail_image" + cnt
+						+ "' id='detail_image" + cnt
+						+ "'  onchange=readURL(this,'previewImage" + cnt
+						+ "') />");
+		$("#d_file").append(
+				"<img  id='previewImage"+cnt+"'   width=200 height=200  />");
+		$("#d_file")
+				.append(
+						"<input  type='button' value='√ﬂ∞°'  onClick=addNewImageFile('detail_image"
+								+ cnt
+								+ "','${imageFileList[0].goods_id}','detail_image')  />");
+		cnt++;
+	}
 
-</head>
-<body>
-<div class="admin-page">
-    <div class="admin-text">
-        <a href="${contextPath}/main/main.do">
-            <img src="${contextPath}/resources/images/logo/logo2.png" alt="logo2" width="150px" style="text-align: center;">
-        </a>
-    </div>
+	// ±‚¡∏ ¿ÃπÃ¡ˆ∏¶ ¥Ÿ∏• ¿ÃπÃ¡ˆ∑Œ ∫Ø∞Ê«— »ƒ FormData∏¶ ¿ÃøÎ«ÿ Ajax∑Œ ºˆ¡§«’¥œ¥Ÿ.
+	function modifyImageFile(fileId, goods_id, image_id, fileType) {
+		// alert(fileId);
+		var form = $('#FILE_FORM')[0];
+		var formData = new FormData(form);
 
-    <!-- <div class="title_underline" id="order-history-title"> -->
-    <h3><b>Ï£ºÎ¨∏ Î∞∞ÏÜ° Ï°∞Ìöå</b></h3>
-    <!-- </div> -->
+		// formDataø° ºˆ¡§«“ ¿ÃπÃ¡ˆøÕ ¿ÃπÃ¡ˆ ¡§∫∏∏¶ name/value∑Œ ¿˙¿Â«’¥œ¥Ÿ.
+		formData.append("fileName", $('#' + fileId)[0].files[0]);
+		formData.append("goods_id", goods_id);
+		formData.append("image_id", image_id);
+		formData.append("fileType", fileType);
 
-    <table class="form">
-        <tbody align="center">
-        <tr style="background:skyblue">
-            <td><b>Ï£ºÎ¨∏Î≤àÌò∏</b></td>
-            <td><b>Ï£ºÎ¨∏ÏùºÏûê</b></td>
-            <td><b>Ï£ºÎ¨∏ÎÇ¥Ïó≠</b></td>
-            <td><b>Ï£ºÎ¨∏Í∏àÏï°/ÏàòÎüâ</b></td>
-            <td><b>Ï£ºÎ¨∏ÏÉÅÌÉú</b></td>
-            <td><b>Ï£ºÎ¨∏Ïûê</b></td>
-            <td><b>ÏàòÎ†πÏûê</b></td>
-            <td><b>Ï£ºÎ¨∏Ï∑®ÏÜå</b></td>
-        </tr>
-        <c:choose>
-            <c:when test="${empty myOrderHistList}">
-                <tr>
-                    <td colspan="8" class="fixed">
-                        Ï£ºÎ¨∏Ìïú ÏÉÅÌíàÏù¥ ÏóÜÏäµÎãàÎã§.
-                    </td>
-                </tr>
-            </c:when>
-            <c:otherwise>
-                <c:forEach var="item" items="${myOrderHistList}" varStatus="i">
-                    <c:choose>
-                        <c:when test="${item.order_id != pre_order_id}">
-                            <tr>
-                                <td>${item.order_id}</td>
-                                <td>${item.order_time}</td>
-                                <td>
-                                    <strong>
-                                        <c:forEach var="item2" items="${myOrderHistList}" varStatus="j">
-                                            <c:if test="${item.order_id == item2.order_id}">
-                                                <a href="${contextPath}/goods/goodsDetail.do?goods_id=${item2.goods_id}">
-                                                    ${item2.goods_name}
-                                                </a><br>
-                                            </c:if>
-                                        </c:forEach>
-                                    </strong>
-                                </td>
-                                <td>
-                                    <strong>
-                                        <c:forEach var="item2" items="${myOrderHistList}" varStatus="j">
-                                            <c:if test="${item.order_id == item2.order_id}">
-                                                ${item.goods_sales_price * item.order_quantity}Ïõê/${item.order_quantity}<br>
-                                            </c:if>
-                                        </c:forEach>
-                                    </strong>
-                                </td>
-                                <td>
-                                    <strong>
-                                        <c:choose>
-                                            <c:when test="${item.order_delivery_status=='delivery_prepared'}">
-                                                Î∞∞ÏÜ°Ï§ÄÎπÑÏ§ë
-                                            </c:when>
-                                            <c:when test="${item.order_delivery_status=='delivering'}">
-                                                Î∞∞ÏÜ°Ï§ë
-                                            </c:when>
-                                            <c:when test="${item.order_delivery_status=='finished_delivering'}">
-                                                Î∞∞ÏÜ°ÏôÑÎ£å
-                                            </c:when>
-                                            <c:when test="${item.order_delivery_status=='cancel_order'}">
-                                                Ï£ºÎ¨∏Ï∑®ÏÜå
-                                            </c:when>
-                                            <c:when test="${item.order_delivery_status=='returning_goods'}">
-                                                Î∞òÌíà
-                                            </c:when>
-                                        </c:choose>
-                                    </strong>
-                                </td>
-                                <td>${item.mem_name}</td>
-                                <td>${item.order_rec_name}</td>
-                                <td>
-                                    <c:choose>
-                                        <c:when test="${item.order_delivery_status == 'delivery_prepared'}">
-                                            <input type="button" class="cancel-order-btn" value="Ï£ºÎ¨∏Ï∑®ÏÜå" data-order-id="${item.order_id}" />
-                                        </c:when>
-                                        <c:otherwise>
-                                            <input type="button" class="cancel-order-btn" value="Ï£ºÎ¨∏Ï∑®ÏÜå" data-order-id="${item.order_id}" />
-                                        </c:otherwise>
-                                    </c:choose>
-                                </td>
-                            </tr>
-                            <c:set var="pre_order_id" value="${item.order_id}" />
-                        </c:when>
-                    </c:choose>
-                </c:forEach>
-            </c:otherwise>
-        </c:choose>
-        </tbody>
-    </table>
+		$.ajax({
+			url : '${contextPath}/admin/goods/modifyGoodsImageInfo.do',
+			processData : false,
+			contentType : false,
+			// formData∏¶ Ajax∑Œ ¿¸º€«’¥œ¥Ÿ.
+			data : formData,
+			type : 'POST',
+			success : function(result) {
+				alert("¿ÃπÃ¡ˆ∏¶ ºˆ¡§«ﬂΩ¿¥œ¥Ÿ!");
+			}
+		});
+	}
 
-    <div class="clear"></div>
-</div>
+	// ªı ¿ÃπÃ¡ˆ √ﬂ∞° »ƒ FormData∏¶ ¿ÃøÎ«ÿ Ajax∑Œ ºˆ¡§«’¥œ¥Ÿ.
+	function addNewImageFile(fileId, goods_id, fileType) {
+		//  alert(fileId);
+		var form = $('#FILE_FORM')[0];
+		var formData = new FormData(form);
+		formData.append("uploadFile", $('#' + fileId)[0].files[0]);
+		formData.append("goods_id", goods_id);
+		formData.append("fileType", fileType);
 
-<script>
-    function search_order_history(fixedSearchPeriod) {
-        var formObj = document.createElement("form");
-        var i_fixedSearch_period = document.createElement("input");
-        i_fixedSearch_period.name = "fixedSearchPeriod";
-        i_fixedSearch_period.value = fixedSearchPeriod;
-        formObj.appendChild(i_fixedSearch_period);
-        document.body.appendChild(formObj);
-        formObj.method = "get";
-        formObj.action = "${contextPath}/mypage/listMyOrderHistory.do";
-        formObj.submit();
-    }
+		$.ajax({
+			url : '${contextPath}/admin/goods/addNewGoodsImage.do',
+			processData : false,
+			contentType : false,
+			data : formData,
+			type : 'post',
+			success : function(result) {
+				alert("¿ÃπÃ¡ˆ∏¶ ºˆ¡§«ﬂΩ¿¥œ¥Ÿ!");
+			}
+		});
+	}
 
-    $(document).ready(function () {
-        $('.cancel-order-btn').on('click', function () {
-            var orderId = $(this).data('order-id');
-            fn_cancel_order(orderId);
-        });
-    });
+	// ¿ÃπÃ¡ˆ∏¶ ªË¡¶«’¥œ¥Ÿ.
+	function deleteImageFile(goods_id, image_id, imageFileName, trId) {
+		var tr = document.getElementById(trId);
 
-    function fn_cancel_order(order_id) {
-        var answer = confirm("Ï£ºÎ¨∏ÏùÑ Ï∑®ÏÜåÌïòÏãúÍ≤†ÏäµÎãàÍπå?");
-        if (answer == true) {
-            var formObj = document.createElement("form");
-            var i_order_id = document.createElement("input");
+		$.ajax({
+			type : "post",
+			async : true, //false¿Œ ∞ÊøÏ µø±‚Ωƒ¿∏∑Œ √≥∏Æ«—¥Ÿ.
+			url : "${contextPath}/admin/goods/removeGoodsImage.do",
+			data : {
+				goods_id : goods_id,
+				image_id : image_id,
+				imageFileName : imageFileName
+			},
+			success : function(data, textStatus) {
+				alert("¿ÃπÃ¡ˆ∏¶ ªË¡¶«ﬂΩ¿¥œ¥Ÿ.");
+				tr.style.display = 'none';
+			},
+			error : function(data, textStatus) {
+				alert("ø°∑Ø∞° πﬂª˝«ﬂΩ¿¥œ¥Ÿ." + textStatus);
+			},
+			complete : function(data, textStatus) {
+				//alert("¿€æ˜¿ªøœ∑· «ﬂΩ¿¥œ¥Ÿ");
 
-            i_order_id.name = "order_id";
-            i_order_id.value = order_id;
+			}
+		}); //end ajax	
+	}
 
-            formObj.appendChild(i_order_id);
-            document.body.appendChild(formObj);
-            formObj.method = "post";
-            formObj.action = "${contextPath}/mypage/cancelMyOrder.do";
-            formObj.submit();
-        }
-    }
+	/* ªÛ«∞ªË¡¶ */
+	function deleteGoods(goods_id) {
+		$.ajax({
+			type : "post",
+			async : true,
+			url : "${contextPath}/admin/goods/removeGoods.do",
+			data : {
+				goods_id : goods_id
+			},
+			success : function(data, textStatus) {
+				alert("ªÛ«∞¿ª ªË¡¶«ﬂΩ¿¥œ¥Ÿ.");
+				location.href = "${contextPath}/admin/goods/adminGoodsMain.do";
+			},
+			error : function(data, textStatus) {
+				alert("ø°∑Ø∞° πﬂª˝«ﬂΩ¿¥œ¥Ÿ." + textStatus);
+			},
+			complete : function(data, textStatus) {
+				//alert("¿€æ˜¿ªøœ∑· «ﬂΩ¿¥œ¥Ÿ");
+			}
+		}); //end ajax
+	}
+
+	function backToList(obj) {
+		obj.action = "${contextPath}/admin/goods/adminGoodsMain.do";
+		obj.submit();
+	}
 </script>
-</body>
-</html>
+
+</HEAD>
+<BODY>
+
+	<div class="title_underline" style="margin-top: 50px">
+		<h3>
+			<b>ªÛ«∞ ºˆ¡§</b>
+		</h3>
+	</div>
+
+	<form name="frm_mod_goods" method=post>
+		<DIV class="clear"></DIV>
+		<!-- ≥ªøÎ µÈæÓ ∞°¥¬ ∞˜ -->
+
+		<UL class="tabs" id="goods_detail_menu">
+			<li><A href="#tab1">ªÛ«∞¡§∫∏</A></li>
+			<li><A href="#tab4">ªÛ«∞º“∞≥</A></li>
+			<li><A href="#tab7">ªÛ«∞¿ÃπÃ¡ˆ</A></li>
+		</UL>
+
+		<DIV class="tab_content" id="tab1">
+			<table class="table">
+				<tr>
+					<td width=200>ªÛ«∞∫–∑˘</td>
+					<td width=500><select name="goods_sort">
+							<c:choose>
+								<c:when test="${goods.goods_sort=='øÏ¿Ø' }">
+									<option value="øÏ¿Ø" selected>øÏ¿Ø</option>
+									<option value="ƒø««">ƒø««</option>
+									<option value="πﬂ»ø¿Ø">πﬂ»ø¿Ø</option>
+								</c:when>
+								<c:when test="${goods.goods_sort=='ƒø««' }">
+									<option value="øÏ¿Ø">øÏ¿Ø</option>
+									<option value="ƒø««" selected>ƒø««</option>
+									<option value="πﬂ»ø¿Ø">πﬂ»ø¿Ø</option>
+								</c:when>
+								<c:when test="${goods.goods_sort=='πﬂ»ø¿Ø' }">
+									<option value="øÏ¿Ø">øÏ¿Ø</option>
+									<option value="ƒø««">ƒø««</option>
+									<option value="πﬂ»ø¿Ø" selected>πﬂ»ø¿Ø</option>
+								</c:when>
+							</c:choose>
+					</select></td>
+					<td><input type="button" value="ºˆ¡§π›øµ"
+						class="btn btn-secondary btn-sm"
+						onClick="fn_modify_goods('${goods.goods_id }','goods_sort')" /></td>
+				</tr>
+				<tr>
+					<td>ªÛ«∞¿Ã∏ß</td>
+					<td><input name="goods_title" type="text" size="40"
+						value="${goods.goods_name }" /></td>
+					<td><input type="button" value="ºˆ¡§π›øµ"
+						class="btn btn-secondary btn-sm"
+						onClick="fn_modify_goods('${goods.goods_id }','goods_name')" /></td>
+				</tr>
+
+				<tr>
+					<td>¡¶«∞»∏ªÁ</td>
+					<td><input name="goods_publisher" type="text" size="40"
+						value="${goods.goods_seller }" /></td>
+					<td><input type="button" value="ºˆ¡§π›øµ"
+						class="btn btn-secondary btn-sm"
+						onClick="fn_modify_goods('${goods.goods_id }','goods_seller')" />
+					</td>
+				</tr>
+				<tr>
+
+					<td>ªÛ«∞∆«∏≈∞°∞›</td>
+					<td><input name="goods_price" type="text" size="40"
+						value="${goods.goods_price }" /></td>
+					<td><input type="button" value="ºˆ¡§π›øµ"
+						class="btn btn-secondary btn-sm"
+						onClick="fn_modify_goods('${goods.goods_id }','goods_price')" /></td>
+				</tr>
+
+				<tr>
+					<td>ªÛ«∞ ±∏∏≈ ∆˜¿Œ∆Æ</td>
+					<td><input name="goods_point" type="text" size="40"
+						value="${goods.goods_point }" /></td>
+					<td><input type="button" value="ºˆ¡§π›øµ"
+						class="btn btn-secondary btn-sm"
+						onClick="fn_modify_goods('${goods.goods_id }','goods_point')" /></td>
+				</tr>
+
+				<tr>
+					<td>ªÛ«∞√‚∆«¿œ</td>
+					<td><input name="goods_published_date" type="date"
+						value="${goods.goods_delivery_date }" /></td>
+					<td><input type="button" value="ºˆ¡§π›øµ"
+						class="btn btn-secondary btn-sm"
+						onClick="fn_modify_goods('${goods.goods_id }','goods_delivery_date')" />
+					</td>
+				</tr>
+
+				<tr>
+					<td>ªÛ«∞¡æ∑˘</td>
+					<td><select name="goods_status">
+							<option value="bestgoods">¿Œ±‚ªÛ«∞</option>
+							<option value="newgoods">Ω≈ªÛ«∞</option>
+							<option value="on_sale" selected>∆«∏≈¡ﬂ</option>
+							<option value="buy_out">«∞¿˝</option>
+							<option value="out_of_print">¿˝∆«</option>
+					</select> <input type="hidden" name="h_goods_status"
+						value="${goods.goods_status }" /></td>
+					<td><input type="button" value="ºˆ¡§π›øµ"
+						class="btn btn-secondary btn-sm"
+						onClick="fn_modify_goods('${goods.goods_id }','goods_status')" />
+					</td>
+				</tr>
+				<tr>
+					<td colspan=3><br></td>
+				</tr>
+			</table>
+			<c:forEach var="item" items="${imageFileList }" varStatus="itemNum"
+				begin="0" end="0">
+				<input type="button" value="ªË¡¶«œ±‚" class="btn btn-secondary btn-sm"
+					onClick="deleteGoods('${goods.goods_id}'), backToList(this.form)">
+			</c:forEach>
+		</DIV>
+		<DIV class="tab_content" id="tab4">
+			<P>
+			<table class="table">
+				<tr>
+					<td>ªÛ«∞º“∞≥</td>
+					<td><textarea rows="20" cols="80" name="goods_intro">
+						${goods.goods_intro }
+						</textarea></td>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp; <input type="button" value="ºˆ¡§π›øµ"
+						onClick="fn_modify_goods('${goods.goods_id }','goods_intro')"
+						class="btn btn-secondary btn-sm" />
+					</td>
+				</tr>
+			</table>
+		</DIV>
+
+
+		<DIV class="tab_content" id="tab7">
+			<form id="FILE_FORM" method="post" enctype="multipart/form-data">
+				<table class="table">
+					<tr>
+						<c:forEach var="item" items="${imageFileList }"
+							varStatus="itemNum">
+							<c:choose>
+								<c:when test="${item.fileType=='main_image' }">
+									<tr>
+										<td>∏ﬁ¿Œ ¿ÃπÃ¡ˆ</td>
+										<td><input type="file" id="main_image" name="main_image"
+											onchange="readURL(this,'preview${itemNum.count}');" /> <input
+											type="hidden" name="image_id" value="${item.image_id}" /> <br>
+										</td>
+										<td><img id="preview${itemNum.count }" width=200
+											height=200
+											src="${contextPath}/download.do?goods_id=${item.goods_id}&fileName=${item.fileName}" />
+										</td>
+										<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+										<td><input type="button" value="ºˆ¡§"
+											onClick="modifyImageFile('main_image','${item.goods_id}','${item.image_id}','${item.fileType}')"
+											class="btn btn-secondary btn-sm" /></td>
+									</tr>
+									<tr>
+										<td><br></td>
+									</tr>
+								</c:when>
+								<c:otherwise>
+									<tr id="${itemNum.count-1}">
+										<td>ªÛºº ¿ÃπÃ¡ˆ${itemNum.count-1 }</td>
+										<td><input type="file" name="detail_image"
+											id="detail_image"
+											onchange="readURL(this,'preview${itemNum.count}');" /> <%-- <input type="text" id="image_id${itemNum.count }"  value="${item.fileName }" disabled  /> --%>
+											<input type="hidden" name="image_id"
+											value="${item.image_id }" /> <br></td>
+										<td><img id="preview${itemNum.count }" width=200
+											height=200
+											src="${contextPath}/download.do?goods_id=${item.goods_id}&fileName=${item.fileName}">
+										</td>
+										<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+										<td><input type="button" value="ºˆ¡§"
+											onClick="modifyImageFile('detail_image','${item.goods_id}','${item.image_id}','${item.fileType}')"
+											class="btn btn-secondary btn-sm" /> <input type="button"
+											value="ªË¡¶"
+											onClick="deleteImageFile('${item.goods_id}','${item.image_id}','${item.fileName}','${itemNum.count-1}')"
+											class="btn btn-secondary btn-sm" /></td>
+									</tr>
+									<tr>
+										<td><br></td>
+									</tr>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
+					<tr align="center">
+						<td colspan="3">
+							<div id="d_file"></div>
+						</td>
+					</tr>
+					<tr>
+						<td align=center colspan=2><input type="button"
+							value="¿ÃπÃ¡ˆ∆ƒ¿œ√ﬂ∞°«œ±‚" onClick="fn_addFile()"
+							class="btn btn-secondary btn-sm" /></td>
+					</tr>
+				</table>
+			</form>
+		</DIV>
+		<DIV class="clear"></DIV>
+
+	</form>

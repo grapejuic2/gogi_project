@@ -45,13 +45,21 @@ public class MemberControllerImpl extends BaseController implements MemberContro
 		
 		ModelAndView mav = new ModelAndView();
 		memberVO = memberService.loginForm(loginMap);
-		
 		if(memberVO!= null && memberVO.getMem_id()!=null) {
+			if(memberVO.getMem_del_yn().equals("Y")){
+				String message = "탈퇴한 회원입니다.";
+				mav.addObject("message", message);
+				mav.setViewName("/member/loginForm");
+			} else if(memberVO.getMem_del_yn().equals("B")) {
+				String message = "비활성화된 회원입니다";
+				mav.addObject("message", message);
+				mav.setViewName("/member/loginForm");
+			} else {
 			HttpSession session = request.getSession();
 			session.setAttribute("isLogon", true);
 			session.setAttribute("memberInfo", memberVO);
 			System.out.println("로그인"+memberVO.getMem_id());
-
+			
 	        // 관리자 계정 확인: memberVO에서 관리자 이메일 또는 ID를 확인하고 세션에 isAdmin 값을 설정.
 	        if (memberVO.getMem_id().equals("admin")) {
 	            session.setAttribute("isAdmin", true);
@@ -62,8 +70,9 @@ public class MemberControllerImpl extends BaseController implements MemberContro
 			session = request.getSession(true);
 	        session.setMaxInactiveInterval(30 * 60); //세션 30분 유지
 	        mav.setViewName("redirect:/main/main.do");
+			}
 		}else{
-			String message="아이디나  비밀번호가 틀립니다. 다시 로그인해주세요";
+			String message="아이디나 비밀번호가 틀립니다. 다시 로그인해주세요";
 			mav.addObject("message", message);
 			mav.setViewName("/member/loginForm");
 		}

@@ -74,8 +74,6 @@ width: 70px;
 
 
 </style>
-
-
 <link href="${contextPath}/resources/css/member/memberForm.css" rel="stylesheet" type="text/css">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -170,9 +168,8 @@ width: 70px;
 				<input type="text" id="zipcode" name="zipcode" placeholder="우편번호" style="width:100px; ">
 			</div>
 			<a href="javascript:execDaumPostcode()">
-			<button id="addressSearch" style="margin-left: 5px; ">
-				주소검색
-			</button></a>
+			<button type="button" id="addressSearch" style="margin-left: 5px;">주소검색</button>
+			</a>
 		</div>		
 	
 
@@ -202,12 +199,9 @@ width: 70px;
 			<input type="text" name="namujiAddress" placeholder="나머지 주소" style="width:100%">
 		</div>
 	  </div>
-
      
-      
       <div>
-      	<button type="submit" id="centered-button" style="width:200px; height:50px; margin-top:20px; margin-bottom:40px; margin-left: 300px;">
-      	회원가입</button>	
+      	<button type="submit" id="centered-button" style="width:200px; height:50px; margin-top:20px; margin-bottom:40px; margin-left: 300px;">회원가입</button>	
       </div>
     </form>
   </div>
@@ -377,12 +371,20 @@ width: 70px;
 		    return true;
 	  }
 	 
+	  // 폼 제출 시에도 비밀번호 일치 여부 체크
 	  $("#memberForm").on("submit", function(e) {
-		    // 필수 입력 사항 체크를 통과하지 않으면 폼 제출을 막습니다.
-		    if (!validateForm()) {
-		      e.preventDefault();
-		    }
-		  });
+	    // 필수 입력 사항 체크를 통과하지 않으면 폼 제출을 막습니다.
+	    if (!validateForm() || !checkPasswordMatch()) {
+	      e.preventDefault();
+	    }
+	  });
+
+	  // 폼 안에서 Enter 키를 눌렀을 때 기본 동작을 막습니다.
+	  $("#memberForm").on("keypress", function(e) {
+	    if (e.keyCode === 13) {
+	      e.preventDefault();
+	    }
+	  });
 	  
 	  function checkPasswordMatch() {
 		  var password = $("#mem_pw").val();

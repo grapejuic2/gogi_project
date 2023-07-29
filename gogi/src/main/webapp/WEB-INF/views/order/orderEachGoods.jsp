@@ -115,7 +115,7 @@ margin-right: 15px;
 				<td style="vertical-align:middle;"><span class="required" >*</span>전화번호</td>
 				<td>
 				 <div class="input-container">
-				 	<input type="text" value="${orderer.mem_tel1}-${orderer.mem_tel2}-${orderer.mem_tel3}" size="15" />
+				 	<input type="text" value="${orderer.mem_tel1} - ${orderer.mem_tel2} - ${orderer.mem_tel3}" size="15" />
 				 </div>
 				</td>
 			  </tr>

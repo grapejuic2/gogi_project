@@ -51,12 +51,13 @@
 									    ORDER_REC_HP1,
 					                    ORDER_REC_HP2,
 					                    ORDER_REC_HP3,
-					                    ORDER_DEILVERY_ADDRESS,
+					                    ORDER_DELIVERY_ADDRESS,
 					                    ORDER_DELIVERY_MESSAGE,
 						                ORDER_PAY_METHOD,
 						                CARD_COMPANY_NAME,
 						                CARD_PAY_MONTH,
-						                ORDER_ORDERER_HP)
+						                ORDER_ORDERER_HP,
+						                ORDER_DELIVERY_STATUS)
 							     values(#{order_seq_num},
 							            #{order_id},
 									    #{mem_id},
@@ -75,7 +76,8 @@
 						                #{order_pay_method},
 						                #{card_company_name},
 						                #{card_pay_month},
-						                #{pay_orderer_hp_num})								  
+						                #{pay_orderer_hp_num},
+						                #{order_delivery_status})								  
 		]]>	
 	</insert>
 	

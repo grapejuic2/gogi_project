@@ -3,69 +3,71 @@
 	
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
-
 <!DOCTYPE html>
 <html lang="ko">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <head>
 <style>
-.navbar.navbar-inverse {
-	padding: 10px;
-	padding-left: 200px;
-	padding-right: 200px;
-	background: white;
-	border: none;
-}
-
-.nav.navbar-nav {
-	margin-top: 70px;
-	margin-left: 40px;
-}
-
-ul.nav.navbar-nav li a:hover {
-	color: #000000;
-}
-
 @import url(https://fonts.googleapis.com/css?family=Roboto:300);
 
-#mem_id, #mem_name, #mem_email, #mem_pw {
+#mem_id, #mem_name, #mem_email, #mem_pw, #mem_pw_confirm{
 	width: 200px;
 }
-
-#mem_birth_y, #mem_birth_m, #mem_birth_d, #mem_tel1, #mem_tel2,
-	#mem_tel3 {
+#mem_birth_y, #mem_birth_m, #mem_birth_d, #mem_tel1, #mem_tel2, #mem_tel3{
 	width: 120px;
 }
-
-.category img {
-	margin-right: 15px;
-	margin-bottom: 50px;
+.form-group.address-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 10px;
 }
 
-.slidewrap {
-	width: 100%;
-	margin: 0 auto;
-	position: relative;
-	margin-bottom: 60px;
+/* Adjust width of the address containers as needed */
+.address-container {
+  width: 100%; /* This will make the address fields occupy the full width of the form */
 }
 
-.category {
-	display: flex;
-	justify-content: center;
+/* Optional: Adjust spacing between address fields */
+.address-container input {
+  margin-bottom: 5px;
+}
+
+.required {
+    color: #DB0000; /* 원하는 색상으로 변경하세요 */
+}
+ 
+.centered-button {
+  display: block;
+  width: 100px; /* 원하는 너비를 설정하세요 */
+  margin: 0;
+  text-align: center;
+  align-items: right;
+}
+.joinButton{
+margin-top: 20px;
+margin-left: 500px;
+}
+
+#emailConfirm {
+  display: flex;
+  align-items: center;
+}
+
+#verifyBtn button{
+width: 70px;
+  height: 40px;
 }
 </style>
 
-<link href="${contextPath}/resources/css/mypage/mypageForm.css"
-	rel="stylesheet" type="text/css">
-
+<link href="${contextPath}/resources/css/mypage/mypageForm.css" rel="stylesheet" type="text/css">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <title>회원 페이지</title>
 </head>
 <script>
-
 	function fn_mod_member(){
 	    var frm_mod_member = document.frm_mod_member;
 	    
@@ -164,19 +166,19 @@ ul.nav.navbar-nav li a:hover {
 	    }
 	  }).open();
 	}
-	
 </script>
 
 <body>
 	<div class="frm_mod_member">
 		<div class="memberForm-text">
-			<a href="${contextPath}/main/main.do"><img
-				src="${contextPath}/resources/images/logo/logo2.png" alt="logo2" width="150px"  style="text-align: center;"></a>
+			<a href="${contextPath}/main/main.do">
+			<img src="${contextPath}/resources/images/logo/logo2.png" alt="logo2" width="150px"  
+			style="text-align: center; margin-left: 20px;"></a>
 		</div>
 
         <div class="form">
-            <form name="frm_mod_member" action="${contextPath}/mypage/modifyMyInfo.do" method="post">
-                <h2 style="margin-bottom: 20px; margin-top: 0px;">개인 정보 수정</h2>
+            <form name="frm_mod_member" action="${contextPath}/mypage/modifyMyInfo.do" method="post" style="margin-left: 20px;">
+                <h2 style="margin-bottom: 20px; margin-top: 0px; text-align: center;">개인 정보 수정</h2>
 
 				<div class="form-group" style="margin-bottom: 0px;">
 					<div class="label-group">
@@ -230,10 +232,13 @@ ul.nav.navbar-nav li a:hover {
                         <label for="mem_addr">주소</label>
                     </div>
                     <div class="input-group">
-                        <input type="text" id="zipcode" name="address_zipcode" size="200" placeholder="우편번호" value="${memberInfo.zipcode}">
+                        <input type="text" id="zipcode" name="address_zipcode" size="200" placeholder="우편번호" 
+                        value="${memberInfo.zipcode}" style="width: 500px;">
                     </div>
+                    <input type="button" value="우편번호검색" onclick="execDaumPostcode()" 
+                    		style="background: #1D1D1D; color: #ffff; text-align: center; width: 95px; margin-right: 60px;">
                 </div>
-                <input type="button" value="우편번호검색" onclick="execDaumPostcode()">
+                
 
                 <div class="form-group">
                     <div class="label-group">
@@ -267,8 +272,8 @@ ul.nav.navbar-nav li a:hover {
                     <input type="text" placeholder="이메일" id="mem_email" name="mem_email" value="${memberInfo.mem_email}">
                 </div>
 
-                <button type="button" onclick="fn_mod_member()">정보수정</button>
-                
+                <button type="button" onclick="fn_mod_member()" 
+                style="margin-left: 310px; width: 100px; height: 50px;">정보수정</button>
 			</form>
 		</div>
 	</div>
