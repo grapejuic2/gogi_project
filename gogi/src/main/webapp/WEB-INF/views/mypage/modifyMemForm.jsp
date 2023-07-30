@@ -3,71 +3,110 @@
 	
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
+
 <!DOCTYPE html>
 <html lang="ko">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <head>
 <style>
-@import url(https://fonts.googleapis.com/css?family=Roboto:300);
-
-#mem_id, #mem_name, #mem_email, #mem_pw, #mem_pw_confirm{
-	width: 200px;
-}
-#mem_birth_y, #mem_birth_m, #mem_birth_d, #mem_tel1, #mem_tel2, #mem_tel3{
-	width: 120px;
-}
-.form-group.address-container {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  margin-bottom: 10px;
-}
-
-/* Adjust width of the address containers as needed */
-.address-container {
-  width: 100%; /* This will make the address fields occupy the full width of the form */
-}
-
-/* Optional: Adjust spacing between address fields */
-.address-container input {
-  margin-bottom: 5px;
-}
-
 .required {
     color: #DB0000; /* 원하는 색상으로 변경하세요 */
-}
- 
-.centered-button {
-  display: block;
-  width: 100px; /* 원하는 너비를 설정하세요 */
-  margin: 0;
-  text-align: center;
-  align-items: right;
-}
-.joinButton{
-margin-top: 20px;
-margin-left: 500px;
-}
-
-#emailConfirm {
-  display: flex;
-  align-items: center;
-}
-
-#verifyBtn button{
+  }
+button{
+font-family: 'Noto Sans KR', sans-serif;
+font-size:15px;
+cursor: pointer;
+border: 0;
 width: 70px;
+font-weight:500;
+height: 35px;
+margin-top: 10px;
+background: #1D1D1D;
+color: #FFFFFF;
+}
+
+.button{
+text-align: right;
+margin-right: 35px;
+}
+
+.label-group {
+  width: 150px;
+  text-align: left;
+  margin-right: 10px;
+}
+
+.category {
+	display: flex;
+	justify-content: center;
+}
+
+ .title{
+  font-family: 'Noto Sans KR', sans-serif;
+  text-align: center;
+  font-size: 30px;
+  font-weight: 700;
+  margin-bottom: 40px;
+ }
+ 
+ input[type="text"] {
+    width: 60%; /* 원하는 길이로 설정 (예: 300px) */
+    border: 1px solid #E8E8E8;
+    padding-left:10px;
+  }
+ input[type="password"] {
+    width: 60%; /* 원하는 길이로 설정 (예: 300px) */
+    border: 1px solid #E8E8E8;
+    padding-left:10px;
+  }
+  .frm_mod_member{
+  width: 800px;
+  padding:30px;
+  padding-left:35px;
+  padding-right:35px;
+  margin: 0 auto; 
+  font-family: 'Noto Sans KR', sans-serif;
+  border: 1px solid #E8E8E8;
+  margin-top: 40px;
+  margin-bottom: 40px;
+  
+   }
+   
+   table{
+   width:100%;
+   align-items: center;
+   }
+   .form{
+   align-items: center;
+   margin-left: 27px;
+   }
+   
+   .form input {
+  font-family: 'Noto Sans KR', sans-serif;
+  outline: 0;
+  width: 500px;
   height: 40px;
+  border: 1px solid #E8E8E8;
+  margin: 5px 0; 
+  padding-right:5px;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+#mem_birth_y, #mem_birth_m, #mem_birth_d, #mem_tel1, #mem_tel2, #mem_tel3{
+	width: 160px;
+	margin-right: 10px;
 }
 </style>
 
-<link href="${contextPath}/resources/css/mypage/mypageForm.css" rel="stylesheet" type="text/css">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <title>회원 페이지</title>
 </head>
 <script>
+
 	function fn_mod_member(){
 	    var frm_mod_member = document.frm_mod_member;
 	    
@@ -166,114 +205,134 @@ width: 70px;
 	    }
 	  }).open();
 	}
+	
+
+	
 </script>
 
 <body>
 	<div class="frm_mod_member">
-		<div class="memberForm-text">
-			<a href="${contextPath}/main/main.do">
-			<img src="${contextPath}/resources/images/logo/logo2.png" alt="logo2" width="150px"  
-			style="text-align: center; margin-left: 20px;"></a>
-		</div>
-
+	  <div class="title">개인정보수정</div>
         <div class="form">
-            <form name="frm_mod_member" action="${contextPath}/mypage/modifyMyInfo.do" method="post" style="margin-left: 20px;">
-                <h2 style="margin-bottom: 20px; margin-top: 0px; text-align: center;">개인 정보 수정</h2>
-
-				<div class="form-group" style="margin-bottom: 0px;">
-					<div class="label-group">
-						<label for="myp_id">아이디</label>
-					</div>
-					<input type="text" name="mem_id" value="${memberInfo.mem_id}"
-						disabled />
-				</div>
-
-				<div class="form-group">
-				    <div class="label-group">
-				        <label for="mem_pw">비밀번호</label>
-				    </div>
-				    <input type="password" placeholder="비밀번호" id="mem_pw" name="mem_pw" style="margin-right: 5px;">
-				</div>
-
-				<div class="form-group">
-					<div class="label-group">
-						<label for="mem_name">이름</label>
-					</div>
-					<input type="text" name="mem_name" value="${memberInfo.mem_name}"
-						disabled />
-				</div>
-
-                <div class="form-group">
-                    <div class="label-group">
-                        <label for="mem_birth">생년월일</label>
-                    </div>
-                    <div class="input-group">
-                        <input type="text" id="mem_birth_y" name="mem_birth_y" placeholder="년" maxlength="4" value="${memberInfo.mem_birth_y}" disabled>
-                        <input type="text" id="mem_birth_m" name="mem_birth_m" placeholder="월" maxlength="2" value="${memberInfo.mem_birth_m}" disabled>
-                        <input type="text" id="mem_birth_d" name="mem_birth_d" placeholder="일" maxlength="2" value="${memberInfo.mem_birth_d}" disabled> 
-                    </div>
-                </div>
-
-                <!-- 연락처 입력 부분 -->
-				<div class="form-group">
-				    <div class="label-group">
-				        <label for="mem_tel">연락처</label>
-				    </div>
-				    <div class="input-group">
-				        <input type="text" id="mem_tel1" name="mem_tel1" placeholder="통신사" maxlength="3" value="${memberInfo.mem_tel1}">
-				        <input type="text" id="mem_tel2" name="mem_tel2" placeholder="중간 번호" maxlength="4" value="${memberInfo.mem_tel2}">
-				        <input type="text" id="mem_tel3" name="mem_tel3" placeholder="마지막 번호" maxlength="4" value="${memberInfo.mem_tel3}">
-				    </div>
-				</div>
-
-                <!-- 주소 입력 부분 -->
-                <div class="form-group">
-                    <div class="label-group">
-                        <label for="mem_addr">주소</label>
-                    </div>
-                    <div class="input-group">
-                        <input type="text" id="zipcode" name="address_zipcode" size="200" placeholder="우편번호" 
-                        value="${memberInfo.zipcode}" style="width: 500px;">
-                    </div>
-                    <input type="button" value="우편번호검색" onclick="execDaumPostcode()" 
-                    		style="background: #1D1D1D; color: #ffff; text-align: center; width: 95px; margin-right: 60px;">
-                </div>
-                
-
-                <div class="form-group">
-                    <div class="label-group">
-                        <label for="mem_addr">도로명 주소</label>
-                    </div>
-                    <div class="input-group">
-                        <input type="text" id="roadAddress" name="roadAddress" size="200" placeholder="도로명 주소" value="${memberInfo.roadAddress}">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="label-group">
-                        <label for="mem_addr">지번 주소</label>
-                    </div>
-                    <div class="input-group">
-                        <input type="text" id="jibunAddress" name="jibunAddress" size="200" placeholder="지번 주소" value="${memberInfo.jibunAddress}">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="label-group">
-                        <label for="mem_addr">나머지 주소</label>
-                    </div>
-                    <div class="input-group">
-                        <input type="text" id="namujiAddress" name="namujiAddress" size="200" placeholder="나머지 주소" value="${memberInfo.namujiAddress}">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <div class="label-group">
-                        <label for="mem_email">이메일</label>
-                    </div>
-                    <input type="text" placeholder="이메일" id="mem_email" name="mem_email" value="${memberInfo.mem_email}">
-                </div>
-
-                <button type="button" onclick="fn_mod_member()" 
-                style="margin-left: 310px; width: 100px; height: 50px;">정보수정</button>
+            <form name="frm_mod_member" action="${contextPath}/mypage/modifyMyInfo.do" method="post">            
+			<table>
+			    <tr>
+			        <td>
+			           <label for="myp_id">아이디</label>			      
+			       	</td>
+			       	<td>
+			           <input type="text" name="mem_id" value="${memberInfo.mem_id}" disabled />			        
+			        </td>
+			    </tr>
+			    <tr>    
+			        <td>		           
+		                <div class="label-group">
+		                    <label for="mem_pw"><span class="required" >*</span>비밀번호</label>
+		                </div>
+		            </td>			    
+			       	<td>
+			            <input type="password" placeholder="비밀번호" id="mem_pw" name="mem_pw" style="margin-right: 5px;">
+			       
+			        </td>
+			    </tr>
+			    <tr>
+			        <td>
+			        
+		                <div class="label-group">
+		                    <label for="mem_name">이름</label>
+		                </div>
+			        </td>			    
+			       	<td>
+		                <input type="text" name="mem_name" value="${memberInfo.mem_name}" disabled />
+			            
+			        </td>
+			    </tr>
+			      <tr>
+					    <td>
+					        <div class="label-group" >
+					            <label for="mem_birth">생년월일</label>
+					        </div>
+					    </td>		    	 
+					    <td>      
+					        <div class="input-group" style="display:flex !important;">
+					            <input type="text" id="mem_birth_y" name="mem_birth_y" placeholder="년" maxlength="4" value="${memberInfo.mem_birth_y}"  disabled>
+					            <input type="text" id="mem_birth_m" name="mem_birth_m" placeholder="월" maxlength="2" value="${memberInfo.mem_birth_m}" disabled>
+					            <input type="text" id="mem_birth_d" name="mem_birth_d" placeholder="일" maxlength="2" value="${memberInfo.mem_birth_d}" disabled> 
+					        </div>			           
+					    </td>
+					</tr>
+					<tr>
+					    <td>
+					        <div class="label-group">
+					            <label for="mem_tel">연락처</label>
+					        </div>
+					    </td>			       
+					    <td>
+					        <div class="input-group" style="display:flex !important;">
+					            <input type="text" id="mem_tel1" name="mem_tel1" placeholder="통신사" maxlength="3" value="${memberInfo.mem_tel1}">
+					            <input type="text" id="mem_tel2" name="mem_tel2" placeholder="중간 번호" maxlength="4" value="${memberInfo.mem_tel2}">
+					            <input type="text" id="mem_tel3" name="mem_tel3" placeholder="마지막 번호" maxlength="4" value="${memberInfo.mem_tel3}">
+					        </div>
+					    </td>
+					</tr>
+			        <tr>
+				        <td>				       
+			                <div class="label-group">
+			                    <label for="mem_email">이메일</label>
+			                </div>
+				        </td>
+				        <td>			        
+			               <input type="text" placeholder="이메일" id="mem_email" name="mem_email" value="${memberInfo.mem_email}">				          
+				        </td>
+			    	</tr>
+			    	<tr>
+			        <td>			            
+			                <div class="label-group">
+			                    <label for="mem_addr">주소</label>
+			                </div>
+			        </td>
+			        <td style="display:flex;">
+			                <div class="input-group" style="margin-right: 5px;">
+			                    <input type="text" id="zipcode" name="address_zipcode" placeholder="우편번호" value="${memberInfo.zipcode}" style="width: 100px;">
+			                </div>
+			                 <input type="button" value="우편번호 검색" onclick="execDaumPostcode()"style="width:120px;">
+			        </td> 
+			        <td>  
+			           
+			        </td>
+			    </tr>
+			    <tr>
+			    	<td></td>
+			        <td>
+			            		              
+			                <div class="input-group" style="margin-bottom: 3px;">
+			                    <input type="text" id="roadAddress" name="radAddress" size="200" placeholder="도로명 주소" value="${memberInfo.roadAddress}" >
+			                </div>
+			          
+			        </td>
+			    </tr>
+			    <tr>
+			    	<td></td>
+			        <td>
+			           
+			                <div class="input-group" style="margin-bottom: 3px;">
+			                    <input type="text" id="jibunAddress" name="jibunAddress" size="200" placeholder="지번 주소" value="${memberInfo.jibunAddress}">
+			                </div>
+			          
+			        </td>
+			    </tr>
+			    <tr>
+			    	<td></td>
+			        <td>			           
+			                <div class="input-group">
+			                    <input type="text" id="namujiAddress" name="namujiAddress" size="200" placeholder="나머지 주소" value="${memberInfo.namujiAddress}">
+			                </div>			         
+			        </td>
+			    </tr>
+			</table>
+			<div class="button">
+				<button type="button" onclick="fn_mod_member()">수정</button>
+			</div>
 			</form>
 		</div>
 	</div>

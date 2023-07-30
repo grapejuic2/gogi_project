@@ -6,7 +6,7 @@
    
   }
 #layer {
-	z-index: 2;
+
 	position: absolute;
 	top: 0px;
 	left: 0px;
@@ -15,7 +15,7 @@
 }
 
 #popup_order_detail {
-	z-index: 3;
+
 	position: fixed;
 	text-align: center;
 	left:30%;
@@ -28,7 +28,7 @@
 }
 
 #close {
-	z-index: 4;
+
 	float: right;
 }
 
@@ -43,7 +43,6 @@
   border-collapse: separate; /* 테이블 셀 경계를 분리합니다. */
     /* 테이블 셀 사이의 간격을 10px로 설정합니다. */
 }
-
 
   .list_view td {
     width: 200px;

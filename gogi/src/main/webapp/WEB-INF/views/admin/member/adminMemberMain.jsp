@@ -119,75 +119,122 @@ function updateStatus(memberId, status, delNote) {
     });
 }
 </script>
+<style>
+.form{
+margin: 0;
+width:100%;
+}
+.frm_mod_member{
+  width: 1000px;
+  padding:30px;
+
+  margin: 0 auto; 
+  font-family: 'Noto Sans KR', sans-serif;
+  border: 1px solid #E8E8E8;
+  margin-top: 40px;
+  margin-bottom: 40px;  
+}
+
+table{
+  width:100%;
+  align-items: center;
+  flex-direction: column;
+  margin-top:20px;
+  font-family: 'Noto Sans KR', sans-serif;
+  border-collapse: separate; 
+  border: 1px solid #E8E8E8;
+}
+ .title{
+  font-family: 'Noto Sans KR', sans-serif;
+  text-align: center;
+  font-size: 30px;
+  font-weight: 700;
+  margin-bottom: 40px;
+ }
+ 
+  td {
+  border-top: 1px solid #ddd; /* 위쪽에 border 추가 */
+  padding: 15px;
+  vertical-align: middle;
+}
+.required {
+    color: #DB0000; /* 원하는 색상으로 변경하세요 */
+  }
+.cancel-order-btn{
+border:none;
+height: 30px;
+}  
+ 
+</style>
 </head>
 <body>
-
-	<div class="title_underline">
+	<div class="frm_mod_member">
+	<div class="title">
 		<h3 class="admin_member_title"><b>회원 조회</b></h3>
 	</div>
 	
-<table class="table table-striped table-hover" style="width:1200px">
-		<tbody align=center >
-			<tr align=center bgcolor="#00BFFE">
-				<td><span><b>회원아이디</b></span></td>
-				<td><span><b>회원이름</b></span></td>
-				<td><span><b>휴대폰번호</b></span></td>
-				<td><span><b>주소</b></span></td>
-				<td><span><b>가입일</b></span></td>
-				<td><span><b>탈퇴여부</b></span></td>
-				<td><span><b>비고</b></span></td>
-				<td><span><b>수정하기</b></span></td>
-			</tr>
-   <c:choose>
-     <c:when test="${empty listMember}">			
-			<tr>
-		       <td colspan=5 class="fixed">
-				  <strong>조회된 회원이 없습니다.</strong>
-			   </td>
-		     </tr>
-	 </c:when>
-	 <c:otherwise>
-	     <c:forEach var="item" items="${listMember}" varStatus="item_num">
-	            <tr >       
-					<td width=10%>
-					  <a href="${pageContext.request.contextPath}/admin/member/memberDetail.do?mem_id=${item.mem_id}">
-					     <span>${item.mem_id}</span>
-					  </a>
-					</td>
-					<td width=10%>
-					  <span>${item.mem_name}</span><br>
-					</td>
-					<td width=17% >
-					  <span>${item.mem_tel1}-${item.mem_tel2}-${item.mem_tel3}</span><br>
-					</td>
-					<td width=37%>
-					  <span>${item.roadAddress}</span><br>
-					  <span>${item.jibunAddress}</span>
-					  <span>${item.namujiAddress}</span><br>
-					</td>
-					<td width=15%>
-					   <c:set var="join_date" value="${item.mem_reg_date}" />
-					   <c:set var="arr" value="${fn:split(join_date,' ')}" />
-					   <span><c:out value="${arr[0]}" /></span>
-				    </td>
-				    <td width=10%>
-				       <select name="status">
-                <option value="N" <c:if test="${item.mem_del_yn == 'N'}">selected</c:if>>활동중</option>
-                <option value="B" <c:if test="${item.mem_del_yn == 'B'}">selected</c:if>>비활성화</option>
-                <option value="Y" <c:if test="${item.mem_del_yn == 'Y'}">selected</c:if>>탈퇴</option>
-            </select>
-            
-				    </td>
-				    <td>
-				    <span><textarea name="del_note">${item.del_note }</textarea></span>
-				    </td>
-				    <td>
-				    <button onclick="updateStatus('${item.mem_id}', document.getElementsByName('status')[${item_num.index}].value, document.getElementsByName('del_note')[${item_num.index}].value)">변경</button>
-				    </td>
+	<table class="table table-striped table-hover" style="width:1200px">
+			<tbody align=center >
+				<tr align=center bgcolor="#00BFFE">
+					<td><span><b>회원아이디</b></span></td>
+					<td><span><b>회원이름</b></span></td>
+					<td><span><b>휴대폰번호</b></span></td>
+					<td><span><b>주소</b></span></td>
+					<td><span><b>가입일</b></span></td>
+					<td><span><b>탈퇴여부</b></span></td>
+					<td><span><b>비고</b></span></td>
+					<td><span><b>수정하기</b></span></td>
 				</tr>
-		</c:forEach>
-	</c:otherwise>
-  </c:choose>	
+	   <c:choose>
+	     <c:when test="${empty listMember}">			
+				<tr>
+			       <td colspan=5 class="fixed">
+					  <strong>조회된 회원이 없습니다.</strong>
+				   </td>
+			     </tr>
+		 </c:when>
+		 <c:otherwise>
+		     <c:forEach var="item" items="${listMember}" varStatus="item_num">
+		            <tr>       
+						<td width=10%>
+						  <a href="${pageContext.request.contextPath}/admin/member/memberDetail.do?mem_id=${item.mem_id}">
+						     <span>${item.mem_id}</span>
+						  </a>
+						</td>
+						<td width=10%>
+						  <span>${item.mem_name}</span><br>
+						</td>
+						<td width=17% >
+						  <span>${item.mem_tel1}-${item.mem_tel2}-${item.mem_tel3}</span><br>
+						</td>
+						<td width=37%>
+						  <span>${item.roadAddress}</span><br>
+						  <span>${item.jibunAddress}</span>
+						  <span>${item.namujiAddress}</span><br>
+						</td>
+						<td width=15%>
+						   <c:set var="join_date" value="${item.mem_reg_date}" />
+						   <c:set var="arr" value="${fn:split(join_date,' ')}" />
+						   <span><c:out value="${arr[0]}" /></span>
+					    </td>
+					    <td width=10%>
+					       <select name="status">
+	                <option value="N" <c:if test="${item.mem_del_yn == 'N'}">selected</c:if>>활동중</option>
+	                <option value="B" <c:if test="${item.mem_del_yn == 'B'}">selected</c:if>>비활성화</option>
+	                <option value="Y" <c:if test="${item.mem_del_yn == 'Y'}">selected</c:if>>탈퇴</option>
+	            </select>
+	            
+					    </td>
+					    <td>
+					    <span><textarea name="del_note">${item.del_note }</textarea></span>
+					    </td>
+					    <td>
+					    <button onclick="updateStatus('${item.mem_id}', document.getElementsByName('status')[${item_num.index}].value, document.getElementsByName('del_note')[${item_num.index}].value)">변경</button>
+					    </td>
+					</tr>
+			</c:forEach>
+		</c:otherwise>
+	  </c:choose>	
          <tr>
              <td colspan=8 class="fixed">
                   <c:forEach   var="page" begin="1" end="10" step="1" >
@@ -203,6 +250,7 @@ function updateStatus(memberId, status, delNote) {
         </tr>  		   
 		</tbody>
 	</table>
+	</div>
   	
 <c:choose>
  <c:when test="${not empty order_goods_list }">	

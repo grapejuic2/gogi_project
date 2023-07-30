@@ -2,8 +2,10 @@
 	pageEncoding="utf-8"
 	isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:set var="contextPath"  value="${pageContext.request.contextPath}"  />
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <html>
 <head>
 <meta  charset="utf-8">
@@ -136,18 +138,73 @@ function fn_detail_search(){
 }
 
 </script>
+<style>
+.form{
+margin: 0;
+width:100%;
+}
+.frm_mod_order{
+  width: 1000px;
+  padding:30px;
+
+  margin: 0 auto; 
+  font-family: 'Noto Sans KR', sans-serif;
+  border: 1px solid #E8E8E8;
+  margin-top: 40px;
+  margin-bottom: 40px;  
+}
+
+.table{
+  width:100%;
+  align-items: center;
+  flex-direction: column;
+  margin-top:20px;
+  font-family: 'Noto Sans KR', sans-serif;
+  border-collapse: separate; 
+  border: 1px solid #E8E8E8;
+
+}
+.title{
+  font-family: 'Noto Sans KR', sans-serif;
+  text-align: center;
+  font-size: 30px;
+  font-weight: 700;
+  margin-bottom: 40px;
+ }
+ 
+tr{
+  vertical-align: center;
+}
+
+element.style {
+    margin-top: auto;
+    margin-bottom: auto;
+}
+ 
+.td {
+  border-top: 1px solid #ddd; /* 위쪽에 border 추가 */
+  padding: 15px;
+  vertical-align: middle;
+}
+.required {
+    color: #DB0000; /* 원하는 색상으로 변경하세요 */
+  }
+.cancel-order-btn{
+border:none;
+height: 30px;
+}  
+</style>
 </head>
 <body>
-
-	<div class="title_underline">
+	<div class="frm_mod_order">
+	
+	<div class="title">
 		<h3 class="admin_ordermain_title"><b>주문 조회</b></h3>
 	</div>
 	
-<div>
-	
-	<table class="table table-striped table-hover" style="width:1200px;">
+	<table class="table" style="width:1200px;">
 			<tbody align=center >
-				<tr style="background:#00BFFE">
+				<tr style="background:#1D1D1D;color: #FFFFFF;font-size: 17px; height: 35px; padding:5px;" >
 					<td><span><b>주문번호</b></span></td>
 					<td><span><b>주문일자</b></span></td>
 					<td><span><b>주문내역</b></span></td>
@@ -171,7 +228,7 @@ function fn_detail_search(){
 	          <c:when test="${item.order_id != pre_order_id }">  
 	          	<!-- 각 주문 상품에 대한 셀렉트 박스에 현재 주문 상태를 초기 값으로 설정합니다. -->
 	            <c:choose>
-	              <c:when test="${item.order_delivery_status=='delivery_prepared' }">
+	              <c:when test="${item.order_delivery_status=='delivery_prepared' }" >
 	                <tr>    
 	              </c:when>
 	              <c:when test="${item.order_delivery_status=='finished_delivering' }">
@@ -185,7 +242,8 @@ function fn_detail_search(){
 					     <span>${item.order_id}</span>
 					</td>
 					<td width=20%>
-					 <span>${item.order_time }</span> 
+					 	<fmt:formatDate value="${item.order_time}" pattern="yy년 MM월 dd일 HH시 mm분" var="orderTime"/>
+					 	${orderTime}
 					</td>
 					<td width=50% align=left >
 					  <span><b>[주문자]</b> ${item.order_id}&nbsp;&nbsp;</span><br>
@@ -201,7 +259,7 @@ function fn_detail_search(){
 					       </c:if>
 					    </c:forEach> 
 					</td>
-					<td width=10%>
+					<td width=10% >
 					 <select name="s_delivery_state${i.index }"  id="s_delivery_state${i.index }" style="height:35px">
 					 <c:choose>
 					   <c:when test="${item.order_delivery_status=='delivery_prepared' }">
@@ -242,9 +300,10 @@ function fn_detail_search(){
 					   </c:choose>
 					 </select> 
 					</td>
-					<td width=10%>
+					<td width=10%  style="margin-top: auto; margin-bottom: auto;">
 															<!-- '배송 수정'을 클릭하면 선택한 셀렉트 박스의 id를 함수로 전달합니다. -->
-				     <input type="button" class="btn btn-primary" value="배송수정"  onClick="fn_modify_order_state('${item.order_id}','s_delivery_state${i.index}')"/>
+				     <input type="button" class="btn btn-primary" value="배송수정"  
+				     	onClick="fn_modify_order_state('${item.order_id}','s_delivery_state${i.index}')"/>
 				    </td>
 			</c:when>
 			</c:choose>	

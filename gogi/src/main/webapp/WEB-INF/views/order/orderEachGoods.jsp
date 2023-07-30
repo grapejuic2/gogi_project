@@ -11,15 +11,16 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <link rel="preconnect" href="httpps://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
 <link href="${contextPath}/resources/css/order/orderEachGoods.css" rel="stylesheet" type="text/css">
 <title>Insert title here</title>
 <style>
@@ -92,7 +93,10 @@
  	margin-left: 30px;
  	font-weight: 400;}
 .fixed_join{
-margin-right: 15px;
+margin-right: 20px;
+}
+#tr_pay_card{
+display: flex;
 }
 </style>
 </head>
@@ -115,7 +119,7 @@ margin-right: 15px;
 				<td style="vertical-align:middle;"><span class="required" >*</span>전화번호</td>
 				<td>
 				 <div class="input-container">
-				 	<input type="text" value="${orderer.mem_tel1} - ${orderer.mem_tel2} - ${orderer.mem_tel3}" size="15" />
+				 	<input type="text" value="${orderer.mem_tel1}-${orderer.mem_tel2}-${orderer.mem_tel3}" size="15" />
 				 </div>
 				</td>
 			  </tr>
@@ -232,7 +236,7 @@ margin-right: 15px;
 					    	<tr>
 						    	<td>총 상품 수</td>
 								<td>	
-									<p id="p_total_order_goods_qty">${final_totalQuantity}개</p> 
+									<p id="p_total_order_goodsqty">${final_totalQuantity}개</p> 
 									<input id="h_total_order_goods_qty" type="hidden" value="${final_totalQuantity}" />
 								</td>					    	
 					    	</tr>
@@ -297,9 +301,9 @@ margin-right: 15px;
 							    </td>
 							</tr>
 							<tr class="dot_line">
-								<td class="fixed_join">받으실 분</td>
+								<td class="fixed_join" style="margin-right: 5px;">받으실 분</td>
 								<td>
-								<div class="input-container3">
+								<div class="input-container3" >
 									<input id="receiver_name" name="receiver_name" type="text" size="40" value="${orderer.mem_name }" />
 								</div>
 								<div class="input-container3">   
@@ -365,17 +369,27 @@ margin-right: 15px;
 							     </td>
 							</tr>
 							<tr class="dot_line">
-								<td class="fixed_join">배송방법</td>
+							
+								<td class="fixed_join" >
+									<div style="margin-bottom: 20px;">배송방법</div>
+								</td>
+								
 								<td>
-								    <input type="radio" id="delivery_method" name="delivery_method" value="일반택배" checked>일반택배 &nbsp;&nbsp;&nbsp; 
-									<input type="radio" id="delivery_method" name="delivery_method" value="편의점택배">편의점택배 &nbsp;&nbsp;&nbsp; 
-									<input type="radio" id="delivery_method" name="delivery_method" value="해외배송">해외배송 &nbsp;&nbsp;&nbsp;
+									<div class="input-container3" style="margin-bottom: 20px;">
+									    <input type="radio" id="delivery_method" name="delivery_method" value="일반택배" checked>일반택배 &nbsp;&nbsp;&nbsp; 
+										<input type="radio" id="delivery_method" name="delivery_method" value="편의점택배">편의점택배 &nbsp;&nbsp;&nbsp; 
+										<input type="radio" id="delivery_method" name="delivery_method" value="해외배송">해외배송 &nbsp;&nbsp;&nbsp;
+								    </div>
 							    </td>
 							</tr>
 							<tr class="dot_line">
-								<td class="fixed_join">선물 포장</td>
-								<td><input type="radio" id="gift_wrapping" name="gift_wrapping" value="yes">예
-									&nbsp;&nbsp;&nbsp; <input type="radio"  id="gift_wrapping" name="gift_wrapping" checked value="no">아니요</td>
+								<td style="vertical-align: top;">선물 포장</td>
+								<td>
+								<div class="input-container3" style="margin-bottom: 20px;">
+									<input type="radio" id="gift_wrapping" name="gift_wrapping" value="yes">예&nbsp;&nbsp;&nbsp; 
+									<input type="radio"  id="gift_wrapping" name="gift_wrapping" checked value="no">아니요
+								</div>	
+								</td>						
 							</tr>
 			
 					</table>
@@ -393,9 +407,9 @@ margin-right: 15px;
           <div class="panel-body">
             <H1 style="margin-left: 5px;">결제 방법 선택</H1>
 				<div class="payment_table">
-					<table>
-					
-							<tr>
+					<table style="width:500px;">	
+				
+							<tr style="width: 33.33%;">
 								<td>
 								   <input type="radio" id="pay_method" name="pay_method" value="신용카드" onClick="fn_pay_card()" checked>신용카드 
 								</td>
@@ -405,8 +419,10 @@ margin-right: 15px;
 								<td>   
 								   <input type="radio" id="pay_method" name="pay_method" value="무통장 입금">무통장 입금							
 								</td>
+								<td>
+								</td>
 							</tr>
-							<tr>
+							<tr style="width: 33.33%;">
 								<td>
 								   <input type="radio" id="pay_method" name="pay_method" value="휴대폰결제" onClick="fn_pay_phone()">휴대폰 결제 
 								</td>
@@ -416,10 +432,13 @@ margin-right: 15px;
 								<td>    
 								   <input type="radio" id="pay_method" name="pay_method" value="페이코(간편결제)">페이코(간편결제)
 								</td>
-							</tr>
-							<tr id="tr_pay_card">
 								<td>
+								</td>
+							</tr>
+							<tr id="tr_pay_card" style="width: 33.33%;">
+								<td colspan="2">
 								  카드 선택:
+								
 								  <select id="card_com_name" name="card_com_name">
 										<option value="삼성" selected>삼성</option>
 										<option value="하나SK">하나SK</option>
@@ -431,8 +450,10 @@ margin-right: 15px;
 										<option value="시티">시티</option>
 										<option value="NH농협">NH농협</option>
 								</select>
-								<br><Br>
+								</td>
+								<td colspan="2">
 								할부 기간:
+								
 								<select id="card_pay_month" name="card_pay_month">
 										<option value="일시불" selected>일시불</option>
 										<option value="2개월">2개월</option>
@@ -440,8 +461,7 @@ margin-right: 15px;
 										<option value="4개월">4개월</option>
 										<option value="5개월">5개월</option>
 										<option value="6개월">6개월</option>
-								</select>
-								
+								</select>								
 								</td>
 							</tr>
 							<tr id="tr_pay_phone" style="visibility:hidden">
@@ -505,7 +525,7 @@ margin-right: 15px;
 					      주문상품개수:
 					 </td>
 					 <td>
-						  <p id="p_total_order_goods_qty"> 주문 상품개수 </p>    
+						  <p id="p_total_order_goods_qty">주문 상품개수</p>    
 					 </td>
 				   </tr>
 				   <tr>

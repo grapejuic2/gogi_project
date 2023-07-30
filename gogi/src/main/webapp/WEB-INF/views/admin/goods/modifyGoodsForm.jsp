@@ -2,10 +2,75 @@
 	pageEncoding="euc-kr" isELIgnored="false"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <c:set var="goods" value="${goodsMap.goods}" />
 <c:set var="imageFileList" value="${goodsMap.imageFileList}" />
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<style>
+.form{
+margin: 0;
+width:100%;
+}
+.frm_mod_goods{
+  width: 1000px;
+  padding:30px;
+
+  margin: 0 auto; 
+  font-family: 'Noto Sans KR', sans-serif;
+  border: 1px solid #E8E8E8;
+  margin-top: 40px;
+  margin-bottom: 40px;  
+}
+
+.frm_mod_tab{
+  width: 1000px;
+  padding:30px;
+
+  margin: 0 auto; 
+  font-family: 'Noto Sans KR', sans-serif;
+  border: 1px solid #E8E8E8;
+  margin-top: 40px;
+  margin-bottom: 40px;  
+}
+
+.category {display: flex;justify-content: center; }
+.category a:hover img {opacity: 0.8; /* 투명도 조절 */transition: all 0.5s ease-in-out; /* 변경 효과 적용 */ transform: translateY(-10px);}
+
+.table{
+  width:100%;
+  align-items: center;
+  flex-direction: column;
+  margin-top:20px;
+  font-family: 'Noto Sans KR', sans-serif;
+  border-collapse: separate; 
+  border: 1px solid #E8E8E8;
+}
+
+ .title{
+  font-family: 'Noto Sans KR', sans-serif;
+  text-align: center;
+  font-size: 30px;
+  font-weight: 700;
+  margin-bottom: 40px;
+ }
+ 
+  td {
+  border-top: 1px solid #ddd; /* 위쪽에 border 추가 */
+  padding: 15px;
+  vertical-align: middle;
+}
+.required {
+    color: #DB0000; /* 원하는 색상으로 변경하세요 */
+  }
+.cancel-order-btn{
+border:none;
+height: 30px;
+}  
+ 
+</style>
+
 <c:choose>
 	<c:when test='${not empty goods.goods_status}'>
 		<script>
@@ -215,7 +280,7 @@
 </HEAD>
 <BODY>
 
-	<div class="title_underline" style="margin-top: 50px">
+	<div class="title" style="margin-top: 50px">
 		<h3>
 			<b>상품 수정</b>
 		</h3>
@@ -225,13 +290,13 @@
 		<DIV class="clear"></DIV>
 		<!-- 내용 들어 가는 곳 -->
 
-		<UL class="tabs" id="goods_detail_menu">
-			<li><A href="#tab1">상품정보</A></li>
-			<li><A href="#tab4">상품소개</A></li>
-			<li><A href="#tab7">상품이미지</A></li>
-		</UL>
+		<div class="category" id="goods_detail_menu">
+			<A href="#tab1">상품정보</A>
+			<A href="#tab4">상품소개</A>
+			<A href="#tab7">상품이미지</A>
+		</div>
 
-		<DIV class="tab_content" id="tab1">
+		<DIV class="frm_mod_tab" id="tab1">
 			<table class="table">
 				<tr>
 					<td width=200>상품분류</td>
@@ -329,10 +394,8 @@
 				<input type="button" value="삭제하기" class="btn btn-secondary btn-sm"
 					onClick="deleteGoods('${goods.goods_id}'), backToList(this.form)">
 			</c:forEach>
-		</DIV>
-		<DIV class="tab_content" id="tab4">
-			<P>
-			<table class="table">
+			
+		<table class="table">
 				<tr>
 					<td>상품소개</td>
 					<td><textarea rows="20" cols="80" name="goods_intro">
@@ -345,7 +408,6 @@
 				</tr>
 			</table>
 		</DIV>
-
 
 		<DIV class="tab_content" id="tab7">
 			<form id="FILE_FORM" method="post" enctype="multipart/form-data">
