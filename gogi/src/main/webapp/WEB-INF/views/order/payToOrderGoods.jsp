@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> 
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<c:set var="delivery_fee" value="3500"/>
 <c:set var="contextPath"  value="${pageContext.request.contextPath}"  />
 <!DOCTYPE html>
 <html>
@@ -69,14 +70,18 @@
    width: 100px; /* 원하는 넓이로 조정하세요 */
   }
   
+   table td:second-child {
+   margin-left: 30px; /* 원하는 넓이로 조정하세요 */
+  }
+  
   .list_view{
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-top:20px;
-  margin-left: 30px;
+  margin-bottom:40px;
   font-family: 'Noto Sans KR', sans-serif;
-  width:90%;
+  width:100%;
   border-collapse: separate; /* 테이블 셀 경계를 분리합니다. */
     /* 테이블 셀 사이의 간격을 10px로 설정합니다. */
 }
@@ -92,17 +97,15 @@
 }
 H1{
 margin-left: 30px;
-font-size:25px;
 font-family: 'Noto Sans KR', sans-serif;
+display: flex;
+font-size: 19px; 
+font-weight: 500;
 }
-  /* 배송지 정보 테이블 스타일 */
-  .detail_table {
-    width: 100%;
 
-  }
 
   .detail_table td {
-    text-align: center; /* 텍스트를 왼쪽에 정렬합니다. */
+    text-align: left;
     padding: 5px; /* 셀 내부 여백을 추가합니다. */
   }
   
@@ -135,13 +138,10 @@ font-family: 'Noto Sans KR', sans-serif;
   
 }
 
-H1{
-display: flex;
-text-align: center;
-font-size: 19px; 
-font-weight: 500;
-}
 
+td{
+height: 50px;
+}
 .order_cus{
 font-family: 'Noto Sans KR', sans-serif;
 width:100%;
@@ -153,9 +153,13 @@ margin-top: 20px;
     line-height: 35px; /* 원하는 높이를 설정하세요 */
     margin-left: 35px;
   }
-  .input-container input[type="text"] {
-    width: 780px; /* 원하는 길이로 설정 (예: 300px) */
-    border: 1px solid #E8E8E8;
+ input[type="text"] {
+    width: 730px; /* 원하는 길이로 설정 (예: 300px) */
+    border: none;
+    background: transparent;
+    line-height: 35px;
+    margin-left: 30px;
+    padding: 0;
   }
   
    .order-container{
@@ -173,17 +177,20 @@ margin-top: 20px;
   font-family: 'Noto Sans KR', sans-serif;
   text-align: center;
   margin-top: 30px;
-  font-size: 25px;
+  margin-bottom:40px;
+  font-size: 30px;
   font-weight: 700;
   }
   
    .list_view td:nth-child(1) {
-    
-    font-size: 15px;
     font-weight: 500;
   }
+
     .list_view tr {
     height: 50px; /* 원하는 높이 값으로 변경 */
+  }
+  .fixed_join{
+  	width:200px;
   }
 </style>
 </head>
@@ -192,15 +199,16 @@ margin-top: 20px;
 
 	 <div class="title">주문 상세 정보</div>
 	<H1>주문 내역</H1>
+	<hr>
 	<TABLE class="list_view">
 		<TBODY align=center>
-			<tr style="font-size: 20px; font-weight: 500; background: #E8E8E8;">
+			<tr style="font-size: 17px;font-weight:500; text-align: center;background: #1D1D1D; color:white;">
 			    <td>주문번호</td>
 				<td colspan=2 class="fixed" >주문상품</td>
 				<td>수량</td>
 				<td>주문금액</td>
 				<td>배송비</td>
-				<td>예상적립금</td>
+				<td>적립금</td>
 				<td>주문금액합계</td>
 			</tr>			
 			<c:forEach var="item" items="${myOrderList }">
@@ -208,41 +216,42 @@ margin-top: 20px;
 				    <td> ${item.order_id }</td>
 					<td class="goods_image">
 					  <a href="${contextPath}/goods/goodsDetail.do?goods_id=${item.goods_id }">
-					    <img width="30" alt="" src="${contextPath}/thumbnails.do?goods_id=${item.goods_id}&fileName=${item.file_name}">
+					    <img width="75" alt="" src="${contextPath}/thumbnails.do?goods_id=${item.goods_id}&fileName=${item.file_name}">
 					  </a>
 					</td>
-					<td style="text-align: left;">					
+					<td style="text-align: left; width:30%">					
 					     <a href="${contextPath}/goods/goodsDetail.do?goods_id=${item.goods_id }">${item.goods_name }</a>				
 					</td>
 					<td>${item.order_quantity }개</td>
-					<td>${item.order_quantity *item.goods_sales_price}원</td>
-					<td>0원</td>
+					<fmt:formatNumber value="${item.order_quantity *item.goods_sales_price}" type="number" var="final_price" />
+					<td>${final_price}원</td>
+					<td><fmt:formatNumber value="${delivery_fee}" type="number" var="delivery_fee2" />${delivery_fee2 }원</td>					
 					<td>${1500 *item.order_quantity }원</td>
-					<td>${item.order_quantity *item.goods_sales_price}원</td>
+					<td>${item.order_quantity *item.goods_sales_price+delivery_fee}원</td>
 				</TR>
 			</c:forEach>
 		</TBODY>
 	</TABLE>
 	<DIV class="clear"></DIV>
 	 <H1>주문고객</H1>
-	 <hr style="border: 1px #E8E8E8;">
-		 <table>
+	 <hr>
+		 <table style="margin-left: 30px;">
 		   <TBODY>
-			 <tr class="dot_line">
-				<td>이름</td>
-				<td>
-				 <input  type="text" value="${orderer.mem_name}" size="15" disabled />
+			 <tr class="dot_line" >
+				<td style="color:#A6A6A6">이름</td>
+				<td style="vertical-align: middle;">
+				 <input type="text" value="${orderer.mem_name}" size="15" disabled />
 				</td>
 			  </tr>
 			  <tr class="dot_line">
-				<td>핸드폰</td>
-				<td>
+				<td style="color:#A6A6A6">연락처</td>
+				<td style="vertical-align: middle;">
 				 <input  type="text" value="${orderer.mem_tel1}-${orderer.mem_tel2}-${orderer.mem_tel3}" size="15" disabled />
 				</td>
 			  </tr>
 			  <tr class="dot_line">
-				<td>이메일</td>
-				<td>
+				<td style="color:#A6A6A6">이메일</td>
+				<td style="vertical-align: middle;">
 				   <input  type="text" value="${orderer.mem_email}" size="15" disabled />
 				</td>
 			  </tr>
@@ -253,12 +262,12 @@ margin-top: 20px;
 	<br>
 	<br>
 	<H1>배송지 정보</H1>
-	<hr style="border: 1px #E8E8E8;">
-	<DIV class="detail_table">
+	<hr>
+	<DIV class="detail_table" >
 	
-		<TABLE>
-			<TBODY>
-				<TR class="dot_line">
+		<TABLE >
+			<TBODY >
+				<TR class="dot_line" style="text-align: left;">
 					<TD class="fixed_join">배송방법</TD>
 					<TD>
 					   ${myOrderInfo.order_delivery_method }
@@ -271,7 +280,7 @@ margin-top: 20px;
 					</TD>
 				</TR>
 				<TR class="dot_line">
-					<TD class="fixed_join">휴대폰번호</TD>
+					<TD class="fixed_join">연락처</TD>
 					<TD>
 					  ${myOrderInfo.order_rec_hp1}-${myOrderInfo.order_rec_hp2}-${myOrderInfo.order_rec_hp3}</TD>
 				  </TR>
@@ -302,7 +311,7 @@ margin-top: 20px;
 	<br>
 
 	<H1>결제정보</H1>
-	<hr style="border: 1px #E8E8E8;">
+	<hr>
 	<DIV class="detail_table">
 		<table>
 			<TBODY>
@@ -324,6 +333,13 @@ margin-top: 20px;
 					   ${myOrderInfo.card_pay_month }
 				    </TD>
 				</TR>
+				<TR class="dot_line">
+					<TD class="fixed_join">결제금액</TD>
+					<TD>
+					   ${myOrderInfo.card_pay_month }
+				    </TD>
+				</TR>
+				
 			</TBODY>
 		</table>
 	</DIV>

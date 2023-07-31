@@ -2,6 +2,8 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
+<c:set var="imageFileList"  value="${servMap.imageFileList}"  />
+<c:set var="servRead"  value="${servMap.servVO}"  />
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,7 +18,7 @@
 	<h1>상세보기</h1>
 	<div role="main" class="container">
 		<div class="row row1">
-			<table class="table">
+			<table class="table" >
 				<tr>
 					<th width=15% class="text-center fg lb fw">작성자</th>
 					<td width=35% class="fgl" style="text-align: center;">${servRead.mem_id}</td>
@@ -34,14 +36,16 @@
 					<pre class="fgl" style="white-space: pre-wrap; border: none; background-color: white;"> ${servRead.cust_serv_content}</pre>
 					</td>
 				</tr>
-				<c:forEach var="imageFileName" items="${servMap.fileList}">
-					<tr>
-					<th width=15% class="text-center lb fg fw" style="vertical-align: middle;">첨부 파일</th>
+				<c:if test="${not empty imageFileList && imageFileList!='null' }">
+					<c:forEach var="item" items="${imageFileList}">
+						<tr>
+						<th width=15% class="text-center lb fg fw" style="vertical-align: middle;">첨부 파일</th>
 						<td class="result-images">						
-							<img alt="" src="${contextPath}/download?imageFileName=${imageFileName}" >							
+							<img width=200 src="${contextPath}/download2?img_name=${item.img_name}&cust_serv_no=${item.cust_serv_no}" >						
 						</td>
-					</tr>
-				</c:forEach>
+						</tr>
+					</c:forEach>
+				</c:if>
 				<tr>
 				  <td colspan="4" class="text-right">
 				    <div class="button-container">

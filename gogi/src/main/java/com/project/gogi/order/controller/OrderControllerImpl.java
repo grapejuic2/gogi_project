@@ -176,6 +176,9 @@ public class OrderControllerImpl extends BaseController implements OrderControll
 		        }
 		    }
 		}
+		
+		//session.removeAttribute("myOrderList");
+		
 		return mav;
 	}
 }

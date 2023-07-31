@@ -8,15 +8,13 @@
 <html lang="ko">
 <head>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 .form{
 margin: 0;
 width:100%;
 }
 .frm_mod_member{
-  width: 1000px;
+  width: 1100px;
   padding:30px;
 
   margin: 0 auto; 
@@ -33,7 +31,7 @@ table{
   margin-top:20px;
   font-family: 'Noto Sans KR', sans-serif;
   border-collapse: separate; 
-  border: 1px solid #E8E8E8;
+   border: 1px solid #E8E8E8;
 }
  .title{
   font-family: 'Noto Sans KR', sans-serif;
@@ -54,14 +52,25 @@ table{
 .cancel-order-btn{
 border:none;
 height: 30px;
+}
+
+.a{
+border:none;
+height: 30px;
 }  
+ 
 </style>
+
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <title>주문내역</title>
 
 </head>
 <body>
 	<div class="frm_mod_member">		
+		
 	<div class="title">
 		주문 배송 조회
 	</div> 
@@ -77,6 +86,7 @@ height: 30px;
 				<td>주문자</td>
 				<td>수령자</td>
 				<td>주문취소</td>
+				<td>리뷰작성</td>
 			</tr>
    <c:choose>
      <c:when test="${empty myOrderHistList }">			
@@ -106,12 +116,14 @@ height: 30px;
 				 </c:forEach>			
 				</td>
 				<td>
-					<c:forEach var="item2" items="${myOrderHistList}" varStatus="j">
-	                   <c:if  test="${item.order_id == item2.order_id}">
-	                         <fmt:formatNumber value="${item2.goods_sales_price*item2.order_quantity }" type="number" var="price" />
-	                         ${price }원/${item2.order_quantity }개<br>
-	                   </c:if>   
-               		</c:forEach>
+				
+				  <c:forEach var="item2" items="${myOrderHistList}" varStatus="j">
+                   <c:if  test="${item.order_id == item2.order_id}">
+                         <fmt:formatNumber value="${item2.goods_sales_price*item2.order_quantity }" type="number" var="price" />
+                         ${price }원/${item2.order_quantity }개<br>
+                   </c:if>   
+               </c:forEach>
+			
 				</td>
 				<td>
 				  <strong>
@@ -149,6 +161,9 @@ height: 30px;
 				            <input type="button" class="cancel-order-btn" value="주문취소" data-order-id="${item.order_id}" />
 				        </c:otherwise>
 				    </c:choose>
+				</td>
+				<td>
+					<a href="${contextPath}/review/reviewForm.do">리뷰작성</a>
 				</td>
 			</tr>
 			<c:set  var="pre_order_id" value="${item.order_id }" />
@@ -199,6 +214,48 @@ height: 30px;
 		    formObj.submit();	
 		}
 	}
+	
+	//리뷰 로그인 여부
+	function fn_review_Form(isLogOn,url,goods_id) {
+		if (isLogOn != '' && isLogOn != 'false'){
+			var form = document.createElement("form");
+			form.setAttribute("method", "post");
+			form.setAttribute("action", url);
+			var Goods_IdInput = document.createElement("input");
+			Goods_IdInput.setAttribute("type", "hidden");
+			Goods_IdInput.setAttribute("name", "goods_id");
+			Goods_IdInput.setAttribute("value", goods_id);
+
+			form.appendChild(Goods_IdInput);
+			document.body.appendChild(form);
+			form.submit();
+		}else {
+			alert("로그인 후 글쓰기가 가능합니다.");
+			location.href = "${contextPath}/member/loginForm.do?action=/board/review/reviewForm.do&goods_id="+goods_id;
+		}
+	}
+	
+	 /* 리뷰삭제 */
+	 function deleteReview(review_id){
+		$.ajax({
+		    type : "post",
+		    async : true, //false인 경우 동기식으로 처리한다.
+		    url : "${contextPath}/review/removeReview.do",
+		    data: {review_id:review_id},
+		    success : function(data, textStatus) {
+		    	location.reload();
+		    	alert("리뷰를 삭제했습니다!!");
+		            tr.style.display = 'none';
+		    },
+		    error : function(data, textStatus) {
+		    	alert("에러가 발생했습니다."+textStatus);
+		    },
+		    complete : function(data, textStatus) {
+		    	//alert("작업을 완료 했습니다");
+		    }
+		}); //end ajax	
+	}
+	
 </script>
 </body>
 </html>

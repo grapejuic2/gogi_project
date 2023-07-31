@@ -47,8 +47,49 @@
 		margin-left: 15px;
 	}
 	
-
-
+	.form{
+	margin: 0;
+	width:100%;
+	}
+	
+	.review{
+	  width: 1000px;
+	  padding:30px;
+	  margin: 0 auto; 
+	  font-family: 'Noto Sans KR', sans-serif;
+	  margin-bottom: 40px;  
+	}
+	
+	.table{
+	  width:100%;
+	  align-items: center;
+	  flex-direction: column;
+	  margin-top:20px;
+	  font-family: 'Noto Sans KR', sans-serif;
+	  border-collapse: separate; 
+	  border: 1px solid #E8E8E8;
+	}
+	 .title{
+	  font-family: 'Noto Sans KR', sans-serif;
+	  text-align: center;
+	  font-size: 30px;
+	  font-weight: 700;
+	  margin-bottom: 40px;
+	 }
+	 
+	  td {
+	  border-top: 1px solid #ddd; /* 위쪽에 border 추가 */
+	  padding: 15px;
+	  vertical-align: middle;
+	}
+	.required {
+	    color: #DB0000; /* 원하는 색상으로 변경하세요 */
+	  }
+	.cancel-order-btn{
+	border:none;
+	height: 30px;
+	}  
+	 
 	</style>
 	
 	</head>
@@ -167,14 +208,14 @@
 							
 							<div class="tab_content" id="tab2">
 							<table class="table table-striped table-hover">
-				  				<tr height="10" align="center" style="background:#00BFFE">
+				  				<tr height="10" align="center" style="background:#1D1D1D; color: #ffffff;">
 				     				 <td width="7%"><b>번호</b></td>
 				    				 <td width="59%"><b>내용</b></td>
 				    				 <td width="10%"><b>별점</b></td>
 				    				 <td width="10%"><b>작성자</b></td>              
 				     				 <td width="14%" align="left">&nbsp;&nbsp;<b>작성일</b></td>
 				  				</tr>
-							
+		
 									<c:choose>
 										<c:when test="${reviewList == null}">
 											<tr height="10">

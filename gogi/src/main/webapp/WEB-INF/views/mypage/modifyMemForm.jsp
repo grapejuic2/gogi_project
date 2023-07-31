@@ -295,7 +295,7 @@ margin-right: 35px;
 			                <div class="input-group" style="margin-right: 5px;">
 			                    <input type="text" id="zipcode" name="address_zipcode" placeholder="우편번호" value="${memberInfo.zipcode}" style="width: 100px;">
 			                </div>
-			                 <input type="button" value="우편번호 검색" onclick="execDaumPostcode()"style="width:120px;">
+			                 <input type="button" value="주소 검색" onclick="execDaumPostcode()"style="width:120px;">
 			        </td> 
 			        <td>  
 			           

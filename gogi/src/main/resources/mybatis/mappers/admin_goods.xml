@@ -77,7 +77,6 @@
 				                    	goods_seller,
 										goods_price,
 										goods_sales_price,
-										goods_point,
 										goods_delivery_date,
 										goods_status,
 										goods_intro
@@ -89,7 +88,6 @@
 					  			       #{goods_seller},
 					  			       #{goods_price},
 					  			       #{goods_sales_price},
-					  			       #{goods_point},
 					  			       #{goods_delivery_date},
 					  			       #{goods_status},
 								 	   #{goods_intro}
@@ -115,9 +113,10 @@
 									  values(#{image_id},
 											 #{goods_id},
 											 #{file_name},
-											 #{reg_id},
 											 #{file_type},
-											 #{credate} )
+											 #{reg_id},
+											 sysdate
+											 )
 		]]>
 	</insert>
 	

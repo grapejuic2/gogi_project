@@ -21,6 +21,7 @@
 	   <result property="img_name" column="img_name" />
 	   <result property="img_date" column="img_date" />
 	   <result property="cust_serv_no" column="cust_serv_no" />
+	   <result property="reg_id" column="reg_id" />
 	</resultMap>
  
    
@@ -49,25 +50,31 @@
 </select>
 
     <!-- -작성 -->
-   <insert id="servWrite" parameterType="java.util.Map">
-    insert into GOGI_CUST_SERV_BOARD(cust_serv_no, cust_serv_title, cust_serv_content,mem_id,cust_serv_pw)
-        values (seq_serv.nextval, #{cust_serv_title}, #{cust_serv_content}, #{mem_id},#{cust_serv_pw})
+   <insert id="servWrite" parameterType="java.util.Map" >
+   		<selectKey resultType="int" keyProperty="cust_serv_no" order="BEFORE">
+          select seq_serv.nextval from dual
+       </selectKey>
+    	insert into GOGI_CUST_SERV_BOARD(cust_serv_no, cust_serv_title, cust_serv_content,mem_id,cust_serv_pw)
+        values (#{cust_serv_no}, #{cust_serv_title}, #{cust_serv_content}, #{mem_id},#{cust_serv_pw})
  	</insert>
  	
  	
- 	<insert id="insertServImageFile" parameterType="servImageFileVO" >
+ 	<insert id="insertServImageFile" parameterType="java.util.List" >
       <selectKey resultType="int" keyProperty="img_no" order="BEFORE">
           select seq_image_no.nextval from dual
        </selectKey>
-       <![CDATA[
-         insert into GOGI_SERV_IMAGE (img_no,
-                                      img_name,
-	                                  img_date,
-	                                  cust_serv_no)
-                             values(#{img_no},
-                                  #{img_name},
+       <![CDATA[    
+         insert into gogi_serv_image (img_no,
+         							  img_date,
+                                      img_name,	                                  
+	                                  cust_serv_no,
+	                                  reg_id)
+                             values(#{img_no},                                 
                                   sysdate,
-                                  #{cust_serv_no})
+                                  #{img_name},
+                                  #{cust_serv_no},
+                                  #{reg_id})
+      
       ]]>
    </insert>
    
@@ -76,6 +83,12 @@
 	select cust_serv_no, cust_serv_title, cust_serv_content,mem_id, cust_serv_date,cust_serv_hits
 	from GOGI_CUST_SERV_BOARD
 	where cust_serv_no = #{cust_serv_no}
+   </select>
+   
+   <select id="selectImageFile"	resultMap="servImageResult" parameterType="int">
+   		<![CDATA[
+   		select * from gogi_serv_image where cust_serv_no=#{cust_serv_no}  
+   		]]> 	
    </select>
    
    

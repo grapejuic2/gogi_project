@@ -73,7 +73,7 @@
 <body>
 <div class="cartList">
 	<form name="frm_order_all_cart" style="width:1000px;">
-	<span style="font-size: 25px;font-weight: 700; margin-left: 380px;">장바구니</span><br>
+	<span style="font-size: 30px;font-weight: 700; margin-left: 380px;">장바구니</span><br>
 		<div class="btn-container">				
 		  <input value="선택삭제" type="button" class="btn btn-secondary btn-sm" onClick="deleteCheckedGoods()"style="font-size:13px;font-weight: 700;" />
 		</div>

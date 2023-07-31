@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.review">
+	<!-- 리절트 맵 정의 -->
+	<!-- 리뷰게시판 정보를 저장할 resultMap입니다. -->
+	<resultMap id="ReviewArticles" type="ReviewVO">
+		<result property="rev_no" column="rev_no" />
+		<result property="mem_id" column="mem_id" />
+		<result property="goods_id" column="goods_id" />
+		<result property="order_id" column="order_id" />
+		<result property="goods_name" column="goods_name" />
+		<result property="rev_title" column="rev_title" />
+		<result property="rev_content" column="rev_content" />
+		<result property="rev_image" column="rev_image" />
+		<result property="rev_date" column="rev_date" />
+	</resultMap>
+	
+	<!-- 조회할 아이디를 저장할 resultMap입니다. -->
+	<resultMap id="memberViewResult" type="MemberVO">
+		<result property="mem_id" column="mem_id" />
+	</resultMap>	
+	
+	<!-- 리뷰 전체조회 -->
+	<select id="selectAllReview" parameterType="java.util.Map" resultMap="ReviewArticles">
+		<![CDATA[
+			SELECT *
+				FROM (
+				  SELECT ROWNUM AS rnum, review_id,  member_id, goods_id, content, star, write_date
+				  FROM (
+				    SELECT review_id,  member_id, goods_id, content, star, write_date
+				    FROM naeil_review
+				    ORDER BY write_date DESC
+				  )
+				)
+				WHERE rnum BETWEEN ((#{section}-1)*15 + #{pageNum}*15 - 14) AND ((#{section}-1)*15 + #{pageNum}*15)
+		]]>
+	</select>
+	
+	<!-- 총 글 수 받아오기 -->
+	<select id="selectTotalReview" resultType="int">
+		<![CDATA[
+			SELECT COUNT(review_id) FROM naeil_review
+		]]>
+	</select>
+
+	<!-- 리뷰 작성 -->
+	<!-- <selectKey> 태그를 이용해 오라클의 시퀀스 번호를 가져온 다음 리뷰 테이블의 각 레코드 구분 번호로 사용합니다. -->
+	<insert id="insertNewReview" parameterType="java.util.Map">
+		<selectKey resultType="int" keyProperty="review_id" order="BEFORE">
+			select seq_review_id.nextval from dual
+		</selectKey>
+	    <![CDATA[
+			insert into NAEIL_REVIEW(review_id,
+									 goods_id,
+									 member_id,
+									 star,
+									 content
+			                         )
+							     	 values(#{review_id},
+							     	 		#{goods_id},
+							     	 		#{member_id},
+							     	 		#{star},
+							     			#{content}
+							     	 )
+    	]]>
+	</insert>
+
+	<!-- 리뷰 삭제 -->	
+	<delete id="deleteReview"  parameterType="int">
+    <![CDATA[
+      delete from NAEIL_REVIEW
+      where review_id = #{review_id}
+    ]]>      
+  	</delete>
+
+	<!-- 중복방지 -->
+	<select id="selectMaxReviewId" resultType="int">
+	    <![CDATA[
+			select nvl(max(review_id), 0) + 1 from NAEIL_REVIEW 
+    	]]>
+	</select>
+
+
+</mapper>
