@@ -7,7 +7,6 @@
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <head>
 <style>
-
  
 @import url(https://fonts.googleapis.com/css?family=Roboto:300);
 
@@ -159,7 +158,6 @@ width: 70px;
         <button type="button" id="verifyBtn" style="margin-left: 5px; width:100px;">인증 확인</button>
       </div>
       
-      
 		<div class="form-group" style="width:100px; vertical-align: middle">
 			<div class="label-group">
 				<label for="mem_addr"><span class="required" >*</span>주소</label>
@@ -257,27 +255,35 @@ width: 70px;
 	$(document).ready(function() {
 	  $("#sendMail").click(function() {
 	    var mem_email = $("#mem_email").val();
+	
+	    // 이메일 입력칸이 비어있는지 확인
+	    if (mem_email === "") {
+	      alert("이메일을 입력하세요.");
+	      return; // 함수 실행 중단
+	    }
+	
+	    // 이메일 입력칸이 비어있지 않으면, 서버로 이메일 인증 요청을 보냄
 	    $.ajax({
 	      type: "POST",
 	      url: "${contextPath}/member/emailConfirm.do",
 	      data: { mem_email: mem_email },
 	      dataType: "text",
 	    })
-	      .done(function(data) {
-	        alert("이메일로 인증번호가 발송되었습니다. 확인해주세요.");
-	        console.log("서버에서 받은 인증 코드: " + data);
-	        $("#emailCode").data("expectedCode", data);
-	        $("#emailConfirm").removeClass("hide");
-	      })
-	      .fail(function(xhr) {
-	        var errorMessage = "서버 요청 중 오류가 발생했습니다.";
-	        if (xhr.status === 500) {
-	          errorMessage = "서버 내부 오류가 발생했습니다.";
-	        } else if (xhr.status === 404) {
-	          errorMessage = "서버 URL을 찾을 수 없습니다.";
-	        }
-	        alert(errorMessage);
-	      });
+	    .done(function(data) {
+	      alert("이메일로 인증번호가 발송되었습니다. 확인해주세요.");
+	      console.log("서버에서 받은 인증 코드: " + data);
+	      $("#emailCode").data("expectedCode", data);
+	      $("#emailConfirm").removeClass("hide");
+	    })
+	    .fail(function(xhr) {
+	      var errorMessage = "서버 요청 중 오류가 발생했습니다.";
+	      if (xhr.status === 500) {
+	        errorMessage = "서버 내부 오류가 발생했습니다.";
+	      } else if (xhr.status === 404) {
+	        errorMessage = "서버 URL을 찾을 수 없습니다.";
+	      }
+	      alert(errorMessage);
+	    });
 	  });
 	
 	  $("#verifyBtn").click(function () {
