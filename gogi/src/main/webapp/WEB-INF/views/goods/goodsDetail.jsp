@@ -227,7 +227,6 @@
 						</div>
 					</div>
 	
-	
 						<!-- 상품안내 -->
 						<div id="goodsInfo" class="tabcontent">
 							<div class="goods_detail_tab">
@@ -285,7 +284,6 @@
 								</table>
 							</div>
 						</div>
-	</div>
 		
 		
 		

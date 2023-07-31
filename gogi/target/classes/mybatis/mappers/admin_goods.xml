@@ -113,9 +113,10 @@
 									  values(#{image_id},
 											 #{goods_id},
 											 #{file_name},
-											 #{reg_id},
 											 #{file_type},
+											 #{reg_id},
 											 sysdate
+											 )
 		]]>
 	</insert>
 	

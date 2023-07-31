@@ -11,16 +11,16 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <link rel="preconnect" href="httpps://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <link href="${contextPath}/resources/css/order/orderEachGoods.css" rel="stylesheet" type="text/css">
 <title>Insert title here</title>
 <style>
@@ -82,7 +82,7 @@
   font-family: 'Noto Sans KR', sans-serif;
   text-align: center;
   margin-top: 30px;
-  font-size: 25px;
+  font-size: 30px;
   font-weight: 700;
   }
   
@@ -90,7 +90,7 @@
   font-family: 'Noto Sans KR', sans-serif;
 	 font-size: 15px;
 	 margin-top: 30px;
- 	margin-left: 30px;
+ 	margin-left: 15px;
  	font-weight: 400;}
 .fixed_join{
 margin-right: 20px;
@@ -100,6 +100,58 @@ display: flex;
 }
 </style>
 </head>
+
+<script>
+//주소 스크립트
+function execDaumPostcode() {
+	  new daum.Postcode({
+	    oncomplete: function(data) {
+	      // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+	
+	      // 도로명 주소의 노출 규칙에 따라 주소를 조합한다.
+	      // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+	      var fullRoadAddr = data.roadAddress; // 도로명 주소 변수
+	      var extraRoadAddr = ''; // 도로명 조합형 주소 변수
+	
+	      // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+	      // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+	      if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+	        extraRoadAddr += data.bname;
+	      }
+	      // 건물명이 있고, 공동주택일 경우 추가한다.
+	      if(data.buildingName !== '' && data.apartment === 'Y'){
+	        extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+	      }
+	      // 도로명, 지번 조합형 주소가 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+	      if(extraRoadAddr !== ''){
+	        extraRoadAddr = ' (' + extraRoadAddr + ')';
+	      }
+	      // 도로명, 지번 주소의 유무에 따라 해당 조합형 주소를 추가한다.
+	      if(fullRoadAddr !== ''){
+	        fullRoadAddr += extraRoadAddr;
+	      }
+	
+	      // 우편번호와 주소 정보를 해당 필드에 넣는다.
+	      document.getElementById('zipcode').value = data.zonecode; //5자리 새우편번호 사용
+	      document.getElementById('roadAddress').value = fullRoadAddr;
+	      document.getElementById('jibunAddress').value = data.jibunAddress;
+	
+	      // 사용자가 '선택 안함'을 클릭한 경우, 예상 주소라는 표시를 해준다.
+	      if(data.autoRoadAddress) {
+	        //예상되는 도로명 주소에 조합형 주소를 추가한다.
+	        var expRoadAddr = data.autoRoadAddress + extraRoadAddr;
+	        document.getElementById('roadAddress').innerHTML = '(예상 도로명 주소 : ' + expRoadAddr + ')';
+	
+	      } else if(data.autoJibunAddress) {
+	          var expJibunAddr = data.autoJibunAddress;
+	          document.getElementById('jibunAddress').innerHTML = '(예상 지번 주소 : ' + expJibunAddr + ')';
+	      } 
+	      window.close();
+	    }
+	  }).open();
+	}
+
+</script>
 <body>
 <div class="order-container">
  <div class="title">주문/결제</div>
@@ -134,7 +186,7 @@ display: flex;
 			  <tr class="dot_line">
 				<td class="fixed_join" style="vertical-align:top;"><span class="required">*</span>주소</td>
 				<td>
-					<div class="input-container" style="width:50px;"><input type="text" id="zipcode" name="zipcode" size="5"value="${orderer.zipcode }"> </div>
+					<div class="input-container" ><input type="text" id="zipcode" name="zipcode" size="5"value="${orderer.zipcode }"style="width:80px!important ;"> </div>
 					<div class="input-container"><input type="text" id="roadAddress" name="roadAddress" size="50" value="${orderer.roadAddress }" /></div>
 					<div class="input-container"><input type="text" id="jibunAddress" name="jibunAddress" size="50" value="${orderer.jibunAddress }" /></div>
 					<div class="input-container"><input type="text" id="namujiAddress"  name="namujiAddress" size="50" value="${orderer.namujiAddress }" /></div> 
@@ -158,8 +210,8 @@ display: flex;
         <div class="panel-heading" role="tab">
           <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse1" aria-expanded="true">주문내역</a>
         </div>
-        <div id="collapse1" class="panel-collapse collapse in" role="tabpanel" aria-expanded="true">
-          <div class="panel-body">
+        <div id="collapse1" class="panel-collapse collapse in" role="tabpanel" aria-expanded="true" >
+          <div class="panel-body" style="padding-left: 35px;">
           <H1 style="margin-left: 5px;">주문상품</H1>
                 <table class="list_view">
 			        <tr style="font-size: 15px; text-align: center;background: #1D1D1D; color:white;">
@@ -286,7 +338,7 @@ display: flex;
           <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse2" aria-expanded="false">배송지</a>
         </div>
         <div id="collapse2" class="panel-collapse collapse" role="tabpanel">
-          <div class="panel-body">
+          <div class="panel-body" style="padding-left: 35px;">
             <H1 style="margin-left: 5px;">배송지 정보</H1>
  
 				<DIV class="delivery_table">			
@@ -318,7 +370,7 @@ display: flex;
 							    <td class="fixed_join">휴대폰번호</td>
 							    <td style="vertical-align: top;">
 							        <div class="input-container3" style="display: inline-block; box-sizing: border-box;">
-							            <select id="hp1" name="hp1" style="width: 220px;">
+							            <select id="hp1" name="hp1" style="width: 220px;text-align: center;">
 							                <option>없음</option>
 							                <option value="010" selected>010</option>
 							                <option value="011">011</option>
@@ -327,8 +379,8 @@ display: flex;
 							                <option value="018">018</option>
 							                <option value="019">019</option>
 							            </select> 
-							            - <input style="display: inline-block; width:225px;" type="text" id="hp2" name="hp2" value="${orderer.mem_tel2 }"> 
-							            - <input style="display: inline-block; width: 225px;" type="text" id="hp3" name="hp3" value="${orderer.mem_tel3 }">
+							            - <input style="display: inline-block; width:225px;text-align: center;" type="text" id="hp2" name="hp2" value="${orderer.mem_tel2 }"> 
+							            - <input style="display: inline-block; width: 225px;text-align: center;" type="text" id="hp3" name="hp3" value="${orderer.mem_tel3 }">
 							            <input type="hidden" id="h_hp1" name="h_hp1" value="${orderer.mem_tel1 }" /> 
 							            <input type="hidden" id="h_hp2" name="h_hp2" value="${orderer.mem_tel2 }" /> 
 							            <input type="hidden" id="h_hp3" name="h_hp3"  value="${orderer.mem_tel3 }" />
@@ -342,7 +394,7 @@ display: flex;
 								<td>
 									<div class="input-container3" style="margin-bottom: 5px;">
 										<input type="text" id="zipcode" name="zipcode" size="5" value="${orderer.zipcode }"style="width:100px;"> 
-										<a href="javascript:execDaumPostcode()"><button style="background:#1D1D1D; color:white; height: 35px;">주소 검색</button></a>
+										<button type="button" style="background:#1D1D1D; color:white; height: 35px;" onclick="execDaumPostcode();">주소 검색</button>
 									</div>	
 									<div class="input-container3" style="margin-bottom: 5px;">
 										<input type="text" id="roadAddress" name="roadAddress" size="50" value="${orderer.roadAddress }" />
@@ -360,22 +412,22 @@ display: flex;
 									 <input type="hidden"  id="h_namujiAddress" name="h_namujiAddress" value="${orderer.namujiAddress }" />
 								</td>
 							</tr>
-							<tr class="dot_line">
+							<tr class="dot_line" >
 								<td class="fixed_join">배송 메시지</td>
 								<td>
-								<div class="input-container3">
+								<div class="input-container3" style="margin-bottom: 5px;">
 								   <input id="delivery_message" name="delivery_message" type="text" size="50"placeholder="택배 기사님께 전달할 메시지를 남겨주세요." />
 							     </div>
 							     </td>
 							</tr>
 							<tr class="dot_line">
 							
-								<td class="fixed_join" >
-									<div style="margin-bottom: 20px;">배송방법</div>
+								<td class="fixed_join">
+									<div>배송방법</div>
 								</td>
 								
 								<td>
-									<div class="input-container3" style="margin-bottom: 20px;">
+									<div class="input-container3" style="margin-bottom: 10px;">
 									    <input type="radio" id="delivery_method" name="delivery_method" value="일반택배" checked>일반택배 &nbsp;&nbsp;&nbsp; 
 										<input type="radio" id="delivery_method" name="delivery_method" value="편의점택배">편의점택배 &nbsp;&nbsp;&nbsp; 
 										<input type="radio" id="delivery_method" name="delivery_method" value="해외배송">해외배송 &nbsp;&nbsp;&nbsp;
@@ -383,7 +435,7 @@ display: flex;
 							    </td>
 							</tr>
 							<tr class="dot_line">
-								<td style="vertical-align: top;">선물 포장</td>
+								<td  class="fixed_join" style="vertical-align: top;">선물 포장</td>
 								<td>
 								<div class="input-container3" style="margin-bottom: 20px;">
 									<input type="radio" id="gift_wrapping" name="gift_wrapping" value="yes">예&nbsp;&nbsp;&nbsp; 
@@ -404,42 +456,44 @@ display: flex;
           </a>
         </div>
         <div id="collapse3" class="panel-collapse collapse" role="tabpanel">
-          <div class="panel-body">
+          <div class="panel-body" style="padding-left: 35px;">
             <H1 style="margin-left: 5px;">결제 방법 선택</H1>
 				<div class="payment_table">
 					<table style="width:500px;">	
 				
-							<tr style="width: 33.33%;">
-								<td>
+							<tr >
+								<td style="width: 33.33%;">
 								   <input type="radio" id="pay_method" name="pay_method" value="신용카드" onClick="fn_pay_card()" checked>신용카드 
 								</td>
-								<td>							   
+								<td style="width: 33.33%;">							   
 								   <input type="radio" id="pay_method" name="pay_method" value="실시간 계좌이체">실시간 계좌이체				  
 								</td>
-								<td>   
+								<td style="width: 33.33%;">   
 								   <input type="radio" id="pay_method" name="pay_method" value="무통장 입금">무통장 입금							
 								</td>
 								<td>
 								</td>
 							</tr>
-							<tr style="width: 33.33%;">
-								<td>
+							<tr>
+								<td  style="width: 33.33%;">
 								   <input type="radio" id="pay_method" name="pay_method" value="휴대폰결제" onClick="fn_pay_phone()">휴대폰 결제 
 								</td>
-								<td>   
-								   <input type="radio" id="pay_method" name="pay_method" value="카카오페이(간편결제)">카카오페이(간편결제) 
+								<td  style="width: 33.33%;">   
+								   <input type="radio" id="pay_method" name="pay_method" value="카카오페이">카카오페이
 								</td>
-								<td>    
-								   <input type="radio" id="pay_method" name="pay_method" value="페이코(간편결제)">페이코(간편결제)
+								<td style="width: 33.33%;">    
+								   <input type="radio" id="pay_method" name="pay_method" value="페이코">페이코
 								</td>
 								<td>
 								</td>
-							</tr>
-							<tr id="tr_pay_card" style="width: 33.33%;">
-								<td colspan="2">
-								  카드 선택:
+							</tr>							
+					</table>
+					<div id="tr_pay_card" style="display:flex; box-sizing: border-box;margin-top: 20px;">
 								
-								  <select id="card_com_name" name="card_com_name">
+								  카드 선택
+								
+								  <select id="card_com_name" name="card_com_name" style="margin-left: 5px;margin-right: 15px;">
+								  
 										<option value="삼성" selected>삼성</option>
 										<option value="하나SK">하나SK</option>
 										<option value="현대">현대</option>
@@ -450,11 +504,10 @@ display: flex;
 										<option value="시티">시티</option>
 										<option value="NH농협">NH농협</option>
 								</select>
-								</td>
-								<td colspan="2">
-								할부 기간:
 								
-								<select id="card_pay_month" name="card_pay_month">
+								할부 기간 
+								
+								<select id="card_pay_month" name="card_pay_month" style="margin-left: 5px;">
 										<option value="일시불" selected>일시불</option>
 										<option value="2개월">2개월</option>
 										<option value="3개월">3개월</option>
@@ -462,18 +515,15 @@ display: flex;
 										<option value="5개월">5개월</option>
 										<option value="6개월">6개월</option>
 								</select>								
-								</td>
-							</tr>
-							<tr id="tr_pay_phone" style="visibility:hidden">
-							  <td>
-							  <strong>휴대폰 번호 입력: </strong>
-							  	       <input  type="text" size="5" value=""  id="pay_order_tel1" name="pay_order_tel1" />-
-							           <input  type="text" size="5" value="" id="pay_order_tel2" name="pay_order_tel2" />-
-							           <input  type="text" size="5" value="" id="pay_order_tel3" name="pay_order_tel3" />
-							  </td>
-							</tr>
-
-					</table>
+								
+							</div>
+					<div id="tr_pay_phone" style="visibility:hidden;display:flex; box-sizing: border-box;">							  
+							  결제 휴대폰 번호 입력							  
+							  	       <input  type="text" size="5" value=""  id="pay_order_tel1" name="pay_order_tel1" style="margin-left: 5px;margin-right: 5px;"  />-
+							           <input  type="text" size="5" value="" id="pay_order_tel2" name="pay_order_tel2" style="margin-left: 5px;margin-right: 5px;"/>-
+							           <input  type="text" size="5" value="" id="pay_order_tel3" name="pay_order_tel3" style="margin-left: 5px;margin-right: 5px;"/>						 
+				</div>
+					
 				</div>
           </div>
         </div>
@@ -612,10 +662,11 @@ display: flex;
 			<div class="clear"></div>	
 			<br> 
 			
+
+
 <script type="text/javascript">
-window.onload=function(){
-	init();
-}
+
+
 
 function init(){
   	var form_order=document.form_order;
@@ -803,7 +854,7 @@ function fn_show_order_detail(){
 	
 	delivery_address=i_zipcode.value+"<br>"+
 					 i_roadAddress.value+"<br>"+
-					 i_jibunAddress.value+"]<br>"+
+					 "["+i_jibunAddress.value+"]<br>"+
 								  i_namujiAddress.value;
 	
 	delivery_message=i_delivery_message.value;
@@ -870,7 +921,7 @@ function fn_process_pay_order(){
     i_receiver_hp1.value=hp1;
     i_receiver_hp2.value=hp2;
     i_receiver_hp3.value=hp3;
-    i_delivery_address.value=roadAddress;
+    i_delivery_address.value=delivery_address;
     i_delivery_message.value=delivery_message;
     i_delivery_method.value=delivery_method;
     i_pay_method.value=pay_method;
@@ -915,6 +966,79 @@ function use_Point() {
     }
 }
 
+//배송지 주소 새로입력
+	function reset_all() {
+		var e_receiver_name = document.getElementById("receiver_name");
+		var e_hp1 = document.getElementById("hp1");
+		var e_hp2 = document.getElementById("hp2");
+		var e_hp3 = document.getElementById("hp3");
+
+		var e_tel1 = document.getElementById("tel1");
+		var e_tel2 = document.getElementById("tel2");
+		var e_tel3 = document.getElementById("tel3");
+
+		var e_zipcode = document.getElementById("zipcode");
+		var e_roadAddress = document.getElementById("roadAddress");
+		var e_jibunAddress = document.getElementById("jibunAddress");
+		var e_namujiAddress = document.getElementById("namujiAddress");
+
+		e_receiver_name.value = "";
+		e_hp1.value = 0;
+		e_hp2.value = "";
+		e_hp3.value = "";
+		e_tel1.value = "";
+		e_tel2.value = "";
+		e_tel3.value = "";
+		e_zipcode.value = "";
+		e_roadAddress.value = "";
+		e_jibunAddress.value = "";
+		e_namujiAddress.value = "";
+	}
+
+//기본배송지 복구
+	function restore_all() {
+		var e_receiver_name = document.getElementById("receiver_name");
+		var e_hp1 = document.getElementById("hp1");
+		var e_hp2 = document.getElementById("hp2");
+		var e_hp3 = document.getElementById("hp3");
+
+		var e_tel1 = document.getElementById("tel1");
+		var e_tel2 = document.getElementById("tel2");
+		var e_tel3 = document.getElementById("tel3");
+
+		var e_zipcode = document.getElementById("zipcode");
+		var e_roadAddress = document.getElementById("roadAddress");
+		var e_jibunAddress = document.getElementById("jibunAddress");
+		var e_namujiAddress = document.getElementById("namujiAddress");
+
+		var h_receiver_name = document.getElementById("h_receiver_name");
+		var h_hp1 = document.getElementById("h_hp1");
+		var h_hp2 = document.getElementById("h_hp2");
+		var h_hp3 = document.getElementById("h_hp3");
+
+		var h_tel1 = document.getElementById("h_tel1");
+		var h_tel2 = document.getElementById("h_tel2");
+		var h_tel3 = document.getElementById("h_tel3");
+
+		var h_zipcode = document.getElementById("h_zipcode");
+		var h_roadAddress = document.getElementById("h_roadAddress");
+		var h_jibunAddress = document.getElementById("h_jibunAddress");
+		var h_namujiAddress = document.getElementById("h_namujiAddress");
+		//alert(e_receiver_name.value);
+		e_receiver_name.value = h_receiver_name.value;
+		e_hp1.value = h_hp1.value;
+		e_hp2.value = h_hp2.value;
+		e_hp3.value = h_hp3.value;
+
+		e_tel1.value = h_tel1.value;
+		e_tel2.value = h_tel2.value;
+		e_tel3.value = h_tel3.value;
+		e_zipcode.value = h_zipcode.value;
+		e_roadAddress.value = h_roadAddress.value;
+		e_jibunAddress.value = h_jibunAddress.value;
+		e_namujiAddress.value = h_namujiAddress.value;
+
+	}
 </script>
 </body>
 </html>

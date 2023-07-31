@@ -11,6 +11,7 @@ public class ServImageFileVO {
 	private String img_name;
 	private Date img_date;
 	private int cust_serv_no;
+	private String reg_id;
 
 	
 	public ServImageFileVO() {
@@ -56,23 +57,40 @@ public class ServImageFileVO {
 	public void setCust_serv_no(int cust_serv_no) {
 		this.cust_serv_no = cust_serv_no;
 	}
+	
+	
 
 
-	public ServImageFileVO(int img_no, String img_name, Date img_date, int cust_serv_no) {
+	public String getReg_id() {
+		return reg_id;
+	}
+
+
+	public void setReg_id(String reg_id) {
+		this.reg_id = reg_id;
+	}
+
+
+	public ServImageFileVO(int img_no, String img_name, Date img_date, int cust_serv_no,String reg_id) {
 		super();
 		this.img_no = img_no;
 		this.img_name = img_name;
 		this.img_date = img_date;
 		this.cust_serv_no = cust_serv_no;
+		this.reg_id=reg_id;
 	}
 
 
 	@Override
 	public String toString() {
 		return "ServImageFileVO [img_no=" + img_no + ", img_name=" + img_name + ", img_date=" + img_date
-				+ ", cust_serv_no=" + cust_serv_no + "]";
+				+ ", cust_serv_no=" + cust_serv_no + ", reg_id=" + reg_id + "]";
 	}
 	
+	
+
+
+
 	
 	
 	

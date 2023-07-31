@@ -2,10 +2,8 @@ package com.project.gogi.notice.controller;
 
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import javax.inject.Inject;
@@ -27,7 +25,6 @@ import com.project.gogi.notice.domain.Criteria;
 import com.project.gogi.notice.domain.Criteria2;
 import com.project.gogi.notice.domain.NoticeVO;
 import com.project.gogi.notice.domain.PageMaker;
-import com.project.gogi.notice.domain.PageMaker2;
 import com.project.gogi.notice.service.NoticeService;
 
 @Controller
@@ -48,13 +45,18 @@ public class NoticeController {
 
 
 	@RequestMapping(value = "/list.do", method = RequestMethod.GET)
-	public String getNoticeList(Model model, Criteria cri,  HttpServletRequest request, 
+	public String getNoticeList(Model model, Criteria cri, Criteria2 cri2, HttpServletRequest request, 
 	                            HttpServletResponse response) throws Exception {
 	    
 	    List<NoticeVO> noticeList = new ArrayList<NoticeVO>();
 	    noticeList=service.NoticeList(cri);
 	    
+	    List<NoticeVO> noticeFAQList = new ArrayList<NoticeVO>();
+	    noticeFAQList=service.NoticeFAQList(cri2);
+	    
 	    model.addAttribute("noticeList", noticeList);
+	    model.addAttribute("noticeFAQList", noticeFAQList);
+	    
 
 	    //게시판 페이징 가져오기.
 	    PageMaker pageMaker = new PageMaker();
@@ -62,6 +64,7 @@ public class NoticeController {
 	    pageMaker.setTotalCount(service.NoticeListCount());
 	    model.addAttribute("pageMaker", pageMaker);
 
+	    
 	    
 	    Boolean isLogOn = (Boolean) httpSession.getAttribute("isLogon"); //로그인 여부
 
@@ -78,201 +81,7 @@ public class NoticeController {
 	    return "notice/noticeList";
 	}
 
-		    
-		   
-	
-	
-	
-	
-	//공지사항~
-	//게시물 목록  +페이징
-//		@RequestMapping(value = "/list.do", method = RequestMethod.GET)
-//		public String getNoticeList(Model model,Criteria cri,Criteria2 cri2, HttpServletRequest request, HttpServletResponse response,NoticeVO vo) throws Exception {
-//			
-//			 request.getSession();
-//			    memberVO = (MemberVO) httpSession.getAttribute("memberInfo");
-//			    String mem_id = null;
-//
-//		        // 로그인 상태 확인
-//		        if (memberVO != null) {
-//		            mem_id = memberVO.getMem_id();
-//		        }
-//		       
-//		        if (mem_id == null) {
-//		        	service.NoticeList(cri);
-//		        }
-//			   
-//			    
-//			    vo.setMem_id(mem_id);
-//
-//			    Boolean noticeAdmin = service.CheckAdmin(vo);
-//			    System.out.println("관리자 확인:" +mem_id);
-//
-//			    if (noticeAdmin == true) {
-//			        // "admin"인 경우, noticeListAdmin.jsp로 리다이렉트.
-//					 List<NoticeVO> noticeList= new ArrayList<NoticeVO>();
-//					 vo.setMem_id(mem_id);
-//					 noticeList= service.NoticeList(cri);
-//					 
-//					 model.addAttribute("noticeList",noticeList);
-//
-//					 
-//					 //게시판 페이징   가져오기.
-//					 PageMaker pageMaker= new PageMaker();
-//					 pageMaker.setCri(cri);
-//					 pageMaker.setTotalCount(service.NoticeListCount());
-//					 model.addAttribute("pageMaker",pageMaker);
-//		 
-//			 
-//					 //게시판 페이징   가져오기.
-//					 PageMaker2 pageMaker2= new PageMaker2();
-//					 pageMaker2.setCri(cri);
-//					 pageMaker2.setTotalCount(service.NoticeFAQListCount());
-//					 model.addAttribute("pageMaker2",pageMaker2);
-//		 
-//				
-//				  //동림언니 페이징
-//				  
-//				  String _section=request.getParameter("section"); String
-//				  _pageNum=request.getParameter("pageNum");
-//				  
-//				  
-//				  //초기값 설정
-//				  int section=Integer.parseInt(((_section==null) ? "1" : _section));
-//				  int pageNum=Integer.parseInt(((_pageNum==null) ? "1" : _pageNum));
-//				  
-//				  Map<String, Object> paging = new HashMap<>(); paging.put("section", section);
-//				  paging.put("pageNum", pageNum);
-//				  
-//				  
-//				  
-//				  List<NoticeVO> noticeFAQList= null; noticeFAQList= service.listBoard(paging);
-//				  
-//				  int total=service.boardCount();
-//				  
-//				  model.addAttribute("section", section); 
-//				  model.addAttribute("pageNum",  pageNum);
-//				  model.addAttribute("noticeFAQList",noticeFAQList);
-//				  model.addAttribute("totalBoard",total);
-//				 
-//					 
-//					 
-//			        return "notice/noticeListAdmin";
-//			     
-//			    }  
-//			    
-//			    else {
-//			 	 List<NoticeVO> noticeList= new ArrayList<NoticeVO>();
-//					 noticeVO.setMem_id(mem_id);
-//					 noticeList= service.NoticeList(cri);
-//					 model.addAttribute("noticeList",noticeList);
-//
-//					 
-//					 //게시판 페이징   가져오기.
-//					 PageMaker pageMaker= new PageMaker();
-//					 pageMaker.setCri(cri);
-//					 pageMaker.setTotalCount(service.NoticeListCount());
-//					 model.addAttribute("pageMaker",pageMaker);
-//		 
-//					  
-//					 
-//					 //faq
-//						
-////					 List<NoticeVO> noticeFAQList= null;
-////					 noticeFAQList= service.NoticeFAQList(cri2);
-////					 model.addAttribute("noticeFAQList",noticeFAQList);
-//
-//					 
-//					 //게시판 페이징   가져오기.
-//					 PageMaker2 pageMaker2= new PageMaker2();
-//					 pageMaker2.setCri(cri);
-//					 pageMaker2.setTotalCount(service.NoticeFAQListCount());
-//					 model.addAttribute("pageMaker2",pageMaker2);
-//		 
-//				
-//				  //동림언니 페이징
-//				  
-//				  String _section=request.getParameter("section"); String
-//				  _pageNum=request.getParameter("pageNum");
-//				  
-//				  
-//				  //초기값 설정
-//				  int section=Integer.parseInt(((_section==null) ? "1" : _section));
-//				  int pageNum=Integer.parseInt(((_pageNum==null) ? "1" : _pageNum));
-//				  
-//				  Map<String, Object> paging = new HashMap<>(); paging.put("section", section);
-//				  paging.put("pageNum", pageNum);
-//				  
-//				  
-//				  
-//				  List<NoticeVO> noticeFAQList= null; noticeFAQList= service.listBoard(paging);
-//				  
-//				  int total=service.boardCount();
-//				  
-//				  model.addAttribute("section", section); 
-//				  model.addAttribute("pageNum",  pageNum);
-//				  model.addAttribute("noticeFAQList",noticeFAQList);
-//				  model.addAttribute("totalBoard",total);
-//				 
-//					 
-//					 
-//			        return "notice/noticeList";
-//			    }
-//			    
-//			    
-//			    
-//			    
-//			 
-//
-//			 
-//			
-//		}
 		
-		
-
-		
-		
-	/*
-	 * @RequestMapping(value = "/faqlist.do", method = RequestMethod.GET) public
-	 * void getNoticeFAQList(Model model,Criteria cri,Criteria2 cri2,
-	 * HttpServletRequest request, HttpServletResponse response) throws Exception {
-	 * 
-	 * request.getSession();
-	 * 
-	 * memberVO=(MemberVO) httpSession.getAttribute("memberInfo"); String
-	 * mem_id=memberVO.getMem_id(); System.out.println(mem_id);
-	 * 
-	 * 
-	 * 
-	 * //동림언니 페이징
-	 * 
-	 * String _section=request.getParameter("section"); String
-	 * _pageNum=request.getParameter("pageNum");
-	 * 
-	 * 
-	 * //초기값 설정 int section=Integer.parseInt(((_section==null) ? "1" : _section));
-	 * int pageNum=Integer.parseInt(((_pageNum==null) ? "1" : _pageNum));
-	 * 
-	 * Map<String, Object> paging = new HashMap<>(); paging.put("section", section);
-	 * paging.put("pageNum", pageNum);
-	 * 
-	 * 
-	 * 
-	 * List<NoticeVO> noticeFAQList= service.listBoard(paging);
-	 * System.out.println(noticeFAQList);
-	 * 
-	 * int total=service.boardCount();
-	 * 
-	 * model.addAttribute("section", section); model.addAttribute("pageNum",
-	 * pageNum); model.addAttribute("noticeFAQList",noticeFAQList);
-	 * model.addAttribute("totalBoard",total);
-	 * 
-	 * 
-	 * 
-	 * }
-	 */
-	
-	//String void 다시 확인해보기
 	
 	  // 게시물 작성 get
 	  @RequestMapping(value = "/write.do", method = RequestMethod.GET) 
@@ -314,6 +123,16 @@ public class NoticeController {
 			//게시물 조회
 			vo= service.NoticeRead(notice_no);
 			model.addAttribute("noticeRead", vo);
+			
+			//0730 오동림 추가 start
+			Boolean isLogOn = (Boolean) httpSession.getAttribute("isLogon"); //로그인 여부
+
+		    if (isLogOn != null && isLogOn) { //로그인 상태 아니여도 공지사항 읽기 가능
+		        memberVO = (MemberVO) httpSession.getAttribute("memberInfo");
+		        String mem_id = memberVO.getMem_id();			       
+		        model.addAttribute("mem_id",mem_id);
+		        model.addAttribute("isLogOn", isLogOn);
+		    }  // 추가 end
 		
 			 return "notice/noticeRead";
 		}

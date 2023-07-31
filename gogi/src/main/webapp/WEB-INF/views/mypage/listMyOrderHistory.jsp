@@ -8,8 +8,6 @@
 <html lang="ko">
 <head>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 .form{
 margin: 0;
@@ -33,7 +31,7 @@ table{
   margin-top:20px;
   font-family: 'Noto Sans KR', sans-serif;
   border-collapse: separate; 
-  border: 1px solid #E8E8E8;
+   border: 1px solid #E8E8E8;
 }
  .title{
   font-family: 'Noto Sans KR', sans-serif;
@@ -55,13 +53,19 @@ table{
 border:none;
 height: 30px;
 }  
+ 
 </style>
+
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <title>주문내역</title>
 
 </head>
 <body>
 	<div class="frm_mod_member">		
+		
 	<div class="title">
 		주문 배송 조회
 	</div> 
@@ -106,12 +110,14 @@ height: 30px;
 				 </c:forEach>			
 				</td>
 				<td>
-					<c:forEach var="item2" items="${myOrderHistList}" varStatus="j">
-	                   <c:if  test="${item.order_id == item2.order_id}">
-	                         <fmt:formatNumber value="${item2.goods_sales_price*item2.order_quantity }" type="number" var="price" />
-	                         ${price }원/${item2.order_quantity }개<br>
-	                   </c:if>   
-               		</c:forEach>
+				
+				  <c:forEach var="item2" items="${myOrderHistList}" varStatus="j">
+                   <c:if  test="${item.order_id == item2.order_id}">
+                         <fmt:formatNumber value="${item2.goods_sales_price*item2.order_quantity }" type="number" var="price" />
+                         ${price }원/${item2.order_quantity }개<br>
+                   </c:if>   
+               </c:forEach>
+			
 				</td>
 				<td>
 				  <strong>

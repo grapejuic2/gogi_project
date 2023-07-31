@@ -5,6 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8"> 
+<link href="${contextPath}/resources/css/noticeRead.css" rel="stylesheet" type="text/css">
 <title>게시물 조회</title>
 </head>
 <body>

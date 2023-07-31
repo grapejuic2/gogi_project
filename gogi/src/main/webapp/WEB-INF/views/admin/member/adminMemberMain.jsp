@@ -127,7 +127,6 @@ width:100%;
 .frm_mod_member{
   width: 1000px;
   padding:30px;
-
   margin: 0 auto; 
   font-family: 'Noto Sans KR', sans-serif;
   border: 1px solid #E8E8E8;
@@ -173,8 +172,8 @@ height: 30px;
 		<h3 class="admin_member_title"><b>회원 조회</b></h3>
 	</div>
 	
-	<table class="table table-striped table-hover" style="width:1200px">
-			<tbody align=center >
+	<table class="table table-striped table-hover" style="width:1200px; vertical-align: middle;">
+			<tbody align=center style="vertical-align: middle;">
 				<tr align=center bgcolor="#00BFFE">
 					<td><span><b>회원아이디</b></span></td>
 					<td><span><b>회원이름</b></span></td>

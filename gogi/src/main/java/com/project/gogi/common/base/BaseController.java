@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.project.gogi.goods.vo.ImageFileVO;
+import com.project.gogi.serv.domain.ServImageFileVO;
 
 public abstract class BaseController {
 	private static final String GOGI_IMAGE_REPO="C:\\meatrule\\file_repo\\goods";
@@ -32,6 +33,7 @@ public abstract class BaseController {
 		// 상품 등록창에서 전송된 파일들의 정보를 fileList에 저장합니다.
 		while(fileNames.hasNext()){
 			ImageFileVO imageFileVO =new ImageFileVO();
+			
 			String fileName = fileNames.next();
 			imageFileVO.setFile_type(fileName);
 			MultipartFile mFile = multipartRequest.getFile(fileName);
@@ -115,24 +117,34 @@ public abstract class BaseController {
 		return beginDate+","+endDate;
 	}
 	
-	protected String upload1(MultipartHttpServletRequest multipartRequest) throws Exception{
+	protected List<ServImageFileVO> upload1(MultipartHttpServletRequest multipartRequest) throws Exception{
 		String imageFileName= null;
+		
+		List<ServImageFileVO> fileList= new ArrayList<ServImageFileVO>();
 		Iterator<String> fileNames = multipartRequest.getFileNames();
 		
 		while(fileNames.hasNext()){
+			ServImageFileVO servImageFileVO=new ServImageFileVO();
+			
 			String fileName = fileNames.next();
 			MultipartFile mFile = multipartRequest.getFile(fileName);
 			imageFileName=mFile.getOriginalFilename();
-			File file = new File(GOGI_IMAGE_REPO_PATH1 +"\\"+"temp"+"\\" + fileName);
+			servImageFileVO.setImg_name(imageFileName);
+			System.out.println("업로드 imageFileName:"+imageFileName);
+			fileList.add(servImageFileVO);
+			
+			File file = new File(GOGI_IMAGE_REPO_PATH1 +"\\"+ fileName);
 			if(mFile.getSize()!=0){ //File Null Check
-				if(!file.exists()){ //경로상에 파일이 존재하지 않을 경우
-					file.getParentFile().mkdirs();  //경로에 해당하는 디렉토리들을 생성
-					mFile.transferTo(new File(GOGI_IMAGE_REPO_PATH1 +"\\"+"temp"+ "\\"+imageFileName)); //임시로 저장된 multipartFile을 실제 파일로 전송
+				if(! file.exists()){ //경로상에 파일이 존재하지 않을 경우
+					if(file.getParentFile().mkdirs()){ //경로에 해당하는 디렉토리들을 생성
+							file.createNewFile(); //이후 파일 생성
+					}
 				}
+				mFile.transferTo(new File(GOGI_IMAGE_REPO_PATH1 +"\\"+imageFileName)); //임시로 저장된 multipartFile을 실제 파일로 전송
 			}
 			
 		}
-		return imageFileName;
+		return fileList;
 	}
 	
 }
