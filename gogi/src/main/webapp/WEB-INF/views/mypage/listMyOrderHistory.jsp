@@ -86,7 +86,7 @@ height: 30px;
 				<td>주문자</td>
 				<td>수령자</td>
 				<td>주문취소</td>
-				<td>리뷰작성</td>
+				<td>리뷰</td>
 			</tr>
    <c:choose>
      <c:when test="${empty myOrderHistList }">			
