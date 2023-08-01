@@ -1,6 +1,7 @@
 package com.project.gogi.mypage.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,13 +19,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.project.gogi.common.base.BaseController;
 import com.project.gogi.member.vo.MemberVO;
 import com.project.gogi.mypage.service.mypageService;
 import com.project.gogi.mypage.vo.mypageVO;
+import com.project.gogi.order.vo.OrderVO;
 
 @Controller("mypageController")
 @RequestMapping(value = "/mypage")
-public class mypageControllerImpl implements mypageController {
+public class mypageControllerImpl extends BaseController implements mypageController {
 
 	@Autowired
 	private MemberVO memberVO;
@@ -80,6 +83,60 @@ public class mypageControllerImpl implements mypageController {
 		message = "mod_success";
 		resEntity = new ResponseEntity(message, responseHeaders, HttpStatus.OK);
 		return resEntity;
+	}
+	
+	//주문 내역
+	@Override
+	@RequestMapping(value="/listMyOrderHistory.do" ,method = RequestMethod.GET)
+	public ModelAndView listMyOrderHistory(@RequestParam Map<String, String> dateMap,
+			                               HttpServletRequest request, HttpServletResponse response)  throws Exception {
+		String viewName=(String)request.getAttribute("viewName");
+		ModelAndView mav = new ModelAndView(viewName);
+		HttpSession session=request.getSession();
+		memberVO=(MemberVO)session.getAttribute("memberInfo");
+		String mem_id=memberVO.getMem_id();
+		
+		String fixedSearchPeriod = dateMap.get("fixedSearchPeriod");
+		String beginDate=null,endDate=null;
+		
+		String [] tempDate = calcSearchPeriod(fixedSearchPeriod).split(",");
+		beginDate=tempDate[0];
+		endDate=tempDate[1];
+		dateMap.put("beginDate", beginDate);
+		dateMap.put("endDate", endDate);
+		dateMap.put("mem_id", mem_id);
+		List<OrderVO> myOrderHistList=mypageService.listMyOrderHistory(dateMap);
+		
+		String beginDate1[]=beginDate.split("-"); //검색일자를 년,월,일로 분리해서 화면에 전달합니다.
+		String endDate1[]=endDate.split("-");
+		mav.addObject("beginYear",beginDate1[0]);
+		mav.addObject("beginMonth",beginDate1[1]);
+		mav.addObject("beginDay",beginDate1[2]);
+		mav.addObject("endYear",endDate1[0]);
+		mav.addObject("endMonth",endDate1[1]);
+		mav.addObject("endDay",endDate1[2]);
+		mav.addObject("myOrderHistList", myOrderHistList);
+		mav.addObject("mem_id", mem_id);
+		return mav;
+	}	
+	
+	//주문 삭제
+	@Override
+	// '주문 취소' 클릭 시 수행합니다.
+	@RequestMapping(value="/cancelMyOrder.do" ,method = RequestMethod.POST)							
+	public ModelAndView cancelMyOrder(@RequestParam("order_id")  String order_id,
+			                          HttpServletRequest request, HttpServletResponse response) throws Exception {
+		ModelAndView mav = new ModelAndView();
+		
+		// 주문을 취소합니다.
+		mypageService.cancelOrder(order_id);
+		
+		// 주문 메시지를 다시 마이페이지 최초 화면으로 전달합니다.
+		mav.addObject("message", "cancel_order");
+		
+		mav.setViewName("redirect:/mypage/listMyOrderHistory.do");
+		
+		return mav;
 	}
 	
 	//회원 삭제

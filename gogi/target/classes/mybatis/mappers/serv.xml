@@ -2,19 +2,40 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="mapper.serv">
+
+	<resultMap id="insertServ" type="servVO">
+		   <result property="cust_serv_no" column="cust_serv_no" />
+		   <result property="cust_serv_title" column="cust_serv_title" />
+		   <result property="cust_serv_content" column="cust_serv_content" />
+		   <result property="mem_id" column="mem_id" />
+		   <result property="cust_serv_date" column="cust_serv_date" />
+		   <result property="cust_serv_hits" column="cust_serv_hits" />
+		   <result property="cust_serv_pw" column="cust_serv_pw" />
+		   <result property="cust_serv_notice" column="cust_serv_notice" />
+		   <result property="imageFileName" column="imageFileName" />
+		   <result property="originalFileName" column="originalFileName" />
+	</resultMap>
+
+	<resultMap id="servImageResult" type="servImageFileVO">
+	   <result property="img_no" column="img_no" />
+	   <result property="img_name" column="img_name" />
+	   <result property="img_date" column="img_date" />
+	   <result property="cust_serv_no" column="cust_serv_no" />
+	   <result property="reg_id" column="reg_id" />
+	</resultMap>
  
    
    <!-- 목록+페이징 v-->
    <select id="servList" resultType="servVO"  parameterType="Criteria3">
     <![CDATA[
-     select cust_serv_no, cust_serv_title, cust_serv_content, mem_id, cust_serv_date, cust_serv_hits,cust_serv_notice
+    select cust_serv_no, cust_serv_title, cust_serv_content, mem_id, cust_serv_date, cust_serv_hits
     from (
-        select cust_serv_no, cust_serv_title, cust_serv_content, mem_id, cust_serv_date, cust_serv_hits,cust_serv_notice,
-            row_number() over(order by cust_serv_notice desc, cust_serv_no desc) as rNum
+        select cust_serv_no, cust_serv_title, cust_serv_content, mem_id, cust_serv_date, cust_serv_hits,
+            row_number() over(order by cust_serv_no desc) as rNum2
         from  GOGI_CUST_SERV_BOARD
-        ) mb
-   where rNum between  #{rowStart} and #{rowEnd}
-        ORDER by cust_serv_notice desc, cust_serv_no desc
+        ) mb2
+    where rNum2 between  #{rowStart} and #{rowEnd}
+        order by cust_serv_no desc
          ]]>
 </select>
  
@@ -29,16 +50,45 @@
 </select>
 
     <!-- -작성 -->
-   <insert id="servWrite">
-    insert into GOGI_CUST_SERV_BOARD(cust_serv_no, cust_serv_title, cust_serv_content,mem_id,cust_serv_pw,cust_serv_notice)
-        values (seq_serv.nextval, #{cust_serv_title}, #{cust_serv_content}, #{mem_id},#{cust_serv_pw},#{cust_serv_notice})
+   <insert id="servWrite" parameterType="java.util.Map" >
+   		<selectKey resultType="int" keyProperty="cust_serv_no" order="BEFORE">
+          select seq_serv.nextval from dual
+       </selectKey>
+    	insert into GOGI_CUST_SERV_BOARD(cust_serv_no, cust_serv_title, cust_serv_content,mem_id,cust_serv_pw)
+        values (#{cust_serv_no}, #{cust_serv_title}, #{cust_serv_content}, #{mem_id},#{cust_serv_pw})
  	</insert>
+ 	
+ 	
+ 	<insert id="insertServImageFile" parameterType="java.util.List" >
+      <selectKey resultType="int" keyProperty="img_no" order="BEFORE">
+          select seq_image_no.nextval from dual
+       </selectKey>
+       <![CDATA[    
+         insert into gogi_serv_image (img_no,
+         							  img_date,
+                                      img_name,	                                  
+	                                  cust_serv_no,
+	                                  reg_id)
+                             values(#{img_no},                                 
+                                  sysdate,
+                                  #{img_name},
+                                  #{cust_serv_no},
+                                  #{reg_id})
+      
+      ]]>
+   </insert>
    
    <!-- 조회 -->
    <select id="servRead" resultType="servVO" parameterType="int">
 	select cust_serv_no, cust_serv_title, cust_serv_content,mem_id, cust_serv_date,cust_serv_hits
 	from GOGI_CUST_SERV_BOARD
 	where cust_serv_no = #{cust_serv_no}
+   </select>
+   
+   <select id="selectImageFile"	resultMap="servImageResult" parameterType="int">
+   		<![CDATA[
+   		select * from gogi_serv_image where cust_serv_no=#{cust_serv_no}  
+   		]]> 	
    </select>
    
    
@@ -49,26 +99,26 @@
     cust_serv_hits = cust_serv_hits +1
     where cust_serv_no = #{cust_serv_no}
 </update>
- 
 
- 
-   
-   <!-- 게시물 수정 -->
-  <update id="servUpdate" parameterType="servVO" >
-    UPDATE GOGI_CUST_SERV_BOARD
-    SET cust_serv_title = #{cust_serv_title},
-        cust_serv_content = #{cust_serv_content}
-    WHERE cust_serv_no = #{cust_serv_no}
-</update>
-   
-   
-   
-   <select id="servGetPw" resultType="String">
-    select cust_serv_pw
-    from GOGI_CUST_SERV_BOARD
-    where cust_serv_no = #{cust_serv_no}
-</select>
 
+
+   <!--  수정 -->   
+   <update id="servUpdate" parameterType="servVO">
+    update GOGI_CUST_SERV_BOARD
+     set
+      cust_serv_title = #{cust_serv_title},
+      cust_serv_content = #{cust_serv_content},
+      mem_id=#{mem_id}
+  where cust_serv_no = #{cust_serv_no}
+   </update>
+   
+   <!-- 비밀번호 값 받아오기 -->
+      <select id="servGetPw" resultType="int" parameterType="int">
+	select cust_serv_pw
+	from GOGI_CUST_SERV_BOARD
+	where cust_serv_no = #{cust_serv_no}
+   </select>
+ 
    
    <!--  삭제 -->
    <delete id="servDelete" parameterType="int">

@@ -5,6 +5,7 @@
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 
 <c:if test='${not empty message }'>
+<script src="your-javascript-file.js"></script>
 <script>
 window.onload=function()
 {
@@ -12,7 +13,7 @@ window.onload=function()
 }
 
 function result(){
-   alert("아이디나  비밀번호가 틀립니다. 다시 로그인해주세요");
+   alert("${message}");
    window.location.href = "${contextPath}/member/loginForm.do";
 }
 </script>
@@ -56,8 +57,7 @@ ul.nav.navbar-nav li a:hover {
 <body>
 	<div class="login-page">
 		<div class="login-text">
-			<a href="${contextPath}/main/main.do"><img
-				src="${contextPath}/resources/images/logo/logo2.png" alt="logo2" width="150px"></a>
+			<a href="${contextPath}/main/main.do"><img src="${contextPath}/resources/images/logo/logo2.png" alt="logo2" width="130px"></a>
 		</div>
 		<div class="form">
 			<form id="loginform" class="login-form" action="${contextPath}/member/loginForm.do" method="post">
@@ -70,9 +70,8 @@ ul.nav.navbar-nav li a:hover {
 				</p>
 				
 				<div class="login-icon">
-					<a href="#"><img
+					<a href="${contextPath}/social/kakao_login.do"><img
 						src="${contextPath}/resources/images/login/kakao-icon.png" alt="kakao-icon"></a> 
-						<a href="#"><img src="${contextPath}/resources/images/login//naver-icon.png" alt="naver-icon"></a>
 				</div>
 			</form>
 		</div>

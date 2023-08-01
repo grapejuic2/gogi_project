@@ -1,7 +1,5 @@
 package com.project.gogi.goods.vo;
 
-import java.util.Date;
-
 import org.springframework.stereotype.Component;
 
 @Component
@@ -16,18 +14,16 @@ public class GoodsVO {
     private int goods_price;
     private int goods_sales_price;
     private int goods_point;
-    private Date goods_delivery_date; 
+    private String goods_delivery_date; 
     private String goods_intro;
     private String goods_status; // 상품분류(B: 베스트상품 / S: 세일상품 / N: 기본상품)
     private int goods_weight;
     private String file_name; //이미지파일 이름 저장하기 위한 객체
-    
-    
-    public GoodsVO() {}
 
+	public GoodsVO() {}
 
 	public GoodsVO(int goods_id, String goods_sort, String goods_name, String goods_seller, String goods_country,
-			int goods_price, int goods_sales_price, int goods_point, Date goods_delivery_date, String goods_intro, 
+			int goods_price, int goods_sales_price, int goods_point, String goods_delivery_date, String goods_intro, 
 			String goods_status, String file_name,int goods_weight) {
 		super();
 		this.goods_id = goods_id;
@@ -116,12 +112,12 @@ public class GoodsVO {
 	}
 
 
-	public Date getGoods_delivery_date() {
+	public String getGoods_delivery_date() {
 		return goods_delivery_date;
 	}
 
 
-	public void setGood_delivery_date(Date goods_delivery_date) {
+	public void setGood_delivery_date(String goods_delivery_date) {
 		this.goods_delivery_date = goods_delivery_date;
 	}
 

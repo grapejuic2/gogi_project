@@ -1,5 +1,6 @@
 package com.project.gogi.mypage.service;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.project.gogi.member.vo.MemberVO;
 import com.project.gogi.mypage.dao.mypageDAO;
 import com.project.gogi.mypage.vo.mypageVO;
+import com.project.gogi.order.vo.OrderVO;
 
 @Service("mypageService")
 @Transactional(propagation = Propagation.REQUIRED)
@@ -31,6 +33,14 @@ public class mypageServiceImpl implements mypageService{
 	@Override
 	public MemberVO myDetailInfo(String mem_id) throws Exception{
 		return mypageDAO.selectMyDetailInfo(mem_id);
+	}
+	
+	public List<OrderVO> listMyOrderHistory(Map dateMap) throws Exception{
+		return mypageDAO.selectMyOrderHistoryList(dateMap);
+	}
+	
+	public void cancelOrder(String order_id) throws Exception{
+		mypageDAO.updateMyOrderCancel(order_id);
 	}
 	
 	@Override

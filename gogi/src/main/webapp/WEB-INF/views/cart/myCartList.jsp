@@ -5,8 +5,7 @@
 <c:set var="contextPath"  value="${pageContext.request.contextPath}"  />
 <c:set var="myCartList"  value="${cartMap.myCartList}"  />
 <c:set var="myGoodsList"  value="${cartMap.myGoodsList}"  />
-<c:set var="delivery_fee" value="3,500"/>
-
+<c:set var="delivery_fee" value="3500"/>
 <c:set var="totalGoodsNum"  value="0"  />
 <c:set var="totalDeliveryPrice"  value="0"  />
 <c:set var="tatalDiscountedPrice"  value="0"  />
@@ -15,9 +14,10 @@
 <head>
 <meta charset="UTF-8">
 <link href="${contextPath}/resources/css/myCartList.css" rel="stylesheet" type="text/css">
-<link rel="preconnect" href="httpps://fonts.googleapis.com">
+<!-- 폰트:나눔산스 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@700;800&family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <title>Insert title here</title>
 <style>
@@ -26,41 +26,59 @@
     justify-content: flex-start;
     align-content: left;
     width:60%;
-  }
+    margin-top: 30px;
+ }
 
   /* 버튼 스타일 */
-  .btn-container .btn {
-    margin-right: 10px; /* 버튼 사이 여백 조정 (원하는 크기로 조절) */
-  }
+ .btn-container .btn {
+   margin-right: 10px; /* 버튼 사이 여백 조정 (원하는 크기로 조절) */
+ }
   
-   .order-button {
+ .order-button {
     display: flex;
-    justify-content: space-around; /* 버튼들을 가로로 정렬하고 간격을 일정하게 배치 */
-    margin-top: 20px;
+    justify-content: center; /* 버튼들을 가운데로 정렬 */
+ 
+    margin-bottom: 30px;
   }
 
   /* 버튼 스타일 */
   .order-button .btn {
-  	font-weight: 700;
-    font-size: 18px; /* 원하는 폰트 크기로 조절 */
-    padding: 10px 10px; /* 버튼의 내부 여백을 조절 (원하는 크기로 조절) */
-    margin-right: 10px;
-    margin-bottom: 30px;
+    font-weight: 700;
+    font-size: 18px;
+    padding: 10px 20px; /* 좀 더 넓은 패딩을 적용해 버튼 크기를 늘립니다. */
   }
+
+  /* 버튼 사이의 간격 조절 */
+  .order-button .btn:not(:last-child) {
+    margin-right: 10px; /* 원하는 간격으로 버튼 사이의 간격 조정 */
+  }
+
  .cart-total-table {
-    border: none; !important/* 테이블의 경계선을 없애는 스타일 */
+    border: 1px solid #ccc; /* 겉 테두리를 1px 두께의 검은 선으로 설정합니다. */
+    border-collapse: separate; /* 테이블 셀 경계를 별도로 표시하도록 설정합니다. */
+    font-weight: 400;
+    height: 120px;
+  }
+  /* 표 안쪽의 테두리를 없애는 스타일 */
+  .cart-total-table td {
+    border: none; /* 테두리 없음 */  
+  }
+  .total_content{
+   font-size: 20px;
+   font-weight: 700;
+   
   }
 </style>
 </head>
 <body>
 <div class="cartList">
 	<form name="frm_order_all_cart" style="width:1000px;">
-	<span style="font-size: 35px;font-weight: 700;">장바구니</span><br>
+	<span style="font-size: 30px;font-weight: 700; margin-left: 380px;">장바구니</span><br>
 		<div class="btn-container">				
-		  <input value="선택삭제" type="button" class="btn btn-secondary btn-sm" onClick="deleteCheckedGoods()" />
+		  <input value="선택삭제" type="button" class="btn btn-secondary btn-sm" onClick="deleteCheckedGoods()"style="font-size:13px;font-weight: 700;" />
 		</div>
-		<table style=" width:90%;">
-			<tr>
+		<table style="width:90%;">
+			<tr style="font-size: 15px; background: #1D1D1D; color:white;">
 				<th><input type="checkbox" id="selectAllCheckbox" onClick="goodsAllCheckboxes()"></th>
 				<th>상품정보</th>
 				<th></th>
@@ -69,11 +87,10 @@
 				<th>배송비</th>
 				<th>삭제</th>
 			</tr>
-			
-
+			<tr>
 			<c:choose>
 				<c:when test="${empty myCartList }">
-					<tr><td colspan="6" class="fixed"><strong>장바구니가 비었습니다.</strong></td></tr>
+					<tr><td colspan="7" class="fixed"><strong style="margin-top: 5px;">장바구니가 비었습니다.</strong></td></tr>
 				</c:when>
 				
 				
@@ -87,8 +104,8 @@
 					  		<input type="checkbox" name="checked_goods" checked value="${item.goods_id}" data-cart-no="${cart_no}" data-cart-count="${cart_qty}" onClick="calculateTotal()">
 					  	</td>
 						<td><a href="${contextPath}/goods/goodsDetail.do?goods_id=${item.goods_id} "><img src="${contextPath}/thumbnails.do?goods_id=${item.goods_id}&fileName=${item.file_name}" width="110px;"/></a></td>
-						<td class="goodsName" style="text-align: left;"><a href="${contextPath}/goods/goodsDetail.do?goods_id=${item.goods_id} ">${item.goods_name}</a>
-						<p>상품 ${cnt.count}의 배송 옵션: <c:out value="${delivery_option}" /></p>
+						<td class="goodsName" style="text-align: left; "><a href="${contextPath}/goods/goodsDetail.do?goods_id=${item.goods_id}" style="font-size: 20px; font-weight:500;color:black;">${item.goods_name}</a>
+						<p>배송 옵션: <c:out value="${delivery_option}" /></p>
 						<input type="hidden" value="${item.goods_id }" class="goods_id"/>	
 						</td>
 						<td>
@@ -102,9 +119,10 @@
 						 <fmt:formatNumber value="${item.goods_price*cart_qty}" type="number" var="total_price" />
 		            	<span class="price">${total_price}원</span>
 						</td>
-						<td>${delivery_fee}원</td>	
+						<fmt:formatNumber value="${delivery_fee}" type="number" var="delivery_fee2" />
+						<td>${delivery_fee2}원</td>	
 						<td>
-						<a href="javascript:delete_cart_goods('${cart_no}');"><button type="button" class="btn btn-secondary btn-sm">삭제</button></a>
+						<a href="javascript:delete_cart_goods('${cart_no}');" style="color:black;"><button type="button" class="btn btn-secondary btn-sm">삭제</button></a>
 						</td>	
 						</tr>
 							
@@ -116,7 +134,7 @@
 		</table>
 	
 		<div class="cart-total">
-				<table class="cart-total-table">
+				<table class="cart-total-table" >
 				     <tr>
 				       <td>총 상품수 </td>
 				       <td>총 상품금액</td>
@@ -125,7 +143,7 @@
 				       <td></td>
 				       <td>최종 결제금액</td>
 				     </tr>
-					<tr>
+					<tr class="total_content" >
 						<td>
 			  				<p id="p_totalGoodsNum"></p>
 			  				<input id="totalGoodsNum" type="hidden" value="0" />
@@ -135,12 +153,13 @@
 			  				<input id="totalGoodsPrice" type="hidden" value="0" />
 						</td>
 				       <td> 
-				          <img width="25" src="${contextPath}/resources/images/cart/plus.png" style="margin-top:-13px">  
+				          <img width="20" src="${contextPath}/resources/images/cart/plus.png" style="margin-top:-13px">  
 				       </td>
 				       <td>
-				         <p>${delivery_fee}</p>
+				       <fmt:formatNumber value="${delivery_fee}" type="number" var="delivery_fee2" />
+				         <p>${delivery_fee2}</p>
 				       <td>  
-				         <img width="25" src="${contextPath}/resources/images/cart/equal.png" style="margin-top:-13px">
+				         <img width="20" src="${contextPath}/resources/images/cart/equal.png" style="margin-top:-13px">
 				       </td>
 				       <td>
 				       <!-- 최종 결제금액 -->     
@@ -250,7 +269,7 @@ function modify_qty(goods_id, goods_price, index,event){
 				alert("에러가 발생했습니다."+data);
 			},
 			complete: function(data,textStatus){
-				alert("완료");
+				//alert("완료");
 			}			
 		}); //end ajax
 }

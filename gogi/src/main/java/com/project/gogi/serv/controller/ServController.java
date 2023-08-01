@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.io.FileUtils;
 import org.eclipse.core.filesystem.provider.FileInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,9 +35,11 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.project.gogi.common.base.BaseController;
+import com.project.gogi.goods.vo.ImageFileVO;
 import com.project.gogi.member.vo.MemberVO;
 import com.project.gogi.serv.domain.Criteria3;
 import com.project.gogi.serv.domain.PageMaker3;
+import com.project.gogi.serv.domain.ServImageFileVO;
 import com.project.gogi.serv.domain.ServVO;
 import com.project.gogi.serv.service.ServService; 
 
@@ -45,12 +48,9 @@ import com.project.gogi.serv.service.ServService;
 public class ServController extends BaseController{
 
 	private static final Logger logger =  LoggerFactory.getLogger(ServController.class);
-
-	 
 	
-	@Inject
-	ServService service;
-	
+	@Autowired
+	ServService servService;	
 	@Autowired
 	private HttpSession httpSession;
 	@Autowired
@@ -72,14 +72,14 @@ public class ServController extends BaseController{
 			logger.info("리스트 페이지 가져오기");
 			 
 			 	 List<ServVO> servList= new ArrayList<ServVO>();
-					 servList= service.ServList(cri);
+					 servList= servService.ServList(cri);
 					 model.addAttribute("servList",servList);
 
 					 
 					 //게시판 페이징   가져오기.
 					 PageMaker3 pageMaker= new PageMaker3();
 					 pageMaker.setCri(cri);
-					 pageMaker.setTotalCount(service.ServListCount());
+					 pageMaker.setTotalCount(servService.ServListCount());
 					 model.addAttribute("pageMaker3",pageMaker); 
 			        return "serv/servList";
 		 
@@ -89,19 +89,27 @@ public class ServController extends BaseController{
 		
 		   // 게시물 작성 get
 	    @RequestMapping(value = "/write.do", method = RequestMethod.GET) 
-	    public String getServWrite() throws Exception {
+	    public String getServWrite(HttpServletRequest request,Model model) throws Exception {
+	    	HttpSession session = request.getSession();
+			MemberVO memberVO = (MemberVO) session.getAttribute("memberInfo");
+				
+			// 로그인 ID를 가져옵니다.
+			String mem_id = memberVO.getMem_id();
+			model.addAttribute("mem_id", mem_id);
 	        return "serv/servWrite";
 	    }
 	  
 	    // 게시물 작성 post+다중이미지 게시
 	    @RequestMapping(value = "/write.do", method = RequestMethod.POST)
 	    public String postServWrite(ServVO vo, MultipartHttpServletRequest multipartRequest, HttpServletResponse response, RedirectAttributes redirectAttrs) throws Exception {
-	    	service.ServWrite(vo); 
 	        multipartRequest.setCharacterEncoding("utf-8");
+	        response.setContentType("text/html; charset=UTF-8");
+			String imageFileName=null;
+			
 	        // 매개변수 정보와 파일 정보를 저장할 Map 생성
 	        Map<String, Object> servMap = new HashMap<String, Object>();
-
 	        Enumeration enu = multipartRequest.getParameterNames();
+	        
 	        // 전송된 매개변수 값 key/value로 map에 저장
 	        while (enu.hasMoreElements()) {
 	            String name = (String) enu.nextElement();
@@ -112,8 +120,48 @@ public class ServController extends BaseController{
 	      
 	        // 다중 이미지 구현 중
 	        // 파일 업로드 후 반환된 파일 이름이 저장된 fileList에 다시 map에 저장
-	        List<String> fileList = fileProcess(multipartRequest);
-	        servMap.put("fileList", fileList); 
+	      
+	        
+	        HttpSession session = multipartRequest.getSession();
+			MemberVO memberVO = (MemberVO) session.getAttribute("memberInfo");
+			
+			// 로그인 ID를 가져옵니다.
+			String reg_id = memberVO.getMem_id();
+	      
+			List<ServImageFileVO> imageFileList = upload1(multipartRequest);
+			
+	        if(imageFileList!=null && imageFileList.size()!=0) {
+	        	for(ServImageFileVO servImageFileVO:imageFileList) {
+	        		servImageFileVO.setReg_id(reg_id);	    
+	        		System.out.println("여길 타고 있니?"+reg_id);
+	        	}
+	        	servMap.put("imageFileList", imageFileList);
+	        	System.out.println(imageFileList.toString());
+	        }
+	        
+	        try {
+	        	// 상품 정보와 이미지 정보를 각 테이블에 추가합니다.
+	        	int cust_serv_no=servService.ServWrite(servMap);
+	        	System.out.println("컨트롤러: "+cust_serv_no);
+	        	// 업로드한 이미지를 상품번호 폴더에 저장합니다.
+				if(imageFileList!=null && imageFileList.size()!=0) {
+					for(ServImageFileVO servImageFileVO:imageFileList) {
+						imageFileName = servImageFileVO.getImg_name();
+						System.out.println("컨트롤러 이미지 파일네임: "+imageFileName);
+						File srcFile = new File(GOGI_IMAGE_REPO_PATH1+"\\"+imageFileName);
+						File destDir = new File(GOGI_IMAGE_REPO_PATH1+"\\"+cust_serv_no);
+						FileUtils.moveFileToDirectory(srcFile, destDir,true);
+					}
+				}
+	        }catch(Exception e) {
+				if(imageFileList!=null && imageFileList.size()!=0) {
+					for(ServImageFileVO  servImageFileVO:imageFileList) {
+						imageFileName = servImageFileVO.getImg_name();
+						File srcFile = new File(GOGI_IMAGE_REPO_PATH1+"\\"+imageFileName);
+						srcFile.delete();
+					}
+				}
+	        }
 	      
 	        // 요청 처리 후 servList.jsp로 리다이렉트합니다.
 	        redirectAttrs.addFlashAttribute("message", "글 작성이 완료되었습니다.");
@@ -122,31 +170,7 @@ public class ServController extends BaseController{
 	        return "redirect:/serv/list.do";
 	    }
 	    
-	    
-	    private List<String> fileProcess(MultipartHttpServletRequest multipartRequest) throws Exception {
-	        List<String> fileList = new ArrayList<String>();
-	        Iterator<String> fileNames = multipartRequest.getFileNames();
-	        while (fileNames.hasNext()) {
-	            String fileName = fileNames.next();
-	            MultipartFile mFile = multipartRequest.getFile(fileName);
-	            String originalFileName = mFile.getOriginalFilename();
-	            fileList.add(originalFileName);
-	            File file = new File(GOGI_IMAGE_REPO_PATH1 + "\\" + originalFileName);
-	            
-	            if (mFile.getSize() != 0) {
-	                if (!file.exists()) {
-	                    if (file.getParentFile().mkdir()) {
-	                        file.createNewFile();
-	                    }
-	                }
-	                mFile.transferTo(new File(GOGI_IMAGE_REPO_PATH1 + "\\" + originalFileName));
-	            }
-	        }
-	        return fileList; 
-	    }
-	 
- 
-	    
+	   	    
 	 
 	  
 		//게시물 조회 + 조회수 중복방지
@@ -169,13 +193,13 @@ public class ServController extends BaseController{
 
 			// notice_noViewHits에 들어있지 않은 값일 때 처리하는 로직-최조 클릭 게시물 조회수 +1 증가 후 notice_noViewHits에 해당 notice_no 저장
 					if(!serv_noViewHits.contains(cust_serv_no))	{
-						service.updateServViewCnt(cust_serv_no);	
+						servService.updateServViewCnt(cust_serv_no);	
 						serv_noViewHits.add(cust_serv_no);
 					}
 			
 			//게시물 조회
-			vo= service.ServRead(cust_serv_no);
-			model.addAttribute("servRead", vo);
+			Map<String, Object> servMap=servService.ServRead(cust_serv_no);
+			model.addAttribute("servMap", servMap);
 		
 			 return "serv/servRead";
 		}
@@ -187,7 +211,7 @@ public class ServController extends BaseController{
 		@RequestMapping(value = "/delete.do", method = RequestMethod.GET)
 		public String getServDelete(@RequestParam("cust_serv_no") int cust_serv_no) throws Exception {
 		  
-		 service.ServDelete(cust_serv_no);  
+		servService.ServDelete(cust_serv_no);  
 		 return "redirect:/serv/list.do";
 		}
 		
@@ -196,46 +220,46 @@ public class ServController extends BaseController{
 		
 		
 		// 게시물 수정 페이지 이동
-		@RequestMapping(value = "/modify.do", method = RequestMethod.GET)
-		public String getServModify(@RequestParam("cust_serv_no") int cust_serv_no, Model model) throws Exception {
-		    ServVO vo = service.ServRead(cust_serv_no);
-		    model.addAttribute("servRead", vo);
-		    return "serv/servModify";
-		}
+//		@RequestMapping(value = "/modify.do", method = RequestMethod.GET)
+//		public String getServModify(@RequestParam("cust_serv_no") int cust_serv_no, Model model) throws Exception {
+//		    ServVO vo = servService.ServRead(cust_serv_no);
+//		    model.addAttribute("servRead", vo);
+//		    return "serv/servModify";
+//		}
 
 		 // 게시물 수정 처리
-	    @RequestMapping(value = "/modify.do", method = RequestMethod.POST)
-	    @ResponseBody
-	    public Map<String, Object> postServModify(ServVO vo) throws Exception {
-	        Map<String, Object> result = new HashMap<>();
-	        
-	        ServVO servFromDB = service.ServRead(vo.getCust_serv_no());
-	        String enteredPassword = vo.getCust_serv_pw();
-
-	        if (servFromDB == null) {
-	            result.put("success", false);
-	            result.put("message", "해당 게시물을 찾을 수 없습니다.");
-	            return result;
-	        }
-
-	        String storedPassword = servFromDB.getCust_serv_pw();
-
-	        if (storedPassword.equals(enteredPassword)) {
-	            service.ServUpdate(vo);
-	            result.put("success", true);
-	            result.put("message", "게시물이 수정되었습니다.");
-	        } else {
-	            result.put("success", false);
-	            result.put("message", "일치하지 않는 비밀번호입니다.");
-	        }
-
-	        return result;
-	    }
-		    
-	    
-	    
-	    
-	    
+//	    @RequestMapping(value = "/modify.do", method = RequestMethod.POST)
+//	    @ResponseBody
+//	    public Map<String, Object> postServModify(ServVO vo) throws Exception {
+//	        Map<String, Object> result = new HashMap<>();
+//	        
+//	        ServVO servFromDB = servService.ServRead(cust_serv_no);
+//	        String enteredPassword = vo.getCust_serv_pw();
+//
+//	        if (servFromDB == null) {
+//	            result.put("success", false);
+//	            result.put("message", "해당 게시물을 찾을 수 없습니다.");
+//	            return result;
+//	        }
+//
+//	        String storedPassword = servFromDB.getCust_serv_pw();
+//
+//	        if (storedPassword.equals(enteredPassword)) {
+//	        	servService.ServUpdate(vo);
+//	            result.put("success", true);
+//	            result.put("message", "게시물이 수정되었습니다.");
+//	        } else {
+//	            result.put("success", false);
+//	            result.put("message", "일치하지 않는 비밀번호입니다.");
+//	        }
+//
+//	        return result;
+//	    }
+//		    
+//	    
+//	    
+//	    
+//	    
 	    
 	    
 	    
