@@ -112,7 +112,7 @@ public class ServDAOImpl implements ServDAO {
 
 	@Override
 	public List<CommentVO> selectBoardCommentByCode(CommentVO commentVO) throws DataAccessException {
-		List<CommentVO> commentList = sql.selectList("mapper.serv.selectCommentList", commentVO);
+		List<CommentVO> commentList = sql.selectList("mapper.serv.CommentList", commentVO);
 		return commentList;
 	}
 }

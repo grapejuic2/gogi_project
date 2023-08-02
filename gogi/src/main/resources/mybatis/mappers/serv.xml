@@ -72,7 +72,6 @@
 		#{mem_id},#{cust_serv_pw})
 	</insert>
 
-
 	<insert id="insertServImageFile" parameterType="java.util.List">
 		<selectKey resultType="int" keyProperty="img_no"
 			order="BEFORE">
@@ -89,7 +88,6 @@
                                   #{img_name},
                                   #{cust_serv_no},
                                   #{reg_id})
-      
       ]]>
 	</insert>
 
@@ -110,7 +108,6 @@
    		]]>
 	</select>
 
-
 	<!-- 조회수 -->
 	<update id="updateServViewCnt">
 		update GOGI_CUST_SERV_BOARD
@@ -119,8 +116,6 @@
 		cust_serv_hits +1
 		where cust_serv_no = #{cust_serv_no}
 	</update>
-
-
 
 	<!-- 수정 -->
 	<update id="servUpdate" parameterType="servVO">
@@ -153,16 +148,23 @@
 
 	<!-- 댓글 등록 -->
 	<insert id="addComment" parameterType="CommentVO">
-	    INSERT INTO gogi_comment (cust_serv_no, mem_id, cmt_number, cmt_content, cmt_parent_num, depth)
-	    VALUES (#{cust_serv_no}, #{mem_id}, seq_gogi_comment.nextval, #{cmt_content}, #{cmt_parent_num}, #{depth})
+		INSERT INTO gogi_comment
+		(cust_serv_no, mem_id, cmt_number, cmt_content,
+		cmt_parent_num)
+		VALUES (#{cust_serv_no}, #{mem_id}, seq_gogi_comment.nextval,
+		#{cmt_content}, #{cmt_parent_num})
 	</insert>
-	
+
 	<!-- 댓글 리스트 조회 -->
-	<select id="selectBoardCommentByCode" parameterType="CommentVO" resultType="CommentVO">
-	    SELECT cust_serv_no, mem_id, cmt_number, cmt_content, cmt_parent_num, cmt_date, depth
-	    FROM gogi_comment
-	    WHERE cust_serv_no = #{cust_serv_no}
-	    ORDER BY cmt_number ASC
+	<select id="CommentList" parameterType="CommentVO"
+		resultType="CommentVO">
+		SELECT cust_serv_no, mem_id, cmt_number, cmt_content,
+		cmt_parent_num,
+		cmt_date, depth
+		FROM gogi_comment
+		WHERE cust_serv_no =
+		#{cust_serv_no}
+		ORDER BY cmt_number ASC
 	</select>
 
 </mapper>

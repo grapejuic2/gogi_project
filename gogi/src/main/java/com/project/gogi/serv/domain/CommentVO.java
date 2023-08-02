@@ -2,6 +2,9 @@ package com.project.gogi.serv.domain;
 
 import java.util.Date;
 
+import org.springframework.stereotype.Component;
+
+@Component("commentVO")
 public class CommentVO {
 	private String mem_id;
 	private int cmt_number;
@@ -10,6 +13,7 @@ public class CommentVO {
 	private Date cmt_date;
 	private int cust_serv_no;
 	private int depth;
+	
 	
 	
 	public String getMem_id() {
