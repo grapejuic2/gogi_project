@@ -20,8 +20,9 @@
 	<typeAlias type="com.project.gogi.serv.domain.PageMaker3" alias="PageMaker3" />
   	<typeAlias type="com.project.gogi.serv.domain.Criteria3" alias="Criteria3" />
   	<typeAlias type="com.project.gogi.social.KakaoDTO" alias="kdto" />
-  	<typeAlias type="com.project.gogi.review.vo.ReviewVO" alias="ReviewVO" />
+  	<typeAlias type="com.project.gogi.goods.vo.ReviewVO" alias="reviewVO" />
+  	<typeAlias type="com.project.gogi.goods.vo.ReviewImageVO" alias="reviewImageVO" />
   	<typeAlias type="com.project.gogi.serv.domain.CommentVO" alias="CommentVO" />
-  	
+
   </typeAliases>
 </configuration>

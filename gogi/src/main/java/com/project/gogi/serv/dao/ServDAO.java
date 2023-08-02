@@ -44,14 +44,17 @@ public interface ServDAO {
 	    public void updateServViewCnt(int cust_serv_no) throws Exception;
 	    
 	    //공지사항 끝
-
+ 
 		public boolean CheckAdmin(ServVO vo)  throws Exception;
 		
-		public String getServPw(int cust_serv_no) throws Exception;
+		 public String getServPw(int cust_serv_no) throws Exception;
 		
-	    //댓글 추가
-		public void addComment(CommentVO commentVO) throws DataAccessException;
-		
-		public List<CommentVO> selectBoardCommentByCode(CommentVO commentVO) throws DataAccessException;
-
+		//1:1문의 내역 조회
+		 public List<ServVO> selectReviewList(String mem_id) throws Exception;
+	    
+		 
+		   public void addComment(CommentVO commentVO) throws DataAccessException;
+		      
+		      public List<CommentVO> selectBoardCommentByCode(CommentVO commentVO) throws DataAccessException;
+		    
 }

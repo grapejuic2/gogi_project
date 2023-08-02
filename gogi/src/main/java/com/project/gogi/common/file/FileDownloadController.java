@@ -16,7 +16,8 @@ import net.coobird.thumbnailator.Thumbnails;
 public class FileDownloadController {
 	private static final String GOGI_IMAGE_REPO = "C:\\meatrule\\file_repo\\goods";
 	private static final String GOGI_IMAGE_REPO_PATH1 = "C:\\meatrule\\file_repo\\servBoard";
-
+	private static final String GOGI_IMAGE_REPO_PATH2 = "C:\\meatrule\\file_repo\\reviewBoard";
+	
 	@RequestMapping(value = "/download")
 	protected void download(@RequestParam("fileName") String fileName, @RequestParam("goods_id") int goods_id,
 			HttpServletResponse response) throws Exception {
@@ -63,30 +64,87 @@ public class FileDownloadController {
 		out.close();
 	}
 
+	@RequestMapping("/thumbnails.do")
+	protected void thumbnails(@RequestParam("fileName") String fileName, @RequestParam("goods_id") int goods_id,
+			HttpServletResponse response) throws Exception {
+
+		OutputStream out = response.getOutputStream();
+		String filePath = GOGI_IMAGE_REPO + "\\" + goods_id + "\\" + fileName;
+		File image = new File(filePath);
+		System.out.println(filePath);
+		
+		 int lastIndex=fileName.lastIndexOf("."); 
+		 String imageFileName=fileName.substring(0, lastIndex);
+		 System.out.println("썸네일2"+imageFileName);
+		 
+
+		if (image.exists()) {
+			Thumbnails.of(image).size(450, 450).outputFormat("png").toOutputStream(out);
+		} else {
+			return;
+		}
+		// 썸네일 파일 브라우저로 전송
+
+		byte[] buffer = new byte[1024 * 8];
+		out.write(buffer);
+
+		out.close();
+	}
+	
+	
 	@RequestMapping("/thumbnails2.do")
-	   protected void thumbnails2(@RequestParam("img_name") String img_name, @RequestParam("cust_serv_no") int cust_serv_no,
-	         HttpServletResponse response) throws Exception {
-	      
-	      OutputStream out = response.getOutputStream();
-	      String filePath = GOGI_IMAGE_REPO_PATH1 + "\\" + cust_serv_no + "\\" + img_name;
-	      File image = new File(filePath);
-	      System.out.println(filePath);
-	      
-	      int lastIndex=img_name.lastIndexOf("."); 
-	      String imageFileName=img_name.substring(0, lastIndex);
-	      System.out.println("serv 썸네일"+imageFileName);
-	      
-	      
-	      if (image.exists()) {
-	         Thumbnails.of(image).size(450, 450).outputFormat("png").toOutputStream(out);
-	      } else {
-	         return;
-	      }
-	      // 썸네일 파일 브라우저로 전송
-	      
-	      byte[] buffer = new byte[1024 * 8];
-	      out.write(buffer);
-	      
-	      out.close();
-	   }
+	protected void thumbnails2(@RequestParam("img_name") String img_name, @RequestParam("cust_serv_no") int cust_serv_no,
+			HttpServletResponse response) throws Exception {
+		
+		OutputStream out = response.getOutputStream();
+		String filePath = GOGI_IMAGE_REPO_PATH1 + "\\" + cust_serv_no + "\\" + img_name;
+		File image = new File(filePath);
+		System.out.println(filePath);
+		
+		int lastIndex=img_name.lastIndexOf("."); 
+		String imageFileName=img_name.substring(0, lastIndex);
+		System.out.println("serv 썸네일"+imageFileName);
+		
+		
+		if (image.exists()) {
+			Thumbnails.of(image).size(450, 450).outputFormat("png").toOutputStream(out);
+		} else {
+			return;
+		}
+		// 썸네일 파일 브라우저로 전송
+		
+		byte[] buffer = new byte[1024 * 8];
+		out.write(buffer);
+		
+		out.close();
+	}
+	
+	
+	@RequestMapping("/thumbnails3.do")
+	protected void thumbnails3(@RequestParam("img") String img_name, @RequestParam("revno") int rev_no,
+			HttpServletResponse response) throws Exception {
+		
+		OutputStream out = response.getOutputStream();
+		String filePath = GOGI_IMAGE_REPO_PATH2 + "\\" + rev_no + "\\" + img_name;
+		File image = new File(filePath);
+		System.out.println(filePath);
+		
+		int lastIndex=img_name.lastIndexOf("."); 
+		String imageFileName=img_name.substring(0, lastIndex);
+		System.out.println("review 썸네일"+imageFileName);
+		
+		
+		if (image.exists()) {
+			Thumbnails.of(image).size(450, 450).outputFormat("png").toOutputStream(out);
+		} else {
+			return;
+		}
+		// 썸네일 파일 브라우저로 전송
+		
+		byte[] buffer = new byte[1024 * 8];
+		out.write(buffer);
+		
+		out.close();
+	}
+
 }

@@ -188,18 +188,20 @@
 			    </form> 
 				<form id="commentList" name="commentList" method="post">
 				    <div id="CommentList"></div>
-				</form>
-					<div class="cmt-in hidden">
-				        <button type="button" class="bbtn btn-sm btn-primary greylist">수정</button>
-				        <button type="button" class="bbtn btn-sm btn-primary greylist">삭제</button>
-				    </div>
-				    <div class="admin-comment-in hidden">
-				        <button type="button" class="bbtn btn-sm btn-primary greylist">등록</button>
-				        <button type="button" class="bbtn btn-sm btn-primary greylist">수정</button>
-				        <button type="button" class="bbtn btn-sm btn-primary greylist">삭제</button>
-				    </div>
+					</form>
+						<div class="cmt-in hidden">
+						    <button type="button" class="bbtn btn-sm btn-primary greylist" onclick="editComment()">수정</button>
+						    <button type="button" class="bbtn btn-sm btn-primary greylist" onclick="deleteComment()">삭제</button>
+						</div>
+						
+						<!-- 댓글 admin -->
+						<div class="admin-comment-in hidden">
+						    <button type="button" class="bbtn btn-sm btn-primary greylist" onclick="addComment()">등록</button>
+						    <button type="button" class="bbtn btn-sm btn-primary greylist" onclick="editComment()">수정</button>
+						    <button type="button" class="bbtn btn-sm btn-primary greylist" onclick="deleteComment()">삭제</button>
+						</div>
 				    <div class="cmt-out">
-				    </div>
+				</div>
         	</div>
    		</div>
    		</div>
@@ -222,6 +224,17 @@
 		        toggleForm();
 		    });
 			
+			$(document).on("click", ".editComment", function () {
+
+			    const comment_id = $(this).siblings('mem_id').val();
+			    const comment_text = $(this).siblings('.').children('h5').text();
+			    const comment_writer = $(this).siblings('b').text();
+
+			    $("#comment_id").val(comment_id);
+			    $("#comment_text").val(comment_text);
+			    $("#comment_writer").val(comment_writer);
+
+			});
 		</script>
 	</body>
 </html>
