@@ -9,8 +9,17 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
 
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -18,13 +27,19 @@ import com.google.gson.JsonParser;
 import com.project.gogi.member.vo.MemberVO;
 
 @Service("socialService")
-public class SocialService {
-
+public class SocialService{
+	
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
+	private static final String MSG_SEND_SERVICE_URL = "https://kapi.kakao.com/v2/api/talk/memo/default/send";
+	private static final String SEND_SUCCESS_MSG = "메시지 전송에 성공했습니다.";
+	private static final String SEND_FAIL_MSG = "메시지 전송에 실패했습니다.";
+	private static final String SUCCESS_CODE = "0"; //kakao api에서 return해주는 success code 값
+	static String access_token ="";
+	
 	@Autowired
 	private MemberRepository mr;
 	
 	public String getReturnAccessToken(String code) {
-		String access_token = "";
 		String refresh_token = "";
 		String reqURL = "https://kauth.kakao.com/oauth/token";
 		
@@ -129,5 +144,5 @@ public class SocialService {
 			// 정보가 이미 있기 때문에 result를 리턴함.
 		}
 	}
-	
+
 }

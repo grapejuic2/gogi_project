@@ -105,12 +105,6 @@ height: 30px;
 			value = frm_mod_goods.goods_point.value;
 		} else if (attribute == 'goods_delivery_date') {
 			value = frm_mod_goods.goods_delivery_date.value;
-			/* 	}else if(attribute=='goods_page_total'){
-			 value=frm_mod_goods.goods_page_total.value;
-			 }else if(attribute=='goods_isbn'){
-			 value=frm_mod_goods.goods_isbn.value; */
-		} else if (attribute == 'goods_delivery_date') {
-			value = frm_mod_goods.goods_delivery_date.value;
 		} else if (attribute == 'goods_status') {
 			value = frm_mod_goods.goods_status.value;
 		} else if (attribute == 'goods_intro') {
@@ -387,8 +381,14 @@ height: 30px;
 						onClick="fn_modify_goods('${goods.goods_id }','goods_status')" />
 					</td>
 				</tr>
-				<tr>
-					<td colspan=3><br></td>
+					<tr>
+					<td>상품중량</td>
+					<td><input name="goods_weight" type="text"
+						value="${goods.goods_weight }" /></td>
+					<td><input type="button" value="수정반영"
+						class="btn btn-secondary btn-sm"
+						onClick="fn_modify_goods('${goods.goods_id }','goods_weight')" />
+					</td>
 				</tr>
 			</table>
 			<c:forEach var="item" items="${imageFileList }" varStatus="itemNum"

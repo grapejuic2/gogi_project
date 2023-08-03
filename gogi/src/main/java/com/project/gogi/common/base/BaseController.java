@@ -10,8 +10,10 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
@@ -19,8 +21,23 @@ import org.springframework.web.servlet.ModelAndView;
 import com.project.gogi.goods.vo.ImageFileVO;
 import com.project.gogi.goods.vo.ReviewImageVO;
 import com.project.gogi.serv.domain.ServImageFileVO;
+import com.project.gogi.social.AuthService;
+import com.project.gogi.social.CustomMessageService;
+import com.project.gogi.social.SocialService;
 
+@RestController
 public abstract class BaseController {
+	
+	@Autowired
+	SocialService socialService;
+	
+	@Autowired
+	AuthService authService;
+
+	@Autowired
+	CustomMessageService customMEssageService;
+
+	
 	private static final String GOGI_IMAGE_REPO="C:\\meatrule\\file_repo\\goods";
 	private static final String GOGI_IMAGE_REPO_PATH1 = "C:\\meatrule\\file_repo\\servBoard";
 	private static final String GOGI_IMAGE_REPO_PATH2 = "C:\\meatrule\\file_repo\\reviewBoard";
@@ -179,4 +196,13 @@ public abstract class BaseController {
 		return fileList;
 	}
 	
+	@RequestMapping(value="/kakao_callback", method = RequestMethod.GET)
+	public String serviceStart(String code) {
+		if(authService.getKakaoAuthToken(code)) {
+			customMEssageService.sendMyMessage();
+			return "메시지 전송 성공";
+		}else {
+			return "토큰발급 실패";
+		}
+	}
 }

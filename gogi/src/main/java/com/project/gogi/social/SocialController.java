@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.project.gogi.member.vo.MemberVO;
@@ -21,7 +22,7 @@ public class SocialController {
 	
 	@Autowired
 	private SocialService socialService;
-	
+
 	@RequestMapping(value="/kakao_login.do")
 	public String kakaoLogin() {
 		StringBuffer loginUrl = new StringBuffer();
@@ -36,7 +37,7 @@ public class SocialController {
 	@RequestMapping(value="/kakao_callback", method = RequestMethod.GET)
 	public String redirectkakao(@RequestParam String code, HttpSession session) throws IOException {
 		System.out.println(code);
-		
+
 		//접속토큰 get
 		String kakaoToken = socialService.getReturnAccessToken(code);
 		System.out.println(kakaoToken);
@@ -66,4 +67,5 @@ public class SocialController {
 	    mav.setViewName("redirect:/main/main.do");
 	    return mav;
 	}
+	
 }

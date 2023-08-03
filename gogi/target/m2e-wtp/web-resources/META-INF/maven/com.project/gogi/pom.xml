@@ -291,7 +291,12 @@
         <version>2.8.2</version> <!-- 최신 버전으로 변경 가능합니다. -->
     </dependency>
     
-
+	<!-- https://mvnrepository.com/artifact/com.fasterxml/jackson-xml-databind -->
+	<dependency>
+	    <groupId>com.fasterxml</groupId>
+	    <artifactId>jackson-xml-databind</artifactId>
+	    <version>0.6.2</version>
+	</dependency>
     
 	</dependencies>
 	

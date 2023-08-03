@@ -1,6 +1,7 @@
 package com.project.gogi.serv.controller;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -15,6 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
+import org.codehaus.jackson.JsonProcessingException;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,6 +58,8 @@ public class ServController extends BaseController {
 	private ServVO servVO;
 	@Autowired
 	private MemberVO memberVO;
+	@Autowired
+	private CommentVO commentVO;
 
 	// 파일 저장 위치
 
@@ -288,24 +293,35 @@ public class ServController extends BaseController {
 		return "success";
 	}
 	
-	@RequestMapping(value = "/replyComment.do", method = RequestMethod.GET)
-	@ResponseBody
-	public List<CommentVO> replyComment(@RequestParam("cmt_parent_num") int cmt_parent_num, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
-		
-		HttpSession session = request.getSession();
-		MemberVO memberVO = (MemberVO) session.getAttribute("memberInfo");
-	    try {
-	    	if (memberVO != null) {
-	    	
-	        List<CommentVO> replyCmt = servService.replyComment(cmt_parent_num);
-	        return replyCmt;
-	    	}
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	        return new ArrayList<>(); // 오류 발생 시 빈 리스트 반환
-	    }
-	}
+	/*
+	 * @RequestMapping(value="/addReply" , method=RequestMethod.POST, produces
+	 * ="application/text; charset=UTF-8")
+	 * 
+	 * @ResponseBody public String ReplyComment(HttpServletRequest request,
+	 * HttpServletResponse response) throws IOException { CommentVO commentVO = new
+	 * CommentVO(); HttpSession session = request.getSession(); int cust_serv_no =
+	 * (int)session.getAttribute("cust_serv_no"); String mem_id = null;
+	 * 
+	 * MemberVO memberVO = (MemberVO) session.getAttribute("mem_id"); mem_id =
+	 * memberVO.getMem_id();
+	 * 
+	 * String cmt_parent_num = request.getParameter("cmt_parent_num");
+	 * 
+	 * commentVO.setCust_serv_no(cust_serv_no);
+	 * commentVO.setCmt_parent_num(Integer.parseInt(cmt_parent_num));
+	 * commentVO.setCmt_content(request.getParameter("cmt_content"));
+	 * commentVO.setMem_id(mem_id);
+	 * 
+	 * 
+	 * servService.replyComment(commentVO);
+	 * 
+	 * // 저장된 댓글을 다시 조회하여 반환 List<CommentVO> ac =
+	 * servService.replyComment(commentVO); ObjectMapper objectMapper = new
+	 * ObjectMapper(); String jsonString; try { jsonString =
+	 * objectMapper.writeValueAsString(ac); } catch (JsonProcessingException e) {
+	 * e.printStackTrace(); jsonString = "[]"; // 에러 발생 시 빈 배열을 반환하거나 다른 처리를 수행할 수
+	 * 있습니다. } System.out.println(jsonString); return jsonString; }
+	 */
 
 	@RequestMapping(value = "/commentList.do", produces = "application/json; charset=utf8", method = RequestMethod.GET)
 	@ResponseBody

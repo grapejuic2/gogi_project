@@ -81,16 +81,19 @@
 				<td><input name="goods_sales_price" type="text" size="40" /></td>
 			</tr>
 			
-<!-- 		<tr>
+	 		<tr>
 				<td >제품 구매 포인트</td>
 				<td><input name="goods_point" type="text" size="40" /></td>
-			</tr> -->
+			</tr>
 			
 			<tr>
 				<td >제품 등록일</td>
 				<td><input name="goods_delivery_date"  type="date" size="40" /></td>
 			</tr>
-			
+			<tr>
+				<td >제품 중량</td>
+				<td><input name="goods_weight"  type="text" size="40" /></td>
+			</tr>
 			<tr>
 				<td >제품종류</td>
 				<td>
