@@ -96,30 +96,64 @@
         });
     }
     
+    function submitReplyForm(button) {
+        var replyContent = $(button).closest('.reply-form').find("#reply_content").val();
+        var parentCommentId = $(button).closest('.reply-form').find("#parent_comment_id").val();
+        var parentCommentAuthor = $(button).closest('.reply-form').find("#parent_comment_author").val();
+        var custServNo = $("#cust_serv_no").val(); // 현재 게시물의 cust_serv_no
+
+        if (replyContent === null || replyContent.trim() === "") {
+            alert("대댓글 내용을 입력해주세요.");
+        } else {
+            $.ajax({
+                type: 'POST',
+                url: "${contextPath}/serv/addReply.do",
+                data: {
+                    cust_serv_no: custServNo,
+                    parent_comment_id: parentCommentId,
+                    parent_comment_author: parentCommentAuthor,
+                    reply_content: replyContent
+                },
+                success: function (data) {
+                    if (data === "success") {
+                        alert("대댓글을 등록했습니다.");
+                        getCommentList(); // 댓글 목록을 갱신하여 표시
+                        $(button).closest('.reply-form').find("#reply_content").val(""); // 대댓글 작성 폼 텍스트 영역 초기화
+                    }
+                },
+                error: function (request, status, error) {
+                    alert("대댓글 등록에 실패했습니다.");
+                }
+            });
+        }
+    }
     
     $(document).on("click", ".reply-button", function (event) {
         event.preventDefault(); // 기본 동작 막기
-        var parentCommentId = $(this).data("cmtid");
-        var parentCommentAuthor = $(this).data("memid");
+
+        // 클릭된 "답글 달기" 버튼이 속한 댓글에 대한 정보 가져오기
+        var parentCommentId = $(this).data("parent_comment_id"); // data-cmtid 속성에서 값을 가져옴
+        var parentCommentAuthor = $(this).data("memid"); // data-memid 속성에서 값을 가져옴
+        alert("parentCommentId: "+ parentCommentId + "<br>" +"parentCommentAuthor: "+ parentCommentAuthor);
+        
+        // 대댓글 작성 폼 토글
         showReplyForm(parentCommentId, parentCommentAuthor, this);
     });
-
+    
     function showReplyForm(parentCommentId, parentCommentAuthor, button) {
         var replyFormHtml = '<div class="reply-form">' +
             '<table>' +
             '<tr>' +
             '<td>' +
             '<textarea style="width: 700px; height: 40px;" rows="3" cols="10" id="reply_content" name="reply_content" placeholder="대댓글을 입력하세요"></textarea>' +
-            '<input type="hidden" id="parent_comment_id" name="parent_comment_id" value="' + parentCommentId + '">' +
-            '<input type="hidden" id="parent_comment_author" name="parent_comment_author" value="' + parentCommentAuthor + '">' +
-            '<input type="button" value="등록" class="cmt_btn" onClick="submitReplyForm(this)">' + // this를 넘겨서 클릭된 버튼을 구분하도록 변경
+            '<input type="hidden" id="parent_comment_id" name="cmt_parent_num" value="' + parentCommentId + '">' +
+            '<input type="hidden" id="parent_comment_author" name="mem_id" value="' + parentCommentAuthor + '">' +
+            '<input type="button" value="등록" class="cmt_btn" onClick="submitReplyForm(this)">' +
             '</td>' +
             '</tr>' +
             '</table>' +
             '</div>';
-        // 클릭된 버튼에 해당하는 댓글 아래에 있는 답글 폼 컨테이너를 찾아서 HTML을 추가합니다.
-        //$(button).closest('.cmt').find('.replyFormContainer').html(replyFormHtml);
-        // 클릭된 버튼에 해당하는 댓글 아래에 있는 답글 폼 컨테이너를 찾아서 HTML을 추가합니다.
+
         var replyFormContainer = $(button).closest('.cmt').find('.replyFormContainer');
         var isReplyFormVisible = replyFormContainer.hasClass('showing');
         if (isReplyFormVisible) {
@@ -129,38 +163,7 @@
         }
     }
 
-	
-	function submitReplyForm() {
-	    var replyContent = $("#reply_content").val();
-	    var parentCommentId = $("#parent_comment_id").val();
-	    var parentCommentAuthor = $("#parent_comment_author").val();
-
-	    if (replyContent === null || replyContent.trim() === "") {
-	        alert("대댓글 내용을 입력해주세요.");
-	    } else {
-	        $.ajax({
-	            type: 'POST',
-	            url: "<c:url value='/serv/addReply.do'/>", // 대댓글 추가에 대한 실제 URL로 변경
-	            data: {
-	                cust_serv_no: ${servRead.cust_serv_no},
-	                parent_comment_id: parentCommentId,
-	                parent_comment_author: parentCommentAuthor,
-	                reply_content: replyContent
-	            },
-	            success: function (data) {
-	                if (data === "success") {
-	                    alert("대댓글을 등록했습니다.");
-	                    getCommentList(); // 대댓글 등록 후 댓글 목록을 새로고침하여 표시
-	                    $("#reply_content").val(""); // 대댓글 작성 폼 텍스트 영역을 초기화
-	                    $("#replyFormContainer").html(""); // 대댓글 작성 폼을 숨김
-	                }
-	            },
-	            error: function (request, status, error) {
-	                alert("대댓글 등록에 실패했습니다.");
-	            }
-	        });
-	    }
-	}
+ 
 </script>
 <style>
    .cmt {
@@ -289,8 +292,7 @@
 				                 <td>
 				                    <h2 style="margin-bottom: 10px;"><strong>${item.mem_id}<span class="cmt_date">${item.cmt_date}</span></strong></h2>
 				                    ${item.cmt_content}
-				                  
-				                   <a data-cmtid="${item.cmt_number}" data-memid="${item.mem_id}" class="reply-button">답글 달기</a>
+				                  <a href='#' class='reply-button' data-cmtid='${item.cmt_number}' data-memid='${item.mem_id}' data-parent_comment_id='${item.cmt_parent_num}'>답글 달기</a>
 				                 </td>
 				                 </tr>
 				                <tr>

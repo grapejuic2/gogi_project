@@ -1,7 +1,6 @@
 package com.project.gogi.serv.controller;
 
 import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -31,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.project.gogi.common.base.BaseController;
@@ -56,8 +56,6 @@ public class ServController extends BaseController {
 	private ServVO servVO;
 	@Autowired
 	private MemberVO memberVO;
-	@Autowired
-	private CommentVO commentVO;
 
 	// 파일 저장 위치
 
@@ -264,36 +262,27 @@ public class ServController extends BaseController {
 		}
 		return "success";
 	}
-	
-	@RequestMapping(value="/addReply.do", method=RequestMethod.POST)
+
+	// 대댓글 등록
+	@RequestMapping(value = "/addReply.do", method = RequestMethod.POST)
 	@ResponseBody
-	 public String addReply(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		
-		 	CommentVO CommentVO = new CommentVO();
-		 	HttpSession session = request.getSession();
-		 	int cust_serv_no = (int)session.getAttribute("cust_serv_no");	
-		 	String mem_id = null;
-		 	
-			MemberVO memberVO = (MemberVO) session.getAttribute("mem_id");
-			mem_id = memberVO.getMem_id();
-			
-			String rc = request.getParameter("cmt_parent_num");
-			
-			CommentVO.setCust_serv_no(cust_serv_no);
-		 	CommentVO.setCmt_parent_num(Integer.parseInt(rc));
-		 	CommentVO.setCmt_content(request.getParameter("cmt_content"));
-		 	CommentVO.setMem_id(mem_id);
-		 	
-			try {
-				if (memberVO != null) {
-					commentVO.setMem_id(memberVO.getMem_id());
-					servService.addComment(commentVO);
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
+	public String addReply(@ModelAttribute("CommentVO") CommentVO commentVO, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		HttpSession session = request.getSession();
+		MemberVO memberVO = (MemberVO) session.getAttribute("memberInfo");
+
+		try {
+			if (memberVO != null) {
+				commentVO.setMem_id(memberVO.getMem_id());
+				int parentCommentId = Integer.parseInt(request.getParameter("parent_comment_id"));
+				commentVO.setCmt_parent_num(parentCommentId);
+				servService.addReply(commentVO);
 			}
-			return "success";
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+		return "success";
+	}
 
 	@RequestMapping(value = "/commentList.do", produces = "application/json; charset=utf8", method = RequestMethod.GET)
 	@ResponseBody

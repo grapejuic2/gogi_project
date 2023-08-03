@@ -45,6 +45,8 @@ public interface ServService {
 	
 	//고객센터 댓글 리스트 조회
 	public List<CommentVO> selectBoardCommentByCode(CommentVO commentVO) throws Exception;
+
+	void addReply(CommentVO commentVO) throws Exception;
 	
 
 }
