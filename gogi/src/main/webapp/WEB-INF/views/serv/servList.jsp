@@ -2,10 +2,10 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
- 
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -26,6 +26,8 @@
 	font-size: 30px;
 	font-weight: 700;
 	margin-bottom: 50px;
+	text-align: center; /* 0802 오동림 수정 */
+	margin-top: 35px; /* 0802 오동림 수정 */
 }
 </style>
 </head>
@@ -33,13 +35,7 @@
 
 	<div id="Notice" class="tabcontent container1"
 		style="display: block; margin-top: 20px;">
-		<h3 class="serv_title" style="text-align: center;">고객센터</h3>
-
-
-
-
-
-
+		<h3 class="serv_title">고객센터</h3>
 		<div id="Cust_serv_page">
 			<div class="table-responsive">
 				<table class="table table-striped table-sm">
@@ -72,37 +68,38 @@
 
 								<c:forEach var="servList" items="${servList}" varStatus="status">
 									<tr style="text-align: center;">
-										<td class="center fgl"><c:out value="${servList.cust_serv_no}" /></td>
-										<td class="left fgl">
-										
-										<c:if test="${servList.cust_serv_notice eq 1}">
-												<img src="${contextPath}/resources/images/serv/hit.png"
-													width="30px" alt="new" />
-										</c:if>
-										<c:if test="${servList.cust_serv_secret eq '1'}">
+										<td class="center fgl"><c:out
+												value="${servList.cust_serv_no}" /></td>
+										<td class="left fgl"><c:if
+												test="${servList.cust_serv_notice eq 1}">
 												<img
-													src="${pageContext.request.contextPath}/resources/images/serv/icn_security.png"  width="25px"
-													alt="비밀글" />
+													src="${contextPath}/resources/images/serv/green-megaphone.png"
+													width="30px" alt="new" />
+											</c:if> <c:if test="${servList.cust_serv_secret eq '1'}">
+												<img
+													src="${pageContext.request.contextPath}/resources/images/serv/icn_security.png"
+													width="25px" alt="비밀글" />
 												<c:choose>
-												<c:when test="${isLogOn == true && (mem_id=='admin' || servList.mem_id eq mem_id)}">
-														  <a href="${contextPath}/serv/read.do?cust_serv_no=${servList.cust_serv_no}">
-														  <c:out value="${servList.cust_serv_title}"/></a>
+													<c:when
+														test="${isLogOn == true && (mem_id=='admin' || servList.mem_id eq mem_id)}">
+														<a
+															href="${contextPath}/serv/read.do?cust_serv_no=${servList.cust_serv_no}">
+															<c:out value="${servList.cust_serv_title}" />
+														</a>
 													</c:when>
 													<c:otherwise>비밀글은 작성자와 관리자만 볼 수 있습니다.</c:otherwise>
 												</c:choose>
-											</c:if>
-											
-											 <c:if test="${servList.cust_serv_secret eq '0'}">
-												  <a href="${contextPath}/serv/read.do?cust_serv_no=${servList.cust_serv_no}">
-												  	<c:out value="${servList.cust_serv_title}"/>
-												  </a>
-											</c:if>
-											
-										</td>
-										<td class="center fgl"> 
-											<c:out value="${servList.cust_serv_dateStr}"/></td>
+											</c:if> <c:if test="${servList.cust_serv_secret eq '0'}">
+												<a
+													href="${contextPath}/serv/read.do?cust_serv_no=${servList.cust_serv_no}">
+													<c:out value="${servList.cust_serv_title}" />
+												</a>
+											</c:if></td>
+										<td class="center fgl"><c:out
+												value="${servList.cust_serv_dateStr}" /></td>
 										<td class="center fgl"><c:out value="${servList.mem_id}" /></td>
-										<td  class="center fgl"><c:out value="${servList.cust_serv_hits}" /></td>
+										<td class="center fgl"><c:out
+												value="${servList.cust_serv_hits}" /></td>
 
 									</tr>
 								</c:forEach>
@@ -116,7 +113,8 @@
 				<!-- 로그인 상태 -->
 				<c:if test="${isLogOn == true }">
 					<div class="writeButton">
-						<button type="button" class="btn btn-sm btn-primary greylist  " id="btnWriteForm">
+						<button type="button" class="btn btn-sm btn-primary greylist  "
+							id="btnWriteForm">
 							<a class="atw" href="${contextPath}/serv/write.do">글쓰기</a>
 						</button>
 					</div>

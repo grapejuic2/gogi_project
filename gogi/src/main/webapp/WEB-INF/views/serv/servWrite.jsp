@@ -165,15 +165,21 @@ h1 {
 						</td>
 					</tr>
 	 
-					<!-- 8.1 구태선 -->
-				 
-					<tr>
-						<th width="10%" class="text-center   fg lb fw">공지글 설정</th>
-						<td width="90%" class="text-left fgl" style="font-size: 15px;">
-							<input type="radio" value="1" name="cust_serv_notice" class="bordered-input"/>공지글  
-							<input type="radio" value="0" name="cust_serv_notice" class="bordered-input"/>일반글
-						</td>
-					</tr>
+				<!-- 8.2 구태선 -->
+		             <c:choose>
+		                <c:when test="${isLogOn == true && mem_id=='admin' }">
+		                  <tr>
+		                     <th width="10%" class="text-center   fg lb fw">공지글 설정</th>
+		                     <td width="90%" class="text-left fgl" style="font-size: 15px;">
+		                        <input type="checkbox"name="cust_serv_notice"  value="1" class="bordered-input" >공지글
+		                     </td>
+		                  </tr>
+		               </c:when>
+		               <c:otherwise>
+		                       <!-- mem_id가 admin이 아닌 경우, 체크박스를 비활성화하고 기본값을 0로 설정 -->
+		                          <input type="hidden" name="cust_serv_notice" value="0" class="bordered-input">
+		                </c:otherwise>
+		            </c:choose>   
 				<!-- 비밀글 설정 -->
 				<tr>
 						<th width="15%" class="text-center   fg lb fw">비밀글 설정</th>

@@ -16,8 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
-import org.codehaus.jackson.JsonProcessingException;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -234,52 +232,26 @@ public class ServController extends BaseController {
 	}
 
 	// 게시물 수정 페이지 이동
-//		@RequestMapping(value = "/modify.do", method = RequestMethod.GET)
-//		public String getServModify(@RequestParam("cust_serv_no") int cust_serv_no, Model model) throws Exception {
-//		    ServVO vo = servService.ServRead(cust_serv_no);
-//		    model.addAttribute("servRead", vo);
-//		    return "serv/servModify";
-//		}
+	@RequestMapping(value = "/modify.do", method = RequestMethod.GET)
+	public String getServModify(@RequestParam("cust_serv_no") int cust_serv_no, Model model) throws Exception {
+		Map<String, Object> servMap = servService.ServRead(cust_serv_no);
+		model.addAttribute("servMap", servMap);
+		System.out.println("게시물수정:" + servMap.toString());
+		return "serv/servModify";
+	}
 
 	// 게시물 수정 처리
-//	    @RequestMapping(value = "/modify.do", method = RequestMethod.POST)
-//	    @ResponseBody
-//	    public Map<String, Object> postServModify(ServVO vo) throws Exception {
-//	        Map<String, Object> result = new HashMap<>();
-//	        
-//	        ServVO servFromDB = servService.ServRead(cust_serv_no);
-//	        String enteredPassword = vo.getCust_serv_pw();
-//
-//	        if (servFromDB == null) {
-//	            result.put("success", false);
-//	            result.put("message", "해당 게시물을 찾을 수 없습니다.");
-//	            return result;
-//	        }
-//
-//	        String storedPassword = servFromDB.getCust_serv_pw();
-//
-//	        if (storedPassword.equals(enteredPassword)) {
-//	        	servService.ServUpdate(vo);
-//	            result.put("success", true);
-//	            result.put("message", "게시물이 수정되었습니다.");
-//	        } else {
-//	            result.put("success", false);
-//	            result.put("message", "일치하지 않는 비밀번호입니다.");
-//	        }
-//
-//	        return result;
-//	    }
-//		    
-//	    
-//	    
-//	    
-//	    
+	@RequestMapping(value = "/modify.do", method = RequestMethod.POST)
+	public String postServModify(ServVO vo) throws Exception {
+		servService.ServUpdate(vo);
+		int cust_serv_no = vo.getCust_serv_no();
+		return "serv/read.do?cust_serv_no=" + cust_serv_no;
+	}
 
 	@RequestMapping(value = "/addComment.do", method = RequestMethod.POST)
 	@ResponseBody
 	public String addComment(@ModelAttribute("CommentVO") CommentVO commentVO, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		
 		HttpSession session = request.getSession();
 		MemberVO memberVO = (MemberVO) session.getAttribute("memberInfo");
 		try {
@@ -293,35 +265,35 @@ public class ServController extends BaseController {
 		return "success";
 	}
 	
-	/*
-	 * @RequestMapping(value="/addReply" , method=RequestMethod.POST, produces
-	 * ="application/text; charset=UTF-8")
-	 * 
-	 * @ResponseBody public String ReplyComment(HttpServletRequest request,
-	 * HttpServletResponse response) throws IOException { CommentVO commentVO = new
-	 * CommentVO(); HttpSession session = request.getSession(); int cust_serv_no =
-	 * (int)session.getAttribute("cust_serv_no"); String mem_id = null;
-	 * 
-	 * MemberVO memberVO = (MemberVO) session.getAttribute("mem_id"); mem_id =
-	 * memberVO.getMem_id();
-	 * 
-	 * String cmt_parent_num = request.getParameter("cmt_parent_num");
-	 * 
-	 * commentVO.setCust_serv_no(cust_serv_no);
-	 * commentVO.setCmt_parent_num(Integer.parseInt(cmt_parent_num));
-	 * commentVO.setCmt_content(request.getParameter("cmt_content"));
-	 * commentVO.setMem_id(mem_id);
-	 * 
-	 * 
-	 * servService.replyComment(commentVO);
-	 * 
-	 * // 저장된 댓글을 다시 조회하여 반환 List<CommentVO> ac =
-	 * servService.replyComment(commentVO); ObjectMapper objectMapper = new
-	 * ObjectMapper(); String jsonString; try { jsonString =
-	 * objectMapper.writeValueAsString(ac); } catch (JsonProcessingException e) {
-	 * e.printStackTrace(); jsonString = "[]"; // 에러 발생 시 빈 배열을 반환하거나 다른 처리를 수행할 수
-	 * 있습니다. } System.out.println(jsonString); return jsonString; }
-	 */
+	@RequestMapping(value="/addReply.do", method=RequestMethod.POST)
+	@ResponseBody
+	 public String addReply(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		
+		 	CommentVO CommentVO = new CommentVO();
+		 	HttpSession session = request.getSession();
+		 	int cust_serv_no = (int)session.getAttribute("cust_serv_no");	
+		 	String mem_id = null;
+		 	
+			MemberVO memberVO = (MemberVO) session.getAttribute("mem_id");
+			mem_id = memberVO.getMem_id();
+			
+			String rc = request.getParameter("cmt_parent_num");
+			
+			CommentVO.setCust_serv_no(cust_serv_no);
+		 	CommentVO.setCmt_parent_num(Integer.parseInt(rc));
+		 	CommentVO.setCmt_content(request.getParameter("cmt_content"));
+		 	CommentVO.setMem_id(mem_id);
+		 	
+			try {
+				if (memberVO != null) {
+					commentVO.setMem_id(memberVO.getMem_id());
+					servService.addComment(commentVO);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return "success";
+		}
 
 	@RequestMapping(value = "/commentList.do", produces = "application/json; charset=utf8", method = RequestMethod.GET)
 	@ResponseBody

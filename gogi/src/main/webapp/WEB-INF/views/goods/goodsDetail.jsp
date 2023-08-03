@@ -148,7 +148,7 @@
 					<!-- Tab 이름 -->
 					<div class="tab">
 						<button class="tablinks" onclick="deliveryOpen(event, 'goodsDetail')">상품설명</button>
-						<button class="tablinks" onclick="deliveryOpen(event, 'review')">리뷰</button>
+						<button class="tablinks" onclick="deliveryOpen(event, 'review')">리뷰(${reviewListSize})</button>
 						<button class="tablinks" onclick="deliveryOpen(event, 'goodsInfo')">상품안내</button>
 					</div>
 	
@@ -179,6 +179,14 @@
 				<div id="review" class="tabcontent">
 				    <div class="reviewList" style="width: 100%; display: flex; justify-content: center; text-align: center;">
 				        <section style="width: 1000px; display: flex; flex-direction: column; align-items: center; text-align: center;justify-content: center;">
+				            
+				            <c:choose>
+							<c:when test="${empty review}">
+								<tr style="height: 50px;">
+									<td colspan="5" class="fixed" style="align-content: center"><div style="margin-top: 5px; font-weight: 700; font-size: 17px;height: 300px;display: flex;align-items: center;">작성된 리뷰가 없습니다.</div></td>
+								</tr>
+							</c:when>
+							<c:otherwise>
 				            <c:forEach items="${review }" var="review">
 				                <li style="border: 1px solid #ccc; margin-top:30px; margin-bottom:30px;width: 900px; list-style: none;display: flex; align-items: center;">
 				                   <div style="display: flex; flex-direction: column; width: 100%;padding:15 15 15 0px;">
@@ -210,9 +218,11 @@
 				                    <!-- 이미지 파일 표시 부분 끝 -->
 				                </li>
 				            </c:forEach>
+				            </c:otherwise>
+				            </c:choose>
 				        </section>
 				    </div> 				
-				</div>
+				</div>  
                      
             <script>
               // 리뷰글 총 갯수를 출력하는 함수

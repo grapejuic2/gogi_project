@@ -15,4 +15,5 @@ public interface mypageService {
 	public void cancelOrder(String order_id) throws Exception;
 	public int deleteMember(String mem_id) throws Exception;
 	public List<ReviewVO> reviewList(String mem_id) throws Exception;
+	public void reviewDelete(int rev_no) throws Exception;
 }

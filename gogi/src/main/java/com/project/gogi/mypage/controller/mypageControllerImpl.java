@@ -147,10 +147,9 @@ public class mypageControllerImpl extends BaseController implements mypageContro
 	@RequestMapping(value="/deleteMember.do", method = RequestMethod.POST)
 	public ModelAndView deleteMember(@RequestParam("mem_id") String mem_id, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		HttpSession session=request.getSession();
-		session.setAttribute("isLogon", false);
+		session.setAttribute("isLogon", true);
 		session.setAttribute("memberInfo", memberVO);
 		mypageService.deleteMember(mem_id);
-		System.out.println("삭제되는 아이디 : "+mem_id);
 		ModelAndView mav = new ModelAndView("redirect:/main/main.do");
 		return mav;
 	}
@@ -173,6 +172,15 @@ public class mypageControllerImpl extends BaseController implements mypageContro
 		return mav;
 	}
 	
+	//마이 리뷰 삭제
+	@Override
+	@RequestMapping(value="/myReivewDelete.do")
+	public ModelAndView myReviewDelete(@RequestParam("rev_no") int rev_no, HttpServletRequest request, HttpServletResponse response) throws Exception {		
+		mypageService.reviewDelete(rev_no);
+		return new ModelAndView("redirect:/mypage/myWriteList.do");
+	}
+	
+	
 	// /mypage/*Form.do 처리
 	@RequestMapping(value = "/*Form.do", method = RequestMethod.GET)
 	public ModelAndView form(@RequestParam(value = "result", required = false) String result,
@@ -190,6 +198,8 @@ public class mypageControllerImpl extends BaseController implements mypageContro
 		mav.setViewName(viewName);
 		return mav;
 	}
+
+	
 
 
 

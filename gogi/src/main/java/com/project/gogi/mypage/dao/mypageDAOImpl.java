@@ -56,4 +56,9 @@ public class mypageDAOImpl implements mypageDAO{
 		return reviewList;
 	}
 
+	@Override
+	public void reviewDelete(int rev_no) throws Exception {
+		sqlSession.delete("mapper.review.reviewDelete", rev_no);
+	}
+
 }

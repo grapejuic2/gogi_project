@@ -35,6 +35,8 @@ public interface mypageController {
 			HttpServletResponse response) throws Exception;
 	
 	//마이 리뷰, 1:1문의
-		public ModelAndView myWrite( HttpServletRequest request,
-				HttpServletResponse response) throws Exception;
+	public ModelAndView myWrite( HttpServletRequest request, HttpServletResponse response) throws Exception;
+		
+	//마이 리뷰 삭제
+	public ModelAndView myReviewDelete(@RequestParam("rev_no") int rev_no, HttpServletRequest request, HttpServletResponse response) throws Exception;
 }

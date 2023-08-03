@@ -43,7 +43,6 @@ public class AdminGoodsServiceImpl implements AdminGoodsService {
 	public List<GoodsVO> listNewGoods(Map condMap) throws Exception{
 		return adminGoodsDAO.selectNewGoodsList(condMap);
 	}
-	
 	@Override
 	public Map goodsDetail(int goods_id) throws Exception {
 		Map goodsMap = new HashMap();

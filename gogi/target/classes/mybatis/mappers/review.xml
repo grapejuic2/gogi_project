@@ -65,7 +65,7 @@
    
    
    <!-- 삭제 -->
-	  <delete id="servDelete" parameterType="int">
+	  <delete id="reviewDelete" parameterType="int">
 		 delete from
 		 GOGI_REVIEW_BOARD
 		 where rev_no = #{rev_no}

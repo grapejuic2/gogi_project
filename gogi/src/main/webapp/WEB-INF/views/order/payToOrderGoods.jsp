@@ -268,9 +268,9 @@ margin-top: 20px;
 		<TABLE >
 			<TBODY >
 				<TR class="dot_line" style="text-align: left;">
-					<TD class="fixed_join">배송방법</TD>
+					<TD class="fixed_join">희망 배송일</TD>
 					<TD>
-					   ${myOrderInfo.order_delivery_method }
+					   ${myOrderInfo.order_deli_hope_date }
 				    </TD>
 				</TR>
 				<TR class="dot_line">
@@ -296,12 +296,7 @@ margin-top: 20px;
 					${myOrderInfo.order_delivery_message}
 					</TD>
 				</TR>
-			 	<TR class="dot_line">
-					<TD class="fixed_join">선물 포장</TD>
-					<td>
-					${myOrderInfo.gift_wrapping}
-					</td>
-				</TR>
+
 			</TBODY>
 		</TABLE>
 		
@@ -336,7 +331,7 @@ margin-top: 20px;
 				<TR class="dot_line">
 					<TD class="fixed_join">결제금액</TD>
 					<TD>
-					   ${myOrderInfo.card_pay_month }
+					   ${myOrderInfo.final_total_price }
 				    </TD>
 				</TR>
 				

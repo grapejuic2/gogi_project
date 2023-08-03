@@ -47,14 +47,14 @@ public interface ServDAO {
  
 		public boolean CheckAdmin(ServVO vo)  throws Exception;
 		
-		 public String getServPw(int cust_serv_no) throws Exception;
+		public String getServPw(int cust_serv_no) throws Exception;
 		
 		//1:1문의 내역 조회
-		 public List<ServVO> selectReviewList(String mem_id) throws Exception;
+		public List<ServVO> selectReviewList(String mem_id) throws Exception;
 	    
 		 
-		   public void addComment(CommentVO commentVO) throws DataAccessException;
+		public void addComment(CommentVO commentVO) throws DataAccessException;
 		      
-		      public List<CommentVO> selectBoardCommentByCode(CommentVO commentVO) throws DataAccessException;
+	    public List<CommentVO> selectBoardCommentByCode(CommentVO commentVO) throws DataAccessException;
 		    
 }

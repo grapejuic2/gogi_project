@@ -99,6 +99,10 @@ public class GoodsControllerImpl extends BaseController implements GoodsControll
 		
 		//리뷰 목록 가져오기
 		List<ReviewVO> review = goodsService.reviewList(goods_id);
+		//해당 상품의 리뷰 개수 
+		int reviewListSize=review.size();
+		System.out.println(reviewListSize+"개");
+		mav.addObject("reviewListSize", reviewListSize);
 		mav.addObject("review", review);
 		
 		// 리뷰 이미지 가져오기

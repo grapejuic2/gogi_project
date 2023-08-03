@@ -64,6 +64,9 @@ ul.nav.navbar-nav li a:hover {
 .navbar .dropdown-menu .dropdown-toggle {
     z-index: 9999;
  }
+ .logged-out{ /* 0802 21:57분 오동림 추가 */
+ margin-top: 25px;
+ }
 </style>
 <title>Bootstrap Example</title>
 <meta charset="utf-8">
@@ -95,7 +98,7 @@ ul.nav.navbar-nav li a:hover {
 		<ul class="nav navbar-nav navbar-right" style="vertical-align: middle;margin">		
 			 <c:choose>
 		           <c:when test="${isLogon == true and not empty memberInfo }">
-		             <div style="margin-top: 1.5px;font-size: 14px;">${memberInfo.mem_name} 님 안녕하세요!   보유 적립금:${memberInfo.mem_point}원</div>
+		             <div style="margin-top: 1.5px;font-size: 14px;text-align: right;margin-right: 13px;">${memberInfo.mem_name} 님 / <img width=20 src="${contextPath}/resources/images/nav/point.png">적립금 ${memberInfo.mem_point}원</div>
 		          </c:when>
 		       </c:choose>
 		    <li class="logged-out"><a href="${contextPath}/member/memberForm.do"><img width=20 src="${contextPath}/resources/images/nav/join.png"> 회원가입</a></li>
@@ -105,7 +108,7 @@ ul.nav.navbar-nav li a:hover {
             <a class="dropdown-toggle" data-toggle="dropdown" href="#" >
                 <img width=20 src="${contextPath}/resources/images/nav/mypage.png"> 마이페이지<span class="caret"></span>
             </a>
-	            <ul class="dropdown-menu" style="min-width: 120px;">
+	            <ul class="dropdown-menu" style="min-width: 105px;">
 	                <li style="width:130px;"><a href="${contextPath}/mypage/modifyMemForm.do">개인정보수정</a></li>
 	                <li><a href="${contextPath}/mypage/myWriteList.do">내가 남긴 글</a></li>
 	                <li><a href="${contextPath}/mypage/listMyOrderHistory.do">주문 내역</a></li>

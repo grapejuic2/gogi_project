@@ -62,8 +62,7 @@ public class ServDAOImpl implements ServDAO {
 	@Override
 	public ServVO ServRead(int cust_serv_no) throws Exception {
 		
-		return
-				 sql.selectOne(namespace + ".servRead", cust_serv_no); 
+		return sql.selectOne(namespace + ".servRead", cust_serv_no); 
 	}
 
 	//수정

@@ -211,8 +211,7 @@ border: none;
      <c:forEach var="item" items="${myOrderHistList }" varStatus="i">
         <c:choose>
           <c:when test="${item.order_id != pre_order_id }">   
-            <tr style="font-size: 15px; padding:10px ; border-top: 1px solid #ddd; /* 위쪽에 border 추가 */"> 
-                  
+            <tr style="font-size: 15px; padding:10px ; border-top: 1px solid #ddd; /* 위쪽에 border 추가 */">       
 				<td style="font-weight: 500;">
 				  ${item.order_id }
 				</td>
@@ -221,7 +220,6 @@ border: none;
 				<fmt:formatDate value="${item.order_time}" pattern="yy/MM/dd HH시 mm분" var="orderTime"/>
 				 ${orderTime}
 				</td>
-				
 				<td style="text-align: left;"> 				
 				   <c:forEach var="item2" items="${myOrderHistList}" varStatus="j">
 			          <c:if  test="${item.order_id == item2.order_id}" >
@@ -268,14 +266,9 @@ border: none;
 					${item.order_rec_name }
 				</td>
 				<td>
-				    <c:choose>
-				        <c:when test="${item.order_delivery_status =='delivery_prepared'}">
-				            <input type="button" class="cancel-order-btn" value="주문취소" data-order-id="${item.order_id}" />
-				        </c:when>
-				        <c:otherwise>
-				            <input type="button" class="cancel-order-btn" value="주문취소" data-order-id="${item.order_id}" />
-				        </c:otherwise>
-				    </c:choose>
+				   <c:if test="${item.order_delivery_status =='delivery_prepared'}">
+				       <input type="button" class="cancel-order-btn" value="주문취소" data-order-id="${item.order_id}" />
+				     </c:if>
 				</td>
 			<!-- 리뷰작성 모달창 내용  -->
 				<td>

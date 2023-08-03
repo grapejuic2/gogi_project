@@ -15,6 +15,7 @@ public class CommentVO {
 	private int depth;
 	
 	
+	
 	public String getMem_id() {
 		return mem_id;
 	}

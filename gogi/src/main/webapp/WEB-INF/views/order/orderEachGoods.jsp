@@ -14,6 +14,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <!-- jQuery 라이브러리 -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!-- jQuery UI 라이브러리 -->
@@ -35,7 +36,6 @@
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <!-- Bootstrap JS -->
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <!-- 주소검색 api -->
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <!-- 포트원 결제 -->
@@ -412,7 +412,7 @@ display: flex;
 					            <td style="font-weight: 700;"><span class="required" >*</span>최종 결제 금액</td>
 					            <td id="finalPrice">
 					                <p id="p_final_totalPrice">${final_total_order_price+delivery_fee}원</p>
-					                <input id="h_final_total_Price" type="hidden" value="${final_total_order_price}" />
+					                <input id="h_final_total_Price" type="hidden" name="final_total_price" value="${final_total_order_price}" />
 					            </td>
 					        </tr>
 					    </tbody>
@@ -521,17 +521,7 @@ display: flex;
 										
 								    </div>
 							    </td>
-							</tr>
-							<tr class="dot_line">
-								<td  class="fixed_join" style="vertical-align: top;">선물 포장</td>
-								<td>
-								<div class="input-container3" style="margin-bottom: 20px;">
-									<input type="radio" id="gift_wrapping" name="gift_wrapping" value="yes">예&nbsp;&nbsp;&nbsp; 
-									<input type="radio"  id="gift_wrapping" name="gift_wrapping" checked value="no">아니요
-								</div>	
-								</td>						
-							</tr>
-			
+							</tr>								
 					</table>
 				</div>	
           </div>
@@ -553,28 +543,15 @@ display: flex;
 								<td style="width: 33.33%;">
 								   <input type="radio" id="pay_method" name="pay_method" value="신용카드" onClick="fn_pay_card()" checked>신용카드 
 								</td>
-								<td style="width: 33.33%;">							   
-								   <input type="radio" id="pay_method" name="pay_method" value="실시간 계좌이체">실시간 계좌이체				  
-								</td>
-								<td style="width: 33.33%;">   
-								   <input type="radio" id="pay_method" name="pay_method" value="무통장 입금">무통장 입금							
-								</td>
-								<td>
-								</td>
-							</tr>
-							<tr>
 								<td  style="width: 33.33%;">
 								   <input type="radio" id="pay_method" name="pay_method" value="휴대폰결제" onClick="fn_pay_phone()">휴대폰 결제 
 								</td>
 								<td  style="width: 33.33%;">   
 								   <input type="radio" id="pay_method" name="pay_method" value="카카오페이">카카오페이
 								</td>
-								<td style="width: 33.33%;">    
-								   <input type="radio" id="pay_method" name="pay_method" value="페이코">페이코
-								</td>
-								<td>
-								</td>
-							</tr>							
+							
+							</tr>
+						
 					</table>
 					<div id="tr_pay_card" style="display:flex; box-sizing: border-box;margin-top: 20px;">
 								
@@ -618,7 +595,7 @@ display: flex;
       </div>
     </div>
     <div style="text-align: right;">
-    	<a href="javascript:fn_show_order_detail();"> 
+    	<a href="javascript:fn_process_pay_order();"> 
 			<input type="button" class="btn btn-secondary" value="최종 결제하기" style="background:#1D1D1D; color:white; height: 35px;margin-right: 5px;font-weight: 500;"/>
 		</a> 
 		<a href="${contextPath}/main/main.do"> 
@@ -692,10 +669,10 @@ display: flex;
 				   </tr>
 				   <tr>
 					  <td width=200px>
-					     배송방법:
+					     희망 배송일:
 					 </td>
 					 <td>
-					      <p id="p_order_deli_hope_date">배송방법</p>
+					      <p id="p_order_deli_hope_date">희망 배송일</p>
 					 </td>
 				   </tr>
 				   <tr>
@@ -722,14 +699,7 @@ display: flex;
 					      <p id="p_delivery_message">배송메시지</p>
 					 </td>
 				   </tr>
-				   <tr>
-					  <td width=200px>
-					     선물포장 여부:
-					 </td>
-					 <td align=left>
-					      <p id="p_gift_wrapping">선물포장</p>
-					 </td>
-				   </tr>
+
 				   <tr>
 					  <td width=200px>
 					     결제방법:
@@ -800,7 +770,6 @@ var goods_fileName="";
 
 var order_quantity;
 var each_goods_price;
-var total_order_goods_price;
 var total_order_goods_qty;
 var orderer_name;
 var receiver_name;
@@ -811,14 +780,16 @@ var receiver_hp_num;
 var delivery_address;
 var delivery_message;
 var delivery_method;
-var gift_wrapping;
 var pay_method;
 var card_com_name;
 var card_pay_month;
 var pay_orderer_hp_num;
 var order_deli_hope_date;
+var usePoint;
 
-function fn_show_order_detail(){
+
+
+function fn_process_pay_order(){
 	goods_id="";
 	goods_name="";
 	
@@ -833,8 +804,8 @@ function fn_show_order_detail(){
 	var h_final_total_Price=document.getElementById("h_final_total_Price");
 	var h_orderer_name=document.getElementById("h_orderer_name");
 	var i_receiver_name=document.getElementById("receiver_name");
-	
-	
+	var i_final_total_Price=document.getElementById("p_final_totalPrice");
+
 	if(h_goods_id.length <2 ||h_goods_id.length==null){
 		goods_id+=h_goods_id.value;
 	}else{
@@ -863,21 +834,14 @@ function fn_show_order_detail(){
 		}	
 	}
 	
-	
+	console.log(h_final_total_Price);
 	total_order_goods_price=h_final_total_Price.value;
+	alert("첫번째 토탈 프라이스:"+total_order_goods_price);
 	total_order_goods_qty=h_total_order_goods_qty.value;
 	
 
 		
-	var r_gift_wrapping  =  frm.gift_wrapping;
-	
-	
-	for(var i=0; i<r_gift_wrapping.length;i++){
-	  if(r_gift_wrapping[i].checked==true){
-		  gift_wrapping=r_gift_wrapping[i].value
-		 break;
-	  }
-	} 
+
 	
 	var r_pay_method  =  frm.pay_method;
 	
@@ -912,7 +876,6 @@ function fn_show_order_detail(){
 	var i_hp1=document.getElementById("hp1");
 	var i_hp2=document.getElementById("hp2");
 	var i_hp3=document.getElementById("hp3");
-
 	var i_zipcode=document.getElementById("zipcode");
 	var i_roadAddress=document.getElementById("roadAddress");
 	var i_jibunAddress=document.getElementById("jibunAddress");
@@ -920,114 +883,97 @@ function fn_show_order_detail(){
 	var i_delivery_message=document.getElementById("delivery_message");
 	var i_pay_method=document.getElementById("pay_method");
 	var i_order_deli_hope_date=document.getElementById("order_deli_hope_date");
+	var i_final_total_Price=document.getElementById("p_final_totalPrice");
 
 //	alert("총주문 금액:"+total_order_goods_price);
 	order_goods_qty=h_order_goods_qty.value;
 	//order_total_price=h_order_total_price.value;
 	
-	orderer_name=h_orderer_name.value;
-	receiver_name=i_receiver_name.value;
-	hp1=i_hp1.value;
-	hp2=i_hp2.value;
-	hp3=i_hp3.value;
-	hope_date=r_order_deli_hope_date.value;
-
 	
-	receiver_hp_num=hp1+"-"+hp2+"-"+hp3;
-	
+	orderer_name=h_orderer_name.value;	
+	receiver_name=i_receiver_name.value;	
+	hp1=i_hp1.value;	
+	hp2=i_hp2.value;	
+	hp3=i_hp3.value;	
+	order_deli_hope_date=r_order_deli_hope_date.value;	
+	//final_total_price = final_total_order_price.value;
+	usePoint=retention_point.value;
+	alert("사용한 포인트:"+usePoint);	
+	//alert("두번째 토탈 프라이스:"+final_total_price);	
+	receiver_hp_num=hp1+"-"+hp2+"-"+hp3;	
 	delivery_address=i_zipcode.value+"<br>"+
 					 i_roadAddress.value+"<br>"+
 					 "["+i_jibunAddress.value+"]<br>"+
-								  i_namujiAddress.value;
-	
+								  i_namujiAddress.value;	
 	delivery_message=i_delivery_message.value;
-	
-	var p_order_goods_id=document.getElementById("p_order_goods_id");
-	var p_order_goods_title=document.getElementById("p_order_goods_title");
-	var p_order_goods_qty=document.getElementById("p_order_goods_qty");
-	var p_total_order_goods_qty=document.getElementById("p_total_order_goods_qty");
-	var p_total_order_goods_price=document.getElementById("p_total_order_goods_price");
-	var p_orderer_name=document.getElementById("p_orderer_name");
-	var p_receiver_name=document.getElementById("p_receiver_name");
-	var p_order_deli_hope_date=document.getElementById("p_order_deli_hope_date");
-	var p_receiver_hp_num=document.getElementById("p_receiver_hp_num");
-	var p_delivery_address=document.getElementById("p_delivery_address");
-	var p_delivery_message=document.getElementById("p_delivery_message");
-	var p_pay_method=document.getElementById("p_pay_method");
-	
-	p_order_goods_id.innerHTML=goods_id;
-	p_order_goods_title.innerHTML=goods_title;
-	p_total_order_goods_qty.innerHTML=total_order_goods_qty+"개";
-	p_total_order_goods_price.innerHTML=total_order_goods_price+"원";
-	p_orderer_name.innerHTML=orderer_name;
-	p_receiver_name.innerHTML=receiver_name;
-	p_order_deli_hope_date.innerHTML=hope_date;
-	p_receiver_hp_num.innerHTML=receiver_hp_num;
-	p_delivery_address.innerHTML=delivery_address;
-	p_delivery_message.innerHTML=delivery_message;
-	p_gift_wrapping.innerHTML=gift_wrapping;
-	p_pay_method.innerHTML=pay_method;
-	imagePopup('open');
-}
 
-function fn_process_pay_order(){
-	
 	alert("최종 결제하기");
 
     // 새로운 form을 생성합니다.
     var formObj = document.createElement("form");
 
     // 필요한 input 요소들을 생성하고 값을 설정합니다.
-    var i_receiver_name = document.createElement("input");
-    var i_receiver_hp1 = document.createElement("input");
-    var i_receiver_hp2 = document.createElement("input");
-    var i_receiver_hp3 = document.createElement("input");
-    var i_delivery_address = document.createElement("input");
-    var i_delivery_message = document.createElement("input");
-    var i_order_deli_hope_date = document.createElement("input");
-    var i_pay_method = document.createElement("input");
-    var i_card_com_name = document.createElement("input");
-    var i_card_pay_month = document.createElement("input");
-    var i_pay_orderer_hp_num = document.createElement("input");
+    var s_receiver_name = document.createElement("input");
+    var s_receiver_hp1 = document.createElement("input");
+    var s_receiver_hp2 = document.createElement("input");
+    var s_receiver_hp3 = document.createElement("input");
+    var s_delivery_address = document.createElement("input");
+    var s_delivery_message = document.createElement("input");
+    var s_order_deli_hope_date = document.createElement("input");
+    var s_pay_method = document.createElement("input");
+    var s_card_com_name = document.createElement("input");
+    var s_card_pay_month = document.createElement("input");
+    var s_pay_orderer_hp_num = document.createElement("input");
+    var s_final_total_Price = document.createElement("input");
+    var s_usePoint=document.createElement("input");
 
     // 각 input 요소에 name 속성과 값을 설정합니다.
-    i_receiver_name.name = "order_rec_name";
-    i_receiver_hp1.name = "order_rec_hp1";
-    i_receiver_hp2.name = "order_rec_hp2";
-    i_receiver_hp3.name = "order_rec_hp3";
-    i_delivery_address.name = "order_delivery_address";
-    i_delivery_message.name = "order_delivery_message";
-    i_order_deli_hope_date.name = "order_deli_hope_date";
-    i_pay_method.name = "order_pay_method";
-    i_card_com_name.name = "card_company_name";
-    i_card_pay_month.name = "card_pay_month";
-    i_pay_orderer_hp_num.name = "pay_orderer_hp_num";
+    s_receiver_name.name = "order_rec_name";
+    s_receiver_hp1.name = "order_rec_hp1";
+    s_receiver_hp2.name = "order_rec_hp2";
+    s_receiver_hp3.name = "order_rec_hp3";
+    s_delivery_address.name = "order_delivery_address";
+    s_delivery_message.name = "order_delivery_message";
+    s_order_deli_hope_date.name = "order_deli_hope_date";
+    s_pay_method.name = "order_pay_method";
+    s_card_com_name.name = "card_company_name";
+    s_card_pay_month.name = "card_pay_month";
+    s_pay_orderer_hp_num.name = "pay_orderer_hp_num";
+    s_final_total_Price.name = "final_total_price"; 
+    s_usePoint.name = "use_point";
+ 
 
     // 값을 설정합니다.
-    i_receiver_name.value = receiver_name;
-    i_receiver_hp1.value = hp1;
-    i_receiver_hp2.value = hp2;
-    i_receiver_hp3.value = hp3;
-    i_delivery_address.value = delivery_address;
-    i_delivery_message.value = delivery_message;
-    i_order_deli_hope_date.value = hope_date;
-    i_pay_method.value = pay_method;
-    i_card_com_name.value = card_com_name;
-    i_card_pay_month.value = card_pay_month;
-    i_pay_orderer_hp_num.value = pay_order_tel1; // 해당 변수가 선언되지 않아서 임의로 pay_order_tel1로 설정
-
+    s_receiver_name.value = receiver_name;
+    s_receiver_hp1.value = hp1;
+    s_receiver_hp2.value = hp2;
+    s_receiver_hp3.value = hp3;
+    s_delivery_address.value = delivery_address;
+    s_delivery_message.value = delivery_message;
+    s_order_deli_hope_date.value = order_deli_hope_date;
+    s_pay_method.value = pay_method;
+    s_card_com_name.value = card_com_name;
+    s_card_pay_month.value = card_pay_month;
+    s_pay_orderer_hp_num.value = pay_orderer_hp_num; 
+    s_final_total_Price.value = total_order_goods_price;
+    s_usePoint.value=usePoint;
+   
+    
     // form에 input 요소들을 추가합니다.
-    formObj.appendChild(i_receiver_name);
-    formObj.appendChild(i_receiver_hp1);
-    formObj.appendChild(i_receiver_hp2);
-    formObj.appendChild(i_receiver_hp3);
-    formObj.appendChild(i_delivery_address);
-    formObj.appendChild(i_delivery_message);
-    formObj.appendChild(i_order_deli_hope_date);
-    formObj.appendChild(i_pay_method);
-    formObj.appendChild(i_card_com_name);
-    formObj.appendChild(i_card_pay_month);
-    formObj.appendChild(i_pay_orderer_hp_num);
+    formObj.appendChild(s_receiver_name);
+    formObj.appendChild(s_receiver_hp1);
+    formObj.appendChild(s_receiver_hp2);
+    formObj.appendChild(s_receiver_hp3);
+    formObj.appendChild(s_delivery_address);
+    formObj.appendChild(s_delivery_message);
+    formObj.appendChild(s_order_deli_hope_date);
+    formObj.appendChild(s_pay_method);
+    formObj.appendChild(s_card_com_name);
+    formObj.appendChild(s_card_pay_month);
+    formObj.appendChild(s_pay_orderer_hp_num);
+    formObj.appendChild(s_final_total_Price);
+    formObj.appendChild(s_usePoint);
+
 
     // form을 body에 추가하고 submit합니다.
     document.body.appendChild(formObj);
@@ -1035,8 +981,7 @@ function fn_process_pay_order(){
     formObj.action = "${contextPath}/order/payToOrderGoods.do";
     formObj.submit();
 
-    // 팝업 닫기
-    imagePopup('close');
+    
 }
 
 //적립금 사용

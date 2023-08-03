@@ -25,7 +25,6 @@ import com.project.gogi.social.AuthService;
 import com.project.gogi.social.CustomMessageService;
 import com.project.gogi.social.SocialService;
 
-@RestController
 public abstract class BaseController {
 	
 	@Autowired

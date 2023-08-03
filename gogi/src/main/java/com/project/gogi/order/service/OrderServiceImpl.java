@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.project.gogi.member.vo.MemberVO;
 import com.project.gogi.order.dao.OrderDAO;
 import com.project.gogi.order.vo.OrderVO;
 
@@ -20,6 +21,11 @@ public class OrderServiceImpl implements OrderService{
 	public void addNewOrder(List<OrderVO> myOrderList) throws Exception {
 		dao.insertNewOrder(myOrderList);
 		dao.removeGoodsFromCart(myOrderList);
+	}
+
+	@Override
+	public void updateMemPoint(MemberVO memberVO) throws Exception {
+		dao.updatePoint(memberVO);
 	}
 	
 	

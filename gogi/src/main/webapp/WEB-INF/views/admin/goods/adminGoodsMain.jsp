@@ -86,9 +86,9 @@ height: 30px;
      <c:forEach var="item" items="${newGoodsList }">
 			 <TR>       
 				<TD>
-			      <a href="${pageContext.request.contextPath}/admin/goods/modifyGoodsForm.do?goods_id=${item.goods_id}">
+			      
 				  <span>${item.goods_id }</span>
-				  </a>
+				 
 				</TD>
 				<TD>
 				 <a href="${pageContext.request.contextPath}/admin/goods/modifyGoodsForm.do?goods_id=${item.goods_id}">

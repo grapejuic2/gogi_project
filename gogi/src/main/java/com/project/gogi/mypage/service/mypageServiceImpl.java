@@ -54,4 +54,9 @@ public class mypageServiceImpl implements mypageService{
 		List reviewList = mypageDAO.selectReviewList(mem_id);
 		return reviewList;
 	}
+
+	@Override
+	public void reviewDelete(int rev_no) throws Exception {
+		mypageDAO.reviewDelete(rev_no);
+	}
 }

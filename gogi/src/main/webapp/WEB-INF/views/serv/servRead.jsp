@@ -17,6 +17,7 @@
 <title>게시물 조회</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <link href="${contextPath}/resources/css/noticeRead.css" rel="stylesheet" type="text/css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 
     // 댓글 등록 함수
@@ -42,54 +43,124 @@
             });
         }
     }
-    
+
+    // 초기 페이지 로딩시 댓글 불러오기
+    $(function () {
+        getCommentList();
+    });
+
+    // 댓글 목록 표시 함수
+    function showCommentList(data) {
+        var html = "";
+        var cCnt = data.length;
+
+        if (data.length > 0) {
+            for (i = 0; i < data.length; i++) {
+                html += "<div>";
+                html += "<div class='cmt'><table id='mem_id'><h2 style='margin-bottom: 10px;'><strong>" + data[i].mem_id + "<span class='cmt_date'>" + data[i].cmt_date + "</span>" + "</strong></h2>";
+                html += data[i].cmt_content + "<tr><td></td></tr>";
+                html += "<a href='#' class='reply-button' data-cmtid='" + data[i].cmt_number + "' data-memid='" + data[i].mem_id + "'>답글 달기</a>";
+                html += "<div class='replyFormContainer'></div>";
+                html += "</table></div>";
+                html += "</div>";
+            }
+        } else {
+            html += "<div>";
+            html += "<div class='nonono'><table><h6 style='padding-right:140px;'><strong>등록된 댓글이 없습니다.</strong></h6>";
+            html += "</table></div>";
+            html += "</div>";
+        }
+
+        $("#cCnt").html(cCnt);
+        $("#CommentList").html(html);
+    }
+
     // 초기 페이지 로딩시 댓글 불러오기
     $(function () {
         getCommentList();
     });
 
     // 댓글 불러오기(AJAX)
-function getCommentList() {
-    $.ajax({
-        type: 'GET',
-        url: "${contextPath}/serv/commentList.do",
-        dataType: "json",
-        data: { cust_serv_no: ${servRead.cust_serv_no} }, // 현재 게시물의 cust_serv_no를 파라미터로 전달
-        success: function (data) {
-            var html = "";
-            var cCnt = data.length;
-
-            if (data.length > 0) {
-                for (i = 0; i < data.length; i++) {
-                    html += "<div class='cmt'>";
-                    html += "<table>";
-                    html += "<tr><td><h2 style='margin-bottom: 10px;'><strong>" + data[i].mem_id + "<span class='cmt_date'>" + data[i].cmt_date + "</span>" + "</strong></h2></td></tr>";
-                    html += "<tr><td>" + data[i].cmt_content + "</td></tr>";
-/*                  html += "<tr><td>";
-                    html += "<div class='cmt-in'>";
-                    html += "<button type='button' class='bbtn btn-sm btn-primary greylist' onclick='editComment(" + data[i].comment_id + ")'>수정</button>";
-                    html += "<button type='button' class='bbtn btn-sm btn-primary greylist' onclick='deleteComment(" + data[i].comment_id + ")'>삭제</button>";
-                    html += "</div>";
-                    html += "</td></tr>"; */
-                    html += "</table>";
-                    html += "</div>";
-                }
-            } else {
-                html += "<div class='nonono'>";
-                html += "<table><tr><td><h6 style='padding-right:140px;'><strong>등록된 댓글이 없습니다.</strong></h6></td></tr>";
-                html += "</table>";
-                html += "</div>";
+    function getCommentList() {
+        $.ajax({
+            type: 'GET',
+            url: "${contextPath}/serv/commentList.do",
+            dataType: "json",
+            data: { cust_serv_no: ${servRead.cust_serv_no} }, // 현재 게시물의 cust_serv_no를 파라미터로 전달
+            success: function (data) {
+                showCommentList(data); // 댓글 목록을 표시하는 함수 호출
+            },
+            error: function (request, status, error) {
+                alert("댓글 불러오기에 실패했습니다.");
             }
-
-            $("#cCnt").html(cCnt);
-            $("#CommentList").html(html);
-        },
-        error: function (request, status, error) {
-            alert("댓글 불러오기에 실패했습니다.");
-        }
+        });
+    }
+    
+    
+    $(document).on("click", ".reply-button", function (event) {
+        event.preventDefault(); // 기본 동작 막기
+        var parentCommentId = $(this).data("cmtid");
+        var parentCommentAuthor = $(this).data("memid");
+        showReplyForm(parentCommentId, parentCommentAuthor, this);
     });
-}
 
+    function showReplyForm(parentCommentId, parentCommentAuthor, button) {
+        var replyFormHtml = '<div class="reply-form">' +
+            '<table>' +
+            '<tr>' +
+            '<td>' +
+            '<textarea style="width: 700px; height: 40px;" rows="3" cols="10" id="reply_content" name="reply_content" placeholder="대댓글을 입력하세요"></textarea>' +
+            '<input type="hidden" id="parent_comment_id" name="parent_comment_id" value="' + parentCommentId + '">' +
+            '<input type="hidden" id="parent_comment_author" name="parent_comment_author" value="' + parentCommentAuthor + '">' +
+            '<input type="button" value="등록" class="cmt_btn" onClick="submitReplyForm(this)">' + // this를 넘겨서 클릭된 버튼을 구분하도록 변경
+            '</td>' +
+            '</tr>' +
+            '</table>' +
+            '</div>';
+        // 클릭된 버튼에 해당하는 댓글 아래에 있는 답글 폼 컨테이너를 찾아서 HTML을 추가합니다.
+        //$(button).closest('.cmt').find('.replyFormContainer').html(replyFormHtml);
+        // 클릭된 버튼에 해당하는 댓글 아래에 있는 답글 폼 컨테이너를 찾아서 HTML을 추가합니다.
+        var replyFormContainer = $(button).closest('.cmt').find('.replyFormContainer');
+        var isReplyFormVisible = replyFormContainer.hasClass('showing');
+        if (isReplyFormVisible) {
+            replyFormContainer.removeClass('showing').empty();
+        } else {
+            replyFormContainer.addClass('showing').html(replyFormHtml);
+        }
+    }
+
+	
+	function submitReplyForm() {
+	    var replyContent = $("#reply_content").val();
+	    var parentCommentId = $("#parent_comment_id").val();
+	    var parentCommentAuthor = $("#parent_comment_author").val();
+
+	    if (replyContent === null || replyContent.trim() === "") {
+	        alert("대댓글 내용을 입력해주세요.");
+	    } else {
+	        $.ajax({
+	            type: 'POST',
+	            url: "<c:url value='/serv/addReply.do'/>", // 대댓글 추가에 대한 실제 URL로 변경
+	            data: {
+	                cust_serv_no: ${servRead.cust_serv_no},
+	                parent_comment_id: parentCommentId,
+	                parent_comment_author: parentCommentAuthor,
+	                reply_content: replyContent
+	            },
+	            success: function (data) {
+	                if (data === "success") {
+	                    alert("대댓글을 등록했습니다.");
+	                    getCommentList(); // 대댓글 등록 후 댓글 목록을 새로고침하여 표시
+	                    $("#reply_content").val(""); // 대댓글 작성 폼 텍스트 영역을 초기화
+	                    $("#replyFormContainer").html(""); // 대댓글 작성 폼을 숨김
+	                }
+	            },
+	            error: function (request, status, error) {
+	                alert("대댓글 등록에 실패했습니다.");
+	            }
+	        });
+	    }
+	}
 </script>
 <style>
    .cmt {
@@ -120,6 +191,15 @@ function getCommentList() {
       font-size: 2em;
       margin: 10px 0px;
    }
+   
+       /* 기본적으로 폼을 숨김 */
+    .replyFormContainer {
+        display: none;
+    }
+    /* .showing 클래스를 가지면 폼을 보이도록 변경 */
+    .replyFormContainer.showing {
+        display: block;
+    }
 </style>
 </head>
 <body>
@@ -174,46 +254,62 @@ function getCommentList() {
 					</td>
 				</tr>
 			</table>
-			<div class="board_coment">  
-			    <form id="commentForm" name="commentForm" method="post" style="margin-left:270px;">
-			    <br><br>
-			        <div>
-			            <div style="margin-bottom: 10px;">
-			                <span><strong>댓글</strong></span><span id="cCnt"></span>
-			            </div>
-			            <div>
-			                <table class="table">                    
-			                    <tr>
-			                        <td>
-			                            <textarea style="width: 750px; height: 80px;" rows="5" cols="10" id="cmt_content" name="cmt_content" placeholder="댓글을 입력하세요"></textarea>
-			                            <a href='#' onClick="fn_comment('${servRead.cust_serv_no }')"><input type="button" value="등록" class="cmt_btn"></a>
-			                        </td>
-			                    </tr>
-			                </table>
-			            </div>
-			        </div> 
-			        <input type="hidden" id="cust_serv_no" name="cust_serv_no" value="${servRead.cust_serv_no }" />        
-			    </form> 
-				<form id="commentList" name="commentList" method="post">
-				    <div id="CommentList"></div>
-				    	<div class="cmt-in hidden">
-						    <button type="button" class="bbtn btn-sm btn-primary greylist" onclick="editComment()">수정</button>
-						    <button type="button" class="bbtn btn-sm btn-primary greylist" onclick="deleteComment()">삭제</button>
-						</div>
-						
-						<!-- 댓글 admin -->
-						<div class="admin-comment-in hidden">
-						    <button type="button" class="bbtn btn-sm btn-primary greylist" onclick="addComment()">등록</button>
-						    <button type="button" class="bbtn btn-sm btn-primary greylist" onclick="editComment()">수정</button>
-						    <button type="button" class="bbtn btn-sm btn-primary greylist" onclick="deleteComment()">삭제</button>
-						</div>
-				    <div class="cmt-out">
-				</div>
-					</form>
+			
+		<!-- 댓글 목록과 대댓글 작성 폼 영역 -->
+        <div class="board_coment">  
+            <!-- 댓글 등록 폼 -->
+            <form id="commentForm" name="commentForm" method="post" style="margin-left:270px;">
+                <br><br>
+                <div>
+                    <div style="margin-bottom: 10px;">
+                        <span><strong>댓글</strong></span><span id="cCnt"></span>
+                    </div>
+                    <div>
+                        <table class="table">                    
+                            <tr>
+                                <td>
+                                    <textarea style="width: 750px; height: 80px;" rows="5" cols="10" id="cmt_content" name="cmt_content" placeholder="댓글을 입력하세요"></textarea>
+                                    <a href='#' onClick="fn_comment('${servRead.cust_serv_no }')"><input type="button" value="등록" class="cmt_btn"></a>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div> 
+                <input type="hidden" id="cust_serv_no" name="cust_serv_no" value="${servRead.cust_serv_no}" />        
+            </form> 
 
-        	</div>
+            <!-- 댓글 목록 표시 -->
+			<div id="CommentList">
+			    <c:if test="data.length > 0">
+				    <c:forEach var="item" items="data">
+				        <div>
+				            <div class="cmt">
+				                <table id="mem_id">
+				                 <tr>
+				                 <td>
+				                    <h2 style="margin-bottom: 10px;"><strong>${item.mem_id}<span class="cmt_date">${item.cmt_date}</span></strong></h2>
+				                    ${item.cmt_content}
+				                  
+				                   <a data-cmtid="${item.cmt_number}" data-memid="${item.mem_id}" class="reply-button">답글 달기</a>
+				                 </td>
+				                 </tr>
+				                <tr>
+				                  <td>    
+				                    <!-- 여기에서 대댓글 작성 폼을 추가하기 위해 replyFormContainer를 클래스로 변경 -->
+				                    <div class="replyFormContainer"></div>
+				                  </td>
+				                 <tr>
+				                </table>
+				            </div>
+				        </div>
+				    </c:forEach>
+				</c:if>
+			</div>
+			
+        </div>
+    </div>
    		</div>
-   		</div>
+
    		<script>
 			$(document).ready(function() {
 				var userRole = '<c:out value="${sessionScope.memberInfo.mem_id}" />';
@@ -221,7 +317,6 @@ function getCommentList() {
 			    
 		        function toggleForm() {
 		            if (isAdmin) {
-		                $('.admin-comment-in').removeClass('hidden');
 		                $('.cmt-in, .cmt-out').addClass('hidden');
 		            } else if (userRole) {
 		                $('.cmt-in').removeClass('hidden');
@@ -233,6 +328,17 @@ function getCommentList() {
 		        toggleForm();
 		    });
 			
+			$(document).on("click", ".editComment", function () {
+
+			    const comment_id = $(this).siblings('mem_id').val();
+			    const comment_text = $(this).siblings('.').children('h5').text();
+			    const comment_writer = $(this).siblings('b').text();
+
+			    $("#comment_id").val(comment_id);
+			    $("#comment_text").val(comment_text);
+			    $("#comment_writer").val(comment_writer);
+
+			});
 		</script>
 	</body>
 </html>

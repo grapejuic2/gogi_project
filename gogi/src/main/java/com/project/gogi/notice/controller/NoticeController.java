@@ -152,7 +152,7 @@ public class NoticeController {
 		@RequestMapping(value = "/modify.do", method = RequestMethod.POST)
 		public String postModify(NoticeVO vo) throws Exception {
 
-			service.NoticeUpdate(vo);
+		service.NoticeUpdate(vo);
 	
 			//redirect는 value 경로 넣어주기..꼭!!!!!!
 		 return "redirect:/notice/read.do?notice_no=" + vo.getNotice_no();

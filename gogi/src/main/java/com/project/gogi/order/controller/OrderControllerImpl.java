@@ -62,7 +62,6 @@ public class OrderControllerImpl extends BaseController implements OrderControll
 		
 		String viewName=(String) request.getAttribute("viewName");
 		ModelAndView mav=new ModelAndView(viewName);
-		System.out.println("상품디테일주문:"+viewName);
 		List myOrderList=new ArrayList<OrderVO>(); //주문정보 저장할 ArrayList 생성
 		myOrderList.add(orderVO);//주문정보 저장
 		MemberVO memberInfo=(MemberVO) session.getAttribute("memberInfo");
@@ -99,7 +98,7 @@ public class OrderControllerImpl extends BaseController implements OrderControll
 					int goods_sales_price = goodsVO.getGoods_price();
 					System.out.println("가격:"+goods_sales_price);
 					String file_name = goodsVO.getFile_name();
-					//int goods_delivery_price = Integer.parseInt(goodsVO.getGoods_delivery_price());
+					
 					int goods_point = goodsVO.getGoods_point();
 					_orderVO.setGoods_id(goods_id);
 					//_orderVO.setGoods_point(goods_point);
@@ -135,6 +134,8 @@ public class OrderControllerImpl extends BaseController implements OrderControll
 		List<OrderVO> myOrderList=(List<OrderVO>) session.getAttribute("myOrderList");	
 	
 		
+	
+		
 		for(int i=0; i<myOrderList.size();i++) {
 			OrderVO orderVO=(OrderVO)myOrderList.get(i);
 			orderVO.setMem_id(mem_id);
@@ -146,15 +147,48 @@ public class OrderControllerImpl extends BaseController implements OrderControll
 			orderVO.setOrder_rec_hp3(receiverMap.get("order_rec_hp3"));
 			orderVO.setOrder_delivery_address(receiverMap.get("order_delivery_address"));
 			orderVO.setOrder_delivery_message(receiverMap.get("order_delivery_message"));
-			orderVO.setOrder_delivery_method(receiverMap.get("order_delivery_method"));
+			orderVO.setOrder_deli_hope_date(receiverMap.get("order_deli_hope_date"));
 			orderVO.setOrder_pay_method(receiverMap.get("order_pay_method"));
 			//orderVO.setOrder_delivery_option(receiverMap.get("order_delivery_option"));
 			orderVO.setCard_company_name(receiverMap.get("card_company_name"));
 			orderVO.setCard_pay_month(receiverMap.get("card_pay_month"));
 			orderVO.setPay_orderer_hp_num(receiverMap.get("pay_orderer_hp_num"));
+			// final_total_price를 숫자로 변환하여 저장합니다.
+				    try {
+				        int finalTotalPrice = Integer.parseInt(receiverMap.get("final_total_price"));
+				        orderVO.setFinal_total_price(finalTotalPrice);
+				    } catch (NumberFormatException e) {
+				        // 숫자로 변환할 수 없는 경우에 대한 예외 처리
+				        // 예외 처리 방법은 상황에 따라 결정하시면 됩니다.
+				        // 여기서는 일단 0으로 저장하도록 했습니다.
+				        orderVO.setFinal_total_price(0);
+				    }
+		   
+				    try {
+				    	int use_point = Integer.parseInt(receiverMap.get("use_point"));
+				    	orderVO.setUse_point(use_point);
+				    	
+				    	//현재 보유 포인트
+				        int mypoint=memberVO.getMem_point();
+				        System.out.println("보유한 포인트:"+mypoint);
+					 	
+				        //사용하고 난 다음 포인트
+				        int mem_point=mypoint-use_point;  
+				        System.out.println("남은 포인트:"+mem_point);
+				        memberVO.setMem_point(mem_point);
+				        orderService.updateMemPoint(memberVO);
+				    } catch (NumberFormatException e) {
+				    	// 숫자로 변환할 수 없는 경우에 대한 예외 처리
+				    	// 예외 처리 방법은 상황에 따라 결정하시면 됩니다.
+				    	// 여기서는 일단 0으로 저장하도록 했습니다.
+				    	orderVO.setUse_point(0);
+				    }
+		    
 			orderVO.setOrder_delivery_status("delivery_prepared");
 			myOrderList.set(i, orderVO);
 		}
+		
+		
 		orderService.addNewOrder(myOrderList);
 		System.out.println("add pay:" +myOrderList.toString());
 		mav.addObject("myOrderInfo", receiverMap);

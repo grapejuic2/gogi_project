@@ -6,6 +6,11 @@
 <!DOCTYPE html>
 
 <meta charset="utf-8">
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link href="${contextPath}/resources/css/noticeRead.css" rel="stylesheet" type="text/css">
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <head>
 <script type="text/javascript">
@@ -33,27 +38,135 @@
 		 }
 		 
 	}
-</script>    
+</script> 
+
+<style type="text/css">
+@charset "UTF-8";
+
+.row1 {
+	margin: 0px auto;
+	width: 1100px;
+	 
+}
+
+#asas {
+	text-align: center;
+	justify-content: center;
+}
+
+.hh2 {
+	text-align: center;
+	margin-top: 50px;
+	font-family: 'Noto Sans KR', sans-serif;
+	font-weight: 700;
+	font-size: 35px;
+	margin-bottom: 20px;
+}
+
+.bbu {
+	border-bottom: 1px solid #ddd;
+}
+
+.greylist {
+	width: 100px;
+	height: 50px;
+	font-weight: 900;
+	color: white;
+	text-align: center;
+	background: black;
+	border-radius: 5px;
+}
+
+.greylist:hover {
+	background-color: #6CC148;
+	border: solid 2px white;
+	color: white;
+}
+
+.greylist a {
+	text-decoration-line: none;
+	text-decoration: none;
+	color: white;
+}
+
+.atw {
+	text-decoration-line: none;
+	text-decoration: none;
+	color: white;
+	font-family: 'Noto Sans KR', sans-serif;
+	font-weight: 500;
+	display: block;
+	font-size: 20px;
+	width:135px;
+	height:50px;
+}
+
+.writeButton {
+	float: right;
+}
+
+.fg {
+	font-family: 'Noto Sans KR', sans-serif;
+	font-weight: 400;
+	font-size: 20px;
+	font-weight: bold;
+}
+
+.fgl {
+	font-family: 'Noto Sans KR', sans-serif;
+	font-weight: 400;
+	font-size: 20px;
+	padding:5px;
+	margin: 0;
+}
+
+.fw {
+	color: white;
+ 	
+}
+
+.lb {
+	background-color: #292929;
+}
+
+.rightbtn {
+	float: right;
+}
+
+.bordered-input {
+  border: 1px solid #ccc;
+  margin-left:5px;
+}
+
+.text-center{
+	font-family: 'Noto Sans KR', sans-serif;
+	font-weight: 500;
+	font-size: 20px;
+}
+
+::-webkit-input-placeholder { /* Chrome, Safari, Opera */
+    font-size: 15px;
+}
+</style>
+   
 </head>
 
 <BODY>
+ 
+			<h3 class="hh2"> 새상품 등록창 </h3>
+		 
 <form action="${contextPath}/admin/goods/addNewGoods.do" method="post" enctype="multipart/form-data">
-		<div class="title_underline" style="margin-top: 50px">
-			<h3><b>새상품 등록창</b></h3>
-		</div>
+		
 <div class="tab_container">
-	<div class="tab_container" id="container">
-		<ul class="tabs" id="goods_detail_menu">
-			<li><a href="#tab1">상품정보</a></li>
-			<li><a href="#tab4">상품소개</a></li>
-			<li><a href="#tab7">상품이미지</a></li>
-		</ul>
-		<div class="tab_container">
-			<div class="tab_content" id="tab1">
+	<div class="container" style="padding-bottom: 100px" id="container">
+	 
+		<div class="row row1">
+			<div  class="table" id="tab1">
 				<table class="table">
 			<tr >
-				<td width=200 >제품분류</td>
-				<td width=500><select name="goods_sort">
+				<td width=20% class="text-center fg lb fw"s >제품분류</td>
+				<td width=80% class="text-left fgl">
+				<select name="goods_sort">
 						<option value="PIG" selected>돼지
 						<option value="COW">소
 						<option value="CHICKEN">닭
@@ -62,41 +175,41 @@
 				</td>
 			</tr>
 			<tr >
-				<td >제품이름</td>
-				<td><input name="goods_name" type="text" size="40" /></td>
+				<td width="10%" class="text-center lb fg fw" >제품이름</td>
+				<td colspan="2" class="fgl">
+					<input name="goods_name" type="text" size="40" /></td>
 			</tr>
 			 
 			<tr>
-				<td>제품회사</td>
-				<td><input name="goods_seller" type="text" size="40" /></td>
+				<td width="10%" class="text-center lb fg fw">제품회사</td>
+				<td colspan="2" class="fgl"> <input name="goods_seller" type="text" size="40" /></td>
+			</tr>
+			<tr>
+				<td width="10%" class="text-center lb fg fw" >제품정가</td>
+				<td colspan="2" class="fgl"><input name="goods_price" type="text" size="40" /></td>
 			</tr>
 			
 			<tr>
-				<td >제품정가</td>
-				<td><input name="goods_price" type="text" size="40" /></td>
-			</tr>
-			
-			<tr>
-				<td >제품판매가격</td>
-				<td><input name="goods_sales_price" type="text" size="40" /></td>
+				<td width="10%" class="text-center lb fg fw">제품판매가격</td>
+				<td colspan="2" class="fgl"><input name="goods_sales_price" type="text" size="40" /></td>
 			</tr>
 			
 	 		<tr>
-				<td >제품 구매 포인트</td>
-				<td><input name="goods_point" type="text" size="40" /></td>
+				<td width="10%" class="text-center lb fg fw">제품 구매 포인트</td>
+				<td colspan="2" class="fgl"><input name="goods_point" type="text" size="40" /></td>
 			</tr>
 			
 			<tr>
-				<td >제품 등록일</td>
-				<td><input name="goods_delivery_date"  type="date" size="40" /></td>
+				<td width="10%" class="text-center lb fg fw">제품 등록일</td>
+				<td colspan="2" class="fgl"><input name="goods_delivery_date"  type="date" size="40" /></td>
 			</tr>
 			<tr>
-				<td >제품 중량</td>
-				<td><input name="goods_weight"  type="text" size="40" /></td>
+				<td width="10%" class="text-center lb fg fw">제품 중량</td>
+				<td colspan="2" class="fgl"><input name="goods_weight"  type="text" size="40" /></td>
 			</tr>
 			<tr>
-				<td >제품종류</td>
-				<td>
+				<td width="10%" class="text-center lb fg fw">제품종류</td>
+				<td colspan="2" class="fgl">
 				<select name="goods_status">
 				  <option value="B">인기상품</option>
 				  <option value="N" selected>신규상품</option>
@@ -105,41 +218,32 @@
 				</td>
 			</tr>
 			<tr>
-			 <td>
-			   <br>
-			 </td>
-			</tr>
-				</table>	
-			</div>
-			 
-			
-			<div class="tab_content" id="tab4">
-				<H4>제품소개</H4>
-				<table class="table">
-					<tr>
-						<td >제품소개</td>
-						<td><textarea  rows="20" cols="80" name="goods_intro"></textarea></td>
-				    </tr>
-			    </table>
-			</div>
-			
-			<div class="tab_content" id="tab7">
-				<h4>상품이미지</h4>
-				<table >
-					<tr>
-						<td align="right">이미지파일 첨부</td>
-			            														   <!-- '파일 추가' 클릭 시 파일 업로드가 동적으로 추가됩니다. -->
-			            <td  align="left"> <input type="button"  value="파일 추가" onClick="fn_addFile()"/></td>
-			            <td>
-				            <div id="d_file">
-				            </div>
-			            </td>
+						<th width="10%" class="text-center fg lb fw" style="vertical-align: middle;">제품 소개</th>
+						<td colspan="4" class="text-left fg" valign="top" height="200">
+							<pre class="fgl" style="white-space: pre-wrap; border: none; background-color: white;">
+								<textarea cols="80" rows="8" name="goods_intro" placeholder="제품 설명을 입력해 주세요" class="bordered-input" style="width: 100%; height: 100%; padding: 0; margin: 0;"></textarea>
+							</pre>
+						</td>
 					</tr>
-				</table>
+					<tr>
+						<th width="10%" class="text-center   fg lb fw">상품 이미지 추가</th>
+						<td width="90%" class="text-left fgl">
+							<input type="button" value="파일추가" onClick="fn_addFile()" class="bordered-input" style="font-size: 15px;">
+							<div id="d_file"></div>
+						</td>
+					</tr>
+					<tr>
+						<td td colspan="4" class="text-right">
+							<div>
+								<input type="button" class="btn btn-sm btn-primary greylist atw"  style="float: right;" value="상품 등록하기" onClick="fn_add_new_goods(this.form)">
+							</div>
+						</td>
+					</tr>
+				</table>	
 			</div>
 		</div>
 	</div>
 	
-	<input type="button" value="상품 등록하기" class="btn btn-secondary btn-sm" onClick="fn_add_new_goods(this.form)">
+	 
 </div>
 </form>

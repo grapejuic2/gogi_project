@@ -44,7 +44,6 @@
 	}
 	.tab .tablinks{
 	height: 100px;
-	width: 200px;
 	font-weight: 700;
 	font-size: 20px;
 	color: #909090;
@@ -100,8 +99,8 @@
 		<div class="tab-menu">
 			<!-- Tab 이름 -->
 			<div class="tab">
-				<button class="tablinks" onclick="deliveryOpen(event, 'myReview')">상품 리뷰 내역</button>
-				<button class="tablinks" onclick="deliveryOpen(event, 'myInquiry')">1:1 문의 내역</button>
+				<button class="tablinks" onclick="deliveryOpen(event, 'myReview')">상품 리뷰</button>
+				<button class="tablinks" onclick="deliveryOpen(event, 'myInquiry')">1:1 문의</button>
 			</div>
 					
 				<!-- 내가 쓴 리뷰  -->
@@ -117,7 +116,7 @@
 				        <c:choose>
 				            <c:when test="${empty reviewVO }">
 				                <tr>
-				                    <td colspan="5" class="fixed"><strong style="margin-top: 5px;">장바구니가 비었습니다.</strong></td>
+				                    <td colspan="5" class="fixed"><strong style="margin-top: 5px;">작성한 리뷰가 없습니다.</strong></td>
 				                </tr>
 				            </c:when>
 				
@@ -129,9 +128,9 @@
 				                            <a href="${contextPath}/goods/goodsDetail.do?goods_id=${item.goods_id}" style="font-weight: 500; color: black;">해당 상품으로 이동</a>
 				                        </td>
 				                        <td style="text-align: left;">${item.rev_content}</td>
-				                        <fmt:formatDate value="${item.rev_date}" pattern="yy/MM/dd HH시 mm분" var="rev_date" />
+				                        <fmt:formatDate value="${item.rev_date}" pattern="yy/MM/dd HH:mm" var="rev_date" />
 				                        <td>${rev_date}</td>
-				                        <td><button>삭제</button></td>
+				                        <td><button onclick="reviewDelete(${item.rev_no});">삭제</button></td>
 				                    </tr>
 				                </c:forEach>
 				            </c:otherwise>
@@ -152,7 +151,7 @@
 				        <c:choose>
 				            <c:when test="${empty servVO }">
 				                <tr>
-				                    <td colspan="3" class="fixed"><strong style="margin-top: 5px;">장바구니가 비었습니다.</strong></td>
+				                    <td colspan="3" class="fixed"><strong style="margin-top: 5px;">작성한 문의글이 없습니다.</strong></td>
 				                </tr>
 				            </c:when>
 				
@@ -163,7 +162,7 @@
 				                        <td class="goodsName" style="text-align: left; ">				                 
 				                            <a href="${contextPath}/serv/read.do?cust_serv_no=${item.cust_serv_no}" style="font-weight: 500; color: black;">${item.cust_serv_title}</a>
 				                        </td>
-				                        <fmt:formatDate value="${item.cust_serv_date}" pattern="yy/MM/dd HH시 mm분" var="serv_date" />
+				                        <fmt:formatDate value="${item.cust_serv_date}" pattern="yy/MM/dd HH:mm" var="serv_date" />
 				                        <td>${serv_date}</td>
 				                      
 				                    </tr>
@@ -206,6 +205,20 @@
 				document.getElementById(deliveryName).style.display = "block";
 				evt.currentTarget.className += " active";
 			}
+			
+			 function reviewDelete(rev_no) {
+			        // 작성한 리뷰를 삭제할 것인지 확인하는 알림창
+			        var result = confirm("작성한 리뷰를 삭제하시겠습니까?");
+			        
+			        // 확인을 눌렀을 경우 리뷰를 삭제하는 로직 수행
+			        if (result) {
+			            var contextPath = "${contextPath}";
+			            var deleteURL = contextPath + "/mypage/myReivewDelete.do?rev_no=" + rev_no;
+			            
+			            // 해당 URL로 이동하여 리뷰 삭제
+			            window.location.href = deleteURL;
+			        }
+			    }
 		</script>
 </body>
 </html>
