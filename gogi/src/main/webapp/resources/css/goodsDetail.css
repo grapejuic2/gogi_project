@@ -166,6 +166,7 @@ td.numBox-cell {
 	   justify-content: center;
 	    text-align: center;
 	}
+
 	.goods_detail img {
 	  display: block; /* 이미지들을 블록 레벨 요소로 설정하여 아래로 배치 */
 	  margin: 10px auto; /* 이미지들을 가운데 정렬하기 위해 margin 사용 */
@@ -177,7 +178,7 @@ td.numBox-cell {
 	}
 	#goodsInfo .goods_info{
 		font-family: 'Noto Sans KR', sans-serif;
- 		margin-left: 0;
+ 		margin-left: 30px;;
 	   	}
 	.tab-menu {
 	   text-align: center; /* 텍스트를 중앙에 정렬합니다. */

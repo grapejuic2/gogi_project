@@ -152,11 +152,11 @@ margin-bottom: 5px;
 		    // 수행할 작업을 이곳에 위치시키세요.
 		    console.log('클릭 이벤트가 실행되었습니다.');
 		    var mem_id = '${mem_id}';
-		    deletemember(mem_id);
+		    deleteMember(mem_id);
 		});
 	});
 	
-	function deletemember(mem_id){
+	function deleteMember(mem_id){
 		if(confirm("회원 정보는 30일간 저장 됩니다. 정말로 탈퇴 하시겠습니까?")){
 
 		var formObj = document.createElement("form");

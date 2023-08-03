@@ -139,7 +139,7 @@ h1 {
 					<tr>
 						<th width=10% class="text-center fg lb fw">작성자</th>
 						<td width=90% class="text-left fgl">
-						<input style="width: 350px;" type="text" name="mem_id" placeholder="이름을 입력해 주세요" class="bordered-input"/></td>
+						<input style="width: 350px;" type="text" name="mem_id" value="${mem_id}" placeholder="이름을 입력해 주세요" class="bordered-input" readonly/></td>
 					</tr>
 
 					<tr>
@@ -164,38 +164,33 @@ h1 {
 							<div id="d_file"></div>
 						</td>
 					</tr>
+	 
+					<!-- 8.1 구태선 -->
+				 
 					<tr>
-						<th width="10%" class="text-center   fg lb fw">비밀글 설정</th>
+						<th width="10%" class="text-center   fg lb fw">공지글 설정</th>
 						<td width="90%" class="text-left fgl" style="font-size: 15px;">
-							<input type="radio" value="1" name="cust_serv_notice" class="bordered-input"/>비밀글 <!-- 0727 오동림 수정 비밀글로 하는건 어떤지? -->
+							<input type="radio" value="1" name="cust_serv_notice" class="bordered-input"/>공지글  
 							<input type="radio" value="0" name="cust_serv_notice" class="bordered-input"/>일반글
 						</td>
 					</tr>
-					<!-- 	<tr>
-						<th width=15% class="text-center   fg lb fw">파일 추가</th>
-						<td width=35% class="text-left fgl">
-						<input type="button" value="파일추가" onclick="fn_addFile()"></td>
-						<div id="d_file">
-						</div>
-					</tr> -->
-					<tr>
-						<th width=15% class="text-center lb fg fw">비밀번호</th>
-						<td colspan="2" class="fgl"><input style="width: 350px;" type="text" name="cust_serv_pw" placeholder="비밀번호를 입력해 주세요" class="bordered-input"/></td>
+				<!-- 비밀글 설정 -->
+				<tr>
+						<th width="15%" class="text-center   fg lb fw">비밀글 설정</th>
+						<td width="85%" class="text-left fgl" style="font-size: 15px;">
+							<input type="radio" value="1" name="cust_serv_secret" id="cust_serv_secret" class="bordered-input"/>비밀글 
+							<input type="radio" value="0" name="cust_serv_secret" id="cust_serv_secret" class="bordered-input"/>일반글
+						</td>
 					</tr>
+			 
+				
+								
 					<tr>
 						<td td colspan="4" class="text-right">
 							<div>
 								<input type="submit" class="btn btn-sm btn-primary greylist atw" style="float: right;" value="작성">
 							</div>
 						</td>
-						<!-- 
-						<td td colspan="4" class="text-right  ">
-							<div>
-								<button type="submit"
-									class="btn btn-sm btn-primary greylist atw"
-									style="float: right;">작성</button>
-							</div>
-						</td> -->
 					</tr>
 				</table>
 			</div>

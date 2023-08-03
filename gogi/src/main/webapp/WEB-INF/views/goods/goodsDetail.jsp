@@ -7,6 +7,7 @@
 	<c:set var="goods"  value="${goodsMap.goodsVO}"  />
 	<c:set var="imageList"  value="${goodsMap.imageList }"  />
 	<c:set var="goods_sort" value="${goods.goods_sort }"/>
+	<c:set var="reviewImage" value="${reviewMap.imageFileList }"/>
 	<!DOCTYPE html>
 	<html>
 	<head>
@@ -34,8 +35,8 @@
 		top: 50%;
 		width: 300px;
 		height: 120px;
-		background-color: white;
-		border: 4px solid #ccc;
+		background: white;
+		border: 1px solid #ccc;
 		font-family: 'Noto Sans KR', sans-serif;
 		border-radius: 10px;
 		line-height: 55px;
@@ -47,49 +48,27 @@
 		margin-left: 15px;
 	}
 	
-	.form{
-	margin: 0;
-	width:100%;
+	.review-table{
+	width: 96%; margin: 15px; padding-left: 10px;
+	border-collapse: separate; /* 테이블의 셀 경계를 별도로 처리 */
+    border-spacing: 0 5px; /* 행간 간격을 10px로 지정 (상하 10px) */
 	}
+
+  .review-table td {
+     width:100%;
+     text-align: left;
 	
-	.review{
-	  width: 1000px;
-	  padding:30px;
-	  margin: 0 auto; 
-	  font-family: 'Noto Sans KR', sans-serif;
-	  margin-bottom: 40px;  
-	}
-	
-	.table{
-	  width:100%;
-	  align-items: center;
-	  flex-direction: column;
-	  margin-top:20px;
-	  font-family: 'Noto Sans KR', sans-serif;
-	  border-collapse: separate; 
-	  border: 1px solid #E8E8E8;
-	}
-	 .title{
-	  font-family: 'Noto Sans KR', sans-serif;
-	  text-align: center;
-	  font-size: 30px;
-	  font-weight: 700;
-	  margin-bottom: 40px;
-	 }
-	 
-	  td {
-	  border-top: 1px solid #ddd; /* 위쪽에 border 추가 */
-	  padding: 15px;
-	  vertical-align: middle;
-	}
-	.required {
-	    color: #DB0000; /* 원하는 색상으로 변경하세요 */
-	  }
-	.cancel-order-btn{
-	border:none;
-	height: 30px;
-	}  
-	 
+    }
+    
+    .goods_content{
+    background: #F8F8F8;
+    height:100px;
+	font-size: 15px;
+	padding-left: 13px;
+	margin-bottom:20px;
+
+    }
+ 
 	</style>
 	
 	</head>
@@ -197,77 +176,55 @@
 						</div>					
 					</div>
 	
-					<!-- 리뷰 -->
-					<div id="review" class="tabcontent">
-						<div class="review">
-							<div class="tab_content" id="tab1">
-								<c:forEach var="image" items="${imageList }">
-									<img src="${contextPath}/download.do?goods_id=${goods.goods_id}&fileName=${image.fileName}">
-								</c:forEach>
-							</div>
-							
-							<div class="tab_content" id="tab2">
-							<table class="table table-striped table-hover">
-				  				<tr height="10" align="center" style="background:#1D1D1D; color: #ffffff;">
-				     				 <td width="7%"><b>번호</b></td>
-				    				 <td width="59%"><b>내용</b></td>
-				    				 <td width="10%"><b>별점</b></td>
-				    				 <td width="10%"><b>작성자</b></td>              
-				     				 <td width="14%" align="left">&nbsp;&nbsp;<b>작성일</b></td>
-				  				</tr>
-		
-									<c:choose>
-										<c:when test="${reviewList == null}">
-											<tr height="10">
-								     			<td colspan="4">
-									         		<p align="center">
-									            		<b><span style="font-size:9pt;">등록된 리뷰가 없습니다.</span></b>
-									        		</p>
-								      			</td>  
-							      			</tr>
-							  			</c:when>
-									
-										<c:when test="${reviewList != null }">
-											<c:forEach var="review" items="${reviewList }" varStatus="reviewNum">
-											 	<tr align="center">
-													<td>${reviewNum.count}</td>
-													<td>${review.content}</td>
-													<c:if test="${review.star == 5}"><td><img src="${contextPath}/resources/image/star1.jpg"><img src="${contextPath}/resources/image/star1.jpg"><img src="${contextPath}/resources/image/star1.jpg"><img src="${contextPath}/resources/image/star1.jpg"><img src="${contextPath}/resources/image/star1.jpg"></td></c:if>
-													<c:if test="${review.star == 4}"><td><img src="${contextPath}/resources/image/star1.jpg"><img src="${contextPath}/resources/image/star1.jpg"><img src="${contextPath}/resources/image/star1.jpg"><img src="${contextPath}/resources/image/star1.jpg"></td></c:if>
-													<c:if test="${review.star == 3}"><td><img src="${contextPath}/resources/image/star1.jpg"><img src="${contextPath}/resources/image/star1.jpg"><img src="${contextPath}/resources/image/star1.jpg"></td></c:if>
-													<c:if test="${review.star == 2}"><td><img src="${contextPath}/resources/image/star1.jpg"><img src="${contextPath}/resources/image/star1.jpg"></td></c:if>
-													<c:if test="${review.star == 1}"><td><img src="${contextPath}/resources/image/star1.jpg"></td></c:if>
-													<td>${review.member_id}</td>
-													<td align="left">
-														${review.write_date}
-														<c:if test="${isLogOn == true and review.member_id == memberInfo.member_id || isLogOn == true and memberInfo.member_id == 'admin'}">
-															&nbsp;<input type=button value="X" onClick="deleteReview('${review.review_id}')" />
-														</c:if>
-													</td>
-														
-											 	</tr>
-											 </c:forEach>
-										</c:when>
-						   			</c:choose>
-								</table>
-								<!-- 리뷰쓰기 버튼 -->
-								<input type=button class="btn btn-secondary btn-sm" value="후기 작성" onClick="fn_review_Form('${isLogOn}', '${contextPath}/board/review/reviewForm.do', '${goods.goods_id}')"   />
-							</div>
-							
-							<script>
-							  // 리뷰글 총 갯수를 출력하는 함수
-							  function showReviewCount(count) {
-							    var reviewCount = document.getElementById("review_count");
-							    reviewCount.innerHTML =  + count + "개";
-							  }
-						
-							  // 리뷰글 총 갯수를 표시할 span 요소에 데이터 바인딩
-							  showReviewCount(${fn:length(reviewList)});
-							</script>
-							</div>
-						</div>
-					</div>
-	
+				<div id="review" class="tabcontent">
+				    <div class="reviewList" style="width: 100%; display: flex; justify-content: center; text-align: center;">
+				        <section style="width: 1000px; display: flex; flex-direction: column; align-items: center; text-align: center;justify-content: center;">
+				            <c:forEach items="${review }" var="review">
+				                <li style="border: 1px solid #ccc; margin-top:30px; margin-bottom:30px;width: 900px; list-style: none;display: flex; align-items: center;">
+				                   <div style="display: flex; flex-direction: column; width: 100%;padding:15 15 15 0px;">
+				                    <table class="review-table">
+				                        <tr>
+				                            <td style="font-size: 18px;font-weight: 500;margin-bottom: 20px;">${review.rev_title}&nbsp;</td>
+				                        </tr>
+				                        <!-- <tr><td>${review.rev_content}/5.0&nbsp;</td></tr> 별점으로 수정할 것 -->
+				                        <tr>
+				                            <td class="goods_content">${review.rev_content}</td>
+				                        </tr>
+				                        <tr class="id">
+				                            <td style="font-size: 16px;">${review.mem_id}고객님</td>
+				                        </tr>
+				                        <tr >
+				                            <td style="text-align: right; font-weight: 500;">|&nbsp;<fmt:formatDate value="${review.rev_date}" pattern="yyyy-MM-dd"/></td>
+				                        </tr>
+				                    </table>
+				                    </div>
+				                   <!-- 이미지 파일 표시 부분 시작 -->
+				                    <c:forEach var="imageItem" items="${imageFileList}">
+				                        <c:if test="${imageItem.rev_no eq review.rev_no}">
+				                            <div style="margin: 10px;">
+				                                <img width="200" src="${contextPath}/thumbnails3.do?img=${imageItem.img_name}&revno=${imageItem.rev_no}"
+				                                  >
+				                            </div>
+				                        </c:if>
+				                    </c:forEach>
+				                    <!-- 이미지 파일 표시 부분 끝 -->
+				                </li>
+				            </c:forEach>
+				        </section>
+				    </div> 				
+				</div>
+                     
+            <script>
+              // 리뷰글 총 갯수를 출력하는 함수
+              function showReviewCount(count) {
+                var reviewCount = document.getElementById("review_count");
+                reviewCount.innerHTML =  + count + "개";
+              }
+         
+              // 리뷰글 총 갯수를 표시할 span 요소에 데이터 바인딩
+              showReviewCount(${fn:length(reviewList)});
+            </script>
+       
 	
 						<!-- 상품안내 -->
 						<div id="goodsInfo" class="tabcontent">
@@ -326,8 +283,8 @@
 								</table>
 							</div>
 						</div>
-	</div>
-		
+			</div>
+
 		
 		
 	<script type="text/javascript">    
@@ -471,9 +428,9 @@
 		<!-- 팝업창 닫기 버튼 -->
 		<font size="3.5" id="contents">
 		<b>상품을 장바구니에 담았습니다.</b></font>
-		<a href='${contextPath}/cart/myCartList.do'><input value="장바구니 보기" type="button" class="btn btn-secondary btn-sm"></a>
+		<a href='${contextPath}/cart/myCartList.do'><input value="장바구니 보기" type="button" class="btn btn-secondary btn-sm"style="color:black;"></a>
 		<a href="javascript:" onClick="javascript:imagePopup('close', '.layer01');">
-			<input type="button" class="btn btn-secondary btn-sm" value="계속 쇼핑하기"/> 
+			<input type="button" class="btn btn-secondary btn-sm" value="계속 쇼핑하기" style="color:black;"/> 
 		</a>
 	
 		</div>

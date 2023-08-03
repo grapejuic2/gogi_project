@@ -213,6 +213,20 @@ public class NoticeController {
 					//게시물 조회
 					vo= service.NoticeFAQRead(notice_no_faq);
 					model.addAttribute("noticeFAQRead", vo);
+					
+					 
+				    Boolean isLogOn = (Boolean) httpSession.getAttribute("isLogon"); //로그인 여부
+
+				    if (isLogOn != null && isLogOn) { //로그인 상태 아니여도 공지사항 읽기 가능
+				        memberVO = (MemberVO) httpSession.getAttribute("memberInfo");
+				        System.out.println("세션:" + memberVO);
+				        String mem_id = memberVO.getMem_id();
+				        System.out.println("멤버아이디" + mem_id);
+				        System.out.println("로그인 여부: "+isLogOn);
+				        model.addAttribute("mem_id",mem_id);
+				        model.addAttribute("isLogOn", isLogOn);
+				    }
+					
 				
 					 return "notice/noticeFAQRead";
 				}
@@ -230,12 +244,12 @@ public class NoticeController {
 
 				// 게시물 수정
 				@RequestMapping(value = "/faqmodify.do", method = RequestMethod.POST)
-				public String postFAQModify(NoticeVO vo) throws Exception {
-
+				public String postFAQModify(NoticeVO vo,@RequestParam("notice_no_faq")int notice_no_faq) throws Exception {
+ 
 					service.NoticeFAQUpdate(vo);
 			
 					//redirect는 value 경로 넣어주기..꼭!!!!!!
-				 return "redirect:/notice/faqread.do?notice_no=" + vo.getNotice_no_faq();
+				 return "redirect:/notice/faqread.do?notice_no_faq=" + vo.getNotice_no_faq();
 				}
 				  
 			  

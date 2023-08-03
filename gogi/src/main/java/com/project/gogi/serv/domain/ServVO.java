@@ -16,6 +16,8 @@ public class ServVO {
 	private int cust_serv_notice;	
 	private String imageFileName;
 	private String originalFileName;
+	private int cust_serv_secret;
+	private String cust_serv_dateStr;
 
 	public ServVO() {
 		// TODO Auto-generated constructor stub
@@ -25,7 +27,7 @@ public class ServVO {
 	
 	public ServVO(int cust_serv_no, String cust_serv_title, String cust_serv_content, String mem_id,
 			Date cust_serv_date, int cust_serv_hits, String cust_serv_pw, int cust_serv_notice, String imageFileName,
-			String originalFileName) {
+			String originalFileName,int cust_serv_secret) {
 		super();
 		this.cust_serv_no = cust_serv_no;
 		this.cust_serv_title = cust_serv_title;
@@ -37,8 +39,11 @@ public class ServVO {
 		this.cust_serv_notice = cust_serv_notice;
 		this.imageFileName = imageFileName;
 		this.originalFileName = originalFileName;
+		this.cust_serv_secret=cust_serv_secret;
 	}
 
+
+	
 
 
 	public int getCust_serv_no() {
@@ -101,7 +106,28 @@ public class ServVO {
 	public void setOriginalFileName(String originalFileName) {
 		this.originalFileName = originalFileName;
 	}
-	
+	public int getCust_serv_secret() {
+		return cust_serv_secret;
+	}
+	public void setCust_serv_secret(int cust_serv_secret) {
+		this.cust_serv_secret = cust_serv_secret;
+	}
+
+
+
+	public String getCust_serv_dateStr() {
+		return cust_serv_dateStr;
+	}
+
+
+
+	public void setCust_serv_dateStr(String cust_serv_dateStr) {
+		this.cust_serv_dateStr = cust_serv_dateStr;
+	}
+
+
+
+	 
 	
 	 
 }

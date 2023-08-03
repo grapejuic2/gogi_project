@@ -7,7 +7,7 @@
 	<!-- 리절트 맵 정의 -->	
 	<resultMap id="goodsResult" type="goodsVO">
 		<result property="goods_id" column="goods_id" />
-		<result property="goods_title" column="goods_title" />
+		<result property="goods_name" column="goods_name" />
 		
 		<result property="goods_price" column="goods_price" />
  		<result property="goods_seller" column="goods_seller" />
@@ -16,13 +16,13 @@
 		<result property="goods_sales_price" column="goods_sales_price" />
 		<result property="goods_delivery_date" column="goods_delivery_date" />
 		
-		<result property="goods_fileName" column="goods_fileName" />
+		<result property="file_name" column="file_name" />
 		<result property="goods_sort" column="goods_sort" />
 		
 		<result property="goods_intro" column="goods_intro" />
 	</resultMap>	
 
-	<resultMap id="imageResult" type="ImageFileVO">
+	<resultMap id="imageResult" type="imageFileVO">
 	   <result property="goods_id" column="goods_id" />
 	   <result property="file_name" column="file_name" />
 	   <result property="reg_id" column="reg_id" />
@@ -35,7 +35,7 @@
 		<result property="order_id" column="order_id" />
 		<result property="mem_id" column="mem_id" />
 		<result property="goods_id" column="goods_id" />
-		<result property="goods_title" column="goods_title" />
+		<result property="goods_name" column="goods_name" />
 		<result property="goods_sales_price" column="goods_sales_price" />
 		
 		<result property="order_quantity" column="order_quantity" />
@@ -60,7 +60,7 @@
 		<result property="order_time" column="order_time" />
 		<result property="delivery_state" column="delivery_state" />
 		
-		<result property="file_Name" column="file_Name" />
+		<result property="file_name" column="file_name" />
 	</resultMap>
 	
 		<!-- <selectKey> => 새 상품을 추가하기 전에 시퀀스에서 상품 번호를 먼저 가져옵니다. -->
@@ -76,7 +76,7 @@
 				                   		goods_name,
 				                    	goods_seller,
 										goods_price,
-										goods_sales_price,
+										goods_sales_price,										
 										goods_delivery_date,
 										goods_status,
 										goods_intro
@@ -87,7 +87,7 @@
 					  			       #{goods_name},
 					  			       #{goods_seller},
 					  			       #{goods_price},
-					  			       #{goods_sales_price},
+					  			       #{goods_sales_price},					  			       
 					  			       #{goods_delivery_date},
 					  			       #{goods_status},
 								 	   #{goods_intro}
@@ -99,28 +99,27 @@
 	
 		<!-- <selectKey> => 시퀀스에서 상품 이미지 번호를 미리 가져옵니다. -->
 		<!-- CDATA 쿼리문 => 새 상품일 경우 첨부한 상품 이미지 정보를 저장합니다. -->
-	<insert id="insertGoodsImageFile" parameterType="imageFileVO"   >
-		<selectKey resultType="int" keyProperty="image_id" order="BEFORE">
-	    	select seq_image_id.nextval from dual
-	    </selectKey>
-	    <![CDATA[
-		   insert into gogi_goods_image (image_id,
-		                                     goods_id,
-											 file_name,
-											 file_type,
-											 reg_id,
-											 credate)
-									  values(#{image_id},
-											 #{goods_id},
-											 #{file_name},
-											 #{file_type},
-											 #{reg_id},
-											 sysdate
-											 )
-		]]>
-	</insert>
+	   <insert id="insertGoodsImageFile" parameterType="imageFileVO"   >
+      <selectKey resultType="int" keyProperty="image_id" order="BEFORE">
+          select seq_image_id.nextval from dual
+       </selectKey>
+       <![CDATA[
+         insert into gogi_goods_image (image_id,
+                                           goods_id,
+                                  file_name,
+                                  file_type,
+                                  reg_id,
+                                  creDate)
+                             values(#{image_id},
+                                  #{goods_id},
+                                  #{file_name},
+                                  #{file_type},
+                                  #{reg_id},                               
+                                  sysdate )
+      ]]>
+   </insert>
 	
-	<select id="selectNewGoodsList" resultMap="goodsResult"   parameterType="java.util.Map"  >
+	<select id="selectNewGoodsList" resultMap="goodsResult" parameterType="java.util.Map"  >
 	    <![CDATA[
 		  select * from (
 			   select rowNum as recNum,
@@ -128,7 +127,7 @@
 			          goods_name,
 			          goods_seller,
 			          goods_price,
-			          to_char(goods_delivery_date,'YYYY-MM-DD') as goods_delivery_date
+			          goods_delivery_date
 			       from (
 			             select goods_id,
 			             		goods_name,
@@ -136,7 +135,7 @@
 			             		goods_price,
 			             		goods_delivery_date
 			              from gogi_goods
-			              where to_char(goods_delivery_date,'YYYY-MM-DD')  between #{beginDate} and #{endDate}
+			              where  to_char(goods_delivery_date,'YYYY-MM-DD')  between #{beginDate} and #{endDate}
 			              order by goods_delivery_date desc
 					      )
 				 )							
@@ -159,7 +158,7 @@
 			                <if test="search_type=='orderer_hp_num'">
 			                   AND pay_orderer_hp_num=#{search_word} 
 			                </if>
-			              order by order_time desc
+			              order by PAY_ORDER_TIME desc
 					    ) t
 				)							
 			where				
@@ -219,6 +218,8 @@
 		    goods_id=#{goods_id}
 	
 	</update>
+	
+	
 	
 	<!-- 상품 이미지 정보를 수정합니다. -->
 	<update id="updateGoodsImage" parameterType="imageFileVO">

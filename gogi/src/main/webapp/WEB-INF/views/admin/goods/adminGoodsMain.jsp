@@ -86,7 +86,9 @@ height: 30px;
      <c:forEach var="item" items="${newGoodsList }">
 			 <TR>       
 				<TD>
+			      <a href="${pageContext.request.contextPath}/admin/goods/modifyGoodsForm.do?goods_id=${item.goods_id}">
 				  <span>${item.goods_id }</span>
+				  </a>
 				</TD>
 				<TD>
 				 <a href="${pageContext.request.contextPath}/admin/goods/modifyGoodsForm.do?goods_id=${item.goods_id}">
@@ -100,7 +102,7 @@ height: 30px;
 				  <span>${item.goods_price }</span>
 				</td>
 				<td>
-				 <span>${item.goods_delivery_date }</span> 
+					<fmt:formatDate value="${item.goods_delivery_date }" pattern="yyyy-MM-dd" />
 				</td>
 			</TR>
 	</c:forEach>

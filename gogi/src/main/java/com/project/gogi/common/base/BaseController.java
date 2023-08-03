@@ -17,11 +17,13 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.project.gogi.goods.vo.ImageFileVO;
+import com.project.gogi.goods.vo.ReviewImageVO;
 import com.project.gogi.serv.domain.ServImageFileVO;
 
 public abstract class BaseController {
 	private static final String GOGI_IMAGE_REPO="C:\\meatrule\\file_repo\\goods";
 	private static final String GOGI_IMAGE_REPO_PATH1 = "C:\\meatrule\\file_repo\\servBoard";
+	private static final String GOGI_IMAGE_REPO_PATH2 = "C:\\meatrule\\file_repo\\reviewBoard";
 	
 	protected List<ImageFileVO> upload(MultipartHttpServletRequest multipartRequest) throws Exception{
 		
@@ -141,6 +143,36 @@ public abstract class BaseController {
 					}
 				}
 				mFile.transferTo(new File(GOGI_IMAGE_REPO_PATH1 +"\\"+imageFileName)); //임시로 저장된 multipartFile을 실제 파일로 전송
+			}
+			
+		}
+		return fileList;
+	}
+	
+	protected List<ReviewImageVO> upload2(MultipartHttpServletRequest multipartRequest) throws Exception{
+		String imageFileName= null;
+		
+		List<ReviewImageVO> fileList= new ArrayList<ReviewImageVO>();
+		Iterator<String> fileNames = multipartRequest.getFileNames();
+		
+		while(fileNames.hasNext()){
+			ReviewImageVO reviewImageVO=new ReviewImageVO();
+			
+			String fileName = fileNames.next();
+			MultipartFile mFile = multipartRequest.getFile(fileName);
+			imageFileName=mFile.getOriginalFilename();
+			reviewImageVO.setImg_name(imageFileName);
+			System.out.println("업로드 imageFileName:"+imageFileName);
+			fileList.add(reviewImageVO);
+			
+			File file = new File(GOGI_IMAGE_REPO_PATH2 +"\\"+ fileName);
+			if(mFile.getSize()!=0){ //File Null Check
+				if(! file.exists()){ //경로상에 파일이 존재하지 않을 경우
+					if(file.getParentFile().mkdirs()){ //경로에 해당하는 디렉토리들을 생성
+						file.createNewFile(); //이후 파일 생성
+					}
+				}
+				mFile.transferTo(new File(GOGI_IMAGE_REPO_PATH2 +"\\"+imageFileName)); //임시로 저장된 multipartFile을 실제 파일로 전송
 			}
 			
 		}

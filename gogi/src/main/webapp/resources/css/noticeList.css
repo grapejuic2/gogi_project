@@ -63,7 +63,7 @@
 table {
 	width: 100%;
 	border-top: 1px solid #d3d3d3;
-	border-collapse: collapse;
+	
 }
 
 th {
@@ -126,11 +126,11 @@ a {
 	text-decoration: none;
 }
 
- td a:hover {
+/*  td a:hover {
 	color: #6CC148;
 	text-decoration-line: none;
 	text-decoration: none;
-} 
+}  */
 
 .pageHTML {
 	display: flex;

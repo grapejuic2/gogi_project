@@ -1,6 +1,7 @@
 package com.project.gogi.serv.controller;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
+import org.json.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,8 +40,6 @@ import com.project.gogi.serv.domain.PageMaker3;
 import com.project.gogi.serv.domain.ServImageFileVO;
 import com.project.gogi.serv.domain.ServVO;
 import com.project.gogi.serv.service.ServService;
-
-import org.json.JSONArray;
 
 @Controller
 @RequestMapping("/serv")
@@ -70,6 +70,11 @@ public class ServController extends BaseController {
 
 		List<ServVO> servList = new ArrayList<ServVO>();
 		servList = servService.ServList(cri);
+		// 서버에서 날짜를 원하는 형식("yyyy. M. d")으로 변환하여 Model에 추가
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy. M. d");
+		for (ServVO serv : servList) {
+			serv.setCust_serv_dateStr(dateFormat.format(serv.getCust_serv_date()));
+		}
 		model.addAttribute("servList", servList);
 
 		// 게시판 페이징 가져오기.
@@ -77,13 +82,42 @@ public class ServController extends BaseController {
 		pageMaker.setCri(cri);
 		pageMaker.setTotalCount(servService.ServListCount());
 		model.addAttribute("pageMaker3", pageMaker);
+
+		// 8.1 추가 로그인 확인
+		Boolean isLogOn = (Boolean) httpSession.getAttribute("isLogon");
+		// 로그인 상태만 읽기 가능하게 하기
+		if (isLogOn != null && isLogOn) {
+			memberVO = (MemberVO) httpSession.getAttribute("memberInfo");
+			System.out.println("세션:" + memberVO);
+			String mem_id = memberVO.getMem_id();
+			System.out.println("멤버아이디" + mem_id);
+			System.out.println("로그인 여부: " + isLogOn);
+			model.addAttribute("mem_id", mem_id);
+			model.addAttribute("isLogOn", isLogOn);
+			System.out.println("확인중");
+		}
+
 		return "serv/servList";
 
 	}
 
 	// 게시물 작성 get
 	@RequestMapping(value = "/write.do", method = RequestMethod.GET)
-	public String getServWrite() throws Exception {
+	public String getServWrite(HttpServletRequest request, Model model) throws Exception {
+		HttpSession session = request.getSession();
+		MemberVO memberVO = (MemberVO) session.getAttribute("memberInfo");
+
+		// 8.1 구태선 추가
+		Boolean isLogOn = (Boolean) httpSession.getAttribute("isLogon"); // 로그인 여부
+
+		if (isLogOn != null && isLogOn) { // 로그인 상태 아니여도 공지사항 읽기 가능
+			memberVO = (MemberVO) httpSession.getAttribute("memberInfo");
+			String mem_id = memberVO.getMem_id();
+			model.addAttribute("mem_id", mem_id);
+			model.addAttribute("isLogOn", isLogOn);
+			System.out.println("고객센터 글작성 아이디 확인" + mem_id);
+		} // 추가 end
+
 		return "serv/servWrite";
 	}
 
@@ -194,42 +228,106 @@ public class ServController extends BaseController {
 		return "redirect:/serv/list.do";
 	}
 
-	@RequestMapping(value="/addComment.do",method =  RequestMethod.POST)
-    @ResponseBody
-    public String addComment(@ModelAttribute("CommentVO") CommentVO commentVO, HttpServletRequest request, HttpServletResponse response) throws Exception{
-        HttpSession session = request.getSession();
-        MemberVO memberVO = (MemberVO)session.getAttribute("memberInfo");
-        try{
-        	if(memberVO == null) {
-	        	commentVO.setMem_id(memberVO.getMem_id());        
-	            servService.addComment(commentVO);
-        	}
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-        return "success";
-    }
+	// 게시물 수정 페이지 이동
+//		@RequestMapping(value = "/modify.do", method = RequestMethod.GET)
+//		public String getServModify(@RequestParam("cust_serv_no") int cust_serv_no, Model model) throws Exception {
+//		    ServVO vo = servService.ServRead(cust_serv_no);
+//		    model.addAttribute("servRead", vo);
+//		    return "serv/servModify";
+//		}
+
+	// 게시물 수정 처리
+//	    @RequestMapping(value = "/modify.do", method = RequestMethod.POST)
+//	    @ResponseBody
+//	    public Map<String, Object> postServModify(ServVO vo) throws Exception {
+//	        Map<String, Object> result = new HashMap<>();
+//	        
+//	        ServVO servFromDB = servService.ServRead(cust_serv_no);
+//	        String enteredPassword = vo.getCust_serv_pw();
+//
+//	        if (servFromDB == null) {
+//	            result.put("success", false);
+//	            result.put("message", "해당 게시물을 찾을 수 없습니다.");
+//	            return result;
+//	        }
+//
+//	        String storedPassword = servFromDB.getCust_serv_pw();
+//
+//	        if (storedPassword.equals(enteredPassword)) {
+//	        	servService.ServUpdate(vo);
+//	            result.put("success", true);
+//	            result.put("message", "게시물이 수정되었습니다.");
+//	        } else {
+//	            result.put("success", false);
+//	            result.put("message", "일치하지 않는 비밀번호입니다.");
+//	        }
+//
+//	        return result;
+//	    }
+//		    
+//	    
+//	    
+//	    
+//	    
+
+	@RequestMapping(value = "/addComment.do", method = RequestMethod.POST)
+	@ResponseBody
+	public String addComment(@ModelAttribute("CommentVO") CommentVO commentVO, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		
+		HttpSession session = request.getSession();
+		MemberVO memberVO = (MemberVO) session.getAttribute("memberInfo");
+		try {
+			if (memberVO != null) {
+				commentVO.setMem_id(memberVO.getMem_id());
+				servService.addComment(commentVO);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "success";
+	}
 	
-	@RequestMapping(value="/commentList.do", produces="application/json; charset=utf8" ,method =  RequestMethod.GET)
-    @ResponseBody
-    public ResponseEntity commentList(@ModelAttribute("CommentVO") CommentVO commentVO, HttpServletRequest request, HttpServletResponse response) throws Exception{
-        HttpHeaders responseHeaders = new HttpHeaders();
-        ArrayList<HashMap> hmlist = new ArrayList<HashMap>();
-        List<CommentVO> commentList= servService.selectBoardCommentByCode(commentVO);
-        
-        if(commentList.size() > 0){
-            for(int i=0; i<commentList.size(); i++){
-                HashMap hm = new HashMap();
-                hm.put("cust_serv_no", commentList.get(i).getCust_serv_no());
-                hm.put("cmt_content", commentList.get(i).getCmt_content());
-                hm.put("cmt_date", commentList.get(i).getCmt_date());
-                hm.put("mem_id", commentList.get(i).getMem_id());
-                
-                hmlist.add(hm);
-            }
-        }
-        JSONArray json = new JSONArray(hmlist);        
-        return new ResponseEntity(json.toString(), responseHeaders, HttpStatus.CREATED);
-    }
-	
+	@RequestMapping(value = "/replyComment.do", method = RequestMethod.GET)
+	@ResponseBody
+	public List<CommentVO> replyComment(@RequestParam("cmt_parent_num") int cmt_parent_num, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		
+		HttpSession session = request.getSession();
+		MemberVO memberVO = (MemberVO) session.getAttribute("memberInfo");
+	    try {
+	    	if (memberVO != null) {
+	    	
+	        List<CommentVO> replyCmt = servService.replyComment(cmt_parent_num);
+	        return replyCmt;
+	    	}
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return new ArrayList<>(); // 오류 발생 시 빈 리스트 반환
+	    }
+	}
+
+	@RequestMapping(value = "/commentList.do", produces = "application/json; charset=utf8", method = RequestMethod.GET)
+	@ResponseBody
+	public ResponseEntity commentList(@ModelAttribute("CommentVO") CommentVO commentVO, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		HttpHeaders responseHeaders = new HttpHeaders();
+		ArrayList<HashMap> hmlist = new ArrayList<HashMap>();
+		List<CommentVO> commentList = servService.selectBoardCommentByCode(commentVO);
+
+		if (commentList.size() > 0) {
+			for (int i = 0; i < commentList.size(); i++) {
+				HashMap hm = new HashMap();
+				hm.put("cust_serv_no", commentList.get(i).getCust_serv_no());
+				hm.put("cmt_content", commentList.get(i).getCmt_content());
+				hm.put("cmt_date", commentList.get(i).getCmt_date());
+				hm.put("mem_id", commentList.get(i).getMem_id());
+
+				hmlist.add(hm);
+			}
+		}
+		JSONArray json = new JSONArray(hmlist);
+		return new ResponseEntity(json.toString(), responseHeaders, HttpStatus.CREATED);
+	}
+
 }

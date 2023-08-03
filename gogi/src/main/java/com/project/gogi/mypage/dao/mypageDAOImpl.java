@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
+import com.project.gogi.goods.vo.ReviewVO;
 import com.project.gogi.member.vo.MemberVO;
 import com.project.gogi.mypage.vo.mypageVO;
 import com.project.gogi.order.vo.OrderVO;
@@ -47,6 +48,12 @@ public class mypageDAOImpl implements mypageDAO{
 	public int deleteMember(String mem_id) throws DataAccessException {
 		int result = sqlSession.delete("mapper.mypage.deleteMember", mem_id);
 		return result;
+	}
+
+	@Override
+	public List<ReviewVO> selectReviewList(String mem_id) throws Exception {	
+		List<ReviewVO> reviewList = sqlSession.selectList("mapper.review.myReviewList", mem_id);
+		return reviewList;
 	}
 
 }

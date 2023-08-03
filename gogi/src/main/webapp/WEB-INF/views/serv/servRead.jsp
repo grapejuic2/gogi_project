@@ -42,46 +42,54 @@
             });
         }
     }
-
+    
     // 초기 페이지 로딩시 댓글 불러오기
     $(function () {
         getCommentList();
     });
 
     // 댓글 불러오기(AJAX)
-	function getCommentList() {
-	    $.ajax({
-	        type: 'GET',
-	        url: "${contextPath}/serv/commentList.do",
-	        dataType: "json",
-	        data: { cust_serv_no: ${servRead.cust_serv_no} }, // 현재 게시물의 cust_serv_no를 파라미터로 전달
-	        success: function (data) {
-	            var html = "";
-	            var cCnt = data.length;
-	
-	            if (data.length > 0) {
-	                for (i = 0; i < data.length; i++) {
-	                    html += "<div>";
-	                    html += "<div class='cmt'><table id='mem_id'><h2 style='margin-bottom: 10px;'><strong>" + data[i].mem_id + "<span class='cmt_date'>" + data[i].cmt_date + "</span>" + "</strong></h2>";
-	                    html += data[i].cmt_content + "<tr><td></td></tr>";
-	                    html += "</table></div>";
-	                    html += "</div>";
-	                }
-	            } else {
-	                html += "<div>";
-	                html += "<div class='nonono'><table><h6 style='padding-right:140px;'><strong>등록된 댓글이 없습니다.</strong></h6>";
-	                html += "</table></div>";
-	                html += "</div>";
-	            }
-	
-	            $("#cCnt").html(cCnt);
-	            $("#CommentList").html(html);
-	        },
-	        error: function (request, status, error) {
-	            alert("댓글 불러오기에 실패했습니다.");
-	        }
-	    });
-	}
+function getCommentList() {
+    $.ajax({
+        type: 'GET',
+        url: "${contextPath}/serv/commentList.do",
+        dataType: "json",
+        data: { cust_serv_no: ${servRead.cust_serv_no} }, // 현재 게시물의 cust_serv_no를 파라미터로 전달
+        success: function (data) {
+            var html = "";
+            var cCnt = data.length;
+
+            if (data.length > 0) {
+                for (i = 0; i < data.length; i++) {
+                    html += "<div class='cmt'>";
+                    html += "<table>";
+                    html += "<tr><td><h2 style='margin-bottom: 10px;'><strong>" + data[i].mem_id + "<span class='cmt_date'>" + data[i].cmt_date + "</span>" + "</strong></h2></td></tr>";
+                    html += "<tr><td>" + data[i].cmt_content + "</td></tr>";
+/*                  html += "<tr><td>";
+                    html += "<div class='cmt-in'>";
+                    html += "<button type='button' class='bbtn btn-sm btn-primary greylist' onclick='editComment(" + data[i].comment_id + ")'>수정</button>";
+                    html += "<button type='button' class='bbtn btn-sm btn-primary greylist' onclick='deleteComment(" + data[i].comment_id + ")'>삭제</button>";
+                    html += "</div>";
+                    html += "</td></tr>"; */
+                    html += "</table>";
+                    html += "</div>";
+                }
+            } else {
+                html += "<div class='nonono'>";
+                html += "<table><tr><td><h6 style='padding-right:140px;'><strong>등록된 댓글이 없습니다.</strong></h6></td></tr>";
+                html += "</table>";
+                html += "</div>";
+            }
+
+            $("#cCnt").html(cCnt);
+            $("#CommentList").html(html);
+        },
+        error: function (request, status, error) {
+            alert("댓글 불러오기에 실패했습니다.");
+        }
+    });
+}
+
 </script>
 <style>
    .cmt {
@@ -188,8 +196,7 @@
 			    </form> 
 				<form id="commentList" name="commentList" method="post">
 				    <div id="CommentList"></div>
-					</form>
-						<div class="cmt-in hidden">
+				    	<div class="cmt-in hidden">
 						    <button type="button" class="bbtn btn-sm btn-primary greylist" onclick="editComment()">수정</button>
 						    <button type="button" class="bbtn btn-sm btn-primary greylist" onclick="deleteComment()">삭제</button>
 						</div>
@@ -202,6 +209,8 @@
 						</div>
 				    <div class="cmt-out">
 				</div>
+					</form>
+
         	</div>
    		</div>
    		</div>
@@ -224,17 +233,6 @@
 		        toggleForm();
 		    });
 			
-			$(document).on("click", ".editComment", function () {
-
-			    const comment_id = $(this).siblings('mem_id').val();
-			    const comment_text = $(this).siblings('.').children('h5').text();
-			    const comment_writer = $(this).siblings('b').text();
-
-			    $("#comment_id").val(comment_id);
-			    $("#comment_text").val(comment_text);
-			    $("#comment_writer").val(comment_writer);
-
-			});
 		</script>
 	</body>
 </html>

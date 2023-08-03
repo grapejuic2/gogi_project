@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,10 +19,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.project.gogi.common.base.BaseController;
+import com.project.gogi.goods.vo.ReviewVO;
 import com.project.gogi.member.vo.MemberVO;
 import com.project.gogi.mypage.service.mypageService;
-import com.project.gogi.mypage.vo.mypageVO;
 import com.project.gogi.order.vo.OrderVO;
+import com.project.gogi.serv.domain.ServVO;
+import com.project.gogi.serv.service.ServService;
 
 @Controller("mypageController")
 @RequestMapping(value = "/mypage")
@@ -33,6 +34,8 @@ public class mypageControllerImpl extends BaseController implements mypageContro
 	private MemberVO memberVO;
 	@Autowired
 	private mypageService mypageService;
+	@Autowired
+	private ServService servService;
 
 	// 회원 정보
 	@Override
@@ -116,6 +119,7 @@ public class mypageControllerImpl extends BaseController implements mypageContro
 		mav.addObject("endMonth",endDate1[1]);
 		mav.addObject("endDay",endDate1[2]);
 		mav.addObject("myOrderHistList", myOrderHistList);
+		mav.addObject("mem_id", mem_id);
 		return mav;
 	}	
 	
@@ -143,10 +147,29 @@ public class mypageControllerImpl extends BaseController implements mypageContro
 	@RequestMapping(value="/deleteMember.do", method = RequestMethod.POST)
 	public ModelAndView deleteMember(@RequestParam("mem_id") String mem_id, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		HttpSession session=request.getSession();
-		session.setAttribute("isLogon", true);
+		session.setAttribute("isLogon", false);
 		session.setAttribute("memberInfo", memberVO);
 		mypageService.deleteMember(mem_id);
+		System.out.println("삭제되는 아이디 : "+mem_id);
 		ModelAndView mav = new ModelAndView("redirect:/main/main.do");
+		return mav;
+	}
+	
+	//내가 쓴글 확인 
+	@Override
+	@RequestMapping(value="/myWriteList.do")
+	public ModelAndView myWrite(HttpServletRequest request, HttpServletResponse response)throws Exception {
+		ModelAndView mav = new ModelAndView("/mypage/myWriteList");
+		
+		HttpSession session=request.getSession();
+		memberVO=(MemberVO)session.getAttribute("memberInfo");
+		String mem_id=memberVO.getMem_id();
+		
+		List<ReviewVO> reviewVO= mypageService.reviewList(mem_id);
+		mav.addObject("reviewVO", reviewVO);
+		
+		List<ServVO> servVO=servService.reviewList(mem_id);
+		mav.addObject("servVO", servVO);
 		return mav;
 	}
 	
@@ -167,5 +190,7 @@ public class mypageControllerImpl extends BaseController implements mypageContro
 		mav.setViewName(viewName);
 		return mav;
 	}
+
+
 
 }

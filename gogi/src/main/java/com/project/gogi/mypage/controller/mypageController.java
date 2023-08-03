@@ -33,4 +33,8 @@ public interface mypageController {
 			@RequestParam(value = "goods_id", required = false) String goods_id,
 			@RequestParam(value = "action", required = false) String action, HttpServletRequest request,
 			HttpServletResponse response) throws Exception;
+	
+	//마이 리뷰, 1:1문의
+		public ModelAndView myWrite( HttpServletRequest request,
+				HttpServletResponse response) throws Exception;
 }

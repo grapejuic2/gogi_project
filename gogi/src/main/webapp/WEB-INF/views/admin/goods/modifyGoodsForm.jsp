@@ -290,32 +290,35 @@ height: 30px;
 		<DIV class="clear"></DIV>
 		<!-- 내용 들어 가는 곳 -->
 
-		<div class="category" id="goods_detail_menu">
-			<A href="#tab1">상품정보</A>
-			<A href="#tab4">상품소개</A>
-			<A href="#tab7">상품이미지</A>
-		</div>
-
 		<DIV class="frm_mod_tab" id="tab1">
 			<table class="table">
 				<tr>
 					<td width=200>상품분류</td>
 					<td width=500><select name="goods_sort">
 							<c:choose>
-								<c:when test="${goods.goods_sort=='우유' }">
-									<option value="우유" selected>우유</option>
-									<option value="커피">커피</option>
-									<option value="발효유">발효유</option>
+								<c:when test="${goods.goods_sort=='COW' }">
+									<option value="COW" selected>소</option>
+									<option value="PIG">돼지</option>
+									<option value="CHICKEN">닭</option>
+									<option value="MEALKIT">밀키트/양념육</option>
 								</c:when>
-								<c:when test="${goods.goods_sort=='커피' }">
-									<option value="우유">우유</option>
-									<option value="커피" selected>커피</option>
-									<option value="발효유">발효유</option>
+								<c:when test="${goods.goods_sort=='PIG' }">
+									<option value="COW" >소</option>
+									<option value="PIG" selected>돼지</option>
+									<option value="CHICKEN">닭</option>
+									<option value="MEALKIT">밀키트/양념육</option>
 								</c:when>
-								<c:when test="${goods.goods_sort=='발효유' }">
-									<option value="우유">우유</option>
-									<option value="커피">커피</option>
-									<option value="발효유" selected>발효유</option>
+								<c:when test="${goods.goods_sort=='CHICKEN' }">
+									<option value="COW" >소</option>
+									<option value="PIG" >돼지</option>
+									<option value="CHICKEN" selected>닭</option>
+									<option value="MEALKIT">밀키트/양념육</option>
+								</c:when>
+								<c:when test="${goods.goods_sort=='MEALKIT' }">
+									<option value="COW" >소</option>
+									<option value="PIG" >돼지</option>
+									<option value="CHICKEN" >닭</option>
+									<option value="MEALKIT" selected>밀키트/양념육</option>
 								</c:when>
 							</c:choose>
 					</select></td>
@@ -361,8 +364,8 @@ height: 30px;
 				</tr>
 
 				<tr>
-					<td>상품출판일</td>
-					<td><input name="goods_published_date" type="date"
+					<td>상품등록일</td>
+					<td><input name="goods_delivery_date" type="date"
 						value="${goods.goods_delivery_date }" /></td>
 					<td><input type="button" value="수정반영"
 						class="btn btn-secondary btn-sm"
@@ -377,7 +380,6 @@ height: 30px;
 							<option value="newgoods">신상품</option>
 							<option value="on_sale" selected>판매중</option>
 							<option value="buy_out">품절</option>
-							<option value="out_of_print">절판</option>
 					</select> <input type="hidden" name="h_goods_status"
 						value="${goods.goods_status }" /></td>
 					<td><input type="button" value="수정반영"
@@ -416,7 +418,7 @@ height: 30px;
 						<c:forEach var="item" items="${imageFileList }"
 							varStatus="itemNum">
 							<c:choose>
-								<c:when test="${item.fileType=='main_image' }">
+								<c:when test="${item.file_type=='main_image' }">
 									<tr>
 										<td>메인 이미지</td>
 										<td><input type="file" id="main_image" name="main_image"
@@ -425,11 +427,11 @@ height: 30px;
 										</td>
 										<td><img id="preview${itemNum.count }" width=200
 											height=200
-											src="${contextPath}/download.do?goods_id=${item.goods_id}&fileName=${item.fileName}" />
+											src="${contextPath}/download.do?goods_id=${item.goods_id}&fileName=${item.file_name}" />
 										</td>
 										<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
 										<td><input type="button" value="수정"
-											onClick="modifyImageFile('main_image','${item.goods_id}','${item.image_id}','${item.fileType}')"
+											onClick="modifyImageFile('main_image','${item.goods_id}','${item.image_id}','${item.file_type}')"
 											class="btn btn-secondary btn-sm" /></td>
 									</tr>
 									<tr>
@@ -446,14 +448,14 @@ height: 30px;
 											value="${item.image_id }" /> <br></td>
 										<td><img id="preview${itemNum.count }" width=200
 											height=200
-											src="${contextPath}/download.do?goods_id=${item.goods_id}&fileName=${item.fileName}">
+											src="${contextPath}/download.do?goods_id=${item.goods_id}&fileName=${item.file_name}">
 										</td>
 										<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
 										<td><input type="button" value="수정"
-											onClick="modifyImageFile('detail_image','${item.goods_id}','${item.image_id}','${item.fileType}')"
+											onClick="modifyImageFile('detail_image','${item.goods_id}','${item.image_id}','${item.file_type}')"
 											class="btn btn-secondary btn-sm" /> <input type="button"
 											value="삭제"
-											onClick="deleteImageFile('${item.goods_id}','${item.image_id}','${item.fileName}','${itemNum.count-1}')"
+											onClick="deleteImageFile('${item.goods_id}','${item.image_id}','${item.file_name}','${itemNum.count-1}')"
 											class="btn btn-secondary btn-sm" /></td>
 									</tr>
 									<tr>
