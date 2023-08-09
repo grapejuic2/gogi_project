@@ -20,6 +20,8 @@
 		<result property="goods_sort" column="goods_sort" />
 		
 		<result property="goods_intro" column="goods_intro" />
+		<result property="goods_point" column="goods_point" />
+		
 	</resultMap>	
 
 	<resultMap id="imageResult" type="imageFileVO">
@@ -79,7 +81,9 @@
 										goods_sales_price,										
 										goods_delivery_date,
 										goods_status,
-										goods_intro
+										goods_intro,
+										goods_weight,
+										goods_point
 										)
 					  			values(
 					  			       #{goods_id},
@@ -90,7 +94,9 @@
 					  			       #{goods_sales_price},					  			       
 					  			       #{goods_delivery_date},
 					  			       #{goods_status},
-								 	   #{goods_intro}
+								 	   #{goods_intro},
+								 	   #{goods_weight},
+								 	   #{goods_point}
 					 			       )
 		]]>
 	</insert> 
@@ -127,13 +133,17 @@
 			          goods_name,
 			          goods_seller,
 			          goods_price,
-			          to_char(goods_delivery_date,'YYYY-MM-DD') as creDate
+			          goods_delivery_date,
+			          goods_weight,
+			          goods_point
 			       from (
 			             select goods_id,
 			             		goods_name,
 			             		goods_seller,
 			             		goods_price,
-			             		goods_delivery_date
+			             		goods_delivery_date,
+			             		goods_weight,
+			             		goods_point
 			              from gogi_goods
 			              where  to_char(goods_delivery_date,'YYYY-MM-DD')  between #{beginDate} and #{endDate}
 			              order by goods_delivery_date desc

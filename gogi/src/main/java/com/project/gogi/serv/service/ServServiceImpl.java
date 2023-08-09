@@ -1,21 +1,16 @@
 package com.project.gogi.serv.service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
-import com.project.gogi.member.vo.MemberVO;
 import com.project.gogi.serv.dao.ServDAO;
+import com.project.gogi.serv.domain.CommentVO;
 import com.project.gogi.serv.domain.Criteria3;
 import com.project.gogi.serv.domain.ServImageFileVO;
 import com.project.gogi.serv.domain.ServVO;
@@ -114,8 +109,30 @@ public class ServServiceImpl implements ServService {
 		        return dao.getServPw(cust_serv_no);
 		    }
 
+			@Override
+			public List<ServVO> reviewList(String mem_id) throws Exception {
+				List reviewList = dao.selectReviewList(mem_id);
+				return reviewList;
+			}
+
 			
-			
+			  @Override
+			   public int addComment(CommentVO commentVO) throws Exception {			      
+				return dao.addComment(commentVO);
+			   }
+			  
+	
+			@Override
+			  public void addReply(CommentVO commentVO) throws Exception {
+				  dao.addComment(commentVO);
+			  }
+
+			   @Override
+			   public List<CommentVO> selectBoardCommentByCode(CommentVO commentVO) throws Exception {
+			      List<CommentVO> comment = dao.selectBoardCommentByCode(commentVO);
+			      return comment;
+			   }
+			   	
 			
 			
 	

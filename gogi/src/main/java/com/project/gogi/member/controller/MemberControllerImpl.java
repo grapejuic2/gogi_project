@@ -67,8 +67,7 @@ public class MemberControllerImpl extends BaseController implements MemberContro
 	            session.setAttribute("isAdmin", false);
 	        }
 	        System.out.println(memberVO.getMem_id()+ " 로그인 완료");
-			session = request.getSession(true);
-	        session.setMaxInactiveInterval(30 * 60); //세션 30분 유지
+			session = request.getSession(true);	     
 	        mav.setViewName("redirect:/main/main.do");
 			}
 		}else{

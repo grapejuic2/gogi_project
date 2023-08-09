@@ -29,8 +29,8 @@
 			<input type="radio" name="slide" id="slide04">
 			<div class="slidewrap">
 				<ul class="slidelist">
-					<li><a><img src="${contextPath}/resources/images/main/banner1.png" ></a></li>
 					<li><a><img src="${contextPath}/resources/images/main/banner5.png" ></a></li>
+					<li><a><img src="${contextPath}/resources/images/main/banner1.png" ></a></li>
 					<li><a><img src="${contextPath}/resources/images/main/banner2.png"></a></li>
 					<li><a><img src="${contextPath}/resources/images/main/banner3.png"></a></li>
 				</ul>
@@ -59,7 +59,7 @@
 		<!-- 메인페이지 베스트상품 -->
 		
 		<div class="main title-div" id="new">
-			<div class="main-sort">육룰 BEST</div>			
+			<div class="main-sort">[육룰 BEST]</div>			
 			<div class="main-best_div row row-cols-1 row-cols-md-3 text-center mb-4">
 			    <c:forEach var="best" items="${goodsMap.best}">
 			        <div class="card h-100 border-light shadow p-3 bg-body rounded-0 col-md-4 d-flex justify-content-center align-items-center mb-4">
@@ -81,7 +81,7 @@
 		
 		<!-- 메인페이지 할인상품 -->
 		
-			<div class="main-sort">할인상품</div>		
+			<div class="main-sort">[할인상품]</div>		
 			<div class="main-best_div row row-cols-1 row-cols-md-3 text-center mb-4">
 			    <c:forEach var="sale" items="${goodsMap.sale}">
 			        <div class="card h-100 border-light shadow p-3 bg-body rounded-0 col-md-4 d-flex justify-content-center align-items-center mb-4">

@@ -18,13 +18,13 @@ margin: 0;
 width:100%;
 }
 .frm_mod_main{
-  width: 1000px;
+  width: 1300px;
   padding:30px;
-
+ font-size:17px;
   margin: 0 auto; 
   font-family: 'Noto Sans KR', sans-serif;
   border: 1px solid #E8E8E8;
-  margin-top: 40px;
+  margin-top: 20px;
   margin-bottom: 40px;  
 }
 
@@ -44,6 +44,7 @@ width:100%;
   font-size: 30px;
   font-weight: 700;
   margin-bottom: 40px;
+  margin-top: 40px;
  }
  
   td {
@@ -58,13 +59,34 @@ width:100%;
 border:none;
 height: 30px;
 }  
- 
+  .page-link {
+    margin: 0 10px;
+    text-decoration: none;
+    color: black; /* 페이지 번호 링크의 색상을 변경하고 싶다면 원하는 색상으로 설정하세요 */
+  }
+
+  .page-link:hover {
+    text-decoration: underline; /* 마우스를 올리면 밑줄이 나타나도록 설정 */
+  }
+
+  /* 다음 페이지 링크 스타일 */
+  .next-page-link {
+    margin: 0 5px;
+    text-decoration: none;
+    color: green; /* 다음 페이지 링크의 색상을 변경하고 싶다면 원하는 색상으로 설정하세요 */
+  }
+
+  .next-page-link:hover {
+    text-decoration: underline; /* 마우스를 올리면 밑줄이 나타나도록 설정 */
+  }
 </style>
 <body>
 	<div class="title">
-		<h3 class="title"><b>상품 조회</b></h3>
+		<h3 class="title"><b>상품 관리</b></h3>
 	</div>
-	
+	<form class="add-goods-form" action="${contextPath}/admin/goods/addNewGoodsForm.do" style="margin-left: 1400px;">
+				<input type="submit" value="상품 등록하기" class="btn btn-secondary btn-sm" style="height: 35px; background: #6CC148; color: white; font-family: 'Noto Sans KR', sans-serif; font-weight: 500;font-size: 15px;">
+	</form>
 	<TABLE class="frm_mod_main">
 		<TBODY align=center >
 			<tr style="background:#1D1D1D;color: #FFFFFF;font-size: 17px; height: 35px; padding:5px;" >
@@ -86,9 +108,11 @@ height: 30px;
      <c:forEach var="item" items="${newGoodsList }">
 			 <TR>       
 				<TD>
+			      
 				  <span>${item.goods_id }</span>
+				 
 				</TD>
-				<TD>
+				<TD style="text-align: left;">
 				 <a href="${pageContext.request.contextPath}/admin/goods/modifyGoodsForm.do?goods_id=${item.goods_id}">
 				    <span>${item.goods_name } </span>
 				 </a> 
@@ -97,10 +121,10 @@ height: 30px;
 				   <span>${item.goods_seller }</span> 
 				</TD>
 				<td>
-				  <span>${item.goods_price }</span>
+				  <span>${item.goods_price }원</span>
 				</td>
 				<td>
-				 <span>${item.goods_delivery_date }</span> 
+					<fmt:formatDate value="${item.goods_delivery_date }" pattern="yyyy-MM-dd" />
 				</td>
 			</TR>
 	</c:forEach>
@@ -110,16 +134,14 @@ height: 30px;
              <td colspan=8 class="fixed" style="padding-left: 105px;">
                  <c:forEach   var="page" begin="1" end="10" step="1" >
 		         <c:if test="${section >1 && page==1 }">
-		          <a href="${contextPath}/admin/goods/adminGoodsMain.do?chapter=${section-1}&pageNum=${(section-1)*10 +1 }">&nbsp; &nbsp;</a>
+		          <a href="${contextPath}/admin/goods/adminGoodsMain.do?chapter=${section-1}&pageNum=${(section-1)*10 +1 }"class="page-link">&nbsp; &nbsp;</a>
 		         </c:if>
-		          <a href="${contextPath}/admin/goods/adminGoodsMain.do?chapter=${section}&pageNum=${page}">${(section-1)*10 +page } </a>
+		          <a href="${contextPath}/admin/goods/adminGoodsMain.do?chapter=${section}&pageNum=${page}" class="page-link">${(section-1)*10 +page } </a>
 		         <c:if test="${page == 10 }">
-		          <a href="${contextPath}/admin/goods/adminGoodsMain.do?chapter=${section+1}&pageNum=${section*10+1}">&nbsp; next</a>
+		          <a href="${contextPath}/admin/goods/adminGoodsMain.do?chapter=${section+1}&pageNum=${section*10+1}" class="page-link">&nbsp; next</a>
 		         </c:if> 
 	      		</c:forEach>
-	      	<form class="add-goods-form" action="${contextPath}/admin/goods/addNewGoodsForm.do" style="float: right;">
-				<input type="submit" value="상품 등록하기" class="btn btn-secondary btn-sm">
-			</form>
+	      	
 	      	</td>
 		</TBODY>
 	</TABLE>

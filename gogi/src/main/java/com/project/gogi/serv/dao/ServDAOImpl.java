@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
+import com.project.gogi.serv.domain.CommentVO;
 import com.project.gogi.serv.domain.Criteria3;
 import com.project.gogi.serv.domain.ServImageFileVO;
 import com.project.gogi.serv.domain.ServVO;
@@ -61,8 +62,7 @@ public class ServDAOImpl implements ServDAO {
 	@Override
 	public ServVO ServRead(int cust_serv_no) throws Exception {
 		
-		return
-				 sql.selectOne(namespace + ".servRead", cust_serv_no); 
+		return sql.selectOne(namespace + ".servRead", cust_serv_no); 
 	}
 
 	//수정
@@ -119,7 +119,22 @@ public class ServDAOImpl implements ServDAO {
 		        return sql.selectOne(namespace + ".servGetPw", cust_serv_no);
 		    }
 
-		
+		@Override
+		public List<ServVO> selectReviewList(String mem_id) throws Exception {
+			List<ServVO> reviewList = sql.selectList("mapper.serv.myServList", mem_id);
+			return reviewList;
+		}
+
+		 @Override
+		   public int addComment(CommentVO commentVO) throws DataAccessException {
+		      return sql.insert("mapper.serv.addComment", commentVO);
+		   }
+
+		   @Override
+		   public List<CommentVO> selectBoardCommentByCode(CommentVO commentVO) throws DataAccessException {
+		      List<CommentVO> commentList = sql.selectList("mapper.serv.CommentList", commentVO);
+		      return commentList;
+		   }
 		 
 }
 		

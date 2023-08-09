@@ -22,6 +22,7 @@
   	<typeAlias type="com.project.gogi.social.KakaoDTO" alias="kdto" />
   	<typeAlias type="com.project.gogi.goods.vo.ReviewVO" alias="reviewVO" />
   	<typeAlias type="com.project.gogi.goods.vo.ReviewImageVO" alias="reviewImageVO" />
+  	<typeAlias type="com.project.gogi.serv.domain.CommentVO" alias="CommentVO" />
 
   </typeAliases>
 </configuration>

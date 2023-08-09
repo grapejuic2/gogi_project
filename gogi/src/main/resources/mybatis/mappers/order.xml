@@ -30,6 +30,9 @@
 		<result property="pay_orderer_hp_num" column="pay_orderer_hp_num" />
 		<result property="order_pay_hp_payment_num" column="order_pay_hp_payment_num" />
 		<result property="order_time" column="order_time" />
+		<result property="order_deli_hope_date" column="order_deli_hope_date" />
+		<result property="final_total_price" column="final_total_price" />
+		<result property="use_point" column="use_point" />
 	</resultMap>
 	
 	<insert id="insertNewOrder" parameterType="orderVO">
@@ -53,11 +56,14 @@
 					                    ORDER_REC_HP3,
 					                    ORDER_DELIVERY_ADDRESS,
 					                    ORDER_DELIVERY_MESSAGE,
-						                ORDER_PAY_METHOD,
+						                ORDER_DELI_HOPE_DATE,
+						                order_pay_method,
 						                CARD_COMPANY_NAME,
 						                CARD_PAY_MONTH,
 						                ORDER_ORDERER_HP,
-						                ORDER_DELIVERY_STATUS)
+						                ORDER_DELIVERY_STATUS,
+						                FINAL_TOTAL_PRICE,
+						                USE_POINT)
 							     values(#{order_seq_num},
 							            #{order_id},
 									    #{mem_id},
@@ -70,14 +76,17 @@
 									    #{order_rec_name},
 									    #{order_rec_hp1},
 					                    #{order_rec_hp2},
-					                    #{order_rec_hp2},
+					                    #{order_rec_hp3},
 					                    #{order_delivery_address},
 					                    #{order_delivery_message},
+						                #{order_deli_hope_date},
 						                #{order_pay_method},
 						                #{card_company_name},
 						                #{card_pay_month},
 						                #{pay_orderer_hp_num},
-						                #{order_delivery_status})								  
+						                #{order_delivery_status},
+						                #{final_total_price},
+						                #{use_point})								  
 		]]>	
 	</insert>
 	
@@ -86,6 +95,14 @@
 		select seq_order_id.nextval from dual
 		]]>
 	</select>
+	
+	<!-- 포인트 사용 업데이트 -->
+	<update id="updatePoint">
+		update gogi_member
+		set mem_point=#{mem_point}
+		where mem_id=#{mem_id}
+	</update>
+	
 	
 
 </mapper>

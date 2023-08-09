@@ -141,7 +141,7 @@
 					<tbody>
 						<c:forEach items="${noticeFAQList}" var="noticeFAQList">
 							<tr>
-								<td class="center fgl">${noticeFAQList.notice_no_faq}</td>
+								<td class="center fgl" style="font-weight: 500; font-size: 16px;">${noticeFAQList.notice_no_faq}</td>
 								<td class="left fgl"><a
 									href="${contextPath}/notice/faqread.do?notice_no_faq=${noticeFAQList.notice_no_faq}">${noticeFAQList.notice_title_faq}</a>
 								</td>

@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,10 +19,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.project.gogi.common.base.BaseController;
+import com.project.gogi.goods.vo.ReviewVO;
 import com.project.gogi.member.vo.MemberVO;
 import com.project.gogi.mypage.service.mypageService;
-import com.project.gogi.mypage.vo.mypageVO;
 import com.project.gogi.order.vo.OrderVO;
+import com.project.gogi.serv.domain.ServVO;
+import com.project.gogi.serv.service.ServService;
 
 @Controller("mypageController")
 @RequestMapping(value = "/mypage")
@@ -33,6 +34,8 @@ public class mypageControllerImpl extends BaseController implements mypageContro
 	private MemberVO memberVO;
 	@Autowired
 	private mypageService mypageService;
+	@Autowired
+	private ServService servService;
 
 	// 회원 정보
 	@Override
@@ -151,6 +154,33 @@ public class mypageControllerImpl extends BaseController implements mypageContro
 		return mav;
 	}
 	
+	//내가 쓴글 확인 
+	@Override
+	@RequestMapping(value="/myWriteList.do")
+	public ModelAndView myWrite(HttpServletRequest request, HttpServletResponse response)throws Exception {
+		ModelAndView mav = new ModelAndView("/mypage/myWriteList");
+		
+		HttpSession session=request.getSession();
+		memberVO=(MemberVO)session.getAttribute("memberInfo");
+		String mem_id=memberVO.getMem_id();
+		
+		List<ReviewVO> reviewVO= mypageService.reviewList(mem_id);
+		mav.addObject("reviewVO", reviewVO);
+		
+		List<ServVO> servVO=servService.reviewList(mem_id);
+		mav.addObject("servVO", servVO);
+		return mav;
+	}
+	
+	//마이 리뷰 삭제
+	@Override
+	@RequestMapping(value="/myReivewDelete.do")
+	public ModelAndView myReviewDelete(@RequestParam("rev_no") int rev_no, HttpServletRequest request, HttpServletResponse response) throws Exception {		
+		mypageService.reviewDelete(rev_no);
+		return new ModelAndView("redirect:/mypage/myWriteList.do");
+	}
+	
+	
 	// /mypage/*Form.do 처리
 	@RequestMapping(value = "/*Form.do", method = RequestMethod.GET)
 	public ModelAndView form(@RequestParam(value = "result", required = false) String result,
@@ -168,5 +198,9 @@ public class mypageControllerImpl extends BaseController implements mypageContro
 		mav.setViewName(viewName);
 		return mav;
 	}
+
+	
+
+
 
 }

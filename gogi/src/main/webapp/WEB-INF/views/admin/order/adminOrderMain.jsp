@@ -144,12 +144,9 @@ margin: 0;
 width:100%;
 }
 .frm_mod_order{
-  width: 1000px;
-  padding:30px;
-
+  width: 1300px;
   margin: 0 auto; 
   font-family: 'Noto Sans KR', sans-serif;
-  border: 1px solid #E8E8E8;
   margin-top: 40px;
   margin-bottom: 40px;  
 }
@@ -164,7 +161,7 @@ width:100%;
   border: 1px solid #E8E8E8;
 
 }
-.title{
+.admin_ordermain_title{
   font-family: 'Noto Sans KR', sans-serif;
   text-align: center;
   font-size: 30px;
@@ -193,13 +190,34 @@ element.style {
 border:none;
 height: 30px;
 }  
+
+ .page-link {
+    margin: 0 10px;
+    text-decoration: none;
+    color: black; /* 페이지 번호 링크의 색상을 변경하고 싶다면 원하는 색상으로 설정하세요 */
+  }
+
+  .page-link:hover {
+    text-decoration: underline; /* 마우스를 올리면 밑줄이 나타나도록 설정 */
+  }
+
+  /* 다음 페이지 링크 스타일 */
+  .next-page-link {
+    margin: 0 5px;
+    text-decoration: none;
+    color: green; /* 다음 페이지 링크의 색상을 변경하고 싶다면 원하는 색상으로 설정하세요 */
+  }
+
+  .next-page-link:hover {
+    text-decoration: underline; /* 마우스를 올리면 밑줄이 나타나도록 설정 */
+  }
 </style>
 </head>
 <body>
 	<div class="frm_mod_order">
 	
 	<div class="title">
-		<h3 class="admin_ordermain_title"><b>주문 조회</b></h3>
+		<h3 class="admin_ordermain_title"><b>주문 관리</b></h3>
 	</div>
 	
 	<table class="table" style="width:1200px;">
@@ -242,7 +260,7 @@ height: 30px;
 					     <span>${item.order_id}</span>
 					</td>
 					<td width=20%>
-					 	<fmt:formatDate value="${item.order_time}" pattern="yy년 MM월 dd일 HH시 mm분" var="orderTime"/>
+					 	<fmt:formatDate value="${item.order_time}" pattern="yy년 MM월 dd일 HH:mm" var="orderTime"/>
 					 	${orderTime}
 					</td>
 					<td width=50% align=left >
@@ -311,16 +329,16 @@ height: 30px;
 		</c:forEach>
 		</c:otherwise>
 	  </c:choose>
-	  
+	  <tr><td></td></tr>
          <tr>
-             <td colspan=8 class="fixed">
+             <td colspan=8 class="fixed" style="height: 40px;">
                  <c:forEach   var="page" begin="1" end="10" step="1" >
 		         <c:if test="${section >1 && page==1 }">
-		          <a href="${contextPath}/admin/order/adminOrderMain.do?chapter=${section-1}&pageNum=${(section-1)*10 +1 }">&nbsp;&nbsp;</a>
+		          <a href="${contextPath}/admin/order/adminOrderMain.do?chapter=${section-1}&pageNum=${(section-1)*10 +1 }" class="page-link">&nbsp;&nbsp;</a>
 		         </c:if>
-		          <a href="${contextPath}/admin/order/adminOrderMain.do?chapter=${section}&pageNum=${page}">${(section-1)*10 +page } </a>
+		          <a href="${contextPath}/admin/order/adminOrderMain.do?chapter=${section}&pageNum=${page}" class="page-link">${(section-1)*10 +page } </a>
 		         <c:if test="${page ==10 }">
-		          <a href="${contextPath}/admin/order/adminOrderMain.do?chapter=${section+1}&pageNum=${section*10+1}">&nbsp; next</a>
+		          <a href="${contextPath}/admin/order/adminOrderMain.do?chapter=${section+1}&pageNum=${section*10+1}" class="page-link">&nbsp; next</a>
 		         </c:if> 
 	      		</c:forEach> 
            </td>

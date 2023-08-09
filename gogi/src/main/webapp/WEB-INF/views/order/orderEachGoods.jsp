@@ -14,71 +14,106 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="preconnect" href="httpps://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<!-- jQuery 라이브러리 -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- jQuery UI 라이브러리 -->
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<!-- Google Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<!-- Bootstrap CSS -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css">
+<!-- Font Awesome -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<!-- Custom CSS -->
 <link href="${contextPath}/resources/css/order/orderEachGoods.css" rel="stylesheet" type="text/css">
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- jQuery UI -->
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<!-- Bootstrap JS -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<!-- 주소검색 api -->
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
+<!-- 포트원 결제 -->
+<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
 <script>
-	function execDaumPostcode() {
-		new daum.Postcode(
-				{
-					oncomplete : function(data) {
-						// 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
-						// 도로명 주소의 노출 규칙에 따라 주소를 조합한다.
-						// 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
-						var fullRoadAddr = data.roadAddress; // 도로명 주소 변수
-						var extraRoadAddr = ''; // 도로명 조합형 주소 변수
+//주소 스크립트
+function execDaumPostcode() {
+  new daum.Postcode({
+    oncomplete: function(data) {
+      // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
 
-						// 법정동명이 있을 경우 추가한다. (법정리는 제외)
-						// 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
-						if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
-							extraRoadAddr += data.bname;
-						}
-						// 건물명이 있고, 공동주택일 경우 추가한다.
-						if (data.buildingName !== '' && data.apartment === 'Y') {
-							extraRoadAddr += (extraRoadAddr !== '' ? ', '
-									+ data.buildingName : data.buildingName);
-						}
-						// 도로명, 지번 조합형 주소가 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
-						if (extraRoadAddr !== '') {
-							extraRoadAddr = ' (' + extraRoadAddr + ')';
-						}
-						// 도로명, 지번 주소의 유무에 따라 해당 조합형 주소를 추가한다.
-						if (fullRoadAddr !== '') {
-							fullRoadAddr += extraRoadAddr;
-						}
+      // 도로명 주소의 노출 규칙에 따라 주소를 조합한다.
+      // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+      var fullRoadAddr = data.roadAddress; // 도로명 주소 변수
+      var extraRoadAddr = ''; // 도로명 조합형 주소 변수
 
-						// 우편번호와 주소 정보를 해당 필드에 넣는다.
-						document.getElementById('zipcode').value = data.zonecode; //5자리 새우편번호 사용
-						document.getElementById('roadAddress').value = fullRoadAddr;
-						document.getElementById('jibunAddress').value = data.jibunAddress;
+      // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+      // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+      if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+        extraRoadAddr += data.bname;
+      }
+      // 건물명이 있고, 공동주택일 경우 추가한다.
+      if(data.buildingName !== '' && data.apartment === 'Y'){
+        extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+      }
+      // 도로명, 지번 조합형 주소가 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+      if(extraRoadAddr !== ''){
+        extraRoadAddr = ' (' + extraRoadAddr + ')';
+      }
+      // 도로명, 지번 주소의 유무에 따라 해당 조합형 주소를 추가한다.
+      if(fullRoadAddr !== ''){
+        fullRoadAddr += extraRoadAddr;
+      }
 
-						// 사용자가 '선택 안함'을 클릭한 경우, 예상 주소라는 표시를 해준다.
-						if (data.autoRoadAddress) {
-							//예상되는 도로명 주소에 조합형 주소를 추가한다.
-							var expRoadAddr = data.autoRoadAddress
-									+ extraRoadAddr;
-							document.getElementById('guide').innerHTML = '(예상 도로명 주소 : '
-									+ expRoadAddr + ')';
+      // 우편번호와 주소 정보를 해당 필드에 넣는다.
+      document.getElementById('zipcode').value = data.zonecode; //5자리 새우편번호 사용
+      document.getElementById('roadAddress').value = fullRoadAddr;
+      document.getElementById('jibunAddress').value = data.jibunAddress;
 
-						} else if (data.autoJibunAddress) {
-							var expJibunAddr = data.autoJibunAddress;
-							document.getElementById('guide').innerHTML = '(예상 지번 주소 : '
-									+ expJibunAddr + ')';
+      // 사용자가 '선택 안함'을 클릭한 경우, 예상 주소라는 표시를 해준다.
+      if(data.autoRoadAddress) {
+        //예상되는 도로명 주소에 조합형 주소를 추가한다.
+        var expRoadAddr = data.autoRoadAddress + extraRoadAddr;
+        document.getElementById('roadAddress').innerHTML = '(예상 도로명 주소 : ' + expRoadAddr + ')';
 
-						} else {
-							document.getElementById('guide').innerHTML = '';
-						}
-					}
-				}).open();
-	}
+      } else if(data.autoJibunAddress) {
+          var expJibunAddr = data.autoJibunAddress;
+          document.getElementById('jibunAddress').innerHTML = '(예상 지번 주소 : ' + expJibunAddr + ')';
+      } 
+      window.close();
+    }
+  }).open();
+}
+
+$(function() {
+    //input을 datepicker로 선언
+    $("input[id='datepicker']").datepicker({
+        dateFormat: 'yy-mm-dd' //달력 날짜 형태
+        ,showOtherMonths: true //빈 공간에 현재월의 앞뒤월의 날짜를 표시
+        ,showMonthAfterYear:true // 월- 년 순서가아닌 년도 - 월 순서
+        ,changeYear: true //option값 년 선택 가능
+        ,changeMonth: true //option값  월 선택 가능                
+        ,showOn: "both" //button:버튼을 표시하고,버튼을 눌러야만 달력 표시 ^ both:버튼을 표시하고,버튼을 누르거나 input을 클릭하면 달력 표시  
+        ,buttonImage: "${contextPath}/resources/images/order/calendar.png" //버튼 이미지 경로
+        ,buttonImageOnly: true //버튼 이미지만 깔끔하게 보이게함
+        ,buttonText: "선택" //버튼 호버 텍스트              
+        ,yearSuffix: "년" //달력의 년도 부분 뒤 텍스트
+        ,monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 텍스트
+        ,monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 Tooltip
+        ,dayNamesMin: ['일','월','화','수','목','금','토'] //달력의 요일 텍스트
+        ,dayNames: ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'] //달력의 요일 Tooltip
+        ,minDate: "-5Y" //최소 선택일자(-1D:하루전, -1M:한달전, -1Y:일년전)
+        ,maxDate: "+5y" //최대 선택일자(+1D:하루후, -1M:한달후, -1Y:일년후)  
+    });                    
+    
+    //초기값을 오늘 날짜로 설정해줘야 합니다.
+    $('#datepicker').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)            
+});
 </script>
 <title>Insert title here</title>
 <style>
@@ -169,33 +204,33 @@ display: flex;
 				<td style="vertical-align:middle;"><span class="required" >*</span>이름</td>
 				<td>
 				<div class="input-container">
-				 <input type="text" value="${orderer.mem_name}" size="15" />
+				 <input type="text" value="${orderer.mem_name}" size="15" readonly/>
 				</div>
 				</td>
 			  </tr>
 			  <tr class="dot_line">
-				<td style="vertical-align:middle;"><span class="required" >*</span>전화번호</td>
+				<td style="vertical-align:middle;"><span class="required" readonly >*</span>전화번호</td>
 				<td>
 				 <div class="input-container">
-				 	<input type="text" value="${orderer.mem_tel1}-${orderer.mem_tel2}-${orderer.mem_tel3}" size="15" />
+				 	<input type="text" value="${orderer.mem_tel1}-${orderer.mem_tel2}-${orderer.mem_tel3}" size="15" readonly/>
 				 </div>
 				</td>
 			  </tr>
 			  <tr class="dot_line">
-				<td style="vertical-align:middle;"><span class="required" >*</span>이메일</td>
+				<td style="vertical-align:middle;"><span class="required" readonly>*</span>이메일</td>
 				<td>
 				<div class="input-container">
-				 <input  type="text" value="${orderer.mem_email}"  />
+				 <input  type="text" value="${orderer.mem_email}"  readonly/>
 				</div>
 				</td>
 			  </tr>
 			  <tr class="dot_line">
 				<td class="fixed_join" style="vertical-align:top;"><span class="required">*</span>주소</td>
 				<td>
-					<div class="input-container" ><input type="text" id="zipcode" name="zipcode" size="5"value="${orderer.zipcode }"style="width:80px!important ;"> </div>
-					<div class="input-container"><input type="text" id="roadAddress" name="roadAddress" size="50" value="${orderer.roadAddress }" /></div>
-					<div class="input-container"><input type="text" id="jibunAddress" name="jibunAddress" size="50" value="${orderer.jibunAddress }" /></div>
-					<div class="input-container"><input type="text" id="namujiAddress"  name="namujiAddress" size="50" value="${orderer.namujiAddress }" /></div> 
+					<div class="input-container" ><input type="text" id="zipcode1" name="zipcode" size="5"value="${orderer.zipcode }"style="width:80px!important ;"readonly> </div>
+					<div class="input-container"><input type="text" id="roadAddress1" name="roadAddress" size="50" value="${orderer.roadAddress }" readonly/></div>
+					<div class="input-container"><input type="text" id="jibunAddress1" name="jibunAddress" size="50" value="${orderer.jibunAddress }" readonly/></div>
+					<div class="input-container"><input type="text" id="namujiAddress1"  name="namujiAddress" size="50" value="${orderer.namujiAddress }" readonly/></div> 
 					<input type="hidden" id="h_zipcode" name="h_zipcode" value="${orderer.zipcode }" /> 
 					 <input type="hidden"  id="h_roadAddress" name="h_roadAddress"  value="${orderer.roadAddress }" /> 
 					 <input type="hidden"  id="h_jibunAddress" name="h_jibunAddress" value="${orderer.jibunAddress }" /> 
@@ -377,7 +412,7 @@ display: flex;
 					            <td style="font-weight: 700;"><span class="required" >*</span>최종 결제 금액</td>
 					            <td id="finalPrice">
 					                <p id="p_final_totalPrice">${final_total_order_price+delivery_fee}원</p>
-					                <input id="h_final_total_Price" type="hidden" value="${final_total_order_price}" />
+					                <input id="h_final_total_Price" type="hidden" name="final_total_price" value="${final_total_order_price}" />
 					            </td>
 					        </tr>
 					    </tbody>
@@ -478,27 +513,15 @@ display: flex;
 							<tr class="dot_line">
 							
 								<td class="fixed_join">
-									<div>배송방법</div>
-								</td>
-								
+									<div>희망 배송일</div>
+								</td>								
 								<td>
 									<div class="input-container3" style="margin-bottom: 10px;">
-									    <input type="radio" id="delivery_method" name="delivery_method" value="일반택배" checked>일반택배 &nbsp;&nbsp;&nbsp; 
-										<input type="radio" id="delivery_method" name="delivery_method" value="편의점택배">편의점택배 &nbsp;&nbsp;&nbsp; 
-										<input type="radio" id="delivery_method" name="delivery_method" value="해외배송">해외배송 &nbsp;&nbsp;&nbsp;
+									    <input type="text" id="datepicker"  name="order_deli_hope_date" autocomplete="off" readonly="readonly" style="margin-right: 5px; border: 1px solid #E8E8E8; line-height: 35px;">
+										
 								    </div>
 							    </td>
-							</tr>
-							<tr class="dot_line">
-								<td  class="fixed_join" style="vertical-align: top;">선물 포장</td>
-								<td>
-								<div class="input-container3" style="margin-bottom: 20px;">
-									<input type="radio" id="gift_wrapping" name="gift_wrapping" value="yes">예&nbsp;&nbsp;&nbsp; 
-									<input type="radio"  id="gift_wrapping" name="gift_wrapping" checked value="no">아니요
-								</div>	
-								</td>						
-							</tr>
-			
+							</tr>								
 					</table>
 				</div>	
           </div>
@@ -520,28 +543,15 @@ display: flex;
 								<td style="width: 33.33%;">
 								   <input type="radio" id="pay_method" name="pay_method" value="신용카드" onClick="fn_pay_card()" checked>신용카드 
 								</td>
-								<td style="width: 33.33%;">							   
-								   <input type="radio" id="pay_method" name="pay_method" value="실시간 계좌이체">실시간 계좌이체				  
-								</td>
-								<td style="width: 33.33%;">   
-								   <input type="radio" id="pay_method" name="pay_method" value="무통장 입금">무통장 입금							
-								</td>
-								<td>
-								</td>
-							</tr>
-							<tr>
 								<td  style="width: 33.33%;">
 								   <input type="radio" id="pay_method" name="pay_method" value="휴대폰결제" onClick="fn_pay_phone()">휴대폰 결제 
 								</td>
 								<td  style="width: 33.33%;">   
 								   <input type="radio" id="pay_method" name="pay_method" value="카카오페이">카카오페이
 								</td>
-								<td style="width: 33.33%;">    
-								   <input type="radio" id="pay_method" name="pay_method" value="페이코">페이코
-								</td>
-								<td>
-								</td>
-							</tr>							
+							
+							</tr>
+						
 					</table>
 					<div id="tr_pay_card" style="display:flex; box-sizing: border-box;margin-top: 20px;">
 								
@@ -585,7 +595,7 @@ display: flex;
       </div>
     </div>
     <div style="text-align: right;">
-    	<a href="javascript:fn_show_order_detail();"> 
+    	<a href="javascript:fn_process_pay_order();"> 
 			<input type="button" class="btn btn-secondary" value="최종 결제하기" style="background:#1D1D1D; color:white; height: 35px;margin-right: 5px;font-weight: 500;"/>
 		</a> 
 		<a href="${contextPath}/main/main.do"> 
@@ -659,10 +669,10 @@ display: flex;
 				   </tr>
 				   <tr>
 					  <td width=200px>
-					     배송방법:
+					     희망 배송일:
 					 </td>
 					 <td>
-					      <p id="p_delivery_method">배송방법</p>
+					      <p id="p_order_deli_hope_date">희망 배송일</p>
 					 </td>
 				   </tr>
 				   <tr>
@@ -689,14 +699,7 @@ display: flex;
 					      <p id="p_delivery_message">배송메시지</p>
 					 </td>
 				   </tr>
-				   <tr>
-					  <td width=200px>
-					     선물포장 여부:
-					 </td>
-					 <td align=left>
-					      <p id="p_gift_wrapping">선물포장</p>
-					 </td>
-				   </tr>
+
 				   <tr>
 					  <td width=200px>
 					     결제방법:
@@ -767,7 +770,6 @@ var goods_fileName="";
 
 var order_quantity;
 var each_goods_price;
-var total_order_goods_price;
 var total_order_goods_qty;
 var orderer_name;
 var receiver_name;
@@ -778,13 +780,16 @@ var receiver_hp_num;
 var delivery_address;
 var delivery_message;
 var delivery_method;
-var gift_wrapping;
 var pay_method;
 var card_com_name;
 var card_pay_month;
 var pay_orderer_hp_num;
+var order_deli_hope_date;
+var usePoint;
 
-function fn_show_order_detail(){
+
+
+function fn_process_pay_order(){
 	goods_id="";
 	goods_name="";
 	
@@ -792,15 +797,15 @@ function fn_show_order_detail(){
 	var h_goods_id=frm.h_goods_id;
 	var h_goods_title=frm.h_goods_title;
 	var h_goods_fileName=frm.h_goods_fileName;
-	var r_delivery_method= frm.delivery_method;
+	var r_order_deli_hope_date= frm.order_deli_hope_date;
 	var h_order_goods_qty=document.getElementById("h_order_goods_qty");
 	var h_total_order_goods_qty=document.getElementById("h_total_order_goods_qty");
 	var h_total_sales_price=document.getElementById("h_total_sales_price");
 	var h_final_total_Price=document.getElementById("h_final_total_Price");
 	var h_orderer_name=document.getElementById("h_orderer_name");
 	var i_receiver_name=document.getElementById("receiver_name");
-	
-	
+	var i_final_total_Price=document.getElementById("p_final_totalPrice");
+
 	if(h_goods_id.length <2 ||h_goods_id.length==null){
 		goods_id+=h_goods_id.value;
 	}else{
@@ -829,26 +834,14 @@ function fn_show_order_detail(){
 		}	
 	}
 	
-	
+	console.log(h_final_total_Price);
 	total_order_goods_price=h_final_total_Price.value;
+
 	total_order_goods_qty=h_total_order_goods_qty.value;
 	
-	for(var i=0; i<r_delivery_method.length;i++){
-	  if(r_delivery_method[i].checked==true){
-		 delivery_method=r_delivery_method[i].value
-		 break;
-	  }
-	} 
+
 		
-	var r_gift_wrapping  =  frm.gift_wrapping;
-	
-	
-	for(var i=0; i<r_gift_wrapping.length;i++){
-	  if(r_gift_wrapping[i].checked==true){
-		  gift_wrapping=r_gift_wrapping[i].value
-		 break;
-	  }
-	} 
+
 	
 	var r_pay_method  =  frm.pay_method;
 	
@@ -883,124 +876,112 @@ function fn_show_order_detail(){
 	var i_hp1=document.getElementById("hp1");
 	var i_hp2=document.getElementById("hp2");
 	var i_hp3=document.getElementById("hp3");
-
 	var i_zipcode=document.getElementById("zipcode");
 	var i_roadAddress=document.getElementById("roadAddress");
 	var i_jibunAddress=document.getElementById("jibunAddress");
 	var i_namujiAddress=document.getElementById("namujiAddress");
 	var i_delivery_message=document.getElementById("delivery_message");
 	var i_pay_method=document.getElementById("pay_method");
+	var i_order_deli_hope_date=document.getElementById("order_deli_hope_date");
+	var i_final_total_Price=document.getElementById("p_final_totalPrice");
 
 //	alert("총주문 금액:"+total_order_goods_price);
 	order_goods_qty=h_order_goods_qty.value;
 	//order_total_price=h_order_total_price.value;
 	
-	orderer_name=h_orderer_name.value;
-	receiver_name=i_receiver_name.value;
-	hp1=i_hp1.value;
-	hp2=i_hp2.value;
-	hp3=i_hp3.value;
-
 	
-	receiver_hp_num=hp1+"-"+hp2+"-"+hp3;
-	
+	orderer_name=h_orderer_name.value;	
+	receiver_name=i_receiver_name.value;	
+	hp1=i_hp1.value;	
+	hp2=i_hp2.value;	
+	hp3=i_hp3.value;	
+	order_deli_hope_date=r_order_deli_hope_date.value;	
+	//final_total_price = final_total_order_price.value;
+	usePoint=retention_point.value;
+	//alert("사용한 포인트:"+usePoint);	
+	//alert("두번째 토탈 프라이스:"+final_total_price);	
+	receiver_hp_num=hp1+"-"+hp2+"-"+hp3;	
 	delivery_address=i_zipcode.value+"<br>"+
 					 i_roadAddress.value+"<br>"+
 					 "["+i_jibunAddress.value+"]<br>"+
-								  i_namujiAddress.value;
-	
+								  i_namujiAddress.value;	
 	delivery_message=i_delivery_message.value;
-	
-	var p_order_goods_id=document.getElementById("p_order_goods_id");
-	var p_order_goods_title=document.getElementById("p_order_goods_title");
-	var p_order_goods_qty=document.getElementById("p_order_goods_qty");
-	var p_total_order_goods_qty=document.getElementById("p_total_order_goods_qty");
-	var p_total_order_goods_price=document.getElementById("p_total_order_goods_price");
-	var p_orderer_name=document.getElementById("p_orderer_name");
-	var p_receiver_name=document.getElementById("p_receiver_name");
-	var p_delivery_method=document.getElementById("p_delivery_method");
-	var p_receiver_hp_num=document.getElementById("p_receiver_hp_num");
-	var p_delivery_address=document.getElementById("p_delivery_address");
-	var p_delivery_message=document.getElementById("p_delivery_message");
-	var p_pay_method=document.getElementById("p_pay_method");
-	
-	p_order_goods_id.innerHTML=goods_id;
-	p_order_goods_title.innerHTML=goods_title;
-	p_total_order_goods_qty.innerHTML=total_order_goods_qty+"개";
-	p_total_order_goods_price.innerHTML=total_order_goods_price+"원";
-	p_orderer_name.innerHTML=orderer_name;
-	p_receiver_name.innerHTML=receiver_name;
-	p_delivery_method.innerHTML=delivery_method;
-	p_receiver_hp_num.innerHTML=receiver_hp_num;
-	p_delivery_address.innerHTML=delivery_address;
-	p_delivery_message.innerHTML=delivery_message;
-	p_gift_wrapping.innerHTML=gift_wrapping;
-	p_pay_method.innerHTML=pay_method;
-	imagePopup('open');
-}
 
-function fn_process_pay_order(){
-	
-	alert("최종 결제하기");
-	var formObj=document.createElement("form");
-    var i_receiver_name=document.createElement("input");   
-    var i_receiver_hp1=document.createElement("input");
-    var i_receiver_hp2=document.createElement("input");
-    var i_receiver_hp3=document.createElement("input");
-    var i_delivery_address=document.createElement("input");
-    var i_delivery_message=document.createElement("input");
-    var i_delivery_method=document.createElement("input");
-    var i_pay_method=document.createElement("input");
-    var i_card_com_name=document.createElement("input");
-    var i_card_pay_month=document.createElement("input");
-    var i_pay_orderer_hp_num=document.createElement("input");
+	//alert("최종 결제하기");
+
+    // 새로운 form을 생성합니다.
+    var formObj = document.createElement("form");
+
+    // 필요한 input 요소들을 생성하고 값을 설정합니다.
+    var s_receiver_name = document.createElement("input");
+    var s_receiver_hp1 = document.createElement("input");
+    var s_receiver_hp2 = document.createElement("input");
+    var s_receiver_hp3 = document.createElement("input");
+    var s_delivery_address = document.createElement("input");
+    var s_delivery_message = document.createElement("input");
+    var s_order_deli_hope_date = document.createElement("input");
+    var s_pay_method = document.createElement("input");
+    var s_card_com_name = document.createElement("input");
+    var s_card_pay_month = document.createElement("input");
+    var s_pay_orderer_hp_num = document.createElement("input");
+    var s_final_total_Price = document.createElement("input");
+    var s_usePoint=document.createElement("input");
+
+    // 각 input 요소에 name 속성과 값을 설정합니다.
+    s_receiver_name.name = "order_rec_name";
+    s_receiver_hp1.name = "order_rec_hp1";
+    s_receiver_hp2.name = "order_rec_hp2";
+    s_receiver_hp3.name = "order_rec_hp3";
+    s_delivery_address.name = "order_delivery_address";
+    s_delivery_message.name = "order_delivery_message";
+    s_order_deli_hope_date.name = "order_deli_hope_date";
+    s_pay_method.name = "order_pay_method";
+    s_card_com_name.name = "card_company_name";
+    s_card_pay_month.name = "card_pay_month";
+    s_pay_orderer_hp_num.name = "pay_orderer_hp_num";
+    s_final_total_Price.name = "final_total_price"; 
+    s_usePoint.name = "use_point";
+ 
+
+    // 값을 설정합니다.
+    s_receiver_name.value = receiver_name;
+    s_receiver_hp1.value = hp1;
+    s_receiver_hp2.value = hp2;
+    s_receiver_hp3.value = hp3;
+    s_delivery_address.value = delivery_address;
+    s_delivery_message.value = delivery_message;
+    s_order_deli_hope_date.value = order_deli_hope_date;
+    s_pay_method.value = pay_method;
+    s_card_com_name.value = card_com_name;
+    s_card_pay_month.value = card_pay_month;
+    s_pay_orderer_hp_num.value = pay_orderer_hp_num; 
+    s_final_total_Price.value = total_order_goods_price;
+    s_usePoint.value=usePoint;
    
-    i_receiver_name.name="order_rec_name";
-    i_receiver_hp1.name="order_rec_hp1";
-    i_receiver_hp2.name="order_rec_hp2";
-    i_receiver_hp3.name="order_rec_hp3";
     
-    i_delivery_address.name="order_delivery_address";
-    i_delivery_message.name="order_delivery_message";
-    i_delivery_method.name="order_delivery_method";
-    i_pay_method.name="order_pay_method";
-/*     i_delivery_option="order_delivery_option"; */
-    i_card_com_name.name="card_company_name";
-    i_card_pay_month.name="card_pay_month";
-    i_pay_orderer_hp_num.name="pay_orderer_hp_num";
-  
-    i_receiver_name.value=receiver_name;
-    i_receiver_hp1.value=hp1;
-    i_receiver_hp2.value=hp2;
-    i_receiver_hp3.value=hp3;
-    i_delivery_address.value=delivery_address;
-    i_delivery_message.value=delivery_message;
-    i_delivery_method.value=delivery_method;
-    i_pay_method.value=pay_method;
-    i_card_com_name.value=card_com_name;
-    i_card_pay_month.value=card_pay_month;
-    i_pay_orderer_hp_num.value=pay_order_tel1;
-    
-    formObj.appendChild(i_receiver_name);
-    formObj.appendChild(i_receiver_hp1);
-    formObj.appendChild(i_receiver_hp2);
-    formObj.appendChild(i_receiver_hp3);
+    // form에 input 요소들을 추가합니다.
+    formObj.appendChild(s_receiver_name);
+    formObj.appendChild(s_receiver_hp1);
+    formObj.appendChild(s_receiver_hp2);
+    formObj.appendChild(s_receiver_hp3);
+    formObj.appendChild(s_delivery_address);
+    formObj.appendChild(s_delivery_message);
+    formObj.appendChild(s_order_deli_hope_date);
+    formObj.appendChild(s_pay_method);
+    formObj.appendChild(s_card_com_name);
+    formObj.appendChild(s_card_pay_month);
+    formObj.appendChild(s_pay_orderer_hp_num);
+    formObj.appendChild(s_final_total_Price);
+    formObj.appendChild(s_usePoint);
 
-    formObj.appendChild(i_delivery_address);
-    formObj.appendChild(i_delivery_message);
-    formObj.appendChild(i_delivery_method);
-    
-    formObj.appendChild(i_pay_method);
-    formObj.appendChild(i_card_com_name);
-    formObj.appendChild(i_card_pay_month);
-    formObj.appendChild(i_pay_orderer_hp_num);
-    
 
-    document.body.appendChild(formObj); 
-    formObj.method="post";
-    formObj.action="${contextPath}/order/payToOrderGoods.do";
+    // form을 body에 추가하고 submit합니다.
+    document.body.appendChild(formObj);
+    formObj.method = "post";
+    formObj.action = "${contextPath}/order/payToOrderGoods.do";
     formObj.submit();
-	imagePopup('close');
+
+    
 }
 
 //적립금 사용
@@ -1019,78 +1000,58 @@ function use_point() {
 }
 
 //배송지 주소 새로입력
-	function reset_all() {
-		var e_receiver_name = document.getElementById("receiver_name");
-		var e_hp1 = document.getElementById("hp1");
-		var e_hp2 = document.getElementById("hp2");
-		var e_hp3 = document.getElementById("hp3");
+function reset_all() {
 
-		var e_tel1 = document.getElementById("tel1");
-		var e_tel2 = document.getElementById("tel2");
-		var e_tel3 = document.getElementById("tel3");
-
-		var e_zipcode = document.getElementById("zipcode");
-		var e_roadAddress = document.getElementById("roadAddress");
-		var e_jibunAddress = document.getElementById("jibunAddress");
-		var e_namujiAddress = document.getElementById("namujiAddress");
-
-		e_receiver_name.value = "";
-		e_hp1.value = 0;
-		e_hp2.value = "";
-		e_hp3.value = "";
-		e_tel1.value = "";
-		e_tel2.value = "";
-		e_tel3.value = "";
-		e_zipcode.value = "";
-		e_roadAddress.value = "";
-		e_jibunAddress.value = "";
-		e_namujiAddress.value = "";
-	}
+	var e_receiver_name = document.getElementById("receiver_name");
+    var e_hp1 = document.getElementById("hp1");
+    var e_hp2 = document.getElementById("hp2");
+    var e_hp3 = document.getElementById("hp3");
+    var e_zipcode = document.getElementById("zipcode");
+    var e_roadAddress = document.getElementById("roadAddress");
+    var e_jibunAddress = document.getElementById("jibunAddress");
+    var e_namujiAddress = document.getElementById("namujiAddress");
+    
+    e_receiver_name.value = "";
+    e_hp1.value = 0;
+    e_hp2.value = "";
+    e_hp3.value = "";
+    e_zipcode.value = "";
+    e_roadAddress.value = "";
+    e_jibunAddress.value = "";
+    e_namujiAddress.value = "";
+	
+}
 
 //기본배송지 복구
-	function restore_all() {
-		var e_receiver_name = document.getElementById("receiver_name");
-		var e_hp1 = document.getElementById("hp1");
-		var e_hp2 = document.getElementById("hp2");
-		var e_hp3 = document.getElementById("hp3");
+function restore_all() {	
+	var h_receiver_name = document.getElementById("h_receiver_name");
+    var h_hp1 = document.getElementById("h_hp1");
+    var h_hp2 = document.getElementById("h_hp2");
+    var h_hp3 = document.getElementById("h_hp3");
+    var h_zipcode = document.getElementById("h_zipcode");
+    var h_roadAddress = document.getElementById("h_roadAddress");
+    var h_jibunAddress = document.getElementById("h_jibunAddress");
+    var h_namujiAddress = document.getElementById("h_namujiAddress");
 
-		var e_tel1 = document.getElementById("tel1");
-		var e_tel2 = document.getElementById("tel2");
-		var e_tel3 = document.getElementById("tel3");
-
-		var e_zipcode = document.getElementById("zipcode");
-		var e_roadAddress = document.getElementById("roadAddress");
-		var e_jibunAddress = document.getElementById("jibunAddress");
-		var e_namujiAddress = document.getElementById("namujiAddress");
-
-		var h_receiver_name = document.getElementById("h_receiver_name");
-		var h_hp1 = document.getElementById("h_hp1");
-		var h_hp2 = document.getElementById("h_hp2");
-		var h_hp3 = document.getElementById("h_hp3");
-
-		var h_tel1 = document.getElementById("h_tel1");
-		var h_tel2 = document.getElementById("h_tel2");
-		var h_tel3 = document.getElementById("h_tel3");
-
-		var h_zipcode = document.getElementById("h_zipcode");
-		var h_roadAddress = document.getElementById("h_roadAddress");
-		var h_jibunAddress = document.getElementById("h_jibunAddress");
-		var h_namujiAddress = document.getElementById("h_namujiAddress");
-		//alert(e_receiver_name.value);
-		e_receiver_name.value = h_receiver_name.value;
-		e_hp1.value = h_hp1.value;
-		e_hp2.value = h_hp2.value;
-		e_hp3.value = h_hp3.value;
-
-		e_tel1.value = h_tel1.value;
-		e_tel2.value = h_tel2.value;
-		e_tel3.value = h_tel3.value;
-		e_zipcode.value = h_zipcode.value;
-		e_roadAddress.value = h_roadAddress.value;
-		e_jibunAddress.value = h_jibunAddress.value;
-		e_namujiAddress.value = h_namujiAddress.value;
-
-	}
+    var e_receiver_name = document.getElementById("receiver_name");
+    var e_hp1 = document.getElementById("hp1");
+    var e_hp2 = document.getElementById("hp2");
+    var e_hp3 = document.getElementById("hp3");
+    var e_zipcode = document.getElementById("zipcode");
+    var e_roadAddress = document.getElementById("roadAddress");
+    var e_jibunAddress = document.getElementById("jibunAddress");
+    var e_namujiAddress = document.getElementById("namujiAddress");
+    
+    e_receiver_name.value = h_receiver_name.value;
+    e_hp1.value = h_hp1.value;
+    e_hp2.value = h_hp2.value;
+    e_hp3.value = h_hp3.value;
+    e_zipcode.value = h_zipcode.value;
+    e_roadAddress.value = h_roadAddress.value;
+    e_jibunAddress.value = h_jibunAddress.value;
+    e_namujiAddress.value = h_namujiAddress.value;
+	
+}
 </script>
 </body>
 </html>

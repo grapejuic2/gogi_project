@@ -97,7 +97,7 @@ width: 70px;
 	  <button type="button" id="checkIdButton">중복 체크</button>
 	</div>
 
-	<font id="checkId" size="2" style="margin-right: 100px;"></font>
+	<font id="checkId" size="2" style="margin-right: 100px;margin-left: 90px;"></font>
 	
 	<div class="form-group">
 	  <div class="label-group">
@@ -106,7 +106,7 @@ width: 70px;
 	  <input type="password" placeholder="비밀번호" id="mem_pw" name="mem_pw" style="margin-right: 5px;">
 	  <input type="password" placeholder="비밀번호 확인" id="mem_pw_confirm" name="mem_pw_confirm" />
 	</div>	
-	  <span id="pwMismatchMessage" style="color: red;"></span>
+	  <span id="pwMismatchMessage" style="color: red;margin-left: 90px;"></span>
 	  <!-- 일치하지 않을 때 메시지를 표시할 위치 -->
 	
       <div class="form-group">

@@ -14,6 +14,7 @@
 		   <result property="cust_serv_notice" column="cust_serv_notice" />
 		   <result property="imageFileName" column="imageFileName" />
 		   <result property="originalFileName" column="originalFileName" />
+		   <result property="cust_serv_secret" column="cust_serv_secret" />
 	</resultMap>
 
 	<resultMap id="servImageResult" type="servImageFileVO">
@@ -23,21 +24,34 @@
 	   <result property="cust_serv_no" column="cust_serv_no" />
 	   <result property="reg_id" column="reg_id" />
 	</resultMap>
+	
+	<resultMap id="commentResult" type="CommentVO">
+      <result property="cust_serv_no" column="cust_serv_no" />
+      <result property="mem_id" column="mem_id" />
+      <result property="cmt_number" column="cmt_number" />
+      <result property="cmt_content" column="cmt_content" />
+      <result property="cmt_parent_num" column="cmt_parent_num" />
+      <result property="cmt_date" column="cmt_date" />
+      <result property="depth" column="depth" />
+   </resultMap>
  
    
    <!-- 목록+페이징 v-->
+   <!-- 8.1 구태선 추가 -->
    <select id="servList" resultType="servVO"  parameterType="Criteria3">
     <![CDATA[
-    select cust_serv_no, cust_serv_title, cust_serv_content, mem_id, cust_serv_date, cust_serv_hits
+     select cust_serv_no, cust_serv_title, cust_serv_content, mem_id, cust_serv_date, cust_serv_hits,cust_serv_notice,cust_serv_secret
     from (
-        select cust_serv_no, cust_serv_title, cust_serv_content, mem_id, cust_serv_date, cust_serv_hits,
-            row_number() over(order by cust_serv_no desc) as rNum2
+        select cust_serv_no, cust_serv_title, cust_serv_content, mem_id, cust_serv_date, cust_serv_hits,cust_serv_notice,cust_serv_secret,
+            row_number() over(order by cust_serv_notice desc, cust_serv_no desc) as rNum
         from  GOGI_CUST_SERV_BOARD
-        ) mb2
-    where rNum2 between  #{rowStart} and #{rowEnd}
-        order by cust_serv_no desc
+        ) mb
+   where rNum between  #{rowStart} and #{rowEnd}
+        ORDER by cust_serv_notice desc, cust_serv_no desc
          ]]>
+         
 </select>
+
  
  
    <!-- :게시물 총 갯수 확인 - -->
@@ -54,8 +68,8 @@
    		<selectKey resultType="int" keyProperty="cust_serv_no" order="BEFORE">
           select seq_serv.nextval from dual
        </selectKey>
-    	insert into GOGI_CUST_SERV_BOARD(cust_serv_no, cust_serv_title, cust_serv_content,mem_id,cust_serv_pw)
-        values (#{cust_serv_no}, #{cust_serv_title}, #{cust_serv_content}, #{mem_id},#{cust_serv_pw})
+ 		insert into GOGI_CUST_SERV_BOARD(cust_serv_no, cust_serv_title, cust_serv_content,mem_id,cust_serv_notice, cust_serv_secret)
+        values (#{cust_serv_no}, #{cust_serv_title}, #{cust_serv_content}, #{mem_id}, #{cust_serv_notice}, #{cust_serv_secret})
  	</insert>
  	
  	
@@ -107,8 +121,7 @@
     update GOGI_CUST_SERV_BOARD
      set
       cust_serv_title = #{cust_serv_title},
-      cust_serv_content = #{cust_serv_content},
-      mem_id=#{mem_id}
+      cust_serv_content = #{cust_serv_content}
   where cust_serv_no = #{cust_serv_no}
    </update>
    
@@ -126,4 +139,36 @@
     GOGI_CUST_SERV_BOARD
   where cust_serv_no = #{cust_serv_no}
    </delete>
+   
+   <!-- 1:1문의 내역 조회 -->
+   <select id="myServList" resultType="servVO">
+	select cust_serv_no, cust_serv_title,mem_id, cust_serv_date
+	from GOGI_CUST_SERV_BOARD
+	where mem_id = #{mem_id}
+	order by cust_serv_date desc
+   </select>
+   
+   
+      <!-- 댓글 등록 -->
+   <insert id="addComment" parameterType="CommentVO">
+      INSERT INTO gogi_comment
+      (cust_serv_no, mem_id, cmt_number, cmt_content,
+      cmt_parent_num)
+      VALUES (#{cust_serv_no}, #{mem_id}, seq_gogi_comment.nextval,
+      #{cmt_content}, #{cmt_parent_num})
+   </insert>
+
+   <!-- 댓글 리스트 조회 -->
+   <select id="CommentList" parameterType="CommentVO"
+      resultType="CommentVO">
+      SELECT cust_serv_no, mem_id, cmt_number, cmt_content,
+      cmt_parent_num,
+      cmt_date, depth
+      FROM gogi_comment
+      WHERE cust_serv_no =
+      #{cust_serv_no}
+      ORDER BY cmt_number ASC
+   </select>
+   
+   
    </mapper>

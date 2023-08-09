@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.dao.DataAccessException;
 
+import com.project.gogi.serv.domain.CommentVO;
 import com.project.gogi.serv.domain.Criteria3;
 import com.project.gogi.serv.domain.ServImageFileVO;
 import com.project.gogi.serv.domain.ServVO;
@@ -46,8 +47,14 @@ public interface ServDAO {
  
 		public boolean CheckAdmin(ServVO vo)  throws Exception;
 		
-		 public String getServPw(int cust_serv_no) throws Exception;
+		public String getServPw(int cust_serv_no) throws Exception;
 		
+		//1:1문의 내역 조회
+		public List<ServVO> selectReviewList(String mem_id) throws Exception;
 	    
+		 
+		public int addComment(CommentVO commentVO) throws DataAccessException;
+		      
+	    public List<CommentVO> selectBoardCommentByCode(CommentVO commentVO) throws DataAccessException;
 		    
 }

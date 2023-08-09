@@ -44,7 +44,7 @@ width:100%;
 
   margin: 0 auto; 
   font-family: 'Noto Sans KR', sans-serif;
-  border: 1px solid #E8E8E8;
+
   margin-top: 40px;
   margin-bottom: 40px;  
 }
@@ -181,7 +181,7 @@ border: none;
 	<div class="frm_mod_member">		
 		
 	<div class="title">
-		주문 배송 조회
+		주문 내역
 	</div> 
 	
 	<table class="form">
@@ -217,7 +217,7 @@ border: none;
 				</td>
 				
 				<td>
-				<fmt:formatDate value="${item.order_time}" pattern="yy/MM/dd HH시 mm분" var="orderTime"/>
+				<fmt:formatDate value="${item.order_time}" pattern="yy/MM/dd HH:mm" var="orderTime"/>
 				 ${orderTime}
 				</td>
 				<td style="text-align: left;"> 				
@@ -266,14 +266,9 @@ border: none;
 					${item.order_rec_name }
 				</td>
 				<td>
-				    <c:choose>
-				        <c:when test="${item.order_delivery_status =='delivery_prepared'}">
-				            <input type="button" class="cancel-order-btn" value="주문취소" data-order-id="${item.order_id}" />
-				        </c:when>
-				        <c:otherwise>
-				            <input type="button" class="cancel-order-btn" value="주문취소" data-order-id="${item.order_id}" />
-				        </c:otherwise>
-				    </c:choose>
+				   <c:if test="${item.order_delivery_status =='delivery_prepared'}">
+				       <input type="button" class="cancel-order-btn" value="주문취소" data-order-id="${item.order_id}" />
+				     </c:if>
 				</td>
 			<!-- 리뷰작성 모달창 내용  -->
 				<td>
@@ -338,26 +333,6 @@ border: none;
 	
 	<script>
 	
-	//리뷰 goods_id 리뷰작성창으로 전달
-	 // DOM이 완전히 로드된 후 실행
-/*     document.addEventListener("DOMContentLoaded", function () {
-        // "open-review-modal" 클래스를 가진 요소들을 모두 선택
-        var openReviewModalButtons = document.querySelectorAll(".open-review-modal");
-
-        // 각 버튼에 클릭 이벤트 리스너 추가
-        openReviewModalButtons.forEach(function (button) {
-            button.addEventListener("click", function (event) {
-                // 이벤트가 발생한 요소의 data-goods-id 속성 값을 읽어와서 리뷰 작성 모달의 goods_id에 설정
-                var goodsId = button.getAttribute("data-goods-id");
-                var reviewModalForm = document.getElementById("myform");
-                var goodsIdInput = reviewModalForm.querySelector('input[name="goods_id"]');
-                goodsIdInput.value = goodsId;
-            });
-        });
-    });
-	 */
-	 
-	 
 	  $(document).ready(function() {
 	        // 리뷰작성 모달이 열릴 때마다 해당 주문에 대한 상품 체크박스를 다시 보여줌
 	        $('.open-review-modal').on('click', function() {

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.project.gogi.goods.vo.ReviewVO;
 import com.project.gogi.member.vo.MemberVO;
 import com.project.gogi.mypage.dao.mypageDAO;
 import com.project.gogi.mypage.vo.mypageVO;
@@ -46,5 +47,16 @@ public class mypageServiceImpl implements mypageService{
 	@Override
 	public int deleteMember(String mem_id) throws Exception {
 		return mypageDAO.deleteMember(mem_id);
+	}
+
+	@Override
+	public List<ReviewVO> reviewList(String mem_id) throws Exception {
+		List reviewList = mypageDAO.selectReviewList(mem_id);
+		return reviewList;
+	}
+
+	@Override
+	public void reviewDelete(int rev_no) throws Exception {
+		mypageDAO.reviewDelete(rev_no);
 	}
 }

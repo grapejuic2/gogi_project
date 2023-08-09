@@ -83,6 +83,7 @@
   font-family: 'Noto Sans KR', sans-serif;
   width:100%;
   border-collapse: separate; /* 테이블 셀 경계를 분리합니다. */
+    font-size:16px;
     /* 테이블 셀 사이의 간격을 10px로 설정합니다. */
 }
 
@@ -132,6 +133,7 @@ font-weight: 500;
 .list_view table{
   margin-top: 10px;
   margin-bottom: 40px;
+
   text-align: center;
   border-collapse: separate; /* 'collapse'에서 'separate'로 변경 */
   width:100%;
@@ -192,12 +194,18 @@ margin-top: 20px;
   .fixed_join{
   	width:200px;
   }
+  
+  button{
+  	margin-top: 30px;
+  	font-family: 'Noto Sans KR', sans-serif;
+  	margin: 0 auto;
+  }
 </style>
 </head>
 <body>
 <div class="order-container">
 
-	 <div class="title">주문 상세 정보</div>
+	 <div class="title">주문이 완료되었습니다.</div>
 	<H1>주문 내역</H1>
 	<hr>
 	<TABLE class="list_view">
@@ -268,9 +276,9 @@ margin-top: 20px;
 		<TABLE >
 			<TBODY >
 				<TR class="dot_line" style="text-align: left;">
-					<TD class="fixed_join">배송방법</TD>
+					<TD class="fixed_join">희망 배송일</TD>
 					<TD>
-					   ${myOrderInfo.order_delivery_method }
+					   ${myOrderInfo.order_deli_hope_date }
 				    </TD>
 				</TR>
 				<TR class="dot_line">
@@ -296,12 +304,7 @@ margin-top: 20px;
 					${myOrderInfo.order_delivery_message}
 					</TD>
 				</TR>
-			 	<TR class="dot_line">
-					<TD class="fixed_join">선물 포장</TD>
-					<td>
-					${myOrderInfo.gift_wrapping}
-					</td>
-				</TR>
+
 			</TBODY>
 		</TABLE>
 		
@@ -336,7 +339,7 @@ margin-top: 20px;
 				<TR class="dot_line">
 					<TD class="fixed_join">결제금액</TD>
 					<TD>
-					   ${myOrderInfo.card_pay_month }
+					   ${myOrderInfo.final_total_price }
 				    </TD>
 				</TR>
 				
@@ -344,15 +347,11 @@ margin-top: 20px;
 		</table>
 	</DIV>
 </form>
-    <DIV class="clear"></DIV>
-	<br>
-	<br>
-	<br>
 
 		<br>
 		<br> 
 		<a href="${contextPath}/main/main.do"> 
-		   <IMG width="75" alt="" src="${contextPath}/resources/image/btn_shoping_continue.jpg">
+		<input type="button" class="btn btn-secondary" value="메인페이지 이동" style="background:#E8E8E8; color:black; height: 40px;font-weight: 700;margin-bottom: 50px;"/>
 		</a>
 
 	</div>

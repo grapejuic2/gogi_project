@@ -35,10 +35,12 @@ font-size: 16px;
 font-family: 'Noto Sans KR', sans-serif;
 font-weight: 500;
 display: block;
+margin-top: 37px;
 }
 
 ul.nav.navbar-nav li a{
 	color:black;
+	padding:10px;
 }
 
 ul.nav.navbar-nav li a:hover {
@@ -62,6 +64,9 @@ ul.nav.navbar-nav li a:hover {
 .navbar .dropdown-menu .dropdown-toggle {
     z-index: 9999;
  }
+ .logged-out{ /* 0802 21:57분 오동림 추가 */
+ margin-top: 25px;
+ }
 </style>
 <title>Bootstrap Example</title>
 <meta charset="utf-8">
@@ -82,32 +87,34 @@ ul.nav.navbar-nav li a:hover {
 			<div class="navbar-header">
 				<a href="${contextPath}/main/main.do"><img src="${contextPath}/resources/images/logo/logo.png" width="100px"></a>
 			</div>
-			<ul class="nav navbar-nav" style="color:black;">
+			<ul class="nav navbar-nav" style="color:black; font-weight: 700;">
 				<li><a href="${contextPath}/goods/shop.do">쇼핑하기</a></li>
 				<li><a href="${contextPath}/main/delivery.do">배송안내</a></li>
 				<li><a href="${contextPath}/notice/list.do">공지사항</a></li>
 				<li><a href="${contextPath}/serv/list.do">고객센터</a></li>
 			</ul>
-		<ul class="nav navbar-nav navbar-right">
-		    <li class="logged-out"><a href="${contextPath}/member/memberForm.do"><span class="glyphicon glyphicon-user"></span> 회원가입</a></li>
-		    <li class="logged-out"><a href="${contextPath}/member/loginForm.do" id="loginBtn"><span class="glyphicon glyphicon-log-in"></span> 로그인</a></li>
-		    <li class="user-logged-in hidden"><a href="${contextPath}/member/logout.do" id="logoutBtn"><span class="glyphicon glyphicon-log-out"></span> 로그아웃</a></li>
-		    <li class="kakao-user-logged-in hidden"><a href="${contextPath}/social/kakao_logout.do" id="logoutBtn"><span class="glyphicon glyphicon-log-out"></span> 로그아웃</a></li>
-		    <li class="user-logged-in hidden"><a href="${contextPath}/cart/myCartList.do"><span class="glyphicon glyphicon-shopping-cart"></span> 장바구니</a></li>
-		    
+			
+	
+		<ul class="nav navbar-nav navbar-right" style="vertical-align: middle;margin">		
+			 <c:choose>
+		           <c:when test="${isLogon == true and not empty memberInfo }">
+		             <div style="margin-top: 1.5px;font-size: 14px;text-align: right;margin-right: 13px;">${memberInfo.mem_name} 님 / <img width=20 src="${contextPath}/resources/images/nav/point.png">적립금 ${memberInfo.mem_point}원</div>
+		          </c:when>
+		       </c:choose>
+		    <li class="logged-out"><a href="${contextPath}/member/memberForm.do"><img width=20 src="${contextPath}/resources/images/nav/join.png"> 회원가입</a></li>
+		    <li class="logged-out"><a href="${contextPath}/member/loginForm.do" id="loginBtn"><img width=20 src="${contextPath}/resources/images/nav/login.png"> 로그인</a></li>
+		    <li class="user-logged-in hidden" ><a href="${contextPath}/cart/myCartList.do"><img width=20 src="${contextPath}/resources/images/nav/cart.png"> 장바구니</a></li>		    
 		    <li class="dropdown user-logged-in hidden" >
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                <span class="glyphicon glyphicon-user"></span> 마이페이지 <span class="caret"></span>
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#" >
+                <img width=20 src="${contextPath}/resources/images/nav/mypage.png"> 마이페이지<span class="caret"></span>
             </a>
-	            <ul class="dropdown-menu">
-	                <li><a href="${contextPath}/mypage/modifyMemForm.do">개인정보수정</a></li>
-	                <li><a href="#">문의 내역</a></li>
+	            <ul class="dropdown-menu" style="min-width: 105px;">
+	                <li style="width:130px;"><a href="${contextPath}/mypage/modifyMemForm.do">개인정보수정</a></li>
+	                <li><a href="${contextPath}/mypage/myWriteList.do">내가 남긴 글</a></li>
 	                <li><a href="${contextPath}/mypage/listMyOrderHistory.do">주문 내역</a></li>
-	                <li><a href="#">리뷰 확인</a></li>
 	                <li><a href="${contextPath}/mypage/deleteMemForm.do">회원 탈퇴</a></li>
 	            </ul>
             </li>
-            
             <li class="dropdown kakao-user-logged-in hidden" >
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                 <span class="glyphicon glyphicon-user"></span> 마이페이지 <span class="caret"></span>
@@ -120,9 +127,11 @@ ul.nav.navbar-nav li a:hover {
 	                <li><a href="${contextPath}/mypage/deleteMemForm.do">카카오-회원 탈퇴</a></li>
 	            </ul>
             </li>
+            <li class="user-logged-in hidden"><a href="${contextPath}/member/logout.do" id="logoutBtn"><img width=20 src="${contextPath}/resources/images/nav/logout.png"> 로그아웃</a></li>
+		    <li class="kakao-user-logged-in hidden"><a href="${contextPath}/social/kakao_logout.do" id="logoutBtn"><img width=20 src="${contextPath}/resources/images/nav/logout.png"> 로그아웃</a></li>
+		    
             
-		    <li class="admin-logged-in hidden"><a href="${contextPath}/member/logout.do" id="logoutBtn"><span class="glyphicon glyphicon-log-out"></span> 로그아웃</a></li>
-		    <li class="dropdown admin-logged-in hidden" >
+            <li class="dropdown admin-logged-in hidden" >
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                 <span class="glyphicon glyphicon-user"></span> 관리자 페이지 <span class="caret"></span>
             </a>
@@ -132,6 +141,8 @@ ul.nav.navbar-nav li a:hover {
 	                <li><a href="${contextPath}/admin/order/adminOrderMain.do">주문 관리</a></li>	       
 	            </ul>
             </li>
+		    <li class="admin-logged-in hidden"><a href="${contextPath}/member/logout.do" id="logoutBtn"> 로그아웃</a></li>
+		    
 		</ul>
 	</div>
 </nav>

@@ -65,11 +65,21 @@
    
    
    <!-- 삭제 -->
-	  <delete id="servDelete" parameterType="int">
+	  <delete id="reviewDelete" parameterType="int">
 		 delete from
 		 GOGI_REVIEW_BOARD
 		 where rev_no = #{rev_no}
 	   </delete>
+	   
+	   
+	    
+  	 <!-- 리뷰 조회 -->
+	   <select id="myReviewList" resultMap="reviewResult" >
+			select rev_no, rev_content,rev_date,mem_id, goods_id
+			from GOGI_REVIEW_BOARD
+			where mem_id = #{mem_id}
+			order by rev_date desc
+		</select>
    
    
  </mapper>
