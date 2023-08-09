@@ -9,38 +9,27 @@
 <head>
 <meta charset="EUC-KR">
 <link href="${contextPath}/resources/css/main.css" rel="stylesheet" type="text/css">
+<!-- 폰트:나눔산스 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.2/css/bootstrap.min.css" integrity="sha512-/Dmo1NVtQ05uS0vOI5qEZZn7mWaswFJzDa4RRRF29phxNQqkUkRk5xpyRUpekzoiO7CbdWXFbMHaapzVnNP2ZQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@700;800&family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
 <style>
-	.section .slide-control .left {left:5px;background:url('${contextPath}/resources/images/main/left.png') center center / 100% no-repeat;}
-	.section .slide-control .right {right:5px;background:url('${contextPath}/resources/images/main/right.png') center center / 100% no-repeat;}
-	.main{width: 100%; margin:0 ; padding: 10px; padding-left: 260px; padding-right: 260px;}
-	.card {margin-bottom: 50px; }
-	.image-background {
-    background-color: #f1f1f1; /* 배경색 설정 */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width:376px; height:416px;
-  	}
-  	.image-background img {
-  	background-color: transparent;
-    width:250px;
-    object-fit: contain; /* 이미지를 가운데로 정렬 */
-  	} 
+.section .slide-control .left {left:5px;background:url('${contextPath}/resources/images/main/left.png') center center / 100% no-repeat;}
+.section .slide-control .right {right:5px;background:url('${contextPath}/resources/images/main/right.png') center center / 100% no-repeat;}
 </style>
 <title>Insert title here</title>
 </head>
 <body>
+
 		<!-- 메인페이지 배너 -->
 		<div class="section">
 			<input type="radio" name="slide" id="slide01" checked>
 			<input type="radio" name="slide" id="slide02">
 			<input type="radio" name="slide" id="slide03">
+			<input type="radio" name="slide" id="slide04">
 			<div class="slidewrap">
 				<ul class="slidelist">
+					<li><a><img src="${contextPath}/resources/images/main/banner5.png" ></a></li>
 					<li><a><img src="${contextPath}/resources/images/main/banner1.png" ></a></li>
 					<li><a><img src="${contextPath}/resources/images/main/banner2.png"></a></li>
 					<li><a><img src="${contextPath}/resources/images/main/banner3.png"></a></li>
@@ -48,7 +37,7 @@
 		
 				<div class="slide-control">
 					<div class="control01">
-						<label for="slide03" class="left"></label>
+						<label for="slide04" class="left"></label>
 						<label for="slide02" class="right"></label>
 					</div>
 					<div class="control02">
@@ -57,6 +46,10 @@
 					</div>
 					<div class="control03">
 						<label for="slide02" class="left"></label>
+						<label for="slide04" class="right"></label>
+					</div>
+					<div class="control04">
+						<label for="slide03" class="left"></label>
 						<label for="slide01" class="right"></label>
 					</div>
 				</div>
@@ -66,7 +59,7 @@
 		<!-- 메인페이지 베스트상품 -->
 		
 		<div class="main title-div" id="new">
-			<h2>육룰 베스트</h2>			
+			<div class="main-sort">[육룰 BEST]</div>			
 			<div class="main-best_div row row-cols-1 row-cols-md-3 text-center mb-4">
 			    <c:forEach var="best" items="${goodsMap.best}">
 			        <div class="card h-100 border-light shadow p-3 bg-body rounded-0 col-md-4 d-flex justify-content-center align-items-center mb-4">
@@ -75,10 +68,11 @@
 			                <img src="${contextPath}/thumbnails.do?goods_id=${best.goods_id}&amp;fileName=${best.file_name}" class="card-img-top" alt="...">
 			            </a> 
 			            </div>
-			            <div class="card-body">
+			            <div class="card-body text-left">
 			                <h5 class="card-title">${best.goods_name}</h5>
 			                <fmt:formatNumber value="${best.goods_price}" type="number" var="goods_price" />
-			                <p class="card-text pt-2 text-decoration-line-through">${goods_price}원</p>
+			                <fmt:formatNumber value="${best.goods_weight}" type="number" var="goods_weight" />	
+			                <p class="card-text pt-2 text-decoration-line-through">기준가 ${goods_price}원/${goods_weight}g</p>
 			            </div>
 			        </div>
 			    </c:forEach>
@@ -87,7 +81,7 @@
 		
 		<!-- 메인페이지 할인상품 -->
 		
-			<h2>반짝 할인</h2>		
+			<div class="main-sort">[할인상품]</div>		
 			<div class="main-best_div row row-cols-1 row-cols-md-3 text-center mb-4">
 			    <c:forEach var="sale" items="${goodsMap.sale}">
 			        <div class="card h-100 border-light shadow p-3 bg-body rounded-0 col-md-4 d-flex justify-content-center align-items-center mb-4">
@@ -96,10 +90,11 @@
 			                <img src="${contextPath}/thumbnails.do?goods_id=${sale.goods_id}&amp;fileName=${sale.file_name}" class="card-img-top" alt="...">
 			            </a> 
 			            </div>
-			            <div class="card-body">
+			            <div class="card-body text-left">
 			                <h5 class="card-title">${sale.goods_name}</h5>
 			                <fmt:formatNumber value="${sale.goods_price}" type="number" var="goods_price" />
-			                <p class="card-text pt-2 text-decoration-line-through">${goods_price}원</p>
+			                <fmt:formatNumber value="${sale.goods_weight}" type="number" var="goods_weight" />	
+			                <p class="card-text pt-2 text-decoration-line-through">기준가 ${goods_price}원/${goods_weight}g</p>
 			            </div>
 			        </div>
 			    </c:forEach>

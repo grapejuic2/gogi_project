@@ -1,6 +1,5 @@
 package com.project.gogi.member.controller;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
@@ -41,39 +40,40 @@ public class MemberControllerImpl extends BaseController implements MemberContro
 	private JavaMailSender mailSender;
 	
 	@Override
-	@RequestMapping(value =  "/login.do", method = RequestMethod.POST)
-	public ModelAndView login(@RequestParam Map<String, String> loginMap, HttpServletRequest request, HttpServletResponse response) throws Exception{
+	@RequestMapping(value = "/loginForm.do", method = RequestMethod.POST)
+	public ModelAndView loginForm(@RequestParam Map<String, String> loginMap, HttpServletRequest request, HttpServletResponse response) throws Exception{
 		
 		ModelAndView mav = new ModelAndView();
-		
-		memberVO = memberService.login(loginMap);
+		memberVO = memberService.loginForm(loginMap);
 		if(memberVO!= null && memberVO.getMem_id()!=null) {
+			if(memberVO.getMem_del_yn().equals("Y")){
+				String message = "탈퇴한 회원입니다.";
+				mav.addObject("message", message);
+				mav.setViewName("/member/loginForm");
+			} else if(memberVO.getMem_del_yn().equals("B")) {
+				String message = "비활성화된 회원입니다";
+				mav.addObject("message", message);
+				mav.setViewName("/member/loginForm");
+			} else {
 			HttpSession session = request.getSession();
 			session.setAttribute("isLogon", true);
 			session.setAttribute("memberInfo", memberVO);
+			System.out.println("로그인"+memberVO.getMem_id());
 			
-			String action = (String)session.getAttribute("action");
-			
-			if(action != null) {
-				if(action.equals("/order/orderEachGoods.do")){
-					mav.setViewName("forward:"+action);
-				}else if(action.equals("/board/review/reviewForm.do")){
-					mav.setViewName("redirect:" + action);
-				}else if(action.equals("/board/qna/qnaForm.do")){
-					mav.setViewName("redirect:" + action);
-				}else if(action.equals("/goods/goodsDetail.do")) {
-					mav.setViewName("forward:" + action);
-				}
-				
-			} else { // action 값이 null인경우 main으로 넘김
-					System.out.println(memberVO.getMem_id()+ " 로그인 완료");
-					mav.setViewName("redirect:/main/main.do");
+	        // 관리자 계정 확인: memberVO에서 관리자 이메일 또는 ID를 확인하고 세션에 isAdmin 값을 설정.
+	        if (memberVO.getMem_id().equals("admin")) {
+	            session.setAttribute("isAdmin", true);
+	        } else {
+	            session.setAttribute("isAdmin", false);
+	        }
+	        System.out.println(memberVO.getMem_id()+ " 로그인 완료");
+			session = request.getSession(true);	     
+	        mav.setViewName("redirect:/main/main.do");
 			}
-			
 		}else{
-			String message="아이디나  비밀번호가 틀립니다. 다시 로그인해주세요";
+			String message="아이디나 비밀번호가 틀립니다. 다시 로그인해주세요";
 			mav.addObject("message", message);
-			mav.setViewName("/member/loginForm.do");
+			mav.setViewName("/member/loginForm");
 		}
 		return mav;
 	}
@@ -199,5 +199,5 @@ public class MemberControllerImpl extends BaseController implements MemberContro
 		mav.setViewName(viewName);
 		return mav;
 	}
-
+	
 }
