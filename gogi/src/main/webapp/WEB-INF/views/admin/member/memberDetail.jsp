@@ -203,14 +203,87 @@ function backToList(obj) {
 }
 
 </script>
+<style>
+.form{
+margin: 0;
+width:100%;
+}
+.frm_mod_mem_detail{
+  width: 1000px;
+  padding:30px;
+
+  margin: 0 auto; 
+  font-family: 'Noto Sans KR', sans-serif;
+  border: 1px solid #E8E8E8;
+  margin-top: 40px;
+  margin-bottom: 40px;  
+}
+
+.frm_mod_tab{
+  width: 1000px;
+  padding:30px;
+
+  margin: 0 auto; 
+  font-family: 'Noto Sans KR', sans-serif;
+  border: 1px solid #E8E8E8;
+  margin-top: 40px;
+  margin-bottom: 40px;  
+}
+
+.tab_content{
+  width: 1000px;
+  padding:30px;
+
+  margin: 0 auto; 
+  font-family: 'Noto Sans KR', sans-serif;
+  border: 1px solid #E8E8E8;
+  margin-top: 40px;
+  margin-bottom: 40px;  
+}
+
+.category {display: flex;justify-content: center; }
+.category a:hover img {opacity: 0.8; /* 투명도 조절 */transition: all 0.5s ease-in-out; /* 변경 효과 적용 */ transform: translateY(-10px);}
+
+.table{
+  width:100%;
+  align-items: center;
+  flex-direction: column;
+  margin-top:20px;
+  font-family: 'Noto Sans KR', sans-serif;
+  border-collapse: separate; 
+  border: 1px solid #E8E8E8;
+}
+
+ .title{
+  font-family: 'Noto Sans KR', sans-serif;
+  text-align: center;
+  font-size: 30px;
+  font-weight: 700;
+  margin-bottom: 40px;
+ }
+ 
+  td {
+  border-top: 1px solid #ddd; /* 위쪽에 border 추가 */
+  padding: 15px;
+  vertical-align: middle;
+}
+.required {
+    color: #DB0000; /* 원하는 색상으로 변경하세요 */
+  }
+.cancel-order-btn{
+border:none;
+height: 30px;
+}  
+ 
+</style>
 </head>
 
 <body>
-	<div class="title_underline" style="margin-top: 50px">
-			<h3><b>내상세정보</b></h3>
+	<div class="title_underline" style="margin-top: 50px; margin-left: 780px">
+			<h3><b>내 상세정보</b></h3>
 		</div>
-<form name="frm_mod_member">	
-	<div id="detail_table">
+<form name="frm_mod_mem_detail" style="align: center; margin-left: 500px;">	
+	<div id="frm_mod_tab">
 		<table>
 			<tbody>
 				<tr class="dot_line">
@@ -313,7 +386,7 @@ function backToList(obj) {
 					   <input type="text" id="zipcode" name="zipcode" size=5 value="${member_info.zipcode }" > <a href="javascript:execDaumPostcode()">우편번호검색</a>
 					  <br>
 					  <p> 
-					   지번 주소:<br><input type="text" id="roadAddress"  name="roadAddress" size="50" value="${member_info.roadAddress }"><br><br>
+					   지번 주소: <input type="text" id="roadAddress"  name="roadAddress" size="50" value="${member_info.roadAddress }" style="margin-left: 13px;"><br><br>
 					  도로명 주소: <input type="text" id="jibunAddress" name="jibunAddress" size="50" value="${member_info.jibunAddress }"><br><br>
 					  나머지 주소: <input type="text"  name="namujiAddress" size="50" value="${member_info.namujiAddress }" />
 					   <span id="guide" style="color:#999"></span>
@@ -328,7 +401,7 @@ function backToList(obj) {
 		</div>
 		<div class="clear">
 		<br><br>
-		<table align=center>
+		<table style="margin-left: 250px;">
 		<tr>
 			<td >
 				<input type="hidden" name="command" value="modify_my_info" /> 

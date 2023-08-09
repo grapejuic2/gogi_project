@@ -35,6 +35,17 @@ width:100%;
   margin-bottom: 40px;  
 }
 
+.tab_content{
+  width: 1000px;
+  padding:30px;
+
+  margin: 0 auto; 
+  font-family: 'Noto Sans KR', sans-serif;
+  border: 1px solid #E8E8E8;
+  margin-top: 40px;
+  margin-bottom: 40px;  
+}
+
 .category {display: flex;justify-content: center; }
 .category a:hover img {opacity: 0.8; /* 투명도 조절 */transition: all 0.5s ease-in-out; /* 변경 효과 적용 */ transform: translateY(-10px);}
 
@@ -433,9 +444,6 @@ height: 30px;
 										<td><input type="button" value="수정"
 											onClick="modifyImageFile('main_image','${item.goods_id}','${item.image_id}','${item.file_type}')"
 											class="btn btn-secondary btn-sm" /></td>
-									</tr>
-									<tr>
-										<td><br></td>
 									</tr>
 								</c:when>
 								<c:otherwise>
