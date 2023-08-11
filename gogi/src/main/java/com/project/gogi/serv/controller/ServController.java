@@ -281,11 +281,6 @@ public class ServController extends BaseController{
 	           if(memberVO != null) {
 	              commentVO.setMem_id(memberVO.getMem_id());        
 	               servService.addComment(commentVO);// 댓글 등록 처리 (이후 등록된 댓글의 글번호를 받아옴)
-	               System.out.println("@@@@@@@@@@@@@@@@@@@@@"+commentVO.toString());
-	               int cmt_number=commentVO.getCmt_number();
-	               System.out.println("댓글넘버"+cmt_number);
-	               // 댓글의 글번호를 반환
-	               return String.valueOf(cmt_number);
 	           }
 	        } catch (Exception e){
 	            e.printStackTrace();
@@ -304,7 +299,7 @@ public class ServController extends BaseController{
 		        if (memberVO != null) {
 		            commentVO.setMem_id(memberVO.getMem_id());
 		            servService.addReply(commentVO);
-		            System.out.println("@@@@@@@@@@@대댓글 commentVO:"+commentVO.toString());
+		            //System.out.println("@@@@@@@@@@@대댓글 commentVO:"+commentVO.toString());
 		        }
 		    } catch (Exception e) {
 		        e.printStackTrace();
@@ -327,11 +322,11 @@ public class ServController extends BaseController{
 	                hm.put("cmt_content", commentList.get(i).getCmt_content());
 	                hm.put("cmt_date", commentList.get(i).getCmt_date());
 	                hm.put("mem_id", commentList.get(i).getMem_id());
+	                hm.put("lvl", commentList.get(i).getLvl());
 	                
 	                hmlist.add(hm);
 	                
 	            }
-	            System.out.println("hmlist: "+hmlist.toString());
 	        }
 	        JSONArray json = new JSONArray(hmlist);        
 	        return new ResponseEntity(json.toString(), responseHeaders, HttpStatus.CREATED);

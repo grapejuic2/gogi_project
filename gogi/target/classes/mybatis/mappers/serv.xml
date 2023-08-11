@@ -151,26 +151,20 @@
    
       <!-- 댓글 등록 -->
    <insert id="addComment" parameterType="CommentVO">
-      INSERT INTO gogi_comment
-      (cust_serv_no, mem_id, cmt_number, cmt_content,
-      cmt_parent_num)
-      VALUES (#{cust_serv_no}, #{mem_id}, seq_gogi_comment.nextval,
-      #{cmt_content}, #{cmt_parent_num})
+      INSERT INTO gogi_comment(cust_serv_no, mem_id, cmt_number, cmt_content,cmt_parent_num)
+      VALUES (#{cust_serv_no}, #{mem_id}, seq_gogi_comment.nextval,#{cmt_content}, #{cmt_parent_num})
    </insert>
 
    <!-- 댓글 리스트 조회 -->
-  <select id="CommentList" parameterType="CommentVO"
+<!--   <select id="CommentList" parameterType="CommentVO"
       resultType="CommentVO">
-      SELECT cust_serv_no, mem_id, cmt_number, cmt_content,
-      cmt_parent_num,
-      cmt_date, depth
+      SELECT cust_serv_no, mem_id, cmt_number, cmt_content,cmt_parent_num,cmt_date, depth
       FROM gogi_comment
-      WHERE cust_serv_no =
-      #{cust_serv_no}
+      WHERE cust_serv_no =#{cust_serv_no}
       ORDER BY cmt_number ASC
-   </select>
+   </select> -->
    
- <!--   
+ 
    <select id="CommentList" parameterType="CommentVO" resultType="CommentVO">
      select*from (select 
             lvl,
@@ -179,19 +173,21 @@
             cmt_number,
             cmt_parent_num,
             cmt_content,
-            cmt_date
+            cmt_date,
+            depth
             from(select level lvl,
             				mem_id,
                             cust_serv_no,
                             cmt_number,
                             cmt_parent_num,
                             lpad(' ',4*(level-1)) || cmt_content AS cmt_content,
-                            cmt_date
+                            cmt_date,
+                            depth
                 from gogi_comment
                 WHERE cust_serv_no = #{cust_serv_no}
                 start with cmt_parent_num=0
-                connect by prior cmt_number=cmt_parent_num))
+                connect by prior cmt_number=cmt_parent_num))           
    </select>
-    -->
+ 
    
    </mapper>
