@@ -20,29 +20,6 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 
-    // 댓글 등록 함수
-    /* function fn_comment(cust_serv_no) {
-        var cmt_content = $("#cmt_content").val();
-        if (cmt_content === null || cmt_content.trim() === "") {
-            alert("댓글 내용을 입력해주세요.");
-        } else {
-            $.ajax({
-                type: 'POST',
-                url: "<c:url value='/serv/addComment.do'/>", 
-                data: $("#commentForm").serialize(),
-                success: function (data) {
-                    if (data === "success") {
-                        alert("댓글을 등록했습니다.");
-                        getCommentList(); // 댓글 등록 후 댓글 리스트 갱신
-                        $("#cmt_content").val(""); // 댓글 작성 폼 초기화
-                    }
-                },
-                error: function (request, status, error) {
-                    alert("댓글 등록에 실패했습니다.");
-                }
-            });
-        }
-    } */
     
     function fn_comment(cust_serv_no) {
         var cmt_content = $("#cmt_content").val();
@@ -59,7 +36,7 @@
 
                         // 서버로부터 받아온 댓글의 글번호를 사용하여 대댓글 작성 폼 호출
                         var commentId = parseInt(data);
-                        //alert("댓글 글번호"+commentId);
+                        alert("댓글 글번호"+commentId);
                         showReplyForm(commentId, '', null); // 댓글의 글번호를 인자로 전달
 
                         getCommentList(); // 댓글 등록 후 댓글 리스트 갱신
@@ -90,7 +67,7 @@
           html += "<div>";
           html += "<img src='${contextPath}/resources/images/serv/writer.png' style='margin-right:5px;width:20px;'/><strong>" + data[i].mem_id + "</strong><div class='cmt' style='margin-bottom: 30px;'><table id='mem_id'><div style='margin-bottom: 10px;'></div>";
           html += data[i].cmt_content + "<tr><td></td></tr>";
-          //html += "<a href='#' class='reply-button' data-cmtid='" + data[i].cmt_number + "' data-memid='" + data[i].mem_id + "'>답글 달기</a>";
+          html += "<a href='#' class='reply-button' data-cmtid='" + data[i].cmt_number + "' data-memid='" + data[i].mem_id + "'>답글 달기</a>";
           html += "<div class='replyFormContainer'></div><br>";
           html +="<strong><span class='cmt_date'>" + formatDate(data[i].cmt_date) + "</span></strong>";
           html += "</table></div>";
@@ -156,9 +133,10 @@
 
         // 클릭된 "답글 달기" 버튼이 속한 댓글에 대한 정보 가져오기
         var parentCommentId = $(this).attr("data-cmtid");
+        
         alert("parentCommentId:"+parentCommentId);
         var parentCommentAuthor = $(this).attr("data-memid");
-
+        alert("parentCommentAuthor 글쓴이:"+parentCommentAuthor);
         // 대댓글 작성 폼 토글
         showReplyForm(parentCommentId, parentCommentAuthor, this);
     });
@@ -191,6 +169,9 @@
         var replyContent = $(button).closest('.reply-form').find("#reply_content").val();
         var parentCommentId = $(button).closest('.reply-form').find("#parent_comment_id").val();
         var parentCommentAuthor = $(button).closest('.reply-form').find("#parent_comment_author").val();
+        console.log("replyContent:"+replyContent);
+        console.log("parentCommentId:"+parentCommentId);
+        console.log("parentCommentAuthor:"+parentCommentAuthor);
 
         if (replyContent === null || replyContent.trim() === "") {
             alert("대댓글 내용을 입력해주세요.");
@@ -200,9 +181,9 @@
                 url: "<c:url value='/serv/addReply.do'/>", // 대댓글 추가에 대한 실제 URL로 변경
                 data: {
                     cust_serv_no: ${servRead.cust_serv_no},
-                    parent_comment_id: parentCommentId,
-                    parent_comment_author: parentCommentAuthor,
-                    reply_content: replyContent
+                    cmt_parent_num: parentCommentId,
+                    mem_id: parentCommentAuthor,
+                    cmt_content: replyContent
                 },
                 success: function (data) {
                     if (data === "success") {
@@ -350,7 +331,7 @@
 				                 </tr>
 				                <tr>
 				                  <td> 
-				                    <a href="#" class="reply-button" data-cmtid="${item.cmt_number}" data-memid="${item.mem_id}">답글 달기</a> 
+				                    <%-- <a href="#" class="reply-button" data-cmtid="${item.cmt_number}" data-memid="${item.mem_id}">답글 달기</a>  --%>
 				                    <!-- 여기에서 대댓글 작성 폼을 추가하기 위해 replyFormContainer를 클래스로 변경 -->
 				                    <div class="replyFormContainer"></div>
 				                  </td>

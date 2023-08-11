@@ -280,8 +280,8 @@ public class ServController extends BaseController{
 	        try{
 	           if(memberVO != null) {
 	              commentVO.setMem_id(memberVO.getMem_id());        
-	               int cust_serv_no=servService.addComment(commentVO);// 댓글 등록 처리 (이후 등록된 댓글의 글번호를 받아옴)
-	               System.out.println("글넘버"+cust_serv_no);
+	               servService.addComment(commentVO);// 댓글 등록 처리 (이후 등록된 댓글의 글번호를 받아옴)
+	               System.out.println("@@@@@@@@@@@@@@@@@@@@@"+commentVO.toString());
 	               int cmt_number=commentVO.getCmt_number();
 	               System.out.println("댓글넘버"+cmt_number);
 	               // 댓글의 글번호를 반환
@@ -303,10 +303,8 @@ public class ServController extends BaseController{
 		    try {
 		        if (memberVO != null) {
 		            commentVO.setMem_id(memberVO.getMem_id());
-		            // 부모 댓글의 번호를 가져와서 CommentVO에 저장
-		            int parentCommentId = Integer.parseInt(request.getParameter("parent_comment_id"));
-		            commentVO.setCmt_parent_num(parentCommentId);
 		            servService.addReply(commentVO);
+		            System.out.println("@@@@@@@@@@@대댓글 commentVO:"+commentVO.toString());
 		        }
 		    } catch (Exception e) {
 		        e.printStackTrace();
@@ -325,12 +323,15 @@ public class ServController extends BaseController{
 	            for(int i=0; i<commentList.size(); i++){
 	                HashMap hm = new HashMap();
 	                hm.put("cust_serv_no", commentList.get(i).getCust_serv_no());
+	                hm.put("cmt_number", commentList.get(i).getCmt_number());
 	                hm.put("cmt_content", commentList.get(i).getCmt_content());
 	                hm.put("cmt_date", commentList.get(i).getCmt_date());
 	                hm.put("mem_id", commentList.get(i).getMem_id());
 	                
 	                hmlist.add(hm);
+	                
 	            }
+	            System.out.println("hmlist: "+hmlist.toString());
 	        }
 	        JSONArray json = new JSONArray(hmlist);        
 	        return new ResponseEntity(json.toString(), responseHeaders, HttpStatus.CREATED);

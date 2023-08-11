@@ -159,7 +159,7 @@
    </insert>
 
    <!-- 댓글 리스트 조회 -->
-   <select id="CommentList" parameterType="CommentVO"
+  <select id="CommentList" parameterType="CommentVO"
       resultType="CommentVO">
       SELECT cust_serv_no, mem_id, cmt_number, cmt_content,
       cmt_parent_num,
@@ -170,5 +170,28 @@
       ORDER BY cmt_number ASC
    </select>
    
+ <!--   
+   <select id="CommentList" parameterType="CommentVO" resultType="CommentVO">
+     select*from (select 
+            lvl,
+            mem_id,
+            cust_serv_no,
+            cmt_number,
+            cmt_parent_num,
+            cmt_content,
+            cmt_date
+            from(select level lvl,
+            				mem_id,
+                            cust_serv_no,
+                            cmt_number,
+                            cmt_parent_num,
+                            lpad(' ',4*(level-1)) || cmt_content AS cmt_content,
+                            cmt_date
+                from gogi_comment
+                WHERE cust_serv_no = #{cust_serv_no}
+                start with cmt_parent_num=0
+                connect by prior cmt_number=cmt_parent_num))
+   </select>
+    -->
    
    </mapper>
