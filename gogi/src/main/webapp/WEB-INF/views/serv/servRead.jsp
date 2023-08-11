@@ -67,7 +67,7 @@
 	            var indent = data[i].lvl * 40; // 들여쓰기 간격 40px씩 증가	            
 	            html += "<div class='comment' style='margin-left: " + indent + "px;'>";
 	            
-	            // lvl이 1이 아닌 경우에만 댓글 화살표 이미지 태그 추가
+	            // lvl이 1이 아닌 경우에만 댓글 화살표 이미지 태그 추가ㄹ
 	            if (data[i].lvl !== 1) {
 	                html += "<img src='${contextPath}/resources/images/serv/reply3.png' style='margin-right:5px;width:20px;' />";
 	            }
