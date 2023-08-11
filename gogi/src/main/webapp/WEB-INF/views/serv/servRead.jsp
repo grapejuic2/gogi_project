@@ -60,11 +60,11 @@
  // 댓글 목록 표시 함수
 	function showCommentList(data) {
 	    var html = "";
-	    var cCnt = data.length;
+	    var cCnt = data.length; 
 	
 	    if (data.length > 0) {
 	        for (i = 0; i < data.length; i++) {
-	            var indent = data[i].lvl * 40; // 들여쓰기 간격 정의 (40px씩 증가)	            
+	            var indent = data[i].lvl * 40; // 들여쓰기 간격 40px씩 증가	            
 	            html += "<div class='comment' style='margin-left: " + indent + "px;'>";
 	            
 	            // lvl이 1이 아닌 경우에만 댓글 화살표 이미지 태그 추가
