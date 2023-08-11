@@ -3,10 +3,15 @@ package com.project.gogi.goods.service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.project.gogi.goods.dao.GoodsDAO;
 import com.project.gogi.goods.vo.GoodsVO;
+import com.project.gogi.goods.vo.ReviewImageVO;
+import com.project.gogi.goods.vo.ReviewVO;
+import com.project.gogi.serv.domain.ServImageFileVO;
 
 @Service("goodsService")
 public class GoodsServiceImpl implements GoodsService{
@@ -60,6 +65,41 @@ public class GoodsServiceImpl implements GoodsService{
 //		goodsMap.put("imageList", imageList);
 		
 		return goodsMap;
+	}
+
+	@Override
+	public int reviewWrite(ReviewVO reviewVO, List<ReviewImageVO> imageFileList) throws Exception {
+		System.out.println("리뷰등록 서비스?");
+		int rev_no= dao.reviewWrite(reviewVO);	   
+		System.out.println("서비스 : " + rev_no);
+
+	 
+	  
+	    for (ReviewImageVO reviewImageVO : imageFileList) {
+	    	reviewImageVO.setRev_no(rev_no);	       
+	    }
+	  
+	   dao.insertReviewImageFile(imageFileList);
+	    
+	    return rev_no;
+	}
+
+	@Override
+	public List<ReviewVO> reviewList(int goods_id) throws Exception {
+		List reviewList = dao.selectReviewList(goods_id);
+		return reviewList;
+	}
+
+	@Override
+	public List<ReviewImageVO> selectImageFile(int rev_no) throws Exception {
+		Map reviewImageMap=new HashMap();
+		
+		// 상품 정보와 이미지 정보를 조회한 후 HashMap에 저장합니다.
+		
+		List<ReviewImageVO> imageList =dao.selectImageFile(rev_no);
+		reviewImageMap.put("imageList", imageList);
+		
+		return imageList;
 	}
 
 }

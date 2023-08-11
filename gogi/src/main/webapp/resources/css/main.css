@@ -12,8 +12,8 @@
 	.section .slidelist > li > a > img {width:100%;height:530px;display:block;object-fit: cover;}
 
 	/* 좌우로 넘기는 LABEL버튼에 대한 스타일 */
-	.section .slide-control {position:absolute;top:0;left:0;z-index:10;width:100%;height:100%;}
-	.section .slide-control label {position:absolute;z-index:1;top:50%;transform:translateY(-50%);padding:50px;cursor:pointer;}
+	.section .slide-control {position:absolute;top:0;left:0;width:100%;height:100%;}
+	.section .slide-control label {position:absolute;top:50%;transform:translateY(-50%);padding:50px;cursor:pointer;}
 
 	.section .slide-control [class*="control"] {display:none;}
 
@@ -21,11 +21,13 @@
 	.section [id="slide01"]:checked ~ .slidewrap .slidelist > li {transform:translateX(0%);}
 	.section [id="slide02"]:checked ~ .slidewrap .slidelist > li {transform:translateX(-100%);}
 	.section [id="slide03"]:checked ~ .slidewrap .slidelist > li {transform:translateX(-200%);}
+	.section [id="slide04"]:checked ~ .slidewrap .slidelist > li {transform:translateX(-300%);}
 	
 	/*  INPUT이 체크되면 변화값이 좌우 슬라이드 버튼을 담고 있는 div 까지 전달되는 스타일 */
 	.section [id="slide01"]:checked ~ .slidewrap .control01 {display:block;}
 	.section [id="slide02"]:checked ~ .slidewrap .control02 {display:block;}
 	.section [id="slide03"]:checked ~ .slidewrap .control03 {display:block;}
+	.section [id="slide04"]:checked ~ .slidewrap .control04 {display:block;}
 	
 	/* 베스트상품, 할인상품 스타일 */
 	.main{width: 100%;margin:0 ; padding: 10px; padding-left: 200px; padding-right: 200px;}
@@ -45,25 +47,26 @@
     object-fit: contain; /* 이미지를 가운데로 정렬 */
   	}
   	.main-sort{
-  	font-family: 'Nanum Gothic', sans-serif;
-	font-weight: 800;
+  	font-family: 'Noto Sans KR', sans-serif;
+	font-weight: 700;
 	font-size: 30px;
 	margin-top: 20px;
 	margin-bottom: 20px;
   	}
   	
-  	.card-title{
-  	font-family: 'Nanum Gothic', sans-serif;
-  	font-size: 17px;
-  	font-weight: 800;  	
+.card-title{
+  	font-family: 'Noto Sans KR', sans-serif;
+  	font-size: 19px;
+  	font-weight: 700;  	
   	padding-bottom: 1px;
-  	}
+}
   	
-  	.card-text{
-  	margin-top:2px;
-  	font-family: 'Nanum Gothic', sans-serif;
-  	font-size: 14px; 
-  	}
+.card-text{
+	margin-top:2px;
+	font-family: 'Noto Sans KR', sans-serif;
+	font-size: 14px;
+	font-weight: 400;   
+}
   	
 	
 	.main{width: 100%; margin:0 ; padding: 10px; padding-left: 260px; padding-right: 260px;}

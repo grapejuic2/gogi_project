@@ -7,46 +7,37 @@
 <head>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style>
-.navbar.navbar-inverse {
-	padding: 10px;
-	padding-left: 200px;
-	padding-right: 200px;
-	background: white;
-	border: none;
+.delete-page{
+ width: 800px;
+  padding:30px;
+   margin: 0 auto; 
+  font-family: 'Noto Sans KR', sans-serif;
+  border: 1px solid #E8E8E8;
+  margin-top: 40px;
+  margin-bottom: 40px;  
+  text-align: center;
 }
-
-.nav.navbar-nav {
-	margin-top: 70px;
-	margin-left: 40px;
-}
-
-ul.nav.navbar-nav li a:hover {
-	color: #000000;
-}
-
 .sub_title {
-	-swiper-theme-color: #007aff;
-	-swiper-navigation-size: 44px;
-	font-family: Spoqa Han Sans, "Sans-serif";
-	outline: 0;
-	margin: 0;
-	padding: 0;
-	text-align: center;
-	font-size: 32px;
+  font-family: 'Noto Sans KR', sans-serif;
+  text-align: center;
+  font-size: 30px;
+  font-weight: 700;
+  margin-bottom: 40px;
 }
 
 .sub_text1 {
 	-swiper-theme-color: #007aff;
 	-swiper-navigation-size: 44px;
-	font-family: Spoqa Han Sans, "Sans-serif";
+	 font-family: 'Noto Sans KR', sans-serif;
 	outline: 0;
 	margin: 0;
 	padding: 0;
 	margin-top: 25px;
-	width: 328px;
+	width: 400px;
 	margin-left: auto;
 	margin-right: auto;
-	font-size: 18px;
+	font-size: 20px;
+	font-weight:500;
 	line-height: 28px;
 	color: #212121;
 }
@@ -65,19 +56,19 @@ ul.nav.navbar-nav li a:hover {
 	font-size: 13px;
 	color: #9e9e9e;
 	letter-spacing: -0.1px;
+	text-align: center;
 }
 
-.list_view{
-	width: 900px;
-	margin-left: 300px;
-	margin-right: auto;
-	padding-top: 10px;
-	border-top: 5px solid rgb(255, 215, 0);
-}
 .reason {
-	margin-top: 10px;
-	/* margin-left: 30px; */
+
+	margin:0 auto; 
 	line-height: 2em;
+	text-align: left !important;
+	width:400px;  
+	align-items: center;
+	padding-left: 50px;
+	margin-top: 20px;
+	margin-bottom: 20px;
 }
 .reason input[type=text]{
 	width: 300px;
@@ -86,14 +77,17 @@ ul.nav.navbar-nav li a:hover {
 }
 .info {
 	margin-top: 10px;
-	margin-left: 30px;
-	background: rgb(230,230,230);
+	background: #E8E8E8;
 }
 .deleteInfo {
 	margin-top: 10px;
 	margin-left: 30px;
 	font-size: 0.9em;
 	padding: 20px 0px;
+	text-align: left;
+}
+.deleteInfo li{
+margin-bottom: 5px;
 }
 .reason input[type=button]:disabled{
 	float: right;
@@ -108,25 +102,19 @@ ul.nav.navbar-nav li a:hover {
    	font-weight: bold;
    	text-align:center;
 }
-.reason input[type=button]{
-	float: right;
-	width:100px;  
-   	height:40px;
+.reason input[type=radio]{
+	margin-left:20px;
+	margin-right:5px;
    	background: rgb(230,230,230);
    	border: none;
    	border-radius: 5px;
-   	font-family: 'TheJamsil';
    	color: #000;
-   	font-size: 1.1em;
-   	font-weight: bold;
    	text-align:center;
 }
 
-@import url(https://fonts.googleapis.com/css?family=Roboto:300);
-</style>
 
-<link href="${contextPath}/resources/css/mypage/deleteMemForm.css" 
-	rel="stylesheet" type="text/css">
+
+</style>
 
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -189,28 +177,6 @@ ul.nav.navbar-nav li a:hover {
 </head>
 <body>
 	<div class="delete-page">
-		<div class="delete-text">
-			<a href="${contextPath}/main/main.do"><img
-				src="${contextPath}/resources/images/logo/logo2.png" alt="logo2"
-				width="150px"></a>
-		</div>
-
-		<div class="category" style="margin-left: 35px; margin-bottom: 25px;">
-			<a href="${contextPath}/mypage/modifyMemForm.do"
-				data-category="개인 정보 수정"
-				style="margin-bottom: 20px; margin-right: 10px; margin-left: 10px;">개인정보
-				수정</a> <a href="#" data-category="문의 내역"
-				style="margin-bottom: 20px; margin-right: 10px; margin-left: 10px;">문의내역</a>
-			<!-- <a href="#" data-category="포인트 조회"
-				style="margin-bottom: 20px; margin-right: 10px; margin-left: 10px;">포인트조회</a> -->
-			<a href="#" data-category="주문 내역"
-				style="margin-bottom: 20px; margin-right: 10px; margin-left: 10px;">주문내역</a>
-			<a href="#" data-category="리뷰 확인"
-				style="margin-bottom: 20px; margin-right: 10px; margin-left: 10px;">리뷰확인</a>
-			<a href="${contextPath}/mypage/deleteMemForm.do" data-category="회원탈퇴"
-				style="margin-bottom: 20px; margin-right: 10px; margin-left: 10px;">회원탈퇴</a>
-		</div>
-
 		<div class="form">
 			<form id="memberDeleteForm" class="deleteform" action="${contextPath}/mypage/deleteMember.do" method="post">
 			<p class="sub_title">회원 탈퇴</p>
@@ -221,28 +187,27 @@ ul.nav.navbar-nav li a:hover {
 
 			<div class="reason">
 				<input type="radio" class="non_etc" name="reason"
-					value="상품 종류 부족">상품 종류 부족<br>
+					value="상품 종류 부족">상품 종류 부족
 					
 				<input type="radio" class="non_etc" name="reason"
 					value="교환/환불/반품 불만">교환/환불/반품 불만<br>
 					 
 				<input type="radio" class="non_etc" name="reason" 
-					value="잦은 알림/문자">잦은 알림/문자<br> 
+					value="잦은 알림/문자">잦은 알림/문자
 					
 				<input type="radio" class="non_etc" name="reason"
 					value="배송 불만">배송 불만<br>
 					
 				<input type="radio" class="non_etc" name="reason" 
-					value="높은 상품 가격">높은 상품 가격<br>
+					value="높은 상품 가격">높은 상품 가격
 				
 				<input type="radio" class="non_etc"name="reason" 
 					value="서비스 이용 불편">서비스 이용 불편<br>
 					
-				<input type="radio" id="etc" name="reason" value="기타">기타<br>
+				<input type="radio" id="etc" name="reason" value="기타">기타
 									
-				<div id="etc_view" style="display: none;">
-				    <input type="text" style="width: 400px;"
-				        placeholder="기타 사유를 입력해주세요">
+				<div id="etc_view" >
+				    <input type="text" style="width: 400px;margin-left: 20px;border: 1px solid #E8E8E8;" placeholder="기타 사유를 입력해주세요">
 				</div>
 			</div>
 			
@@ -261,8 +226,8 @@ ul.nav.navbar-nav li a:hover {
 				</ul>
 			</div>
 
-			<div class="reason">
-				<input type="checkbox" name="agree" onClick="agreeCheck(this)"><strong>주의 사항을 모두 확인하였습니다.</strong>
+			<div class="reason2" style="margin-bottom: 10px;">
+				<input type="checkbox" name="agree" onClick="agreeCheck(this)" style="margin-right: 5px;"><strong>주의 사항을 모두 확인하였습니다.</strong>
 			</div>
 				<button type="button" id="deleteButton" name="checkButton" value="회원 탈퇴" >회원 탈퇴</button>
 			</form>

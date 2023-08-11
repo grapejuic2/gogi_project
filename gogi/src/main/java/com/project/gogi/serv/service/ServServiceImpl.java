@@ -1,29 +1,25 @@
 package com.project.gogi.serv.service;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
-import com.project.gogi.member.vo.MemberVO;
 import com.project.gogi.serv.dao.ServDAO;
+import com.project.gogi.serv.domain.CommentVO;
 import com.project.gogi.serv.domain.Criteria3;
+import com.project.gogi.serv.domain.ServImageFileVO;
 import com.project.gogi.serv.domain.ServVO;
 
 
-@Repository
-@Service
+@Service("servService")
 public class ServServiceImpl implements ServService {
 
-	@Inject 
+	@Autowired
 	private ServDAO dao;
 
 	@Autowired
@@ -39,15 +35,34 @@ public class ServServiceImpl implements ServService {
 	
 	//작성
 	@Override
-	public void ServWrite(ServVO vo) throws Exception {
-		dao.ServWrite(vo);
-		
+	public int ServWrite(Map servMap) throws Exception {
+	    int cust_serv_no = dao.ServWrite(servMap);
+	    System.out.println("서비스 : " + cust_serv_no);
+
+	    List<ServImageFileVO> imageFileList = (List<ServImageFileVO>) servMap.get("imageFileList");
+	  
+	    for (ServImageFileVO servImageFileVO : imageFileList) {
+	        servImageFileVO.setCust_serv_no(cust_serv_no);
+	       
+	    }
+	  
+	    dao.insertServImageFile(imageFileList);
+	    
+	    return cust_serv_no;
 	}
+
 
 	//조회
 	@Override
-	public ServVO ServRead(int cust_serv_no) throws Exception {
-		return dao.ServRead(cust_serv_no);
+	public Map<String, Object> ServRead(int cust_serv_no) throws Exception {
+		Map<String, Object> servMap=new HashMap<>();
+		ServVO servVO=dao.ServRead(cust_serv_no);
+		List<ServImageFileVO> imageFileList=dao.selectImageFile(cust_serv_no);
+		
+		servMap.put("servVO", servVO);
+		servMap.put("imageFileList", imageFileList);
+		
+		return servMap;
 	}
 
 	//수정
@@ -94,8 +109,30 @@ public class ServServiceImpl implements ServService {
 		        return dao.getServPw(cust_serv_no);
 		    }
 
+			@Override
+			public List<ServVO> reviewList(String mem_id) throws Exception {
+				List reviewList = dao.selectReviewList(mem_id);
+				return reviewList;
+			}
+
 			
-			
+			  @Override
+			   public int addComment(CommentVO commentVO) throws Exception {			      
+				return dao.addComment(commentVO);
+			   }
+			  
+	
+			@Override
+			  public void addReply(CommentVO commentVO) throws Exception {
+				  dao.addComment(commentVO);
+			  }
+
+			   @Override
+			   public List<CommentVO> selectBoardCommentByCode(CommentVO commentVO) throws Exception {
+			      List<CommentVO> comment = dao.selectBoardCommentByCode(commentVO);
+			      return comment;
+			   }
+			   	
 			
 			
 	

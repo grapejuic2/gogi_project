@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
+import com.project.gogi.member.vo.MemberVO;
 import com.project.gogi.order.vo.OrderVO;
 
 @Repository("orderDAO")
@@ -35,6 +36,11 @@ public class OrderDAOImpl implements OrderDAO{
 	
 	private int selectOrderID() throws DataAccessException {
 		return sqlSession.selectOne("mapper.order.selectOrderID");
+	}
+
+	@Override
+	public void updatePoint(MemberVO memberVO) throws DataAccessException {
+		sqlSession.update("mapper.order.updatePoint", memberVO);
 	}
 
 }

@@ -21,10 +21,8 @@ public class GoodsVO {
     private String goods_status; // 상품분류(B: 베스트상품 / S: 세일상품 / N: 기본상품)
     private int goods_weight;
     private String file_name; //이미지파일 이름 저장하기 위한 객체
-    
-    
-    public GoodsVO() {}
 
+	public GoodsVO() {}
 
 	public GoodsVO(int goods_id, String goods_sort, String goods_name, String goods_seller, String goods_country,
 			int goods_price, int goods_sales_price, int goods_point, Date goods_delivery_date, String goods_intro, 

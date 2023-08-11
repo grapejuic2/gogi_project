@@ -35,6 +35,9 @@ public class OrderVO {
 	private String pay_orderer_hp_num; //주문자 휴대폰 번호
 	private String order_pay_hp_payment_num;//휴대폰 결제 전화번호
 	private Date order_time;
+	private String order_deli_hope_date;
+	private int final_total_price;
+	private int use_point;
 	
 	public OrderVO() {
 		// TODO Auto-generated constructor stub
@@ -46,7 +49,7 @@ public class OrderVO {
 			String order_rec_tel3, String order_delivery_address, String order_delivery_method,
 			String order_delivery_message, String order_delivery_option, String order_delivery_status,
 			String order_pay_method, String card_company_name, String card_pay_month, String pay_orderer_hp_num,
-			String order_pay_hp_payment_num, Date order_time) {
+			String order_pay_hp_payment_num, Date order_time, String order_deli_hope_date, int final_total_price,int use_point) {
 		super();
 		this.order_seq_num = order_seq_num;
 		this.order_id = order_id;
@@ -75,6 +78,9 @@ public class OrderVO {
 		this.pay_orderer_hp_num = pay_orderer_hp_num;
 		this.order_pay_hp_payment_num = order_pay_hp_payment_num;
 		this.order_time = order_time;
+		this.order_deli_hope_date=order_deli_hope_date;
+		this.final_total_price=final_total_price;
+		this.use_point=use_point;
 	}
 	public int getOrder_seq_num() {
 		return order_seq_num;
@@ -238,6 +244,36 @@ public class OrderVO {
 	public void setOrder_time(Date order_time) {
 		this.order_time = order_time;
 	}
+	
+	
+	public String getOrder_deli_hope_date() {
+		return order_deli_hope_date;
+	}
+
+	public void setOrder_deli_hope_date(String order_deli_hope_date) {
+		this.order_deli_hope_date = order_deli_hope_date;
+	}
+	
+	
+
+	public int getFinal_total_price() {
+		return final_total_price;
+	}
+
+	public void setFinal_total_price(int final_total_price) {
+		this.final_total_price = final_total_price;
+	}
+	
+	
+
+	public int getUse_point() {
+		return use_point;
+	}
+
+	public void setUse_point(int use_point) {
+		this.use_point = use_point;
+	}
+
 	@Override
 	public String toString() {
 		return "OrderVO [order_seq_num=" + order_seq_num + ", order_id=" + order_id + ", mem_id=" + mem_id
@@ -252,8 +288,32 @@ public class OrderVO {
 				+ order_delivery_status + ", order_pay_method=" + order_pay_method + ", card_company_name="
 				+ card_company_name + ", card_pay_month=" + card_pay_month + ", pay_orderer_hp_num="
 				+ pay_orderer_hp_num + ", order_pay_hp_payment_num=" + order_pay_hp_payment_num + ", order_time="
-				+ order_time + "]";
+				+ order_time + ", order_deli_hope_date=" + order_deli_hope_date + ", final_total_price="
+				+ final_total_price + ", use_point=" + use_point + ", getOrder_seq_num()=" + getOrder_seq_num()
+				+ ", getOrder_id()=" + getOrder_id() + ", getMem_id()=" + getMem_id() + ", getGoods_id()="
+				+ getGoods_id() + ", getMem_name()=" + getMem_name() + ", getGoods_name()=" + getGoods_name()
+				+ ", getOrder_quantity()=" + getOrder_quantity() + ", getGoods_sales_price()=" + getGoods_sales_price()
+				+ ", getFile_name()=" + getFile_name() + ", getOrder_rec_name()=" + getOrder_rec_name()
+				+ ", getOrder_rec_hp1()=" + getOrder_rec_hp1() + ", getOrder_rec_hp2()=" + getOrder_rec_hp2()
+				+ ", getOrder_rec_hp3()=" + getOrder_rec_hp3() + ", getOrder_rec_tel1()=" + getOrder_rec_tel1()
+				+ ", getOrder_rec_tel2()=" + getOrder_rec_tel2() + ", getOrder_rec_tel3()=" + getOrder_rec_tel3()
+				+ ", getOrder_delivery_address()=" + getOrder_delivery_address() + ", getOrder_delivery_method()="
+				+ getOrder_delivery_method() + ", getOrder_delivery_message()=" + getOrder_delivery_message()
+				+ ", getOrder_delivery_option()=" + getOrder_delivery_option() + ", getOrder_delivery_status()="
+				+ getOrder_delivery_status() + ", getOrder_pay_method()=" + getOrder_pay_method()
+				+ ", getCard_company_name()=" + getCard_company_name() + ", getCard_pay_month()=" + getCard_pay_month()
+				+ ", getPay_orderer_hp_num()=" + getPay_orderer_hp_num() + ", getOrder_pay_hp_payment_num()="
+				+ getOrder_pay_hp_payment_num() + ", getOrder_time()=" + getOrder_time()
+				+ ", getOrder_deli_hope_date()=" + getOrder_deli_hope_date() + ", getFinal_total_price()="
+				+ getFinal_total_price() + ", getUse_point()=" + getUse_point() + ", getClass()=" + getClass()
+				+ ", hashCode()=" + hashCode() + ", toString()=" + super.toString() + "]";
 	}
+
+
+
+	
+
+
 
 
 	

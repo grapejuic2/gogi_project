@@ -7,8 +7,8 @@
 <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
 	<property name="host" value="smtp.naver.com"/>
 	<property name="port" value="587"/>
-	<property name="username" value="rmsi5@naver.com"/>
-	<property name="password" value="rlarldnr!!"/>
+	<property name="username" value=""/><!-- 개인 이메일 공란처리 -->
+	<property name="password" value=""/><!-- 개인 이메일 비밀번호라 공란처리 -->
 	
 	<property name="javaMailProperties">
 		<props>

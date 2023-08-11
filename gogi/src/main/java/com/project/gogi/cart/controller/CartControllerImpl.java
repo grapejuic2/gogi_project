@@ -38,16 +38,16 @@ public class CartControllerImpl extends BaseController implements CartController
 				@RequestParam("delivery_option") String delivery_option, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
 		
-		System.out.println("상품아이디:"+goods_id);
-		System.out.println("수량"+cart_count);
-		System.out.println("배송방법"+delivery_option);
+		//System.out.println("상품아이디:"+goods_id);
+		//System.out.println("수량"+cart_count);
+		//System.out.println("배송방법"+delivery_option);
 		HttpSession session=request.getSession();
 		
 		//세션에 저장된 memberInfo 가져와서 cartVO에 mem_id, goods_id,cart_count, delivery_option 저장
 		memberVO=(MemberVO) session.getAttribute("memberInfo");
-		System.out.println("세션:"+memberVO);
+		//System.out.println("세션:"+memberVO);
 		String mem_id=memberVO.getMem_id();
-		System.out.println("멤버아이디"+mem_id);
+		//System.out.println("멤버아이디"+mem_id);
 		
 		cartVO.setMem_id(mem_id);
 		cartVO.setGoods_id(goods_id);
@@ -55,7 +55,7 @@ public class CartControllerImpl extends BaseController implements CartController
 		cartVO.setDelivery_option(delivery_option);
 		
 		boolean isAreadyExisted=cartService.findCartGoods(cartVO);
-		System.out.println("cart 존재여부 : "+isAreadyExisted);
+		//System.out.println("cart 존재여부 : "+isAreadyExisted);
 		
 		if(isAreadyExisted==true) {
 			return "already_existed";
@@ -72,11 +72,11 @@ public class CartControllerImpl extends BaseController implements CartController
 		ModelAndView mav=new ModelAndView(viewName);
 		HttpSession session= request.getSession();
 		memberVO=(MemberVO) session.getAttribute("memberInfo");
-		System.out.println(session.getAttribute("memberInfo"));
+		//System.out.println(session.getAttribute("memberInfo"));
 		
 		String mem_id=memberVO.getMem_id();
 		cartVO.setMem_id(mem_id);
-		System.out.println("장바구니 메인:"+mem_id);
+		//System.out.println("장바구니 메인:"+mem_id);
 		
 		//장바구니 페이지에 표시할 상품 정보 조회
 		Map<String, List> cartMap=cartService.myCartList(cartVO);
@@ -86,19 +86,20 @@ public class CartControllerImpl extends BaseController implements CartController
 		
 		return mav;
 	}
+	
 
 	@Override
 	@RequestMapping(value="/modifyCount.do")
 	public @ResponseBody String modifyGoodsCount(@RequestParam("goods_id") int goods_id, @RequestParam("cart_count") int cart_count, 
-			HttpServletRequest request,HttpServletResponse response) throws Exception {
+												HttpServletRequest request,HttpServletResponse response) throws Exception {
 		HttpSession session= request.getSession();
 		memberVO=(MemberVO) session.getAttribute("memberInfo");
-		System.out.println(session.getAttribute("memberInfo"));
+		//System.out.println(session.getAttribute("memberInfo"));
 		
 		String mem_id=memberVO.getMem_id();
 		cartVO.setGoods_id(goods_id);
 		cartVO.setMem_id(mem_id);
-		cartVO.setCart_count(cart_count);
+		cartVO.setCart_count(cart_count); //변경된 카트수량 저장
 		boolean result=cartService.updateGoodsCount(cartVO);
 		
 		if(result==true) {
@@ -107,6 +108,7 @@ public class CartControllerImpl extends BaseController implements CartController
 			return "modify_failed";
 		}
 	}
+	
 
 	@Override
 	@RequestMapping(value="/deleteGoods.do", method = RequestMethod.POST)
@@ -118,20 +120,20 @@ public class CartControllerImpl extends BaseController implements CartController
 		
 		return mav;
 	}
+	
 
 	//체크박스로 여러개 선택시 삭제 수행 
 	@RequestMapping(value = "/checkDeleteGoods.do", method = RequestMethod.POST)
 	public ModelAndView removeCheckCartGoods(@RequestParam("cart_no") int[] cart_no,
-	         HttpServletRequest request, HttpServletResponse response) throws Exception {
+	         								HttpServletRequest request, HttpServletResponse response) throws Exception {
 	    ModelAndView mav = new ModelAndView();
 	       
 	    for (int cartNo : cart_no) {
 	    	cartService.deleteGoods(cartNo);
-	        }
+	    }
 
 	    mav.setViewName("redirect:/cart/myCartList.do");
+	    
 	    return mav;
 	}	
-	
-
 }

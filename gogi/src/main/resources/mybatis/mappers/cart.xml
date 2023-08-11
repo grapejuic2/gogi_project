@@ -30,7 +30,7 @@
 	<!-- 모든 장바구니 정보 조회 -->
 	<select id="selectCartList" resultMap="cartResult" parameterType="cartVO">
 		<![CDATA[
-			select cart_no, goods_id, mem_id, cart_count, cart_time 
+			select cart_no, goods_id, mem_id, cart_count, cart_time, delivery_option 
 			from gogi_cart
 			where mem_id=#{mem_id} 
 			order by cart_no

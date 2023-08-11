@@ -1,52 +1,51 @@
 @charset "UTF-8";
 .frm_mod_member {
-  width: 600px;
-  margin: auto; 
+  width: 800px;
+  padding:15px;
+  padding-right:35px;
+  margin: 0 auto; 
+  font-family: 'Noto Sans KR', sans-serif;
+  border: 1px solid #E8E8E8;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .memberForm-text {
-  padding-top: 70px;
-  margin-bottom: 80px;
+  padding-top: 40px;
+  margin-bottom: 40px;
   text-align: center;
-  font-size: 70px !important;
+  font-size: 35px;
   font-weight: bold !important;
-  color: #523846 !important;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: 700;
 } 
 
-.form {
-  position: relative;
-  z-index: 1;
-  background: #FFFFFF;
-  max-width: 550px;
-  margin: 0 auto 100px;
-  padding: 45px;
-  text-align: center;
-  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
-}
-
 .form input {
-  font-family: "Roboto", sans-serif;
+  font-family: 'Noto Sans KR', sans-serif;
   outline: 0;
-  background: #f2f2f2;
-  width: 100%;
-  border: 1px solid #D9D9D9;
-  margin: 10px 0;
-  padding: 15px;
+  width: 600px;
+  height: 40px;
+  border: 1px solid #E8E8E8;
+  margin: 5px 0;
+  padding: 10px;
   box-sizing: border-box;
   font-size: 14px;
 }
 
 .form button {
-  font-family: "Roboto", sans-serif;
+  font-family: 'Noto Sans KR', sans-serif;
   text-transform: uppercase;
   outline: 0;
-  margin-top: 20px;
-  background: #523846;
-  width: 100%;
+  margin-top: 0px;
+  background: #1D1D1D;
+  width: 100px;
+  height: 50px;
   border: 0;
   padding: 10px;
+  font-weight:500;
   color: #FFFFFF;
-  font-size: 25px !important;
+  vertical-align:middle;
+  font-size: 18px !important;
   -webkit-transition: all 0.3s ease;
   transition: all 0.3s ease;
   cursor: pointer;
@@ -54,7 +53,7 @@
 
 .form .message a {
   color: #523846;
-  font-size: 20px !important;
+  font-size: 15px !important;
   text-decoration: none;
 }
 
@@ -97,9 +96,9 @@
 }
 
 body {
-  font-family: "Roboto", sans-serif;
+  font-family: 'Noto Sans KR', sans-serif;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;      
+  -moz-osx-font-smoothing: grayscale;        
 }
 
 .birth-inputs input,
@@ -163,16 +162,18 @@ body {
   display: flex;
   align-items: center;
   margin-bottom: 10px;
+  width:100%;
 }
 
 .label-group {
-  width: 70px;
+  width: 80px;
   text-align: left;
   margin-right: 10px;
 }
 
 .input-group {
   display: flex;
+  width:100%;
 }
 
 .input-group input {

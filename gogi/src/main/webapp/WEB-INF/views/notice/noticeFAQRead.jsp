@@ -5,42 +5,65 @@
 <html>
 <head>
 <meta charset="UTF-8"> 
+<link href="${contextPath}/resources/css/noticeRead.css" rel="stylesheet" type="text/css">
 <title>게시물 조회</title>
 </head>
 <body>
+<h1 style="font-size: 30px;margin-bottom: 80px;">FAQ</h1>
 
- <article>
-      <div  role="main">
-         <h2>게시물  상세보기</h2>
-         
-<div class="mb-3">
-<label style="width:70px;" >제목</label>
-${noticeFAQRead.notice_title_faq}<br />
- </div>
-
-<div class="mb-3">
-<label style="width:70px;">작성자</label>
- ${noticeFAQRead.mem_id} <br />
-  </div>
+<div role="main" class="container">
+		<div class="row row1">
+			<table class="table">
+				<tr>
+					<th width=15% class="text-center fg lb fw">작성자</th>
+					<td width=35% class="fgl" style="text-align: center;"> ${noticeFAQRead.mem_id}</td>
+					<th width=15% class="text-center lb fg fw">조회수</th>
+					<td width=35% class="fgl bbu" style="text-align: center;">${noticeFAQRead.notice_hits_faq}</td>
+				</tr>
+				<tr>
+					<th width=15% class="text-center lb fg fw">제목</th>
+					<td colspan="2" class="fgl">${noticeFAQRead.notice_title_faq}</td>
+				</tr>
+				<tr>
+					<th width=15% class="text-center lb fg fw" style="vertical-align: middle;">내용</th>
+					<td colspan="4" class="text-left fg" valign="top" height="200">
+					<pre class="fgl" style="white-space: pre-wrap; border: none; background-color: white;">${noticeFAQRead.notice_content_faq}</pre>
+					</td>
+				</tr>
+				<c:forEach var="imageFileName" items="${servMap.fileList}">
+					<tr>
+					<th width=15% class="text-center lb fg fw" style="vertical-align: middle;">첨부 파일</th>
+						<td class="result-images">						
+							<img alt="" src="${contextPath}/download?imageFileName=${imageFileName}" >							
+						</td>
+					</tr>
+				</c:forEach>
+				<tr>
+				  <td colspan="4" class="text-right">
+				 
+				    <div class="button-container">
+				     <c:if test="${isLogOn == true && mem_id=='admin' }">
+					      <a class="atw" href="${contextPath}/notice/faqmodify.do?notice_no_faq=${noticeFAQRead.notice_no_faq}">
+					        <button type="submit" class="bbtn btn-sm btn-primary greylist">수정</button>
+					      </a>
+					      <a class="atw" href="${contextPath}/notice/faqdelete.do?notice_no_faq=${noticeFAQRead.notice_no_faq}">
+					        <button type="submit" class="btn btn-sm btn-primary greylist" style="height: 40px;">삭제</button>
+					      </a>
+				 	 </c:if>
+					      <a class="atw" href="${contextPath}/notice/list.do">
+					        <button type="button" class="btn btn-sm btn-primary greylist" style="height: 40px;">목록</button>
+					      </a>
+				    </div>
+				  </td>
+				</tr>
+			</table>
+		</div>
+	</div>
  
  
-<div class="mb-3">
-<label style="width:70px;">조회수 :</label>
-${noticeFAQRead.notice_hits_faq} <br />
- </div>
-
-<div class="mb-3">
-<label style="width:70px;">내용</label>
-${noticeFAQRead.notice_content_faq}<br />
- </div>
-
- <button type="submit" class="btn btn-sm btn-primary" > <a href="${contextPath}/notice/faqmodify.do?notice_no_faq=${noticeFAQRead.notice_no_faq}">수정</a></button>
- <button type="submit" class="btn btn-sm btn-primary" > <a href="${contextPath}/notice/faqdelete.do?notice_no_faq=${noticeFAQRead.notice_no_faq}">삭제</a></button>
  
  
- <button type="button" class="btn btn-sm btn-primary" onclick="showFaqTab()"> <a href="${contextPath}/notice/list.do">목록</a></button>
- </div>
- </article>
+ 
  
  <!-- 목록 이동시 faq페이지로 오게 하기 기능x 일단 보류 -->
  <script>

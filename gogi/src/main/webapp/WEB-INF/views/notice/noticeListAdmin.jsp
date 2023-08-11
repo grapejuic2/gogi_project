@@ -5,7 +5,7 @@
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <%
     // 특정 아이디를 변수에 저장 (예: "admin"이 특정 아이디라고 가정)
-    String admin = "admin";
+    //String admin = "admin";
 %>
 <!DOCTYPE html>
 <html>
