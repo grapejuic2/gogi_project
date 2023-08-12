@@ -43,8 +43,16 @@ ul.nav.navbar-nav li a{
 	padding:10px;
 }
 
-ul.nav.navbar-nav li a:hover {
-	color: #000000;
+ .nav.navbar-nav li a {
+        color: black;
+        font-weight: 700;
+    }
+
+
+ ul.nav.navbar-nav li a:hover {
+ 		color:#FF5E00;
+        border-color: #FF5E00;
+        border-bottom: 4px solid #FF5E00; /* 밑줄 색상과 두께 조절 */
 }
 
 .hidden {
@@ -59,6 +67,7 @@ ul.nav.navbar-nav li a:hover {
 	z-index: 1;
 	font-family: 'Noto Sans KR', sans-serif;
 	font-weight: 700;
+	box-shadow: 0px 10px 6px rgba(0, 0, 0, 0.1);
 }
 
 .navbar .dropdown-menu .dropdown-toggle {
@@ -81,7 +90,7 @@ ul.nav.navbar-nav li a:hover {
 </head>
 
 <body>
-	<nav class="navbar navbar-inverse navbar-fixed" style="font-family: 'Noto Sans KR', sans-serif;" >
+	<nav class="navbar navbar-inverse navbar-fixed" >
 	
 		<div class="container-fluid">
 			<div class="navbar-header">

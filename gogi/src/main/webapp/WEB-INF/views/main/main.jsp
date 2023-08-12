@@ -16,45 +16,90 @@
 <style>
 .section .slide-control .left {left:5px;background:url('${contextPath}/resources/images/main/left.png') center center / 100% no-repeat;}
 .section .slide-control .right {right:5px;background:url('${contextPath}/resources/images/main/right.png') center center / 100% no-repeat;}
+   .section .slidewrap {
+        width: 100%;
+        margin: 0 auto;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .section .slidelist {
+        display: flex;
+        width: 400%;
+        animation: slideAnimation 15s linear infinite;
+    }
+
+    .section .slidelist li {
+        flex: 1;
+        list-style: none;
+    }
+
+    .section .slidelist li a img {
+        width: 100%;
+        height: 530px;
+        display: block;
+        object-fit: cover;
+    }
+    
+    @keyframes slideAnimation {
+        0% {
+            transform: translateX(0);
+        }
+        25% {
+            transform: translateX(0);
+        }
+        30% {
+            transform: translateX(-25%);
+        }
+        55% {
+            transform: translateX(-25%);
+        }
+        60% {
+            transform: translateX(-50%);
+        }
+        85% {
+            transform: translateX(-50%);
+        }
+        90% {
+            transform: translateX(-75%);
+        }
+        100% {
+            transform: translateX(-75%);
+        }
+    }
 </style>
 <title>Insert title here</title>
+<script>
+//슬라이드 쇼 시작
+	function startSlideShow() {
+	    var slideshow = document.querySelector('.slidewrap');
+	    var slideList = document.querySelector('.slidelist');
+	
+	    if (slideshow.classList.contains('paused')) {
+	        slideshow.classList.remove('paused');
+	        slideList.style.animationPlayState = 'running';
+	    }
+	}
+	
+	window.onload = function() {
+	    startSlideShow();
+	};
+</script>
 </head>
 <body>
 
 		<!-- 메인페이지 배너 -->
 		<div class="section">
-			<input type="radio" name="slide" id="slide01" checked>
-			<input type="radio" name="slide" id="slide02">
-			<input type="radio" name="slide" id="slide03">
-			<input type="radio" name="slide" id="slide04">
-			<div class="slidewrap">
-				<ul class="slidelist">
-					<li><a><img src="${contextPath}/resources/images/main/banner5.png" ></a></li>
-					<li><a><img src="${contextPath}/resources/images/main/banner1.png" ></a></li>
-					<li><a><img src="${contextPath}/resources/images/main/banner2.png"></a></li>
-					<li><a><img src="${contextPath}/resources/images/main/banner3.png"></a></li>
-				</ul>
-		
-				<div class="slide-control">
-					<div class="control01">
-						<label for="slide04" class="left"></label>
-						<label for="slide02" class="right"></label>
-					</div>
-					<div class="control02">
-						<label for="slide01" class="left"></label>
-						<label for="slide03" class="right"></label>
-					</div>
-					<div class="control03">
-						<label for="slide02" class="left"></label>
-						<label for="slide04" class="right"></label>
-					</div>
-					<div class="control04">
-						<label for="slide03" class="left"></label>
-						<label for="slide01" class="right"></label>
-					</div>
-				</div>
-			</div>
+		    <div class="slidewrap">
+		        <ul class="slidelist">
+		            <li><a href="#"><img src="${contextPath}/resources/images/main/banner5.png"></a></li>
+		            <li><a href="#"><img src="${contextPath}/resources/images/main/banner1.png"></a></li>
+		            <li><a href="#"><img src="${contextPath}/resources/images/main/banner2.png"></a></li>
+		            <li><a href="#"><img src="${contextPath}/resources/images/main/banner3.png"></a></li>
+		        </ul>
+		    </div>
 		</div>
+
 
 		<!-- 메인페이지 베스트상품 -->
 		
