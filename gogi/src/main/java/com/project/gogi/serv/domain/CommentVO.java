@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component("commentVO")
 public class CommentVO {
+	private int lvl;
 	private String mem_id;
 	private int cmt_number;
 	private String cmt_content;
@@ -16,6 +17,12 @@ public class CommentVO {
 	
 	
 	
+	public int getLvl() {
+		return lvl;
+	}
+	public void setLvl(int lvl) {
+		this.lvl = lvl;
+	}
 	public String getMem_id() {
 		return mem_id;
 	}
@@ -58,5 +65,14 @@ public class CommentVO {
 	public void setDepth(int depth) {
 		this.depth = depth;
 	}
+	@Override
+	public String toString() {
+		return "CommentVO [lvl=" + lvl + ", mem_id=" + mem_id + ", cmt_number=" + cmt_number + ", cmt_content="
+				+ cmt_content + ", cmt_parent_num=" + cmt_parent_num + ", cmt_date=" + cmt_date + ", cust_serv_no="
+				+ cust_serv_no + ", depth=" + depth + "]";
+	}
+	
+	
+	
 	
 }

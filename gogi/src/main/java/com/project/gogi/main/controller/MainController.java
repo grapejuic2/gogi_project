@@ -29,10 +29,10 @@ public class MainController {
 		String viewName = (String) request.getAttribute("viewName");
 		mav.setViewName(viewName);
 		session = request.getSession();
-		// session.setAttribute(name, value); 로그인 했을때 표시되는 메뉴 항목 설정 ( 회원, 관리자 )
+	
 		Map<String, List<GoodsVO>> goodsMap = goodsService.listMainGoods();
 		mav.addObject("goodsMap", goodsMap);
-		System.out.println("controller" + goodsMap);
+		//System.out.println("controller" + goodsMap);
 		return mav;
 	}
 

@@ -33,7 +33,7 @@ public class OrderControllerImpl extends BaseController implements OrderControll
 	@Autowired
 	private OrderVO orderVO;
 	@Autowired
-	private CartService cartService;
+	private CartService cartService; //장바구니 삭제하기 위함
 
 	@Override
 	@RequestMapping(value="/orderEachGoods.do", method=RequestMethod.POST)
@@ -101,7 +101,6 @@ public class OrderControllerImpl extends BaseController implements OrderControll
 					
 					int goods_point = goodsVO.getGoods_point();
 					_orderVO.setGoods_id(goods_id);
-					//_orderVO.setGoods_point(goods_point);
 					_orderVO.setGoods_name(goods_name);
 					_orderVO.setGoods_sales_price(goods_sales_price);
 					//_orderVO.setGoods_delivery_price(goods_delivery_price);
@@ -118,6 +117,8 @@ public class OrderControllerImpl extends BaseController implements OrderControll
 		return mav;
 	}
 
+	
+	//상품 결제
 	@Override
 	@RequestMapping(value="/payToOrderGoods.do", method=RequestMethod.POST)
 	public ModelAndView payToOrderGoods(@RequestParam Map<String, String> receiverMap, HttpServletRequest request,
@@ -133,9 +134,6 @@ public class OrderControllerImpl extends BaseController implements OrderControll
 		String ordere_hp=memberVO.getMem_tel1()+"-"+memberVO.getMem_tel2()+"-"+memberVO.getMem_tel3();		
 		List<OrderVO> myOrderList=(List<OrderVO>) session.getAttribute("myOrderList");	
 	
-		
-	
-		
 		for(int i=0; i<myOrderList.size();i++) {
 			OrderVO orderVO=(OrderVO)myOrderList.get(i);
 			orderVO.setMem_id(mem_id);
@@ -159,28 +157,23 @@ public class OrderControllerImpl extends BaseController implements OrderControll
 				        orderVO.setFinal_total_price(finalTotalPrice);
 				    } catch (NumberFormatException e) {
 				        // 숫자로 변환할 수 없는 경우에 대한 예외 처리
-				        // 예외 처리 방법은 상황에 따라 결정하시면 됩니다.
-				        // 여기서는 일단 0으로 저장하도록 했습니다.
 				        orderVO.setFinal_total_price(0);
-				    }
-		   
+				    }		   
 				    try {
 				    	int use_point = Integer.parseInt(receiverMap.get("use_point"));
 				    	orderVO.setUse_point(use_point);
 				    	
 				    	//현재 보유 포인트
 				        int mypoint=memberVO.getMem_point();
-				        System.out.println("보유한 포인트:"+mypoint);
+				        //System.out.println("보유한 포인트:"+mypoint);
 					 	
 				        //사용하고 난 다음 포인트
 				        int mem_point=mypoint-use_point;  
-				        System.out.println("남은 포인트:"+mem_point);
+				        //System.out.println("남은 포인트:"+mem_point);
 				        memberVO.setMem_point(mem_point);
 				        orderService.updateMemPoint(memberVO);
 				    } catch (NumberFormatException e) {
 				    	// 숫자로 변환할 수 없는 경우에 대한 예외 처리
-				    	// 예외 처리 방법은 상황에 따라 결정하시면 됩니다.
-				    	// 여기서는 일단 0으로 저장하도록 했습니다.
 				    	orderVO.setUse_point(0);
 				    }
 		    
@@ -190,12 +183,12 @@ public class OrderControllerImpl extends BaseController implements OrderControll
 		
 		
 		orderService.addNewOrder(myOrderList);
-		System.out.println("add pay:" +myOrderList.toString());
+		//System.out.println("add pay:" +myOrderList.toString());
 		mav.addObject("myOrderInfo", receiverMap);
 		mav.addObject("myOrderList", myOrderList);
 		
-		System.out.println("receiverMap : " + receiverMap.toString());
-		System.out.println("myOrderList : " + myOrderList.toString());
+		//System.out.println("receiverMap : " + receiverMap.toString());
+		//System.out.println("myOrderList : " + myOrderList.toString());
 		
 		//주문 후 장바구니 내역 삭제
 		Map cartMap = (Map) session.getAttribute("cartMap"); //cartMap 세션	
