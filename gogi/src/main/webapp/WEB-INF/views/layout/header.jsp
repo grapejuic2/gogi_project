@@ -12,8 +12,8 @@
 }
 .navbar.navbar-inverse {
 	padding: 10px;
-	padding-left: 200px;
-	padding-right: 200px;
+	padding-left: 100px;
+	padding-right: 100px;
 	background: white;
 	border: none;
 	font-family: 'Noto Sans KR', sans-serif;
@@ -71,12 +71,118 @@ ul.nav.navbar-nav li a{
 }
 
 .navbar .dropdown-menu .dropdown-toggle {
-    z-index: 9999;
+    z-index: 99;
  }
  .logged-out{ /* 0802 21:57분 오동림 추가 */
  margin-top: 25px;
  }
+ .btn{
+ font-family: 'Noto Sans KR', sans-serif;
+ font-size:17px;
+ font-weight:700;
+ background-color:#FF5E00;
+ color:white;
+ width:50px;
+ height: 32px;
+ margin-left: 3px;
+ }
+#suggest {
+ font-family: 'Noto Sans KR', sans-serif;
+ font-size:15px;
+  position: absolute;
+  width: 235px;
+  top: 100%; /* 검색창 아래에 위치 */
+  background-color: #fff; /* 배경색 설정 */
+  box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.1); /* 그림자 효과 추가 */
+  padding: 10px; /* 내부 여백 설정 */
+  z-index: 999; /* 다른 요소 위에 표시되도록 설정 */
+}
+.form-control {
+  /* 기존 스타일 유지 */
+  position: relative; /* 부모 위치를 기준으로 연관검색어 위치 조정 */
+}
+.no-hover:hover {
+  color: inherit; /* 상속된 글자색을 사용하도록 설정 */
+   border-color: initial; /* 초기값으로 설정하여 박스 경계색 제거 */
+   border-bottom: none; /* 밑줄 제거 */
+}
+.d-flex{
+width:300px;
+
+}
 </style>
+<script type="text/javascript">
+function keywordSearch() {
+    var value = document.frmSearch.searchWord.value;
+    if (value.trim() === "") {
+        loopSearch = false;
+        hide('suggest'); // 검색어 입력이 비어 있으면 suggest div를 숨김
+        return;
+    }
+
+    loopSearch = true; // 검색어가 있는 경우 loopSearch 값을 true로 설정
+    $.ajax({
+        type: "get",
+        async: true,
+        url: "${contextPath}/goods/keywordSearch.do",
+        data: { keyword: value },
+        success: function (data, textStatus) {
+            if (data != null && data != "")
+                var jsonInfo = JSON.parse(data);
+            hide('suggest'); // 검색 결과를 받기 전에 suggest div를 숨김
+            displayResult(jsonInfo);
+        },
+        error: function (data, textStatus) {
+            alert("에러가 발생했습니다." + data);
+        },
+        complete: function (data, textStatus) {
+            // 작업을 완료했을 때의 동작
+        }
+    }); // end ajax
+}
+
+
+function displayResult(jsonInfo){
+	if(jsonInfo !=null && jsonInfo != "")
+	var count = jsonInfo.keyword.length;
+	if(count > 0) {
+	    var html = '';
+	    for(var i in jsonInfo.keyword){
+		   html += "<a id='aaa' href=\"javascript:select('"+jsonInfo.keyword[i]+"')\">"+jsonInfo.keyword[i]+"</a><br/>";
+	    }
+	    var listView = document.getElementById("suggestList");
+	    listView.innerHTML = html;
+	    show('suggest');
+	}else{
+	    hide('suggest');
+	} 
+}
+
+//♣♣♣♣ 끝
+
+	function select(selectedKeyword) {
+		 document.frmSearch.searchWord.value=selectedKeyword;
+		 loopSearch = false;
+		 hide('suggest');
+	}
+		
+	function show(elementId) {
+		 var element = document.getElementById(elementId);
+		 if(element) {
+		  element.style.display = 'block';
+		 }
+		}
+	
+	function hide(elementId){
+	   var element = document.getElementById(elementId);
+	   if(element){
+		  element.style.display = 'none';
+	   }
+	}
+
+	
+
+</script>
 <title>Bootstrap Example</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -85,7 +191,6 @@ ul.nav.navbar-nav li a{
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <!-- 폰트:나눔산스 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@700;800&family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
 </head>
 
@@ -101,8 +206,21 @@ ul.nav.navbar-nav li a{
 				<li><a href="${contextPath}/main/delivery.do">배송안내</a></li>
 				<li><a href="${contextPath}/notice/list.do">공지사항</a></li>
 				<li><a href="${contextPath}/serv/list.do">고객센터</a></li>
+				<li class="nav-item search-box no-hover" style="padding: 10px;">
+			        <!-- 검색 -->
+					   <div class="container-mt-5" style="margin-left: 320px;">
+						    <form class="d-flex" role="search" action="${contextPath}/goods/searchResult.do" name="frmSearch" style="display:flex;">
+						        <input class="form-control me-2" type="text" placeholder="원하시는 상품을 검색하세요" aria-label="Search" name="searchWord" onKeyUp="keywordSearch()">
+						        <button class="btn btn-outline-secondary" type="submit">검색</button>
+						    </form>
+						    <div id="suggest">
+						        <div id="suggestList" class="col-4"></div>
+						    </div>
+						</div>
+    			</li>
 			</ul>
 			
+									
 	
 		<ul class="nav navbar-nav navbar-right" style="vertical-align: middle;margin">		
 			 <c:choose>

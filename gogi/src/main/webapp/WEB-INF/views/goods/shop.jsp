@@ -10,7 +10,6 @@
 <link href="${contextPath}/resources/css/main.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.2/css/bootstrap.min.css" integrity="sha512-/Dmo1NVtQ05uS0vOI5qEZZn7mWaswFJzDa4RRRF29phxNQqkUkRk5xpyRUpekzoiO7CbdWXFbMHaapzVnNP2ZQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="script.js"></script>
 <!-- 폰트:나눔산스 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,23 +17,22 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
-.main{width: 100%;margin:0 ; padding: 10px; padding-left: 260px; padding-right: 260px;}
-.category img {margin-right: 15px; margin-bottom: 50px; }
-.slidewrap {width:100%;margin:0 auto;position:relative; margin-bottom: 60px;}
+.main{width: 1400px; margin:0 auto; padding: 10px;}
+.category img {margin-right: 15px; margin-bottom: 50px;}
+.slidewrap img{width:100%;margin:0 auto;position:relative; margin-bottom: 60px;}
 .category {display: flex;justify-content: center; }
 .category a:hover img {opacity: 0.8; /* 투명도 조절 */transition: all 0.5s ease-in-out; /* 변경 효과 적용 */ transform: translateY(-10px);}
-.card {margin-bottom: 50px; background-color: transparent;}
-.image-background{width:376px; height:416px;}
+
 .image-background {
     background-color: #f1f1f1; /* 배경색 설정 */
     display: flex;
     justify-content: center;
     align-items: center;
-    width:376px; height:416px;
+    width:300px; height:300px;
   }
 .image-background img {
   	background-color: transparent;
-    width:250px;
+    width:230px;
     object-fit: contain; /* 이미지를 가운데로 정렬 */
   }
 .card-title{
@@ -49,23 +47,38 @@
 	font-family: 'Noto Sans KR', sans-serif;
 	font-size: 14px;
 	font-weight: 400;   
+	margin-bottom: 50px; 
 }
+@media (min-width: 1400px) {
+   	.main-best_div.row-cols-lg-4 > .col-md-4 {
+       	max-width: 300px;
+   	}    
+}
+.main-best_div .col-md-4 {
+    margin: 0px 25px; /* 이미지 박스 간격 조절을 위한 margin 설정 */
+}
+.main-best_div {
+    width: 1400px;
+    text-align: center; /* 내부 컨텐츠 가운데 정렬 */
+}
+
 </style>
 </head>
 <body>
+
 	<div class="slidewrap">
   		<img id="bannerImage" src="${contextPath}/resources/images/shop/banner_pig.png">
 	</div>
 
 	<div class="main title-div" id="new">	
-	<div class="category">
-		<a href="${contextPath}/goods/shop.do?category=pig" data-category="pig"><img src="${contextPath}/resources/images/shop/1.png" class="card-img-top" alt="..."></a>
-		<a href="${contextPath}/goods/shop.do?category=cow" data-category="cow"><img src="${contextPath}/resources/images/shop/2.png" class="card-img-top" alt="..."></a>
-		<a href="${contextPath}/goods/shop.do?category=chicken" data-category="chicken"><img src="${contextPath}/resources/images/shop/3.png" class="card-img-top" alt="..."></a>
-		<a href="${contextPath}/goods/shop.do?category=mealkit" data-category="mealkit"><img src="${contextPath}/resources/images/shop/4.png" class="card-img-top" alt="..."></a>
-	</div>
+		<div class="category">
+			<a href="${contextPath}/goods/shop.do?category=pig" data-category="pig"><img src="${contextPath}/resources/images/shop/1.png" class="card-img-top" alt="..."></a>
+			<a href="${contextPath}/goods/shop.do?category=cow" data-category="cow"><img src="${contextPath}/resources/images/shop/2.png" class="card-img-top" alt="..."></a>
+			<a href="${contextPath}/goods/shop.do?category=chicken" data-category="chicken"><img src="${contextPath}/resources/images/shop/3.png" class="card-img-top" alt="..."></a>
+			<a href="${contextPath}/goods/shop.do?category=mealkit" data-category="mealkit"><img src="${contextPath}/resources/images/shop/4.png" class="card-img-top" alt="..."></a>
+		</div>
 
-		<div id="productsContainer" class="main-best_div row row-cols-1 row-cols-md-3 text-center mb-4">
+		<div id="productsContainer" class="main-best_div row row-cols-1 row-cols-md-4 row-cols-lg-4 text-center mb-4">
 			<!-- goods_sort에 따라 상품 목록 출력 -->
 			
 			
@@ -146,6 +159,8 @@
 			</c:forEach>
 		</div>
 </div>
+
+
 <script>
 $(document).ready(function() {
 	  $(".category a").click(function(e) {

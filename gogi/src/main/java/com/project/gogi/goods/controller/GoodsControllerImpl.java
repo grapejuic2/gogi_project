@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -112,9 +113,43 @@ public class GoodsControllerImpl extends BaseController implements GoodsControll
 	        reviewImageList.addAll(reviewImages);
 	    }
 	    
-	    mav.addObject("imageFileList", reviewImageList);
-	    
+	    mav.addObject("imageFileList", reviewImageList);	    
 		return mav;
+	}
+	
+	
+	@RequestMapping(value="/keywordSearch.do",method = RequestMethod.GET,produces = "application/text; charset=utf8")
+	public @ResponseBody String  keywordSearch(@RequestParam("keyword") String keyword,
+			                                  HttpServletRequest request, HttpServletResponse response) throws Exception{
+		response.setContentType("text/html;charset=utf-8");
+		response.setCharacterEncoding("utf-8");
+		System.out.println(keyword);
+		if(keyword == null || keyword.equals(""))
+		   return null ;
+	
+		keyword = keyword.toUpperCase();
+	    List<String> keywordList =goodsService.keywordSearch(keyword);
+	    
+	 // ���� �ϼ��� JSONObject ����(��ü)
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("keyword", keywordList);
+		 		
+	    String jsonInfo = jsonObject.toString();
+	   // System.out.println(jsonInfo);
+	    return jsonInfo ;
+	}
+	
+	@RequestMapping(value="/searchResult.do" ,method = RequestMethod.GET)
+	public ModelAndView searchGoods(@RequestParam("searchWord") String searchWord,
+			                       HttpServletRequest request, HttpServletResponse response) throws Exception{
+		//System.out.println("검색결과 컨트롤러");
+		String viewName=(String)request.getAttribute("viewName");
+		List<GoodsVO> goodsList=goodsService.searchGoods(searchWord);
+		ModelAndView mav = new ModelAndView(viewName);
+		mav.addObject("goodsList", goodsList);
+		mav.addObject("searchWord",searchWord);
+		return mav;
+		
 	}
 	
 	@ResponseBody

@@ -102,4 +102,16 @@ public class GoodsServiceImpl implements GoodsService{
 		return imageList;
 	}
 
+	@Override
+	public List<String> keywordSearch(String keyword) throws Exception {
+		List<String> list=dao.selectKeywordSearch(keyword);
+		return list;
+	}
+
+	@Override
+	public List<GoodsVO> searchGoods(String searchWord) throws Exception {
+		List goodsList=dao.selectGoodsBySearchWord(searchWord);
+		return goodsList;
+	}
+
 }

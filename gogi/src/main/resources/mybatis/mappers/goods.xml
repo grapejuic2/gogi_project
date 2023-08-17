@@ -67,12 +67,22 @@
     	]]>
 	</select>
 	
-	<!-- 상품 상세 이미지 조회 -->
-<!-- 	<select id="selectGoodsDetailImage" parameterType="int" resultMap="imageResult" >
-		<![CDATA[
-			select * from gogi_goods_image
-			where goods_id=#{goods_id}
-		]]> 
-	</select> -->
+	<select id="selectGoodsBySearchWord" resultMap="goodsResult"   parameterType="String"  >
+     <![CDATA[
+				select g.*,d.file_name from gogi_goods g, gogi_goods_image d
+		    where g.goods_id=d.goods_id
+		    and g.goods_name like '%'|| #{searchWord} || '%'
+		    order by g.goods_delivery_date desc
+		]]>
+	</select>	
+	
+	<select id="selectKeywordSearch" resultType="String"   parameterType="String"  >
+	    <![CDATA[
+        select goods_name from gogi_goods 
+        where         
+        goods_name like '%'|| #{keyword} || '%'
+        order by goods_delivery_date desc
+		]]>
+	</select>
 
 </mapper>
