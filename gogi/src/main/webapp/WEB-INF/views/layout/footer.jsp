@@ -9,7 +9,7 @@
 	<meta http-equiv="X-UA-Compatible" content="ie=edge"> <!-- 추가할부분 -->
 <title>Insert title here</title>
 <style>
-.container{width: 100%;margin:0 ; padding: 10px; padding-left: 200px; padding-right: 200px; display: flex;
+.container{width: 100%;margin:0 ; padding: 10px; padding-left: 100px; padding-right: 100px; display: flex;
   justify-content: space-between;
   align-items: center;
   font-family: 'Noto Sans KR', sans-serif;

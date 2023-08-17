@@ -14,7 +14,8 @@ public interface GoodsDAO {
 	public List<GoodsVO> selectGoodsList(String goods_status) throws DataAccessException;
 	public List<GoodsVO> selectGoodsShopList(String goods_sort) throws DataAccessException;
 	public GoodsVO selectGoodsDetail(int goods_id) throws DataAccessException;
-	
+	public List<GoodsVO> selectGoodsBySearchWord(String searchWord) throws DataAccessException;
+	public List<String> selectKeywordSearch(String keyword) throws DataAccessException;
 	//리뷰작성
 	public int reviewWrite(ReviewVO reviewVO) throws Exception;	   
 	//리뷰이미지 파일 저장

@@ -24,6 +24,12 @@
        <put-attribute name="body" value="/WEB-INF/views/order/orderEachGoods.jsp" />
     </definition>
     
+    <!-- 상품검색결과 -->
+     <definition name="adminOrderMain" extends="baseLayout">
+       <put-attribute name="title" value="상품 검색 결과" />
+       <put-attribute name="body" value="/WEB-INF/views/goods/searchResult.jsp" />
+    </definition>
+    
     <!-- 관리자 부분 -->
     <!-- 주문관리 -->
     <definition name="adminOrderMain" extends="baseLayout">

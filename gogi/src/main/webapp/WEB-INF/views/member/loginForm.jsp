@@ -23,18 +23,8 @@ function result(){
 <html lang="ko">
 <head>
 <style>
-.navbar.navbar-inverse {
-	padding: 10px;
-	padding-left: 200px;
-	padding-right: 200px;
-	background: white;
-	border: none;
-}
 
-.nav.navbar-nav {
-	margin-top: 70px;
-	margin-left: 40px;
-}
+
 
 ul.nav.navbar-nav li a:hover {
 	color: #000000;

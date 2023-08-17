@@ -29,24 +29,10 @@
 	.section [id="slide03"]:checked ~ .slidewrap .control03 {display:block;}
 	.section [id="slide04"]:checked ~ .slidewrap .control04 {display:block;}
 	
-	/* 베스트상품, 할인상품 스타일 */
-	.main{width: 100%;margin:0 ; padding: 10px; padding-left: 200px; padding-right: 200px;}
-	
 
 	
-	.image-background {
-    background-color: #f1f1f1; /* 배경색 설정 */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width:376px; height:416px;
-  	}
-  	.image-background img {
-  	background-color: transparent;
-    width:250px;
-    object-fit: contain; /* 이미지를 가운데로 정렬 */
-  	}
-  	.main-sort{
+  	
+.main-sort{
   	font-family: 'Noto Sans KR', sans-serif;
 	font-weight: 700;
 	font-size: 30px;
@@ -65,22 +51,24 @@
 	margin-top:2px;
 	font-family: 'Noto Sans KR', sans-serif;
 	font-size: 14px;
-	font-weight: 400;   
+	font-weight: 400;  
+	margin-bottom: 50px;  
 }
-  	
-	
-	.main{width: 100%; margin:0 ; padding: 10px; padding-left: 260px; padding-right: 260px;}
-	.card {margin-bottom: 50px; }
-	.image-background {
+  		
+.main{width: 1400px; margin:0 auto; padding: 10px;}
+
+
+.image-background {
     background-color: #f1f1f1; /* 배경색 설정 */
     display: flex;
     justify-content: center;
     align-items: center;
-    width:376px; height:416px;
-  	}
-  	.image-background img {
+    width:300px; height:300px;
+}
+
+.image-background img {
   	background-color: transparent;
     width:250px;
     object-fit: contain; /* 이미지를 가운데로 정렬 */
-  	} 
+} 
   	
